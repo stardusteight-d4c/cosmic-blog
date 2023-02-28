@@ -15,6 +15,8 @@ export default defineComponent({
     const oldValue = ref('')
     const textarea = ref<HTMLTextAreaElement>()
 
+    let saveText = ''
+
     const handleSelected = (type: string) => {
       const textareaElement = textarea.value
       if (!textareaElement) {
@@ -22,10 +24,15 @@ export default defineComponent({
       }
       const selectionStart = textareaElement.selectionStart
       const selectionEnd = textareaElement.selectionEnd
-      console.log('textarea.value?.textLength', textarea.value?.textLength);
-      
-      console.log('selectionStart', selectionStart, 'selectionEnd', selectionEnd);
-      
+      console.log('textarea.value?.textLength', textarea.value?.textLength)
+
+      console.log(
+        'selectionStart',
+        selectionStart,
+        'selectionEnd',
+        selectionEnd
+      )
+
       const selectedText = textareaElement.value.slice(
         selectionStart,
         selectionEnd
@@ -48,23 +55,70 @@ export default defineComponent({
         case 'underline':
           return `<u>${text}</u>`
         case 'link':
-          return `<a href="insira o link">${text}</a>`
+          return `[exemplo](https://exemplo.com/)`
         case 'image':
-          return `<img src="${text}" alt="">`
+          return `![descrição](https://exemplo.com/imagem.png)`
         case 'code':
-          return `\`\`\`${text}\`\`\``
+          return `\`\`\`lang\n${text}\n\`\`\``
         case 'align-left':
           return `<div style="text-align: left;">${text}</div>`
         case 'align-center':
           return `<div style="text-align: center;">${text}</div>`
         case 'align-right':
           return `<div style="text-align: right;">${text}</div>`
+        case 'save':
+          saveText = textContent.value
+          localStorage.setItem('saveText', textContent.value)
+        default:
+          return text
       }
+    }
+
+    const insertTab = (event: KeyboardEvent) => {
+      event.preventDefault()
+      const textareaElement = textarea.value
+      if (!textareaElement) {
+        return
+      }
+      const selectionStart = textareaElement.selectionStart
+      const selectionEnd = textareaElement.selectionEnd
+
+      const newValue =
+        textareaElement.value.slice(0, selectionStart) +
+        '\t' +
+        textareaElement.value.slice(selectionEnd)
+
+      textContent.value = newValue
+      oldValue.value = textareaElement.value
+
+      textareaElement.selectionStart = selectionStart + 1
+      textareaElement.selectionEnd = selectionEnd + 1
+    }
+
+    const undo = () => {
+      return
+    }
+
+    const save = () => {
+      saveText = textContent.value
+          localStorage.setItem('saveText', textContent.value)
+    }
+
+    const getSave = () => {
+      const savedText = localStorage.getItem('saveText')
+      if (!savedText) {
+        return
+      }
+      textContent.value = savedText
     }
 
     return {
       iconStyle,
       textContent,
+      insertTab,
+      getSave,
+      save,
+      undo,
       handleSelected,
       textarea,
     }
@@ -73,13 +127,13 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="bg-[#171717] min-h-screen w-screen">
+  <div class="bg-[#111111] min-h-screen w-screen">
     <div class="max-w-7xl mx-auto">
       <div
-        class="border mx-auto w-full rounded-2xl overflow-hidden max-w-[1000px] h-fit"
+        class="border border-white/10 mx-auto w-full rounded-lg overflow-hidden max-w-[1000px]"
       >
         <div
-          class="bg-[#111111] text-[#F2F2F2] flex gap-2 px-4 py-2 rounded-t-lg"
+          class="bg-[#171717] text-[#F2F2F2] flex gap-2 px-4 py-2 rounded-t-lg"
         >
           <ph-text-bolder
             v-on:click="handleSelected('bold')"
@@ -95,7 +149,7 @@ export default defineComponent({
           />
           <ph-link v-on:click="handleSelected('link')" v-bind="iconStyle" />
           <ph-image v-on:click="handleSelected('image')" v-bind="iconStyle" />
-          <ph-code v-on:click="handleSelected" v-bind="iconStyle" />
+          <ph-code v-on:click="handleSelected('code')" v-bind="iconStyle" />
 
           <ph-text-align-left v-on:click="handleSelected" v-bind="iconStyle" />
           <ph-text-align-center
@@ -103,15 +157,24 @@ export default defineComponent({
             v-bind="iconStyle"
           />
           <ph-text-align-right v-on:click="handleSelected" v-bind="iconStyle" />
+          <ph-floppy-disk
+            v-on:click="handleSelected('save')"
+            v-bind="iconStyle"
+          />
           <ph-eye v-on:click="handleSelected" v-bind="iconStyle" />
         </div>
         <div
-          class="bg-[#111111] text-[#F2F2F2] border-t border-t-white/10 flex gap-2 w-full max-w-[1000px] mx-auto rounded-b-lg"
+          class="bg-[#171717] text-[#F2F2F2] border-t border-t-white/10 flex gap-2 w-full max-w-[1000px] h-full mx-auto rounded-b-lg"
         >
           <textarea
             ref="textarea"
+            :spellcheck="false"
             v-model="textContent"
-            class="bg-[#111111] p-4 outline-none text-[#F2F2F2] w-full h-full"
+            @keydown.tab.prevent="insertTab"
+            @keydown.ctrl.z="undo"
+            @keydown.ctrl.s.prevent="save"
+            @keydown.ctrl.a="getSave"
+            class="bg-[#171717] min-h-[500px] max-h-[500px] p-4 resize-none outline-none text-[#F2F2F2] w-full"
           />
         </div>
       </div>
