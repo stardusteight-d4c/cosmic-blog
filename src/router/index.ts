@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import NewPost from '../pages/NewPost.vue'
+import CreatePost from '../pages/CreatePost.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/new-post',
-    name: 'NewPost',
-    component: NewPost,
+    path: '/create-post',
+    name: 'CreatePost',
+    component: CreatePost,
   },
 ]
 
