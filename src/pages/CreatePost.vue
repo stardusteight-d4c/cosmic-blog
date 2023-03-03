@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
-
+import { handleMarkdown } from '../utils/handleMarkdown'
 // Fazer o upload da imagem de capa
 // Permitir apenas até 25MB
 
@@ -30,55 +30,55 @@ export default defineComponent({
       if (!textareaElement) {
         return
       }
-      const selectionStart = textareaElement.selectionStart
-      const selectionEnd = textareaElement.selectionEnd
 
-      console.log(
-        'selectionStart',
-        selectionStart,
-        'selectionEnd',
-        selectionEnd
-      )
+      handleMarkdown(textareaElement, type)
 
-      const selectedText = textareaElement.value.slice(
-        selectionStart,
-        selectionEnd
-      )
-      const newValue =
-        textareaElement.value.slice(0, selectionStart) +
-        getFormattedText(selectedText, type) +
-        textareaElement.value.slice(selectionEnd)
+      //   const selectionStart = textareaElement.selectionStart
+      //   const selectionEnd = textareaElement.selectionEnd
+      //   const selectedText = textareaElement.value.slice(
+      //     selectionStart,
+      //     selectionEnd
+      //   )
+      //   const newValue =
+      //     textareaElement.value.slice(0, selectionStart) +
+      //     getFormattedText(selectedText, type) +
+      //     textareaElement.value.slice(selectionEnd)
 
-      textContent.value = newValue
-      oldValue.value = textareaElement.value
-    }
+      //   textareaElement.focus()
+      //   textareaElement.value = newValue
+      //   oldValue.value = textareaElement.value
+      //   const posicaoAtual = textareaElement.selectionStart
+      //   const novaPosicao = posicaoAtual - 2
+      //   textareaElement.selectionStart = novaPosicao
+      //   textareaElement.selectionEnd = novaPosicao
+      // }
 
-    const getFormattedText = (text: string, type: string) => {
-      switch (type) {
-        case 'bold':
-          return `**${text}**`
-        case 'italic':
-          return `_${text}_`
-        case 'underline':
-          return `<u>${text}</u>`
-        case 'link':
-          return `[exemplo](https://exemplo.com/)`
-        case 'image':
-          return `![descrição](https://exemplo.com/imagem.png)`
-        case 'code':
-          return `\`\`\`lang\n${text}\n\`\`\``
-        case 'align-left':
-          return `<div style="text-align: left;">${text}</div>`
-        case 'align-center':
-          return `<div style="text-align: center;">${text}</div>`
-        case 'align-right':
-          return `<div style="text-align: right;">${text}</div>`
-        case 'save':
-          saveText = textContent.value
-          localStorage.setItem('saveText', textContent.value)
-        default:
-          return text
-      }
+      // const getFormattedText = (text: string, type: string) => {
+      //   switch (type) {
+      //     case 'bold':
+      //       return `**${text}**`
+      //     case 'italic':
+      //       return `_${text}_`
+      //     case 'underline':
+      //       return `<u>${text}</u>`
+      //     case 'link':
+      //       return `[exemplo](https://exemplo.com/)`
+      //     case 'image':
+      //       return `![descrição](https://exemplo.com/imagem.png)`
+      //     case 'code':
+      //       return `\`\`\`lang\n${text}\n\`\`\``
+      //     case 'align-left':
+      //       return `<div style="text-align: left;">${text}</div>`
+      //     case 'align-center':
+      //       return `<div style="text-align: center;">${text}</div>`
+      //     case 'align-right':
+      //       return `<div style="text-align: right;">${text}</div>`
+      //     case 'save':
+      //       saveText = textContent.value
+      //       localStorage.setItem('saveText', textContent.value)
+      //     default:
+      //       return text
+      //   }
     }
 
     const insertTab = (event: KeyboardEvent) => {
@@ -113,12 +113,12 @@ export default defineComponent({
     function onFileChange(event: Event) {
       const input = event.target as HTMLInputElement
       const files = input.files as FileList
-      const maxFileSize = 3 * 1024 * 1024; // 3MB em bytes
-      const file = files[0];
+      const maxFileSize = 3 * 1024 * 1024 // 3MB em bytes
+      const file = files[0]
 
       if (file && file.size > maxFileSize) {
-        alert('O arquivo selecionado é maior do que 3MB');
-        input.value = ''; // limpa o valor do input
+        alert('O arquivo selecionado é maior do que 3MB')
+        input.value = '' // limpa o valor do input
       } else {
         coverImage.value = files
       }
@@ -225,10 +225,16 @@ export default defineComponent({
                   coverImage ? 'border-blue-500/50' : ' border-[#F2F2F2]/20'
                 } border active:scale-90 transition-all duration-300 font-medium py-2 px-3 rounded-sm bg-white/5`"
               >
-                <span v-if="coverImage" class="whitespace-nowrap">Uploaded Image</span>
-                <span v-else >Add a cover image</span>
+                <span v-if="coverImage" class="whitespace-nowrap"
+                  >Uploaded Image</span
+                >
+                <span v-else>Add a cover image</span>
               </button>
-              <span v-if="coverImage" class="truncate w-[80%]">{{ coverImage[0].name }}</span>
+              <span
+                v-if="coverImage"
+                class="truncate text-[#F2F2F2]/50 w-[80%]"
+                >{{ coverImage[0].name }}</span
+              >
             </div>
             <input
               type="file"
@@ -286,7 +292,7 @@ export default defineComponent({
                     v-bind="iconStyle"
                   />
                   <ph-code
-                    v-on:click="handleSelected('code')"
+                    v-on:click="handleSelected('code_block')"
                     v-bind="iconStyle"
                   />
 
@@ -315,9 +321,9 @@ export default defineComponent({
                 <textarea
                   ref="textarea"
                   :spellcheck="false"
-                  v-model="textContent"
+                  contenteditable="true"
+                  v-bind="textContent"
                   @keydown.tab.prevent="insertTab"
-                  @keydown.ctrl.z="undo"
                   @keydown.ctrl.s.prevent="save"
                   @keydown.ctrl.a="getSave"
                   v-on:focus="isFocused = 'textarea'"
