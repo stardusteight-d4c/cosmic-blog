@@ -1,15 +1,10 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
 
+// Fazer o upload da imagem de capa
+// Permitir apenas até 25MB
 
-// -> TAGS
-// Selecionar tags -> salvar em um array
-// Renderizar tags
-// Permitir apenas quatro tags
-// permitir remover uma tag, liberar espaço para selecionar outra no lugar
-// fazer um dropdown de sugestão de tags
-
-
+// Fazer a formatação adequada do markdown/rich text editor
 
 export default defineComponent({
   name: 'CreatePost',
@@ -19,12 +14,14 @@ export default defineComponent({
       weight: 'fill',
       class: `p-2 text-[#F2F2F2] font-bold hover:bg-[#F2F2F2]/10 transition-all duration-300 ease-in-out rounded-sm cursor-pointer`,
     }
+    const tag = ref('')
+    const selectedTags = ref<Array<string>>([])
     const isFocused = ref<'title' | 'textarea' | 'tags' | undefined>(undefined)
     const textContent = ref('')
     const oldValue = ref('')
+    const coverImage = ref<FileList | null>(null)
+    const inputFile = ref()
     const textarea = ref<HTMLTextAreaElement>()
-
-    
 
     let saveText = ''
 
@@ -109,6 +106,24 @@ export default defineComponent({
       console.log(`isFocused changed from ${oldValue} to ${newValue}`)
     })
 
+    watch(coverImage, () => {
+      console.log(coverImage.value)
+    })
+
+    function onFileChange(event: Event) {
+      const input = event.target as HTMLInputElement
+      const files = input.files as FileList
+      const maxFileSize = 3 * 1024 * 1024; // 3MB em bytes
+      const file = files[0];
+
+      if (file && file.size > maxFileSize) {
+        alert('O arquivo selecionado é maior do que 3MB');
+        input.value = ''; // limpa o valor do input
+      } else {
+        coverImage.value = files
+      }
+    }
+
     const undo = () => {
       return
     }
@@ -116,6 +131,30 @@ export default defineComponent({
     const save = () => {
       saveText = textContent.value
       localStorage.setItem('saveText', textContent.value)
+    }
+
+    const handleTags = () => {
+      if (tag.value.length > 10 || tag.value.length < 3) {
+        window.alert('As tags devem conter entre 3 e 10 caracteres')
+        return
+      }
+      if (selectedTags.value.length === 4) {
+        window.alert('Você atingiu o limite de tags')
+        return
+      }
+      selectedTags.value.push('#' + tag.value)
+      tag.value = ''
+    }
+
+    const onClickUpload = () => {
+      const clickEvent = new MouseEvent('click', { bubbles: true })
+      inputFile.value.dispatchEvent(clickEvent)
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Backspace' && tag.value === '') {
+        selectedTags.value.pop()
+      }
     }
 
     const getSave = () => {
@@ -132,8 +171,16 @@ export default defineComponent({
       insertTab,
       getSave,
       save,
+      coverImage,
+      selectedTags,
+      handleTags,
+      onKeyDown,
+      onFileChange,
+      tag,
+      inputFile,
       isFocused,
       undo,
+      onClickUpload,
       handleSelected,
       textarea,
     }
@@ -142,8 +189,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="bg-[#1a1a1a] min-h-screen w-screen">
-    <div class="max-w-7xl mx-auto">
+  <div class="bg-[#1a1a1a] max-h-screen w-screen">
+    <div class="max-w-7xl px-8 mx-auto">
       <header class="py-4">
         <nav class="max-w-[800px]">
           <div class="flex items-center gap-x-1">
@@ -171,68 +218,98 @@ export default defineComponent({
           <div
             class="text-[#F2F2F2] max-w-[800px] w-full bg-[#151618] rounded-sm border border-[#F2F2F2]/20 py-12 px-14"
           >
-            <button
-              class="border border-[#F2F2F2]/20 active:scale-90 transition-all duration-300 font-medium py-2 px-3 rounded-sm bg-white/5"
-            >
-              Add a cover image
-            </button>
-            <input type="file" class="hidden" />
+            <div class="flex items-center gap-x-2">
+              <button
+                v-on:click="onClickUpload"
+                :class="`${
+                  coverImage ? 'border-blue-500/50' : ' border-[#F2F2F2]/20'
+                } border active:scale-90 transition-all duration-300 font-medium py-2 px-3 rounded-sm bg-white/5`"
+              >
+                <span v-if="coverImage" class="whitespace-nowrap">Uploaded Image</span>
+                <span v-else >Add a cover image</span>
+              </button>
+              <span v-if="coverImage" class="truncate w-[80%]">{{ coverImage[0].name }}</span>
+            </div>
+            <input
+              type="file"
+              class="hidden"
+              ref="inputFile"
+              accept="image/png, image/jpeg"
+              @change="onFileChange"
+            />
             <input
               type="text"
               v-on:focus="isFocused = 'title'"
               placeholder="New post title here..."
               class="outline-none placeholder:text-[#F2F2F2]/30 text-4xl h-[75px] mt-4 w-full bg-transparent"
             />
-            <input
-              type="text"
-              placeholder="Add up to 4 tags..."
-              v-on:focus="isFocused = 'tags'"
-              class="w-full bg-transparent text-sm outline-none placeholder:text-[#F2F2F2]/30"
-            />
+            <div class="flex items-center">
+              <span
+                v-for="(tag, index) in selectedTags"
+                :key="index"
+                class="bg-blue-500/80 p-1 font-medium rounded-sm text-sm mr-2"
+                >{{ tag }}</span
+              >
+              <input
+                type="text"
+                placeholder="Add up to 4 tags..."
+                v-on:focus="isFocused = 'tags'"
+                @keydown.enter="handleTags"
+                v-model="tag"
+                @keydown="onKeyDown"
+                class="w-full bg-transparent text-base outline-none placeholder:text-[#F2F2F2]/30"
+              />
+            </div>
             <div class="w-full h-full rounded-lg mt-4">
-              <div class="flex gap-2 py-2 rounded-t-lg -ml-3">
-                <ph-text-bolder
-                  v-on:click="handleSelected('bold')"
-                  v-bind="iconStyle"
-                />
-                <ph-text-italic
-                  v-on:click="handleSelected('italic')"
-                  v-bind="iconStyle"
-                />
-                <ph-text-underline
-                  v-on:click="handleSelected('underline')"
-                  v-bind="iconStyle"
-                />
-                <ph-link
-                  v-on:click="handleSelected('link')"
-                  v-bind="iconStyle"
-                />
-                <ph-image
-                  v-on:click="handleSelected('image')"
-                  v-bind="iconStyle"
-                />
-                <ph-code
-                  v-on:click="handleSelected('code')"
-                  v-bind="iconStyle"
-                />
+              <div
+                class="flex items-center bg-[#F2F2F2]/5 justify-between gap-2 p-2 rounded-sm"
+              >
+                <div class="flex items-center">
+                  <ph-text-bolder
+                    v-on:click="handleSelected('bold')"
+                    v-bind="iconStyle"
+                  />
+                  <ph-text-italic
+                    v-on:click="handleSelected('italic')"
+                    v-bind="iconStyle"
+                  />
+                  <ph-text-underline
+                    v-on:click="handleSelected('underline')"
+                    v-bind="iconStyle"
+                  />
+                  <ph-link
+                    v-on:click="handleSelected('link')"
+                    v-bind="iconStyle"
+                  />
+                  <ph-image
+                    v-on:click="handleSelected('image')"
+                    v-bind="iconStyle"
+                  />
+                  <ph-code
+                    v-on:click="handleSelected('code')"
+                    v-bind="iconStyle"
+                  />
 
-                <ph-text-align-left
-                  v-on:click="handleSelected"
-                  v-bind="iconStyle"
-                />
-                <ph-text-align-center
-                  v-on:click="handleSelected"
-                  v-bind="iconStyle"
-                />
-                <ph-text-align-right
-                  v-on:click="handleSelected"
-                  v-bind="iconStyle"
-                />
-                <ph-floppy-disk
-                  v-on:click="handleSelected('save')"
-                  v-bind="iconStyle"
-                />
-                <ph-eye v-on:click="handleSelected" v-bind="iconStyle" />
+                  <ph-text-align-left
+                    v-on:click="handleSelected"
+                    v-bind="iconStyle"
+                  />
+                  <ph-text-align-center
+                    v-on:click="handleSelected"
+                    v-bind="iconStyle"
+                  />
+                  <ph-text-align-right
+                    v-on:click="handleSelected"
+                    v-bind="iconStyle"
+                  />
+                  <ph-floppy-disk
+                    v-on:click="handleSelected('save')"
+                    v-bind="iconStyle"
+                  />
+                </div>
+                <div>
+                  <ph-dots-three-outline v-bind="iconStyle" />
+                </div>
               </div>
               <div class="flex gap-2 w-full h-auto mx-auto rounded-b-lg">
                 <textarea
@@ -244,13 +321,13 @@ export default defineComponent({
                   @keydown.ctrl.s.prevent="save"
                   @keydown.ctrl.a="getSave"
                   v-on:focus="isFocused = 'textarea'"
-                  class="bg-transparent py-4 outline-none w-full"
+                  class="bg-transparent min-h-[125px] h-[25vh] xl:h-[32vh] 2xl:h-[38vh] 3xl:h-[47vh] 4xl:h-[53vh] py-4 border-b border-b-[#F2F2F2]/20 outline-none w-full"
                 />
               </div>
             </div>
           </div>
 
-          <div class="mt-4 pb-16 flex items-center gap-x-4">
+          <div class="mt-4 pb-8 flex items-center gap-x-4">
             <button
               class="p-2 px-3 text-[#F2F2F2] font-semibold bg-gradient-to-tr from-blue-500 to-violet-500 active:scale-90 transition-all duration-300 ease-in-out rounded-sm cursor-pointer"
             >
@@ -306,8 +383,10 @@ export default defineComponent({
           >
             Tags help people find your post. Think of tags as the topics or
             categories that best describe your post. Add up to four
-            comma-separated tags per post. <br />  <br />
-            Combine tags to reach the appropriate subcommunities. <br />  <br />
+            comma-separated tags per post. <br />
+            <br />
+            Combine tags to reach the appropriate subcommunities. <br />
+            <br />
             Use existing tags whenever possible. Some tags, such as “help” or
             “healthydebate”, have special posting guidelines.
           </span>
