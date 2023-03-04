@@ -10,9 +10,8 @@ export default defineComponent({
   name: 'CreatePost',
   setup() {
     const iconStyle = {
-      size: 42,
       weight: 'fill',
-      class: `p-2 text-[#F2F2F2] font-bold hover:bg-[#F2F2F2]/10 transition-all duration-300 ease-in-out rounded-sm cursor-pointer`,
+      class: `p-2 text-[#F2F2F2] text-[35px] md:text-[42px] font-bold hover:bg-[#F2F2F2]/10 transition-all duration-300 ease-in-out rounded-sm cursor-pointer`,
     }
     const tag = ref('')
     const selectedTags = ref<Array<string>>([])
@@ -144,24 +143,28 @@ export default defineComponent({
     <div class="max-w-7xl lg:px-8 mx-auto">
       <header class="py-1 px-2 lg:py-4 lg:px-0 lg:max-w-[800px]">
         <nav>
-          <div class="flex flex-col mt-2 md:mt-0 md:flex-row items-center gap-x-1">
+          <div
+            class="flex flex-col mt-2 md:mt-0 md:flex-row items-center gap-x-1"
+          >
             <div
               class="flex cursor-pointer text-transparent bg-gradient-to-t from-blue-500 to-violet-500 bg-clip-text items-center gap-x-1"
             >
-              <div class="flex items-center">
+              <router-link to="/" class="flex items-center">
                 <ph-hourglass-simple-high :size="32" class="text-blue-500" />
                 <span
                   class="uppercase tracking-widest font-bold text-lg lg:text-3xl"
                   >Cosmic</span
                 >
-              </div>
+              </router-link>
               <h2
                 class="text-[#F2F2F2] whitespace-nowrap cursor-default font-medium text-lg"
               >
                 / Create Post
               </h2>
             </div>
-            <div class="md:ml-auto flex flex-row items-center w-full md:w-fit mt-4 md:mt-0">
+            <div
+              class="md:ml-auto flex flex-row items-center w-full md:w-fit mt-4 md:mt-0"
+            >
               <button
                 @click="activeItem = 'edit'"
                 :class="`${
@@ -185,14 +188,14 @@ export default defineComponent({
       <div class="flex items-start justify-start">
         <div class="lg:max-w-[800px] w-full">
           <div
-            class="text-[#F2F2F2] bg-[#151618] w-full rounded-sm border border-[#F2F2F2]/20 p-2 md:py-12 lg:px-14"
+            class="text-[#F2F2F2] bg-[#151618] w-full rounded-sm border-y md:border border-[#F2F2F2]/20 px-2 py-4 md:py-12 lg:px-14"
           >
             <div class="flex items-center gap-x-2">
               <button
                 v-on:click="onClickUpload"
                 :class="`${
                   coverImage ? 'border-blue-500/50' : ' border-[#F2F2F2]/20'
-                } border active:scale-90 transition-all duration-300 font-medium py-2 px-3 rounded-sm bg-white/5`"
+                } border active:scale-90 text-sm md:text-base transition-all duration-300 font-medium py-2 px-3 rounded-sm bg-white/5`"
               >
                 <span v-if="coverImage" class="whitespace-nowrap"
                   >Uploaded Image</span
@@ -216,7 +219,7 @@ export default defineComponent({
               type="text"
               v-on:focus="isFocused = 'title'"
               placeholder="New post title here..."
-              class="outline-none placeholder:text-[#F2F2F2]/30 text-4xl h-[75px] mt-4 w-full bg-transparent"
+              class="outline-none placeholder:text-[#F2F2F2]/30 text-2xl md:text-4xl h-[75px] mt-4 w-full bg-transparent"
             />
             <div class="flex items-center">
               <span
@@ -246,11 +249,13 @@ export default defineComponent({
                   />
                   <ph-text-italic
                     v-on:click="handleSelected('italic')"
-                    v-bind="iconStyle"
+                    :weight="iconStyle.weight"
+                    :class="iconStyle.class + ' hidden md:block'"
                   />
                   <ph-text-underline
                     v-on:click="handleSelected('underline')"
-                    v-bind="iconStyle"
+                    :weight="iconStyle.weight"
+                    :class="iconStyle.class + ' hidden md:block'"
                   />
                   <ph-link
                     v-on:click="handleSelected('link')"
@@ -261,10 +266,18 @@ export default defineComponent({
                     v-bind="iconStyle"
                   />
                   <ph-code
-                    v-on:click="handleSelected('code_block')"
+                    v-on:click="handleSelected('code-block')"
                     v-bind="iconStyle"
                   />
-
+                  <ph-text-h-two
+                    v-on:click="handleSelected('heading-two')"
+                    v-bind="iconStyle"
+                  />
+                  <ph-quotes
+                    v-on:click="handleSelected('quotes')"
+                    :weight="iconStyle.weight"
+                    :class="iconStyle.class + ' hidden md:block'"
+                  />
                   <ph-text-align-left
                     v-on:click="handleSelected('align-left')"
                     v-bind="iconStyle"
@@ -298,7 +311,9 @@ export default defineComponent({
             </div>
           </div>
 
-          <div class="mt-4 pb-8 flex items-center gap-x-4">
+          <div
+            class="my-4 mr-2 ml-auto lg:ml-0 w-fit lg:mr-0 flex items-center gap-x-4"
+          >
             <button
               class="p-2 px-3 text-[#F2F2F2] font-semibold bg-gradient-to-tr from-blue-500 to-violet-500 active:scale-90 transition-all duration-300 ease-in-out rounded-sm cursor-pointer"
             >

@@ -30,8 +30,12 @@ function markdownParse(text: string, type: string) {
     return { text: `[${text}](link)`, displacement: 0 }
   } else if (type === 'image') {
     return { text: `![description](img_url)`, displacement: 0 }
-  } else if (type === 'code_block') {
+  } else if (type === 'code-block') {
     return { text: `\`\`\`lang\n${text}\n\`\`\``, displacement: 3 }
+  } else if (type === 'heading-two') {
+    return { text: `## ${text}`, displacement: 0 }
+  } else if (type === 'quotes') {
+    return { text: `> ${text}`, displacement: 0 }
   } else if (type === 'align-left') {
     return {
       text: `<div style="text-align: left;">${text}</div>`,

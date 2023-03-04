@@ -7,14 +7,45 @@ body {
   @apply font-inter antialiased overflow-x-hidden bg-[#1a1a1a];
 }
 
-
 ::-webkit-scrollbar {
   width: 4px;
   height: 8px;
+  /* background-color: #252525; */
 }
 
 ::-webkit-scrollbar-thumb {
   cursor: pointer;
-  background: #F2F2F250;
+  background: #f2f2f250;
   border-radius: 20px;
 }
+
+@keyframes tech-from-up {
+  0% {
+    transform: translate3d(0px, -150px, 0px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0px, 0px, 0px);
+    opacity: 1;
+  }
+}
+
+@keyframes tech-from-down {
+  0% {
+    transform: translate3d(0px, 150px, 0px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0px, 0px, 0px);
+    opacity: 1;
+  }
+}
+
+.animate-tech-from-up {
+  animation: tech-from-up 0.7s ease-out;
+}
+
+.animate-tech-from-down {
+  animation: tech-from-down 0.7s ease-out;
+}
+
