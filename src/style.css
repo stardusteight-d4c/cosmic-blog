@@ -19,33 +19,5 @@ body {
   border-radius: 20px;
 }
 
-@keyframes tech-from-up {
-  0% {
-    transform: translate3d(0px, -150px, 0px);
-    opacity: 0;
-  }
-  100% {
-    transform: translate3d(0px, 0px, 0px);
-    opacity: 1;
-  }
-}
 
-@keyframes tech-from-down {
-  0% {
-    transform: translate3d(0px, 150px, 0px);
-    opacity: 0;
-  }
-  100% {
-    transform: translate3d(0px, 0px, 0px);
-    opacity: 1;
-  }
-}
-
-.animate-tech-from-up {
-  animation: tech-from-up 0.7s ease-out;
-}
-
-.animate-tech-from-down {
-  animation: tech-from-down 0.7s ease-out;
-}
 
