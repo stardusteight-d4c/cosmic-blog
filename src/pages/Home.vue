@@ -1,9 +1,15 @@
 <script lang="ts">
-import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'Home',
-  setup() {},
+  setup() {
+    const setSearch = ref(false)
+
+    return {
+      setSearch,
+    }
+  },
 })
 </script>
 
@@ -107,10 +113,38 @@ export default defineComponent({
           </a>
         </div>
       </div>
-      <div class="mt-20">
-        <div class="w-full border-b border-b-[#F2F2F2]/20">
-          <div class="flex items-center rounded-sm cursor-pointer hover:bg-[#252525] p-1 pr-[6px] gap-x-1 border-b-[2px] border-[#F2F2F2] w-fit">
-            <ph-squares-four :size="24"  />Gallery view
+      <div class="mt-20 mb-24">
+        <div class="w-full flex justify-between border-b border-b-[#F2F2F2]/20">
+          <div
+            class="flex items-center justify-center rounded-sm cursor-pointer hover:bg-[#252525] p-1 pr-[6px] gap-x-1 border-b-[2px] border-[#F2F2F2] w-fit"
+          >
+            <ph-squares-four :size="24" />Gallery view
+          </div>
+          <div class="flex items-center">
+            <div
+              @click="setSearch = !setSearch"
+              :class="{
+                'bg-[#252525]': setSearch,
+                'flex items-center rounded-sm cursor-pointer hover:bg-[#252525] p-1 w-fit': true,
+              }"
+            >
+              <ph-magnifying-glass :size="24" class="text-[#F2F2F2]/50" />
+            </div>
+            <Transition>
+              <div v-if="setSearch" class="flex items-center">
+                <input
+                  type="text"
+                  placeholder="Search for a post"
+                  class="p-1 bg-transparent outline-none"
+                />
+
+                <div
+                  class="flex items-center justify-center rounded-sm cursor-pointer hover:bg-[#252525] p-1 w-fit"
+                >
+                  <ph-sliders :size="24" class="text-[#F2F2F2]/50" />
+                </div>
+              </div>
+            </Transition>
           </div>
         </div>
       </div>
@@ -118,7 +152,7 @@ export default defineComponent({
   </div>
 </template>
 
-<style>
+<style scoped>
 @keyframes tech-from-up {
   0% {
     transform: translate3d(0px, -150px, 0px);
@@ -147,5 +181,16 @@ export default defineComponent({
 
 .animate-tech-from-down {
   animation: tech-from-down 0.7s ease-out;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+  transform: translateX(50px);
 }
 </style>
