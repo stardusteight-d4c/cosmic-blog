@@ -32,6 +32,21 @@ function markdownParse(text: string, type: string) {
     return { text: `![description](img_url)`, displacement: 0 }
   } else if (type === 'code_block') {
     return { text: `\`\`\`lang\n${text}\n\`\`\``, displacement: 3 }
+  } else if (type === 'align-left') {
+    return {
+      text: `<div style="text-align: left;">${text}</div>`,
+      displacement: 6,
+    }
+  } else if (type === 'align-center') {
+    return {
+      text: `<div style="text-align: center;">${text}</div>`,
+      displacement: 6,
+    }
+  } else if (type === 'align-right') {
+    return {
+      text: `<div style="text-align: right;">${text}</div>`,
+      displacement: 6,
+    }
   }
 }
 

@@ -21,64 +21,15 @@ export default defineComponent({
     const oldValue = ref('')
     const coverImage = ref<FileList | null>(null)
     const inputFile = ref()
+    const activeItem = ref<'edit' | 'preview'>('edit')
     const textarea = ref<HTMLTextAreaElement>()
-
-    let saveText = ''
 
     const handleSelected = (type: string) => {
       const textareaElement = textarea.value
       if (!textareaElement) {
         return
       }
-
       handleMarkdown(textareaElement, type)
-
-      //   const selectionStart = textareaElement.selectionStart
-      //   const selectionEnd = textareaElement.selectionEnd
-      //   const selectedText = textareaElement.value.slice(
-      //     selectionStart,
-      //     selectionEnd
-      //   )
-      //   const newValue =
-      //     textareaElement.value.slice(0, selectionStart) +
-      //     getFormattedText(selectedText, type) +
-      //     textareaElement.value.slice(selectionEnd)
-
-      //   textareaElement.focus()
-      //   textareaElement.value = newValue
-      //   oldValue.value = textareaElement.value
-      //   const posicaoAtual = textareaElement.selectionStart
-      //   const novaPosicao = posicaoAtual - 2
-      //   textareaElement.selectionStart = novaPosicao
-      //   textareaElement.selectionEnd = novaPosicao
-      // }
-
-      // const getFormattedText = (text: string, type: string) => {
-      //   switch (type) {
-      //     case 'bold':
-      //       return `**${text}**`
-      //     case 'italic':
-      //       return `_${text}_`
-      //     case 'underline':
-      //       return `<u>${text}</u>`
-      //     case 'link':
-      //       return `[exemplo](https://exemplo.com/)`
-      //     case 'image':
-      //       return `![descrição](https://exemplo.com/imagem.png)`
-      //     case 'code':
-      //       return `\`\`\`lang\n${text}\n\`\`\``
-      //     case 'align-left':
-      //       return `<div style="text-align: left;">${text}</div>`
-      //     case 'align-center':
-      //       return `<div style="text-align: center;">${text}</div>`
-      //     case 'align-right':
-      //       return `<div style="text-align: right;">${text}</div>`
-      //     case 'save':
-      //       saveText = textContent.value
-      //       localStorage.setItem('saveText', textContent.value)
-      //     default:
-      //       return text
-      //   }
     }
 
     const insertTab = (event: KeyboardEvent) => {
@@ -129,8 +80,8 @@ export default defineComponent({
     }
 
     const save = () => {
-      saveText = textContent.value
-      localStorage.setItem('saveText', textContent.value)
+      const saveText = textarea.value?.value ?? ''
+      localStorage.setItem('saveText', saveText)
     }
 
     const handleTags = () => {
@@ -156,13 +107,12 @@ export default defineComponent({
         selectedTags.value.pop()
       }
     }
-
     const getSave = () => {
       const savedText = localStorage.getItem('saveText')
       if (!savedText) {
         return
       }
-      textContent.value = savedText
+      textarea.value!.value = savedText
     }
 
     return {
@@ -176,6 +126,7 @@ export default defineComponent({
       handleTags,
       onKeyDown,
       onFileChange,
+      activeItem,
       tag,
       inputFile,
       isFocused,
@@ -190,33 +141,51 @@ export default defineComponent({
 
 <template>
   <div class="bg-[#1a1a1a] max-h-screen w-screen">
-    <div class="max-w-7xl px-8 mx-auto">
-      <header class="py-4">
-        <nav class="max-w-[800px]">
-          <div class="flex items-center gap-x-1">
+    <div class="max-w-7xl lg:px-8 mx-auto">
+      <header class="py-1 px-2 lg:py-4 lg:px-0 lg:max-w-[800px]">
+        <nav>
+          <div class="flex flex-col mt-2 md:mt-0 md:flex-row items-center gap-x-1">
             <div
               class="flex cursor-pointer text-transparent bg-gradient-to-t from-blue-500 to-violet-500 bg-clip-text items-center gap-x-1"
             >
-              <ph-hourglass-simple-high :size="32" class="text-blue-500" />
-
-              <span class="uppercase tracking-widest font-bold text-3xl"
-                >Cosmic</span
+              <div class="flex items-center">
+                <ph-hourglass-simple-high :size="32" class="text-blue-500" />
+                <span
+                  class="uppercase tracking-widest font-bold text-lg lg:text-3xl"
+                  >Cosmic</span
+                >
+              </div>
+              <h2
+                class="text-[#F2F2F2] whitespace-nowrap cursor-default font-medium text-lg"
               >
+                / Create Post
+              </h2>
             </div>
-            <h2 class="text-[#F2F2F2] cursor-default font-medium text-lg">
-              / Create Post
-            </h2>
-            <div class="ml-auto">
-              <button v-bind="iconStyle">Edit</button>
-              <button v-bind="iconStyle">Preview</button>
+            <div class="md:ml-auto flex flex-row items-center w-full md:w-fit mt-4 md:mt-0">
+              <button
+                @click="activeItem = 'edit'"
+                :class="`${
+                  activeItem === 'edit' && 'bg-[#F2F2F2]/10'
+                } p-2 text-[#F2F2F2] w-full md:w-fit font-bold transition-all duration-150 rounded-sm cursor-pointer`"
+              >
+                Edit
+              </button>
+              <button
+                @click="activeItem = 'preview'"
+                :class="`${
+                  activeItem === 'preview' && 'bg-[#F2F2F2]/10'
+                } p-2 text-[#F2F2F2]  w-full md:w-fit font-bold transition-all duration-150 rounded-sm cursor-pointer`"
+              >
+                Preview
+              </button>
             </div>
           </div>
         </nav>
       </header>
       <div class="flex items-start justify-start">
-        <div>
+        <div class="lg:max-w-[800px] w-full">
           <div
-            class="text-[#F2F2F2] max-w-[800px] w-full bg-[#151618] rounded-sm border border-[#F2F2F2]/20 py-12 px-14"
+            class="text-[#F2F2F2] bg-[#151618] w-full rounded-sm border border-[#F2F2F2]/20 p-2 md:py-12 lg:px-14"
           >
             <div class="flex items-center gap-x-2">
               <button
@@ -297,24 +266,20 @@ export default defineComponent({
                   />
 
                   <ph-text-align-left
-                    v-on:click="handleSelected"
+                    v-on:click="handleSelected('align-left')"
                     v-bind="iconStyle"
                   />
                   <ph-text-align-center
-                    v-on:click="handleSelected"
+                    v-on:click="handleSelected('align-center')"
                     v-bind="iconStyle"
                   />
                   <ph-text-align-right
-                    v-on:click="handleSelected"
-                    v-bind="iconStyle"
-                  />
-                  <ph-floppy-disk
-                    v-on:click="handleSelected('save')"
+                    v-on:click="handleSelected('align-right')"
                     v-bind="iconStyle"
                   />
                 </div>
                 <div>
-                  <ph-dots-three-outline v-bind="iconStyle" />
+                  <ph-floppy-disk v-on:click="save" v-bind="iconStyle" />
                 </div>
               </div>
               <div class="flex gap-2 w-full h-auto mx-auto rounded-b-lg">
@@ -346,56 +311,60 @@ export default defineComponent({
             </button>
           </div>
         </div>
-        <div
-          v-if="isFocused === 'title'"
-          class="max-w-[350px] text-[#F2F2F2] ml-4"
-        >
-          <h3 class="font-semibold text-xl text-[#F2F2F2]/80">
-            Writing a Great Post Title
-          </h3>
-          <span
-            class="text-[#F2F2F2]/50 text-sm !leading-[20px] mt-2 inline-block"
+        <div class="hidden lg:block">
+          <div
+            v-if="isFocused === 'title'"
+            class="max-w-[350px] text-[#F2F2F2] ml-4"
           >
-            Think of your post title as a super short (but compelling!)
-            description — like an overview of the actual post in one short
-            sentence. Use keywords where appropriate to help ensure people can
-            find your post by search.
-          </span>
-        </div>
-        <div
-          v-if="isFocused === 'textarea'"
-          class="max-w-[350px] text-[#F2F2F2] ml-4"
-        >
-          <h3 class="font-semibold text-xl text-[#F2F2F2]/80">Editor Basics</h3>
-          <span
-            class="text-[#F2F2F2]/50 text-sm !leading-[20px] mt-2 inline-block"
+            <h3 class="font-semibold text-xl text-[#F2F2F2]/80">
+              Writing a Great Post Title
+            </h3>
+            <span
+              class="text-[#F2F2F2]/50 text-sm !leading-[20px] mt-2 inline-block"
+            >
+              Think of your post title as a super short (but compelling!)
+              description — like an overview of the actual post in one short
+              sentence. Use keywords where appropriate to help ensure people can
+              find your post by search.
+            </span>
+          </div>
+          <div
+            v-if="isFocused === 'textarea'"
+            class="max-w-[350px] text-[#F2F2F2] ml-4"
           >
-            Use Markdown to write and format posts. Commonly used syntax Embed
-            rich content such as Tweets, YouTube videos, etc. Use the complete
-            URL: {% embed https://... %}. See a list of supported embeds. In
-            addition to images for the post's content, you can also drag and
-            drop a cover image.
-          </span>
-        </div>
-        <div
-          v-if="isFocused === 'tags'"
-          class="max-w-[350px] text-[#F2F2F2] ml-4"
-        >
-          <h3 class="font-semibold text-xl text-[#F2F2F2]/80">
-            Tagging Guidelines
-          </h3>
-          <span
-            class="text-[#F2F2F2]/50 text-sm !leading-[20px] mt-2 inline-block"
+            <h3 class="font-semibold text-xl text-[#F2F2F2]/80">
+              Editor Basics
+            </h3>
+            <span
+              class="text-[#F2F2F2]/50 text-sm !leading-[20px] mt-2 inline-block"
+            >
+              Use Markdown to write and format posts. Commonly used syntax Embed
+              rich content such as Tweets, YouTube videos, etc. Use the complete
+              URL: {% embed https://... %}. See a list of supported embeds. In
+              addition to images for the post's content, you can also drag and
+              drop a cover image.
+            </span>
+          </div>
+          <div
+            v-if="isFocused === 'tags'"
+            class="max-w-[350px] text-[#F2F2F2] ml-4"
           >
-            Tags help people find your post. Think of tags as the topics or
-            categories that best describe your post. Add up to four
-            comma-separated tags per post. <br />
-            <br />
-            Combine tags to reach the appropriate subcommunities. <br />
-            <br />
-            Use existing tags whenever possible. Some tags, such as “help” or
-            “healthydebate”, have special posting guidelines.
-          </span>
+            <h3 class="font-semibold text-xl text-[#F2F2F2]/80">
+              Tagging Guidelines
+            </h3>
+            <span
+              class="text-[#F2F2F2]/50 text-sm !leading-[20px] mt-2 inline-block"
+            >
+              Tags help people find your post. Think of tags as the topics or
+              categories that best describe your post. Add up to four
+              comma-separated tags per post. <br />
+              <br />
+              Combine tags to reach the appropriate subcommunities. <br />
+              <br />
+              Use existing tags whenever possible. Some tags, such as “help” or
+              “healthydebate”, have special posting guidelines.
+            </span>
+          </div>
         </div>
       </div>
     </div>
