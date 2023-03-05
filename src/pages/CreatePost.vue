@@ -14,7 +14,7 @@ export default defineComponent({
       class: `p-2 text-[#F2F2F2] text-[35px] md:text-[42px] font-bold hover:bg-[#F2F2F2]/10 transition-all duration-300 ease-in-out rounded-sm cursor-pointer`,
     }
     const tag = ref('')
-    const selectedTags = ref<Array<string>>([])
+    const selectedTags: any[] = []
     const isFocused = ref<'title' | 'textarea' | 'tags' | undefined>(undefined)
     const textContent = ref('')
     const oldValue = ref('')
@@ -88,11 +88,11 @@ export default defineComponent({
         window.alert('As tags devem conter entre 3 e 10 caracteres')
         return
       }
-      if (selectedTags.value.length === 4) {
+      if (selectedTags.length === 4) {
         window.alert('Você atingiu o limite de tags')
         return
       }
-      selectedTags.value.push('#' + tag.value)
+      selectedTags.push('#' + tag.value)
       tag.value = ''
     }
 
@@ -103,7 +103,7 @@ export default defineComponent({
 
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === 'Backspace' && tag.value === '') {
-        selectedTags.value.pop()
+        selectedTags.pop()
       }
     }
     const getSave = () => {
@@ -150,7 +150,42 @@ export default defineComponent({
               class="flex cursor-pointer text-transparent bg-gradient-to-t from-blue-500 to-violet-500 bg-clip-text items-center gap-x-1"
             >
               <router-link to="/" class="flex items-center">
-                <ph-hourglass-simple-high :size="32" class="text-blue-500" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  fill="#3b82f6"
+                  viewBox="0 0 256 256"
+                >
+                  <rect width="256" height="256" fill="none"></rect>
+                  <path
+                    d="M59.3,40H196.7a8,8,0,0,1,5.6,13.7L128,128,53.7,53.7A8,8,0,0,1,59.3,40Z"
+                    fill="none"
+                    stroke="#3b82f6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  ></path>
+                  <path
+                    d="M59.3,216H196.7a8,8,0,0,0,5.6-13.7L128,128,53.7,202.3A8,8,0,0,0,59.3,216Z"
+                    fill="none"
+                    stroke="#3b82f6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  ></path>
+                  <line
+                    x1="72"
+                    y1="72"
+                    x2="184"
+                    y2="72"
+                    fill="none"
+                    stroke="#3b82f6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  ></line>
+                </svg>
                 <span
                   class="uppercase tracking-widest font-bold text-lg lg:text-3xl"
                   >Cosmic</span

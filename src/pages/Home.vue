@@ -1,20 +1,61 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import { techs } from '../mock-data'
+import myMemoji01 from '../assets/my-memoji01.png'
+import myMemoji02 from '../assets/my-memoji02.png'
+import myMemoji03 from '../assets/my-memoji03.png'
+
+type techs = 'backend' | 'language' | 'frontend' | 'database'
 
 export default defineComponent({
   name: 'Home',
   setup() {
     const setSearch = ref(false)
+    const memojis: string[] = [myMemoji01, myMemoji02, myMemoji03]
+    let currentMemoji = ref(0)
+    let currentTechs = ref([0, 0, 0, 0])
+
+    function handleTechs(array: techs) {
+      const techsKeys = ['backend', 'language', 'frontend', 'database']
+      const currentTech = techsKeys.findIndex((item) => item === array)
+      console.log('currentTech', currentTech);
+      
+      const penultimateItemIndex = techs[array].length - 2
+      const lastItemIndex = techs[array].length
+
+      if (currentTechs.value[currentTech] <= penultimateItemIndex) {
+        currentTechs.value[currentTech]++
+      } else if (currentTechs.value[currentTech] === lastItemIndex - 1) {
+        currentTechs.value[currentTech] = 0
+      }
+    }
+
+    function handleMemoji() {
+      const penultimateItemIndex = memojis.length - 2
+      const lastItemIndex = memojis.length
+
+      if (currentMemoji.value <= penultimateItemIndex) {
+        currentMemoji.value++
+      } else if (currentMemoji.value === lastItemIndex - 1) {
+        currentMemoji.value = 0
+      }
+    }
 
     return {
       setSearch,
+      memojis,
+      techs,
+      handleTechs,
+      handleMemoji,
+      currentMemoji,
+      currentTechs,
     }
   },
 })
 </script>
 
 <template>
-  <div class="bg-[#1a1a1a] text-[#F2F2F2] h-screen w-screen">
+  <div class="bg-[#1a1a1a] text-[#F2F2F2] w-screen">
     <div class="max-w-[725px] mx-auto">
       <header class="py-1 px-2 lg:py-4 lg:px-0">
         <nav>
@@ -25,7 +66,42 @@ export default defineComponent({
               class="flex cursor-pointer text-transparent bg-gradient-to-t from-blue-500 to-violet-500 bg-clip-text items-center gap-x-1"
             >
               <router-link to="/" class="flex items-center">
-                <ph-hourglass-simple-high :size="32" class="text-blue-500" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  fill="#3b82f6"
+                  viewBox="0 0 256 256"
+                >
+                  <rect width="256" height="256" fill="none"></rect>
+                  <path
+                    d="M59.3,40H196.7a8,8,0,0,1,5.6,13.7L128,128,53.7,53.7A8,8,0,0,1,59.3,40Z"
+                    fill="none"
+                    stroke="#3b82f6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  ></path>
+                  <path
+                    d="M59.3,216H196.7a8,8,0,0,0,5.6-13.7L128,128,53.7,202.3A8,8,0,0,0,59.3,216Z"
+                    fill="none"
+                    stroke="#3b82f6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  ></path>
+                  <line
+                    x1="72"
+                    y1="72"
+                    x2="184"
+                    y2="72"
+                    fill="none"
+                    stroke="#3b82f6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                  ></line>
+                </svg>
                 <span
                   class="uppercase tracking-widest font-bold text-lg lg:text-3xl"
                   >Cosmic</span
@@ -107,26 +183,32 @@ export default defineComponent({
           class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-x-3"
         >
           <img
-            src="../assets/node-logo.svg"
-            class="animate-tech-from-up w-[100px] rounded-sm hover:shadow-xl hover:shadow-black/50 select-none cursor-pointer transition-all ease-in-out duration-500 hover:scale-110"
+            v-bind:src="techs.backend[currentTechs[0]]"
+            @click="handleTechs('backend')"
+            class="animate-tech-from-up w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
           />
           <img
-            src="../assets/typescript-logo.svg"
-            class="animate-tech-from-down w-[100px] rounded-sm hover:shadow-xl hover:shadow-black/50 select-none cursor-pointer transition-all ease-in-out duration-500 hover:scale-110"
+            v-bind:src="techs.language[currentTechs[1]]"
+            @click="handleTechs('language')"
+            class="animate-tech-from-down w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
           />
           <img
-            src="../assets/react-logo.svg"
-            class="animate-tech-from-up w-[100px] rounded-sm hover:shadow-xl hover:shadow-black/50 select-none cursor-pointer transition-all ease-in-out duration-500 hover:scale-110"
+            v-bind:src="techs.frontend[currentTechs[2]]"
+            @click="handleTechs('frontend')"
+            class="animate-tech-from-up w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
           />
           <img
-            src="../assets/vue-logo.svg"
-            class="animate-tech-from-down w-[100px] rounded-sm hover:shadow-xl hover:shadow-black/50 select-none cursor-pointer transition-all ease-in-out duration-500 hover:scale-110"
+            v-bind:src="techs.database[currentTechs[3]]"
+            @click="handleTechs('database')"
+            class="animate-tech-from-down w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
           />
         </div>
         <div class="w-[155px] h-[155px]">
           <img
-            src="../assets/my-memoji.png"
-            class="w-[155px] absolute -bottom-16 -left-6 pointer-events-none select-none"
+            @click="handleMemoji"
+            v-bind:src="memojis[currentMemoji]"
+            v-bind:key="currentMemoji"
+            class="animated-bounce w-[155px] absolute -bottom-16 -left-6 cursor-pointer select-none"
           />
         </div>
       </div>
@@ -134,7 +216,7 @@ export default defineComponent({
     <div class="max-w-[725px] mx-auto mt-14 px-2 lg:py-4 lg:px-0">
       <h1 class="font-bold text-[40px]">Stardusteight</h1>
       <div
-        class="flex items-start gap-x-[45px] mt-4 w-full pb-[45px] border-b border-b-[#F2F2F2]/20"
+        class="flex items-start gap-x-2 mt-4 w-full pb-[45px] border-b border-b-[#F2F2F2]/20"
       >
         <div
           class="bg-[#252525] text-[#F2F2F2]/90 max-w-[550px] rounded-sm p-4"
@@ -143,7 +225,7 @@ export default defineComponent({
             <img src="../assets/star-struck.png" class="w-5 mt-[2px]" />
             <p class="leading-6">
               Olá! Sou Gabriel Sena, desenvolvedor web focado na Stack
-              JavaScript! Gosto de estudar as tendências do mercado, busco
+              JavaScript! Gosto de estudar as tendências do mercado e busco
               sempre desenvolver aplicações web de ponta a ponta sempre
               extraindo o melhor de cada tecnologia.
               <br />
@@ -161,9 +243,8 @@ export default defineComponent({
             class="active:scale-95"
           >
             <img
-              title="GitHub"
               src="../assets/qrcode.svg"
-              class="w-[125px] cursor-pointer hover:shadow-2xl hover:shadow-black/50 transition-all duration-500 hover:scale-105 hover:brightness-110"
+              class="w-[125px] cursor-pointer transition-all duration-500"
             />
           </a>
         </div>
@@ -178,9 +259,10 @@ export default defineComponent({
           <div class="flex items-center">
             <div
               @click="setSearch = !setSearch"
+              :key="String(setSearch)"
               :class="{
                 'bg-[#252525]': setSearch,
-                'flex items-center rounded-sm cursor-pointer hover:bg-[#252525] p-1 w-fit': true,
+                'animated-left flex items-center rounded-sm cursor-pointer hover:bg-[#252525] p-1 w-fit': true,
               }"
             >
               <ph-magnifying-glass :size="24" class="text-[#F2F2F2]/50" />
@@ -203,11 +285,11 @@ export default defineComponent({
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-8 mt-4">
+        <div class="grid grid-cols-2 gap-4 mt-4">
           <div
-            class="card col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm shadow-md"
+            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-75 ease-in-out"
           >
-            <div class="card2 overflow-hidden">
+            <div class="overflow-hidden">
               <img
                 src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
                 class="h-[195px] w-full object-cover"
@@ -216,12 +298,167 @@ export default defineComponent({
                 <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
                   GO! RN - Gestão de conhecimento focado em evolução do time
                 </h2>
-                <span class="line-clamp-3 text-sm text-[#F2F2F2]/60 my-2"
+                <div
+                  class="text-xs my-2 font-medium text-[#F2F2F2]/60 flex items-center gap-x-1"
+                >
+                  <ph-calendar-blank :size="18" />Mar 5, 2023
+                </div>
+                <span class="line-clamp-3 text-sm text-[#F2F2F2]/60"
                   >Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                   Cumque at et voluptatem iusto ex impedit quod eos asperiores
                   placeat libero, qui dicta esse in, vero explicabo laboriosam
                   sequi, cupiditate deserunt.</span
                 >
+                <div class="mt-2 text-sm">
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Javascript</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Node.js</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#React</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Vue.js</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-75 ease-in-out"
+          >
+            <div class="overflow-hidden">
+              <img
+                src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
+                class="h-[195px] w-full object-cover"
+              />
+              <div class="p-2">
+                <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
+                  GO! RN - Gestão de conhecimento focado em evolução do time
+                </h2>
+                <div
+                  class="text-xs my-2 font-medium text-[#F2F2F2]/60 flex items-center gap-x-1"
+                >
+                  <ph-calendar-blank :size="18" />Mar 5, 2023
+                </div>
+                <span class="line-clamp-3 text-sm text-[#F2F2F2]/60"
+                  >Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Cumque at et voluptatem iusto ex impedit quod eos asperiores
+                  placeat libero, qui dicta esse in, vero explicabo laboriosam
+                  sequi, cupiditate deserunt.</span
+                >
+                <div class="mt-2 text-sm">
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Javascript</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Node.js</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#React</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Vue.js</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-75 ease-in-out"
+          >
+            <div class="overflow-hidden">
+              <img
+                src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
+                class="h-[195px] w-full object-cover"
+              />
+              <div class="p-2">
+                <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
+                  GO! RN - Gestão de conhecimento focado em evolução do time
+                </h2>
+                <div
+                  class="text-xs my-2 font-medium text-[#F2F2F2]/60 flex items-center gap-x-1"
+                >
+                  <ph-calendar-blank :size="18" />Mar 5, 2023
+                </div>
+                <span class="line-clamp-3 text-sm text-[#F2F2F2]/60"
+                  >Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Cumque at et voluptatem iusto ex impedit quod eos asperiores
+                  placeat libero, qui dicta esse in, vero explicabo laboriosam
+                  sequi, cupiditate deserunt.</span
+                >
+                <div class="mt-2 text-sm">
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Javascript</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Node.js</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#React</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Vue.js</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-75 ease-in-out"
+          >
+            <div class="overflow-hidden">
+              <img
+                src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
+                class="h-[195px] w-full object-cover"
+              />
+              <div class="p-2">
+                <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
+                  GO! RN - Gestão de conhecimento focado em evolução do time
+                </h2>
+                <div
+                  class="text-xs my-2 font-medium text-[#F2F2F2]/60 flex items-center gap-x-1"
+                >
+                  <ph-calendar-blank :size="18" />Mar 5, 2023
+                </div>
+                <span class="line-clamp-3 text-sm text-[#F2F2F2]/60"
+                  >Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Cumque at et voluptatem iusto ex impedit quod eos asperiores
+                  placeat libero, qui dicta esse in, vero explicabo laboriosam
+                  sequi, cupiditate deserunt.</span
+                >
+                <div class="mt-2 text-sm">
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Javascript</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Node.js</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#React</span
+                  >
+                  <span
+                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+                    >#Vue.js</span
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -323,5 +560,43 @@ button svg {
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(5px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes from-left {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(-20px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+}
+
+.animated-bounce {
+  animation: bounce ease-in-out 0.5s;
+}
+
+.animated-left {
+  animation: from-left ease-in-out 0.6s;
 }
 </style>
