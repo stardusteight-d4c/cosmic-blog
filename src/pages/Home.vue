@@ -1,15 +1,21 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
-import { techs } from '../mock-data'
+import { techs, descriptions } from '../mock-data'
 import myMemoji01 from '../assets/my-memoji01.png'
 import myMemoji02 from '../assets/my-memoji02.png'
 import myMemoji03 from '../assets/my-memoji03.png'
 import smilingHeartEyes from '../assets/smiling-face-with-heart-eyes.png'
-
+import PostCard from '../components/PostCard.vue'
 type techs = 'backend' | 'language' | 'frontend' | 'database'
+
+// Fazer um description dropdown das techs do hero
+// Fazer a interface do post
+// Alternar a troca de idioma para textos estáticos na home Portugues to English
+// adicionar mais techs e fazer um componente da mesma
 
 export default defineComponent({
   name: 'Home',
+  components: { PostCard },
   setup() {
     const setSearch = ref(false)
     const memojis: string[] = [myMemoji01, myMemoji02, myMemoji03]
@@ -56,6 +62,7 @@ export default defineComponent({
       setSearch,
       memojis,
       techs,
+      descriptions,
       smilingHeartEyes,
       handleTechs,
       findSecret,
@@ -177,7 +184,7 @@ export default defineComponent({
                 </div>
                 <img
                   src="https://github.com/stardusteight-d4c.png"
-                  class="w-8 h-8 rounded-full border-inherit border-blue-500 absolute transform cursor-pointer backdrop-blur-sm object-cover -top-[3px] z-50"
+                  class="w-8 h-8 rounded-full absolute transform cursor-pointer backdrop-blur-sm object-cover -top-[3px] z-50"
                 />
               </div>
             </div>
@@ -195,31 +202,72 @@ export default defineComponent({
         <div
           class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-x-3"
         >
-          <img
-            v-bind:src="techs.backend[currentTechs[0]]"
-            @click="handleTechs('backend')"
-            class="animate-tech-from-up w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
-          />
-          <img
-            v-bind:src="techs.language[currentTechs[1]]"
-            @click="handleTechs('language')"
-            class="animate-tech-from-down w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
-          />
-          <img
-            v-bind:src="techs.frontend[currentTechs[2]]"
-            @click="handleTechs('frontend')"
-            class="animate-tech-from-up w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
-          />
-          <img
-            v-bind:src="techs.database[currentTechs[3]]"
-            @click="handleTechs('database')"
-            class="animate-tech-from-down w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
-          />
+          <div class="relative group">
+            <img
+              v-bind:src="techs.backend[currentTechs[0]]"
+              @click="handleTechs('backend')"
+              class="animate-tech-from-up w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
+            />
+            <div
+              class="absolute z-10 hidden group-hover:block text-[#F2F2F2]/90 font-medium -left-[125px] mt-4 w-[350px] bg-black/80 backdrop-blur-md transform text-sm leading-5 p-2 rounded-sm"
+            >
+              <div
+                class="triangle absolute left-1/2 -translate-x-1/2 -top-[10px] bg-black/80"
+              />
+              <p v-html="descriptions.backend[currentTechs[0]]" />
+            </div>
+          </div>
+          <div class="relative group">
+            <img
+              v-bind:src="techs.language[currentTechs[1]]"
+              @click="handleTechs('language')"
+              class="animate-tech-from-down w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
+            />
+            <div
+              class="absolute z-10 hidden group-hover:block text-[#F2F2F2]/90 font-medium -left-[125px] mt-4 w-[350px] bg-black/80 backdrop-blur-md transform text-sm leading-5 p-2 rounded-sm"
+            >
+              <div
+                class="triangle absolute left-1/2 -translate-x-1/2 -top-[10px] bg-black/80"
+              />
+              <p v-html="descriptions.language[currentTechs[1]]" />
+            </div>
+          </div>
+          <div class="relative group">
+            <img
+              v-bind:src="techs.frontend[currentTechs[2]]"
+              @click="handleTechs('frontend')"
+              class="animate-tech-from-up w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
+            />
+            <div
+              class="absolute z-10 hidden group-hover:block text-[#F2F2F2]/90 font-medium -left-[125px] mt-4 w-[350px] bg-black/80 backdrop-blur-md transform text-sm leading-5 p-2 rounded-sm"
+            >
+              <div
+                class="triangle absolute left-1/2 -translate-x-1/2 -top-[10px] bg-black/80"
+              />
+              <p v-html="descriptions.frontend[currentTechs[2]]" />
+            </div>
+          </div>
+          <div class="relative group">
+            <img
+              v-bind:src="techs.database[currentTechs[3]]"
+              @click="handleTechs('database')"
+              class="animate-tech-from-down w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
+            />
+            <div
+              class="absolute z-10 hidden group-hover:block text-[#F2F2F2]/90 font-medium -left-[125px] mt-4 w-[350px] bg-black/80 backdrop-blur-md transform text-sm leading-5 p-2 rounded-sm"
+            >
+              <div
+                class="triangle absolute left-1/2 -translate-x-1/2 -top-[10px] bg-black/80"
+              />
+              <p v-html="descriptions.database[currentTechs[3]]" />
+            </div>
+          </div>
+
           <span
             v-if="findSecret"
-            class="absolute flex items-center gap-x-2 inset-x-0 top-[105px] text-[#F2F2F2]/80 text-xs font-medium p-1 bg-black/30 rounded-sm"
-            >*Essas foram as principais techs utilizadas na construção deste
-            blog!! <img :src="smilingHeartEyes" class="w-4"
+            class="absolute flex items-center gap-x-2 inset-x-0 -top-[30px] justify-center text-[#F2F2F2]/80 text-xs font-medium p-1 bg-black/50 rounded-sm"
+            >*Principais ferramentas utilizadas na construção do blog!!
+            <img :src="smilingHeartEyes" class="w-4"
           /></span>
         </div>
         <div class="w-[155px] h-[155px]">
@@ -263,13 +311,15 @@ export default defineComponent({
           >
             <img
               src="../assets/qrcode.svg"
-              class="w-[125px] cursor-pointer transition-all duration-500"
+              class="w-[100px] cursor-pointer transition-all duration-500"
             />
           </a>
         </div>
       </div>
       <div class="mt-8">
-        <div class="w-full flex justify-between border-b text-[#F2F2F2]/80 border-b-[#F2F2F2]/20">
+        <div
+          class="w-full flex justify-between border-b text-[#F2F2F2]/80 border-b-[#F2F2F2]/20"
+        >
           <div
             class="flex items-center justify-center rounded-sm cursor-pointer hover:bg-[#252525] p-1 pr-[6px] gap-x-1 border-b-[2px] border-[#F2F2F2] w-fit"
           >
@@ -303,192 +353,28 @@ export default defineComponent({
         </div>
 
         <div class="grid grid-cols-2 gap-4 mt-4">
-          <div
-            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-100 ease-linear"
-          >
-            <div class="overflow-hidden">
-              <img
-                src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
-                class="h-[195px] w-full object-cover"
-              />
-              <div class="p-2">
-                <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
-                  GO! RN - Gestão de conhecimento focado em evolução do time
-                </h2>
-                <div
-                  class="text-xs my-2 font-medium text-[#F2F2F2]/60 flex items-center gap-x-1"
-                >
-                  <ph-calendar-blank :size="18" />Mar 5, 2023
-                </div>
-                <span class="line-clamp-3 text-sm text-[#F2F2F2]/60"
-                  >Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Cumque at et voluptatem iusto ex impedit quod eos asperiores
-                  placeat libero, qui dicta esse in, vero explicabo laboriosam
-                  sequi, cupiditate deserunt.</span
-                >
-                <div class="mt-2 text-sm">
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Javascript</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Node.js</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#React</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Vue.js</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-100 ease-linear"
-          >
-            <div class="overflow-hidden">
-              <img
-                src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
-                class="h-[195px] w-full object-cover"
-              />
-              <div class="p-2">
-                <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
-                  GO! RN - Gestão de conhecimento focado em evolução do time
-                </h2>
-                <div
-                  class="text-xs my-2 font-medium text-[#F2F2F2]/60 flex items-center gap-x-1"
-                >
-                  <ph-calendar-blank :size="18" />Mar 5, 2023
-                </div>
-                <span class="line-clamp-3 text-sm text-[#F2F2F2]/60"
-                  >Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Cumque at et voluptatem iusto ex impedit quod eos asperiores
-                  placeat libero, qui dicta esse in, vero explicabo laboriosam
-                  sequi, cupiditate deserunt.</span
-                >
-                <div class="mt-2 text-sm">
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Javascript</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Node.js</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#React</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Vue.js</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-100 ease-linear"
-          >
-            <div class="overflow-hidden">
-              <img
-                src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
-                class="h-[195px] w-full object-cover"
-              />
-              <div class="p-2">
-                <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
-                  GO! RN - Gestão de conhecimento focado em evolução do time
-                </h2>
-                <div
-                  class="text-xs my-2 font-medium text-[#F2F2F2]/60 flex items-center gap-x-1"
-                >
-                  <ph-calendar-blank :size="18" />Mar 5, 2023
-                </div>
-                <span class="line-clamp-3 text-sm text-[#F2F2F2]/60"
-                  >Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Cumque at et voluptatem iusto ex impedit quod eos asperiores
-                  placeat libero, qui dicta esse in, vero explicabo laboriosam
-                  sequi, cupiditate deserunt.</span
-                >
-                <div class="mt-2 text-sm">
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Javascript</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Node.js</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#React</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Vue.js</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-100 ease-linear"
-          >
-            <div class="overflow-hidden">
-              <img
-                src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
-                class="h-[195px] w-full object-cover"
-              />
-              <div class="p-2">
-                <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
-                  GO! RN - Gestão de conhecimento focado em evolução do time
-                </h2>
-                <div
-                  class="text-xs my-2 font-medium text-[#F2F2F2]/60 flex items-center gap-x-1"
-                >
-                  <ph-calendar-blank :size="18" />Mar 5, 2023
-                </div>
-                <span class="line-clamp-3 text-sm text-[#F2F2F2]/60"
-                  >Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Cumque at et voluptatem iusto ex impedit quod eos asperiores
-                  placeat libero, qui dicta esse in, vero explicabo laboriosam
-                  sequi, cupiditate deserunt.</span
-                >
-                <div class="mt-2 text-sm">
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Javascript</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Node.js</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#React</span
-                  >
-                  <span
-                    class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
-                    >#Vue.js</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
         </div>
         <div class="flex items-center justify-end mt-4 text-[#7c7c7c]">
-          <ph-arrow-left :size="42"  class="cursor-pointer hover:text-[#b8b8b8] p-1"/>
+          <ph-arrow-left
+            :size="42"
+            class="cursor-pointer hover:text-[#b8b8b8] p-1"
+          />
           <span class="text-lg font-semibold">1</span>
-          <ph-arrow-right :size="42" class="cursor-pointer hover:text-[#b8b8b8] p-1" />
+          <ph-arrow-right
+            :size="42"
+            class="cursor-pointer hover:text-[#b8b8b8] p-1"
+          />
         </div>
       </div>
     </div>
     <footer
-      class="p-8 mt-40 border-t border-t-[#F2F2F2]/20 text-[#F2F2F2]/60 flex flex-col items-center text-center justify-center"
+      class="p-8 mt-28 border-t border-t-[#F2F2F2]/20 text-[#F2F2F2]/60 flex flex-col items-center text-center justify-center"
     >
       <div>
         <a
@@ -504,12 +390,22 @@ export default defineComponent({
           {{ new Date().getFullYear() }}
           - All rights reserved.
         </span>
+        <img
+          src="../assets/brazil.png"
+          class="w-6 mx-auto opacity-80 mt-1 cursor-pointer"
+        />
       </div>
     </footer>
   </div>
 </template>
 
 <style scoped>
+.triangle {
+  width: 15px;
+  height: 10px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
 @keyframes tech-from-up {
   0% {
     transform: translate3d(0px, -150px, 0px);

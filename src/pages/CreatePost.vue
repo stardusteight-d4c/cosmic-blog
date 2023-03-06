@@ -1,10 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
-import { handleMarkdown } from '../utils/handleMarkdown'
-// Fazer o upload da imagem de capa
-// Permitir apenas até 25MB
-
-// Fazer a formatação adequada do markdown/rich text editor
+import { handleMarkdown } from '../utils/handle-markdown'
 
 export default defineComponent({
   name: 'CreatePost',
