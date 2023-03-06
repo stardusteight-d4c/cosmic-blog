@@ -1,9 +1,10 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { techs } from '../mock-data'
 import myMemoji01 from '../assets/my-memoji01.png'
 import myMemoji02 from '../assets/my-memoji02.png'
 import myMemoji03 from '../assets/my-memoji03.png'
+import smilingHeartEyes from '../assets/smiling-face-with-heart-eyes.png'
 
 type techs = 'backend' | 'language' | 'frontend' | 'database'
 
@@ -14,15 +15,18 @@ export default defineComponent({
     const memojis: string[] = [myMemoji01, myMemoji02, myMemoji03]
     let currentMemoji = ref(0)
     let currentTechs = ref([0, 0, 0, 0])
+    const findSecret = ref(
+      currentTechs.value[0] === 2 &&
+        currentTechs.value[1] === 1 &&
+        currentTechs.value[2] === 0 &&
+        currentTechs.value[3] === 4
+    )
 
     function handleTechs(array: techs) {
       const techsKeys = ['backend', 'language', 'frontend', 'database']
       const currentTech = techsKeys.findIndex((item) => item === array)
-      console.log('currentTech', currentTech);
-      
       const penultimateItemIndex = techs[array].length - 2
       const lastItemIndex = techs[array].length
-
       if (currentTechs.value[currentTech] <= penultimateItemIndex) {
         currentTechs.value[currentTech]++
       } else if (currentTechs.value[currentTech] === lastItemIndex - 1) {
@@ -33,7 +37,6 @@ export default defineComponent({
     function handleMemoji() {
       const penultimateItemIndex = memojis.length - 2
       const lastItemIndex = memojis.length
-
       if (currentMemoji.value <= penultimateItemIndex) {
         currentMemoji.value++
       } else if (currentMemoji.value === lastItemIndex - 1) {
@@ -41,11 +44,21 @@ export default defineComponent({
       }
     }
 
+    watch(currentTechs.value, (currentTechsNewValue) => {
+      findSecret.value =
+        currentTechsNewValue[0] === 2 &&
+        currentTechsNewValue[1] === 1 &&
+        currentTechsNewValue[2] === 1 &&
+        currentTechsNewValue[3] === 2
+    })
+
     return {
       setSearch,
       memojis,
       techs,
+      smilingHeartEyes,
       handleTechs,
+      findSecret,
       handleMemoji,
       currentMemoji,
       currentTechs,
@@ -202,6 +215,12 @@ export default defineComponent({
             @click="handleTechs('database')"
             class="animate-tech-from-down w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
           />
+          <span
+            v-if="findSecret"
+            class="absolute flex items-center gap-x-2 inset-x-0 top-[105px] text-[#F2F2F2]/80 text-xs font-medium p-1 bg-black/30 rounded-sm"
+            >*Essas foram as principais techs utilizadas na construção deste
+            blog!! <img :src="smilingHeartEyes" class="w-4"
+          /></span>
         </div>
         <div class="w-[155px] h-[155px]">
           <img
@@ -250,7 +269,7 @@ export default defineComponent({
         </div>
       </div>
       <div class="mt-8">
-        <div class="w-full flex justify-between border-b border-b-[#F2F2F2]/20">
+        <div class="w-full flex justify-between border-b text-[#F2F2F2]/80 border-b-[#F2F2F2]/20">
           <div
             class="flex items-center justify-center rounded-sm cursor-pointer hover:bg-[#252525] p-1 pr-[6px] gap-x-1 border-b-[2px] border-[#F2F2F2] w-fit"
           >
@@ -260,25 +279,23 @@ export default defineComponent({
             <div
               @click="setSearch = !setSearch"
               :key="String(setSearch)"
-              :class="{
-                'bg-[#252525]': setSearch,
-                'animated-left flex items-center rounded-sm cursor-pointer hover:bg-[#252525] p-1 w-fit': true,
-              }"
+              class="animated-left bg-[#252525] flex items-center rounded-sm cursor-pointer p-1 w-fit"
             >
-              <ph-magnifying-glass :size="24" class="text-[#F2F2F2]/50" />
+              <ph-magnifying-glass v-if="setSearch === false" :size="24" />
+              <ph-x v-else :size="24" />
             </div>
             <Transition>
               <div v-if="setSearch" class="flex items-center">
                 <input
                   type="text"
                   placeholder="Search for a post"
-                  class="p-1 bg-transparent outline-none"
+                  class="input"
                 />
 
                 <div
-                  class="flex items-center justify-center rounded-sm cursor-pointer hover:bg-[#252525] p-1 w-fit"
+                  class="flex items-center hover:bg-[#252525] transition-all justify-center rounded-sm cursor-pointer p-1 w-fit"
                 >
-                  <ph-sliders :size="24" class="text-[#F2F2F2]/50" />
+                  <ph-sliders :size="24" />
                 </div>
               </div>
             </Transition>
@@ -287,7 +304,7 @@ export default defineComponent({
 
         <div class="grid grid-cols-2 gap-4 mt-4">
           <div
-            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-75 ease-in-out"
+            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-100 ease-linear"
           >
             <div class="overflow-hidden">
               <img
@@ -331,7 +348,7 @@ export default defineComponent({
             </div>
           </div>
           <div
-            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-75 ease-in-out"
+            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-100 ease-linear"
           >
             <div class="overflow-hidden">
               <img
@@ -375,7 +392,7 @@ export default defineComponent({
             </div>
           </div>
           <div
-            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-75 ease-in-out"
+            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-100 ease-linear"
           >
             <div class="overflow-hidden">
               <img
@@ -419,7 +436,7 @@ export default defineComponent({
             </div>
           </div>
           <div
-            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-75 ease-in-out"
+            class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-100 ease-linear"
           >
             <div class="overflow-hidden">
               <img
@@ -463,8 +480,32 @@ export default defineComponent({
             </div>
           </div>
         </div>
+        <div class="flex items-center justify-end mt-4 text-[#7c7c7c]">
+          <ph-arrow-left :size="42"  class="cursor-pointer hover:text-[#b8b8b8] p-1"/>
+          <span class="text-lg font-semibold">1</span>
+          <ph-arrow-right :size="42" class="cursor-pointer hover:text-[#b8b8b8] p-1" />
+        </div>
       </div>
     </div>
+    <footer
+      class="p-8 mt-40 border-t border-t-[#F2F2F2]/20 text-[#F2F2F2]/60 flex flex-col items-center text-center justify-center"
+    >
+      <div>
+        <a
+          href="https://github.com/stardusteight-d4c"
+          target="_blank"
+          class="flex justify-center hover:underline"
+          >Gabriel Sena</a
+        >
+        <span
+          class="flex items-center text-xs justify-center gap-x-1 text-[#F2F2F2]/30"
+        >
+          <ph-copyright :size="16" />
+          {{ new Date().getFullYear() }}
+          - All rights reserved.
+        </span>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -577,6 +618,19 @@ button svg {
   }
 }
 
+.input {
+  background: none;
+  border: none;
+  outline: none;
+  max-width: 250px;
+  padding-block: 4px;
+  padding-inline: 10px;
+  font-size: 16px;
+  border-radius: 2px;
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+  color: #f2f2f2;
+}
+
 @keyframes from-left {
   0% {
     transform: translateX(0);
@@ -584,7 +638,7 @@ button svg {
   }
   50% {
     transform: translateX(-20px);
-    opacity: 1;
+    opacity: 0.5;
   }
   100% {
     transform: translateX(0);
@@ -593,10 +647,10 @@ button svg {
 }
 
 .animated-bounce {
-  animation: bounce ease-in-out 0.5s;
+  animation: bounce ease-in-out 0.3s;
 }
 
 .animated-left {
-  animation: from-left ease-in-out 0.6s;
+  animation: from-left ease-in 0.6s;
 }
 </style>
