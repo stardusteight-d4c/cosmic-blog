@@ -188,7 +188,7 @@ export default defineComponent({
           class="flex flex-col justify-center items-center m-auto text-[#F2F2F2]/60"
         >
           <a
-          title="GitHub"
+            title="GitHub"
             href="https://github.com/stardusteight-d4c"
             target="_blank"
             class="active:scale-95"
@@ -223,7 +223,7 @@ export default defineComponent({
                 <input
                   type="text"
                   placeholder="Search for a post"
-                  class="input"
+                  class="input border border-transparent focus:border-blue-500 transition-all"
                 />
 
                 <div
@@ -331,8 +331,7 @@ export default defineComponent({
 }
 
 .input {
-  background: none;
-  border: none;
+  background: #252525;
   outline: none;
   max-width: 250px;
   padding-block: 4px;

@@ -44,16 +44,16 @@ export default defineComponent({
 <template>
   <div class="bg-[#1a1a1a] text-[#F2F2F2] w-screen">
     <Navbar path="post" />
-    <div class="max-w-[725px] w-full mx-auto">
+    <div class="max-w-[725px] w-full mx-auto mb-28">
       <div id="post" class="relative">
         <div class="w-fit h-fit fixed bottom-4 right-4">
           <div class="flex items-center gap-x-2 group">
             <span
               class="animate-span hidden group-hover:block text-[#F2F2F2]/70"
-              >Progress {{parseInt(scrollPercentage.toFixed(0))}}%
+              >Progress {{ parseInt(scrollPercentage.toFixed(0)) }}%
             </span>
             <div
-              class="bg-[#252525] cursor-pointer shadow-lg shadow-black/50 z-50 rounded-md w-[50px] h-[50px] relative flex items-center justify-center"
+              class="bg-[#252525] cursor-pointer shadow-lg shadow-black/50 z-50 rounded-sm w-[50px] h-[50px] relative flex items-center justify-center"
             >
               <DonutChart :percentage="scrollPercentage" class="w-8" />
             </div>
@@ -62,7 +62,7 @@ export default defineComponent({
         <div class="relative">
           <img
             src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
-            class="w-full h-[325px] border-x border-t border-[#F2F2F2]/20 rounded-t-md object-cover"
+            class="w-full h-[325px] border-x border-t border-[#F2F2F2]/20 rounded-t-sm object-cover"
           />
           <div class="mt-2 text-sm absolute left-4 top-2">
             <span
@@ -88,7 +88,7 @@ export default defineComponent({
           />
         </div>
         <div
-          class="bg-[#252525] border-x border-b rounded-b-md border-[#F2F2F2]/20 mb-28 pt-4"
+          class="bg-[#252525] border-x border-b rounded-b-sm border-[#F2F2F2]/20 mb-28 pt-4"
         >
           <div class="px-4">
             <span
@@ -149,13 +149,70 @@ export default defineComponent({
             </p>
           </div>
           <div class="border-t border-[#F2F2F2]/20 py-4 mt-8 text-[#F2F2F2]/50">
-            <span class="flex items-center justify-center gap-x-1">
+            <span class="flex t items-center justify-center gap-x-1">
               <Star class="w-4" /> Starred • 38
             </span>
             <span class="flex items-center justify-center gap-x-1">
               <img :src="comment" class="w-4" /> Comments • 2
             </span>
           </div>
+        </div>
+      </div>
+      <div>
+        <div class="flex items-start w-full">
+          <img src="../assets/my-memoji02.png" class="w-24 h-24 -ml-4 -mt-4" />
+          <textarea
+            placeholder="Leave a feedback or comment about it :)"
+            :spellcheck="false"
+            class="input border border-transparent rounded-sm focus:border-blue-500 transition-all text-[#F2F2F2]/80 w-full h-40 outline-none p-4 bg-[#252525] resize-none"
+          />
+        </div>
+        <div class="mt-14 bg-[#252525] rounded-sm p-4">
+          <div class="flex flex-col items-start w-full">
+            <div class="flex items-center">
+              <img
+                src="../assets/my-memoji02.png"
+                class="w-16 h-16 -ml-4 -mt-4"
+              />
+              <h3 class="text-lg font-semibold -mt-3">#Stardusteight</h3>
+            </div>
+            <div class="bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellendus, sit cupiditate quaerat doloremque dicta, fugiat sint repudiandae rerum eligendi excepturi iusto quod soluta, doloribus magni aliquam unde nisi deleniti? Neque.</div>
+          </div>
+        </div>
+        <div class="mt-14 bg-[#252525] rounded-sm p-4">
+          <div class="flex flex-col items-start w-full">
+            <div class="flex items-center">
+              <img
+                src="../assets/my-memoji02.png"
+                class="w-16 h-16 -ml-4 -mt-4"
+              />
+              <h3 class="text-lg font-semibold -mt-3">#Stardusteight</h3>
+            </div>
+            <div class="bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellendus, sit cupiditate quaerat doloremque dicta, fugiat sint repudiandae rerum eligendi excepturi iusto quod soluta, doloribus magni aliquam unde nisi deleniti? Neque.</div>
+          </div>
+        </div>
+        <div class="mt-14 bg-[#252525] rounded-sm p-4">
+          <div class="flex flex-col items-start w-full">
+            <div class="flex items-center">
+              <img
+                src="../assets/my-memoji02.png"
+                class="w-16 h-16 -ml-4 -mt-4"
+              />
+              <h3 class="text-lg font-semibold -mt-3">#Stardusteight</h3>
+            </div>
+            <div class="bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellendus, sit cupiditate quaerat doloremque dicta, fugiat sint repudiandae rerum eligendi excepturi iusto quod soluta, doloribus magni aliquam unde nisi deleniti? Neque.</div>
+          </div>
+        </div>
+        <div class="flex items-center justify-end mt-4 text-[#7c7c7c]">
+          <ph-arrow-left
+            :size="42"
+            class="cursor-pointer hover:text-[#b8b8b8] p-1"
+          />
+          <span class="text-lg font-semibold">0</span>
+          <ph-arrow-right
+            :size="42"
+            class="cursor-pointer hover:text-[#b8b8b8] p-1"
+          />
         </div>
       </div>
     </div>
@@ -176,5 +233,11 @@ export default defineComponent({
 
 .animate-span {
   animation: from-left ease-in 0.2s;
+}
+
+.input {
+  background: #252525;
+  font-size: 16px;
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
 }
 </style>
