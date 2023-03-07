@@ -175,7 +175,7 @@ button {
   background-clip: padding-box;
   color: #f2f2f2;
   padding: 4px 10px;
-  border-radius: 50px;
+  border-radius: 6px;
   transition: all 0.5s ease;
 }
 

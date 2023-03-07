@@ -89,7 +89,7 @@ export default defineComponent({
             <img
               v-bind:src="techs.backend[currentTechs[0]]"
               @click="handleTechs('backend')"
-              class="animate-tech-from-up w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
+              class="animate-tech-from-up w-[100px] rounded-sm select-none cursor-pointer shadow-md shadow-black/20 transition-all ease-in-out duration-300 hover:scale-110"
             />
             <div
               class="absolute z-10 hidden group-hover:block text-[#F2F2F2]/90 font-medium -left-[125px] mt-4 w-[350px] bg-black/80 backdrop-blur-md transform text-sm leading-5 p-2 rounded-sm"
@@ -104,7 +104,7 @@ export default defineComponent({
             <img
               v-bind:src="techs.language[currentTechs[1]]"
               @click="handleTechs('language')"
-              class="animate-tech-from-down w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
+              class="animate-tech-from-down w-[100px] rounded-sm select-none cursor-pointer shadow-md shadow-black/20 transition-all ease-in-out duration-300 hover:scale-110"
             />
             <div
               class="absolute z-10 hidden group-hover:block text-[#F2F2F2]/90 font-medium -left-[125px] mt-4 w-[350px] bg-black/80 backdrop-blur-md transform text-sm leading-5 p-2 rounded-sm"
@@ -119,7 +119,7 @@ export default defineComponent({
             <img
               v-bind:src="techs.frontend[currentTechs[2]]"
               @click="handleTechs('frontend')"
-              class="animate-tech-from-up w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
+              class="animate-tech-from-up w-[100px] rounded-sm select-none cursor-pointer shadow-md shadow-black/20 transition-all ease-in-out duration-300 hover:scale-110"
             />
             <div
               class="absolute z-10 hidden group-hover:block text-[#F2F2F2]/90 font-medium -left-[125px] mt-4 w-[350px] bg-black/80 backdrop-blur-md transform text-sm leading-5 p-2 rounded-sm"
@@ -134,7 +134,7 @@ export default defineComponent({
             <img
               v-bind:src="techs.database[currentTechs[3]]"
               @click="handleTechs('database')"
-              class="animate-tech-from-down w-[100px] rounded-sm select-none cursor-pointer transition-all ease-in-out duration-300 hover:scale-110"
+              class="animate-tech-from-down w-[100px] rounded-sm select-none cursor-pointer shadow-md shadow-black/20 transition-all ease-in-out duration-300 hover:scale-110"
             />
             <div
               class="absolute z-10 hidden group-hover:block text-[#F2F2F2]/90 font-medium -left-[125px] mt-4 w-[350px] bg-black/80 backdrop-blur-md transform text-sm leading-5 p-2 rounded-sm"
@@ -169,7 +169,7 @@ export default defineComponent({
         class="flex items-start gap-x-2 mt-4 w-full pb-[45px] border-b border-b-[#F2F2F2]/20"
       >
         <div
-          class="bg-[#252525] text-[#F2F2F2]/90 max-w-[550px] rounded-sm p-4"
+          class="bg-[#252525] shadow-md shadow-black/20 text-[#F2F2F2]/90 max-w-[550px] rounded-sm p-4"
         >
           <div class="flex items-start gap-x-2">
             <img src="../assets/star-struck.png" class="w-5 mt-[2px]" />
@@ -185,7 +185,7 @@ export default defineComponent({
           </div>
         </div>
         <div
-          class="flex flex-col justify-center items-center m-auto text-[#F2F2F2]/60"
+          class="flex flex-col shadow-md shadow-black/20 justify-center items-center m-auto text-[#F2F2F2]/60"
         >
           <a
             title="GitHub"

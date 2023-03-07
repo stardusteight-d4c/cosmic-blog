@@ -6,6 +6,8 @@ import Star from '../atoms/Star.vue'
 import comment from '../assets/comment.svg'
 import DonutChart from '../components/DonutChart.vue'
 
+// formatar string markdown em html do post
+
 export default defineComponent({
   name: 'Post',
   components: { Navbar, Star, DonutChart },
@@ -18,6 +20,7 @@ export default defineComponent({
     const route = useRoute()
     const id = route.params.id
     const scrollPercentage = ref(0)
+    const scaleUp = ref(false)
 
     const onScroll = () => {
       const postHeight = document.querySelector('#post')!.clientHeight
@@ -36,7 +39,7 @@ export default defineComponent({
       window.removeEventListener('scroll', onScroll)
     })
 
-    return { comment, scrollPercentage }
+    return { comment, scrollPercentage, scaleUp }
   },
 })
 </script>
@@ -45,7 +48,7 @@ export default defineComponent({
   <div class="bg-[#1a1a1a] text-[#F2F2F2] w-screen">
     <Navbar path="post" />
     <div class="max-w-[725px] w-full mx-auto mb-28">
-      <div id="post" class="relative">
+      <div id="post" class="relative shadow-md shadow-black/20">
         <div class="w-fit h-fit fixed bottom-4 right-4">
           <div class="flex items-center gap-x-2 group">
             <span
@@ -53,42 +56,62 @@ export default defineComponent({
               >Progress {{ parseInt(scrollPercentage.toFixed(0)) }}%
             </span>
             <div
-              class="bg-[#252525] cursor-pointer shadow-lg shadow-black/50 z-50 rounded-sm w-[50px] h-[50px] relative flex items-center justify-center"
+              class="bg-[#252525] cursor-pointer shadow-md shadow-black/20 z-50 rounded-sm w-[50px] h-[50px] relative flex items-center justify-center"
             >
               <DonutChart :percentage="scrollPercentage" class="w-8" />
+            </div>
+          </div>
+        </div>
+        <div class="w-fit h-fit fixed bottom-20 right-4">
+          <div class="flex items-center gap-x-2 group">
+            <span
+              class="animate-span hidden group-hover:block text-[#F2F2F2]/70"
+            >
+              {{ scaleUp ? 'Scale Down' : 'Scale Up' }}
+            </span>
+            <div
+              @click="scaleUp = !scaleUp"
+              class="bg-[#252525] cursor-pointer shadow-md shadow-black/20 z-50 rounded-sm w-[50px] h-[50px] relative flex items-center justify-center"
+            >
+              <ph-arrows-out v-if="!scaleUp" :size="32" />
+              <ph-arrows-in-cardinal v-if="scaleUp" :size="32" />
             </div>
           </div>
         </div>
         <div class="relative">
           <img
             src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
-            class="w-full h-[325px] border-x border-t border-[#F2F2F2]/20 rounded-t-sm object-cover"
+            class="w-full h-[325px] rounded-t-sm object-cover"
           />
-          <div class="mt-2 text-sm absolute left-4 top-2">
+          <div class="mt-2 text-sm absolute cursor-default left-4 top-2">
             <span
-              class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+              class="inner-shadoww inline-block border rounded-sm border-dashed border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
               >#Javascript</span
             >
             <span
-              class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+              class="inner-shadoww inline-block border rounded-sm border-dashed border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
               >#Node.js</span
             >
             <span
-              class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+              class="inner-shadoww inline-block border rounded-sm border-dashed border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
               >#React</span
             >
             <span
-              class="inline-block lowercase bg-[#1a1a1a] p-1 rounded-sm text-xs mr-2"
+              class="inner-shadoww inline-block border rounded-sm border-dashed border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
               >#Vue.js</span
             >
           </div>
-          <Star
-            color="#1a1a1a"
-            class="w-8 absolute right-4 top-[14px] cursor-pointer"
-          />
+          <div
+            class="inner-shadoww absolute right-4 top-2 mt-1 p-[2px] rounded-sm border border-dashed border-[#F2F2F2]/20 bg-[#1a1a1a]"
+          >
+            <ph-star color="#F2F2F270" class="w-8 h-8 cursor-pointer" />
+          </div>
         </div>
         <div
-          class="bg-[#252525] border-x border-b rounded-b-sm border-[#F2F2F2]/20 mb-28 pt-4"
+          :class="{
+            'scale-[1.30]': scaleUp,
+            'bg-[#252525] rounded-b-sm mb-28 pt-4 shadow-md shadow-black/20 duration-500 cursor-default transition-all': true,
+          }"
         >
           <div class="px-4">
             <span
@@ -169,38 +192,25 @@ export default defineComponent({
         </div>
         <div class="mt-14 bg-[#252525] rounded-sm p-4">
           <div class="flex flex-col items-start w-full">
-            <div class="flex items-center">
-              <img
-                src="../assets/my-memoji02.png"
-                class="w-16 h-16 -ml-4 -mt-4"
-              />
-              <h3 class="text-lg font-semibold -mt-3">#Stardusteight</h3>
+            <div class="flex items-center justify-between w-full">
+              <div class="flex items-center cursor-pointer">
+                <img
+                  src="../assets/my-memoji02.png"
+                  class="w-16 h-16 -ml-4 -mt-4"
+                />
+                <h3 class="text-lg font-semibold -mt-3">#Stardusteight</h3>
+              </div>
+              <div class="-mt-3">
+
+                edit, delete
+              </div>
             </div>
-            <div class="bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellendus, sit cupiditate quaerat doloremque dicta, fugiat sint repudiandae rerum eligendi excepturi iusto quod soluta, doloribus magni aliquam unde nisi deleniti? Neque.</div>
-          </div>
-        </div>
-        <div class="mt-14 bg-[#252525] rounded-sm p-4">
-          <div class="flex flex-col items-start w-full">
-            <div class="flex items-center">
-              <img
-                src="../assets/my-memoji02.png"
-                class="w-16 h-16 -ml-4 -mt-4"
-              />
-              <h3 class="text-lg font-semibold -mt-3">#Stardusteight</h3>
+            <div class="inner-shadoww bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+              Repellendus, sit cupiditate quaerat doloremque dicta, fugiat sint
+              repudiandae rerum eligendi excepturi iusto quod soluta, doloribus
+              magni aliquam unde nisi deleniti? Neque.
             </div>
-            <div class="bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellendus, sit cupiditate quaerat doloremque dicta, fugiat sint repudiandae rerum eligendi excepturi iusto quod soluta, doloribus magni aliquam unde nisi deleniti? Neque.</div>
-          </div>
-        </div>
-        <div class="mt-14 bg-[#252525] rounded-sm p-4">
-          <div class="flex flex-col items-start w-full">
-            <div class="flex items-center">
-              <img
-                src="../assets/my-memoji02.png"
-                class="w-16 h-16 -ml-4 -mt-4"
-              />
-              <h3 class="text-lg font-semibold -mt-3">#Stardusteight</h3>
-            </div>
-            <div class="bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellendus, sit cupiditate quaerat doloremque dicta, fugiat sint repudiandae rerum eligendi excepturi iusto quod soluta, doloribus magni aliquam unde nisi deleniti? Neque.</div>
           </div>
         </div>
         <div class="flex items-center justify-end mt-4 text-[#7c7c7c]">
@@ -238,6 +248,10 @@ export default defineComponent({
 .input {
   background: #252525;
   font-size: 16px;
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+
+.inner-shadoww {
   box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
 }
 </style>
