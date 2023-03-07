@@ -24,12 +24,15 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profile/:username',
     name: 'Profile',
     component: Profile,
-  }
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 }
+  },
 })
 
 export default router

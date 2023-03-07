@@ -73,7 +73,7 @@ export default defineComponent({
 <template>
   <div class="bg-[#1a1a1a] text-[#F2F2F2] w-screen">
     <div class="max-w-[725px] mx-auto">
-      <Navbar path="Home" />
+      <Navbar path="home" />
     </div>
     <div class="relative overflow-visible">
       <img
@@ -188,6 +188,7 @@ export default defineComponent({
           class="flex flex-col justify-center items-center m-auto text-[#F2F2F2]/60"
         >
           <a
+          title="GitHub"
             href="https://github.com/stardusteight-d4c"
             target="_blank"
             class="active:scale-95"
