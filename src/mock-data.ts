@@ -2,6 +2,7 @@ import node from './assets/tech-icons/backend/node.svg'
 import fastify from './assets/tech-icons/backend/fastify.svg'
 import nest from './assets/tech-icons/backend/nest.svg'
 import docker from './assets/tech-icons/backend/docker.svg'
+import stripe from './assets/tech-icons/backend/stripe.svg'
 
 import javascript from './assets/tech-icons/languages/javascript.svg'
 import typescript from './assets/tech-icons/languages/typescript.svg'
@@ -14,6 +15,7 @@ import vue from './assets/tech-icons/frontend/vue.svg'
 import tailwindcss from './assets/tech-icons/frontend/tailwindcss.svg'
 import stitches from './assets/tech-icons/frontend/stitches.svg'
 import vite from './assets/tech-icons/frontend/vite.svg'
+import hygraph from './assets/tech-icons/frontend/hygraph.svg'
 
 import mongodb from './assets/tech-icons/databases/mongodb.svg'
 import mysql from './assets/tech-icons/databases/mysql.svg'
@@ -30,9 +32,9 @@ interface Techs {
 }
 
 export const techs: Techs = {
-  backend: [node, fastify, nest, docker],
+  backend: [node, fastify, nest, docker, stripe],
   language: [javascript, typescript, graphql, html, css],
-  frontend: [react, vue, tailwindcss, stitches, vite],
+  frontend: [react, vue, tailwindcss, stitches, vite, hygraph],
   database: [mongodb, mysql, knex, mongoose, prisma, supabase],
 }
 
@@ -42,6 +44,7 @@ export const descriptions: Techs = {
     '<strong style="font-weight: 700;">Fastify:</strong> Framework backend de alto desempenho e baixo overhead para Node.js, projetado para lidar com solicitações HTTP de maneira extremamente eficiente. O Fastify é construído com plugins, o que significa que é altamente modular e personalizável.',
     '<strong style="font-weight: 700;">NestJS:</strong> Framework para construção de aplicativos em Node.js, que se concentra na arquitetura e padrões recomendados pela comunidade, como a arquitetura MVC (Model-View-Controller), Injeção de Dependência e Programação Orientada a Aspectos (AOP). Oferece suporte para a criação de aplicativos com suporte para microservices, tornando-o uma excelente escolha para aplicações escaláveis e complexas.',
     '<strong style="font-weight: 700;">Docker:</strong> Permite a criação, execução e gerenciamento de aplicativos em contêineres. Um contêiner é uma unidade de software que contém tudo o que é necessário para que um aplicativo seja executado. Permite que os desenvolvedores empacotem aplicativos em contêineres portáteis e os implantem em qualquer ambiente de hospedagem, como um servidor local ou na nuvem.',
+    '<strong style="font-weight: 700;">Stripe:</strong>  Plataforma de pagamentos online que permite a empresas e indivíduos receberem pagamentos pela internet. Com a Stripe, é possível processar pagamentos com cartões de crédito, débito e carteiras digitais de maneira segura e eficiente, sem precisar lidar diretamente com os detalhes técnicos e de segurança envolvidos na transação. Além disso, a plataforma oferece diversas ferramentas para gerenciamento de pagamentos, tais como relatórios, gerenciamento de assinaturas e gerenciamento de disputas. A Stripe é amplamente utilizada por empresas de tecnologia, marketplaces, e-commerce e outras empresas que realizam transações online.',
   ],
   language: [
     '<strong style="font-weight: 700;">JavaScript:</strong> Linguagem de programação de alto nível, interpretada e orientada a objetos. Amplamente utilizada para o desenvolvimento web, principalmente em conjunto com HTML e CSS, para tornar as páginas web mais interativas e dinâmicas. Também é usado em aplicações do lado do servidor com o Node.js.',
@@ -56,6 +59,7 @@ export const descriptions: Techs = {
     '<strong style="font-weight: 700;">Tailwindcss:</strong> Framework CSS que fornece um conjunto de classes pré-definidas para estilizar elementos HTML de forma rápida e fácil. Ao contrário de outros frameworks, como Bootstrap ou Foundation, que têm uma abordagem mais opinativa, o Tailwind CSS é altamente personalizável, permitindo que você construa seu próprio design a partir das classes disponíveis. Ele também é fácil de aprender e usar, pois as classes possuem nomes intuitivos que descrevem claramente o que elas fazem, como "bg-blue-500" para definir a cor de fundo azul e "px-4" para definir o preenchimento horizontal.',
     '<strong style="font-weight: 700;">Stitches:</strong> Biblioteca de estilo CSS-in-JS, que permite aos desenvolvedores escrever CSS em formato JavaScript de maneira mais simples e intuitiva. Ela oferece uma sintaxe fácil de aprender e utilizar, permitindo a criação de estilos dinâmicos e reutilizáveis em um projeto. Com Stitches, é possível criar temas personalizados e otimizar a performance da aplicação, garantindo um código mais enxuto e fácil de manter. Além disso, a biblioteca é compatível com diversos frameworks, como React, Vue.js, Svelte, entre outros.',
     '<strong style="font-weight: 700;">Vite:</strong> Lançado em 2020, vite é um build tool (ferramenta de construção) e um servidor de desenvolvimento (development server) para projetos web em JavaScript. Especialmente adequado para projetos Vue.js e React, mas também pode ser usado em outras bibliotecas e frameworks. Vite é conhecido por sua inicialização rápida e por seu sistema de módulos com suporte nativo para importação de arquivos ESM (ECMAScript Modules). Ele também oferece recursos como hot module replacement (HMR), que permite que as alterações de código sejam atualizadas instantaneamente na página, e uma experiência de desenvolvimento suave e eficiente.',
+    '<strong style="font-weight: 700;">Hygraph:</strong> Sistema de gerenciamento de conteúdo (CMS) de código aberto e gratuito, desenvolvido em Node.js e baseado no framework Next.js. Fornece uma interface fácil de usar para criar, gerenciar e publicar conteúdo para sites e aplicativos da web. Altamente personalizável, permitindo que os desenvolvedores criem modelos personalizados para atender às necessidades específicas de um projeto. Inclui recursos avançados, como SEO otimizado, gerenciamento de ativos, localização e suporte para múltiplos idiomas. Usa o banco de dados MongoDB como padrão, mas também suporta outros bancos de dados como Postgres e SQLite. Ele é uma ótima opção para equipes de desenvolvimento que desejam um CMS rápido, moderno e flexível para seus projetos web.',
   ],
   database: [
     '<strong style="font-weight: 700;">MongoDB:</strong> Sistema de gerenciamento de banco de dados (SGBD) NoSQL, orientado a documentos, desenvolvido para lidar com grandes volumes de dados não estruturados ou semiestruturados. Diferentemente de bancos de dados relacionais, que usam tabelas e esquemas fixos para estruturar os dados, o MongoDB armazena dados em documentos flexíveis e aninhados em formato JSON, permitindo a modelagem de dados mais dinâmica e escalabilidade horizontal mais fácil.',

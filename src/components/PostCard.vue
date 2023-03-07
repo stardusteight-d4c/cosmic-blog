@@ -3,21 +3,28 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'PostCard',
-  setup() {}
+  props: {
+    full: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  setup() {},
 })
 </script>
 
 <template>
   <router-link
     to="/post/455446461"
-    class="col-span-1 cursor-pointer overflow-hidden w-full h-fit bg-[#252525] rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-100 ease-linear"
+    class="col-span-1 cursor-pointer overflow-hidden w-full h-fit rounded-sm hover:shadow-md hover:shadow-black/20 hover:scale-[1.02] transition-all duration-100 ease-linear"
   >
     <div class="overflow-hidden">
       <img
+        v-if="full"
         src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
         class="h-[195px] w-full object-cover"
       />
-      <div class="p-2">
+      <div class="bg-[#252525] p-2">
         <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
           GO! RN - Gestão de conhecimento focado em evolução do time
         </h2>
