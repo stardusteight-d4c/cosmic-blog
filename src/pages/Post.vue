@@ -1,12 +1,18 @@
 <script lang="ts">
-import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  watch,
+  nextTick,
+  onBeforeMount,
+} from 'vue'
 import { useRoute } from 'vue-router'
 import Navbar from '../components/Navbar.vue'
 import Star from '../atoms/Star.vue'
 import comment from '../assets/comment.svg'
 import DonutChart from '../components/DonutChart.vue'
-
-// formatar string markdown em html do post
 
 export default defineComponent({
   name: 'Post',
@@ -17,13 +23,28 @@ export default defineComponent({
     },
   },
   setup() {
+    const HTML_ELEMENT_ID = {
+      post: 'post',
+      commentDiv: 'commentDiv',
+      commentTextarea: 'commentTextarea',
+    }
     const route = useRoute()
     const id = route.params.id
     const scrollPercentage = ref(0)
     const scaleUp = ref(false)
+    const selectedEditComment = ref(false)
+    const edit = ref(
+      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aut consequatur temporibus, possimus mollitia voluptates ratione maxime voluptatibus labore accusantium unde nulla reiciendis explicabo tempore dolor totam a consequuntur adipisci.'
+    )
+    const commentEditableElement = ref<HTMLTextAreaElement | null>(null)
+    const commentElement = ref<HTMLDivElement | null>(null)
+
+    const textareaHeight = ref('')
 
     const onScroll = () => {
-      const postHeight = document.querySelector('#post')!.clientHeight
+      const postHeight = document.getElementById(
+        HTML_ELEMENT_ID.post
+      )!.clientHeight
       const windowHeight = window.innerHeight
       const scrollY = window.scrollY
       const maxScrollY = postHeight - windowHeight
@@ -31,15 +52,50 @@ export default defineComponent({
       scrollPercentage.value = newScrollPercentage
     }
 
+    const showCommentTextarea = () => {
+      selectedEditComment.value = !selectedEditComment.value
+
+      const commentDivHeight = commentElement.value!.offsetHeight
+
+      if (!selectedEditComment) return
+
+      console.log(
+        commentElement.value,
+        commentEditableElement.value,
+        commentDivHeight
+      )
+      commentEditableElement.value!.style.minHeight = `${commentDivHeight}px`
+    }
+
     onMounted(() => {
       window.addEventListener('scroll', onScroll)
+
+      commentElement.value = document.getElementById(
+        HTML_ELEMENT_ID.commentDiv
+      )! as HTMLDivElement
+      commentEditableElement.value = document.getElementById(
+        HTML_ELEMENT_ID.commentTextarea
+      )! as HTMLTextAreaElement
     })
 
     onBeforeUnmount(() => {
       window.removeEventListener('scroll', onScroll)
+
+      watch(edit, (editNewValue) => {
+        console.log(editNewValue)
+      })
     })
 
-    return { comment, scrollPercentage, scaleUp }
+    return {
+      comment,
+      selectedEditComment,
+      scrollPercentage,
+      scaleUp,
+      showCommentTextarea,
+      edit,
+      HTML_ELEMENT_ID,
+      textareaHeight,
+    }
   },
 })
 </script>
@@ -48,7 +104,10 @@ export default defineComponent({
   <div class="bg-[#1a1a1a] text-[#F2F2F2] w-screen">
     <Navbar path="post" />
     <div class="max-w-[725px] w-full mx-auto mb-28">
-      <div id="post" class="relative shadow-md shadow-black/20">
+      <div
+        :id="HTML_ELEMENT_ID.post"
+        class="relative shadow-md shadow-black/20"
+      >
         <div class="w-fit h-fit fixed bottom-4 right-4">
           <div class="flex items-center gap-x-2 group">
             <span
@@ -85,32 +144,32 @@ export default defineComponent({
           />
           <div class="mt-2 text-sm absolute cursor-default left-4 top-2">
             <span
-              class="inner-shadoww inline-block border rounded-sm border-dashed border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
+              class="shadow-black/50 shadow-md inline-block rounded-sm border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
               >#Javascript</span
             >
             <span
-              class="inner-shadoww inline-block border rounded-sm border-dashed border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
+              class="shadow-black/50 shadow-md inline-block rounded-sm border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
               >#Node.js</span
             >
             <span
-              class="inner-shadoww inline-block border rounded-sm border-dashed border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
+              class="shadow-black/50 shadow-md inline-block rounded-sm border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
               >#React</span
             >
             <span
-              class="inner-shadoww inline-block border rounded-sm border-dashed border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
+              class="shadow-black/50 shadow-md inline-block rounded-sm border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
               >#Vue.js</span
             >
           </div>
           <div
-            class="inner-shadoww absolute right-4 top-2 mt-1 p-[2px] rounded-sm border border-dashed border-[#F2F2F2]/20 bg-[#1a1a1a]"
+            class="shadow-black/50 shadow-md absolute right-4 top-2 mt-1 p-[2px] rounded-sm border-[#F2F2F2]/20 bg-[#1a1a1a]"
           >
-            <ph-star color="#F2F2F270" class="w-8 h-8 cursor-pointer" />
+            <Star color="#F2F2F280" class="w-8 h-8 cursor-pointer" />
           </div>
         </div>
         <div
           :class="{
             'scale-[1.30]': scaleUp,
-            'bg-[#252525] rounded-b-sm mb-28 pt-4 shadow-md shadow-black/20 duration-500 cursor-default transition-all': true,
+            'bg-[#252525] rounded-b-sm mb-28 pt-4 z-50 relative shadow-md shadow-black/20 duration-500 cursor-default transition-all': true,
           }"
         >
           <div class="px-4">
@@ -184,11 +243,16 @@ export default defineComponent({
       <div>
         <div class="flex items-start w-full">
           <img src="../assets/my-memoji02.png" class="w-24 h-24 -ml-4 -mt-4" />
-          <textarea
-            placeholder="Leave a feedback or comment about it :)"
-            :spellcheck="false"
-            class="input border border-transparent rounded-sm focus:border-blue-500 transition-all text-[#F2F2F2]/80 w-full h-40 outline-none p-4 bg-[#252525] resize-none"
-          />
+          <div class="relative z-0 w-full">
+            <textarea
+              placeholder="Leave a feedback or comment about it :)"
+              :spellcheck="false"
+              class="input ml-2 group border border-transparent rounded-sm focus:border-blue-500 transition-all text-[#F2F2F2]/80 w-full h-40 outline-none p-4 bg-[#252525] resize-none"
+            />
+            <div
+              class="triangle absolute top-[22px] -left-[10px] bg-[#F2F2F2]/20 -rotate-90"
+            />
+          </div>
         </div>
         <div class="mt-14 bg-[#252525] rounded-sm p-4">
           <div class="flex flex-col items-start w-full">
@@ -200,16 +264,37 @@ export default defineComponent({
                 />
                 <h3 class="text-lg font-semibold -mt-3">#Stardusteight</h3>
               </div>
-              <div class="-mt-3">
-
-                edit, delete
+              <div class="-mt-[10px] flex items-center gap-x-2 text-[#7c7c7c]">
+                <div @click="showCommentTextarea" class="cursor-pointer">
+                  <ph-pen-nib
+                    :size="24"
+                    :class="{
+                      'text-blue-500': selectedEditComment,
+                      'p-[2px]': true,
+                    }"
+                  />
+                </div>
+                <div class="cursor-pointer">
+                  <ph-trash-simple :size="24" class="p-[2px]" />
+                </div>
               </div>
             </div>
-            <div class="inner-shadoww bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Repellendus, sit cupiditate quaerat doloremque dicta, fugiat sint
-              repudiandae rerum eligendi excepturi iusto quod soluta, doloribus
-              magni aliquam unde nisi deleniti? Neque.
+            <textarea
+              :id="HTML_ELEMENT_ID.commentTextarea"
+              :spellcheck="false"
+              class="inner-shadoww scrollHiddenCSO scrollHideenIEF border-blue-500 border bg-[#1a1a1a] resize-none block p-2 w-full mt-1 rounded-sm outline-none"
+              v-show="selectedEditComment"
+              >{{ edit }}</textarea
+            >
+            <div
+              :id="HTML_ELEMENT_ID.commentDiv"
+              v-show="!selectedEditComment"
+              class="shadow-black/50 shadow-md block bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam
+              aut consequatur temporibus, possimus mollitia voluptates ratione
+              maxime voluptatibus labore accusantium unde nulla reiciendis
+              explicabo tempore dolor totam a consequuntur adipisci.
             </div>
           </div>
         </div>
@@ -245,6 +330,14 @@ export default defineComponent({
   animation: from-left ease-in 0.2s;
 }
 
+.scrollHiddenCSO::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+.scrollHideenIEF {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .input {
   background: #252525;
   font-size: 16px;
@@ -253,5 +346,11 @@ export default defineComponent({
 
 .inner-shadoww {
   box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+
+.triangle {
+  width: 25px;
+  height: 13px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 </style>

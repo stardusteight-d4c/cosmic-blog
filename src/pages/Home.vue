@@ -227,7 +227,7 @@ export default defineComponent({
                 />
 
                 <div
-                  class="flex items-center hover:bg-[#252525] transition-all justify-center rounded-sm cursor-pointer p-1 w-fit"
+                  class="flex items-center bg-[#252525] transition-all justify-center rounded-sm cursor-pointer p-1 w-fit"
                 >
                   <ph-sliders :size="24" />
                 </div>
