@@ -14,6 +14,10 @@ import Star from '../atoms/Star.vue'
 import comment from '../assets/comment.svg'
 import DonutChart from '../components/DonutChart.vue'
 
+// atribuir limite de caracteres no comentário
+// adicionar botões de submit
+// criar modal de confirmação do delete
+
 export default defineComponent({
   name: 'Post',
   components: { Navbar, Star, DonutChart },
@@ -282,7 +286,7 @@ export default defineComponent({
             <textarea
               :id="HTML_ELEMENT_ID.commentTextarea"
               :spellcheck="false"
-              class="inner-shadoww scrollHiddenCSO scrollHideenIEF border-blue-500 border bg-[#1a1a1a] resize-none block p-2 w-full mt-1 rounded-sm outline-none"
+              class="inner-shadoww scrollHiddenCSO scrollHideenIEF h-auto border-blue-500 border bg-[#1a1a1a] resize-none block p-2 w-full mt-1 rounded-sm outline-none"
               v-show="selectedEditComment"
               >{{ edit }}</textarea
             >
