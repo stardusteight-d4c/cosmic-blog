@@ -171,11 +171,10 @@ button {
   justify-content: center;
   gap: 8px;
   background-image: linear-gradient(to top, #3b82f6, #8b5cf6);
-  border: solid 3px transparent;
   background-clip: padding-box;
   color: #f2f2f2;
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: 2px;
   transition: all 0.5s ease;
 }
 

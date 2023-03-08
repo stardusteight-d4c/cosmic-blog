@@ -14,9 +14,9 @@ import Star from '../atoms/Star.vue'
 import comment from '../assets/comment.svg'
 import DonutChart from '../components/DonutChart.vue'
 
-// atribuir limite de caracteres no comentário
-// adicionar botões de submit
+// atribuir limite de caracteres no comentário 5000 ?
 // criar modal de confirmação do delete
+// mexer no componente rich text
 
 export default defineComponent({
   name: 'Post',
@@ -54,6 +54,15 @@ export default defineComponent({
       const maxScrollY = postHeight - windowHeight
       const newScrollPercentage = Math.min(scrollY / maxScrollY, 1) * 100
       scrollPercentage.value = newScrollPercentage
+    }
+
+    const adjustTextarea = () => {
+      nextTick(() => {
+        const textarea = document.getElementById(HTML_ELEMENT_ID.commentTextarea)!
+        textarea.style.height = 'auto'
+        textarea.style.height = `${textarea.scrollHeight}px`
+        textareaHeight.value = `${textarea.scrollHeight}px`
+      })
     }
 
     const showCommentTextarea = () => {
@@ -96,6 +105,7 @@ export default defineComponent({
       scrollPercentage,
       scaleUp,
       showCommentTextarea,
+      adjustTextarea,
       edit,
       HTML_ELEMENT_ID,
       textareaHeight,
@@ -245,17 +255,40 @@ export default defineComponent({
         </div>
       </div>
       <div>
+        <h2
+          class="text-2xl text-[#F2F2F2]/50 border-b border-[#F2F2F2]/20 mb-8 pb-2"
+        >
+          Comments
+        </h2>
         <div class="flex items-start w-full">
-          <img src="../assets/my-memoji02.png" class="w-24 h-24 -ml-4 -mt-4" />
+          <img src="../assets/my-memoji02.png" class="w-24 h-24 -ml-6 -mt-4" />
           <div class="relative z-0 w-full">
+            <div
+              class="triangle absolute top-[22px] -left-[19px] bg-[#252525] -rotate-90"
+            />
             <textarea
               placeholder="Leave a feedback or comment about it :)"
               :spellcheck="false"
-              class="input ml-2 group border border-transparent rounded-sm focus:border-blue-500 transition-all text-[#F2F2F2]/80 w-full h-40 outline-none p-4 bg-[#252525] resize-none"
+              class="input group border border-transparent rounded-sm focus:border-blue-500 transition-all text-[#F2F2F2]/80 w-full h-40 outline-none p-4 bg-[#252525] resize-none"
             />
-            <div
-              class="triangle absolute top-[22px] -left-[10px] bg-[#F2F2F2]/20 -rotate-90"
-            />
+            <button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                class="css-i6dzq1"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="16"
+                fill="#F2F2F2"
+                viewBox="0 0 256 256"
+              >
+                <path
+                  d="M227.32,28.68a16,16,0,0,0-15.66-4.08l-.15,0L19.57,82.84a16,16,0,0,0-2.42,29.84l85.62,40.55,40.55,85.62A15.86,15.86,0,0,0,157.74,248q.69,0,1.38-.06a15.88,15.88,0,0,0,14-11.51l58.2-191.94c0-.05,0-.1,0-.15A16,16,0,0,0,227.32,28.68ZM157.83,231.85l-.05.14L118.42,148.9l47.24-47.25a8,8,0,0,0-11.31-11.31L107.1,137.58,24,98.22l.14,0L216,40Z"
+                ></path>
+              </svg>
+              Submit
+            </button>
           </div>
         </div>
         <div class="mt-14 bg-[#252525] rounded-sm p-4">
@@ -286,14 +319,33 @@ export default defineComponent({
             <textarea
               :id="HTML_ELEMENT_ID.commentTextarea"
               :spellcheck="false"
-              class="inner-shadoww scrollHiddenCSO scrollHideenIEF h-auto border-blue-500 border bg-[#1a1a1a] resize-none block p-2 w-full mt-1 rounded-sm outline-none"
+              class="scrollHiddenCSO scrollHideenIEF h-auto border-blue-500 border bg-[#1a1a1a] resize-none block p-2 w-full mt-1 rounded-sm outline-none"
               v-show="selectedEditComment"
-              >{{ edit }}</textarea
-            >
+              :value="edit"
+              @input="adjustTextarea"
+              />
+            <button v-show="selectedEditComment">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                class="css-i6dzq1"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="16"
+                fill="#F2F2F2"
+                viewBox="0 0 256 256"
+              >
+                <path
+                  d="M240,100.68a15.86,15.86,0,0,0-4.69-11.31L166.63,20.68a16,16,0,0,0-22.63,0L115.57,49.11l-58,21.77A16.06,16.06,0,0,0,47.35,83.23L24.11,222.68A8,8,0,0,0,32,232a8.4,8.4,0,0,0,1.32-.11l139.44-23.24a16,16,0,0,0,12.35-10.17l21.77-58L235.31,112A15.87,15.87,0,0,0,240,100.68Zm-69.87,92.19L55.32,212l47.37-47.37a28,28,0,1,0-11.32-11.32L44,200.7,63.13,85.86,118,65.29,190.7,138ZM104,140a12,12,0,1,1,12,12A12,12,0,0,1,104,140Zm96-15.32L131.31,56l24-24L224,100.68Z"
+                ></path>
+              </svg>
+              Update
+            </button>
             <div
               :id="HTML_ELEMENT_ID.commentDiv"
               v-show="!selectedEditComment"
-              class="shadow-black/50 shadow-md block bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm"
+              class="block bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm"
             >
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam
               aut consequatur temporibus, possimus mollitia voluptates ratione
@@ -345,16 +397,39 @@ export default defineComponent({
 .input {
   background: #252525;
   font-size: 16px;
-  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
-}
-
-.inner-shadoww {
-  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
 }
 
 .triangle {
   width: 25px;
   height: 13px;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-left: auto;
+  background-image: linear-gradient(to top, #3b82f6, #8b5cf6);
+  background-clip: padding-box;
+  color: #f2f2f2;
+  padding: 4px 10px;
+  border-radius: 2px;
+  margin-top: 4px;
+  transition: all 0.5s ease;
+}
+
+button:active {
+  transform: scale(1) !important;
+  transition: all 100ms ease;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+button svg {
+  width: 16px;
 }
 </style>
