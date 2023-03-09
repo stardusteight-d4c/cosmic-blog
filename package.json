@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tailwindcss/line-clamp": "^0.4.2",
+    "marked": "^4.2.12",
     "phosphor-vue": "^4.4.1",
     "portal-vue": "^3.0.0",
     "vue": "^3.2.45",

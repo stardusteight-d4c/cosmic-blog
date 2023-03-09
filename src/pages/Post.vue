@@ -12,8 +12,6 @@ import {
 } from '@/components/post'
 import { HTML_ELEMENT_IDS_POST_PAGE } from '../utils/html-ids'
 
-// atribuir limite de caracteres no comentário 5000 ?
-// criar modal de confirmação do delete
 // mexer no componente rich text
 
 export default defineComponent({
