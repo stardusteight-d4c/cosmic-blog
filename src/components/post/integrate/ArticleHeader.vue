@@ -1,9 +1,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Star from '../../atoms/icons/Star.vue'
+import Star from '@/atoms/icons/Star.vue'
 
 export default defineComponent({
-  name: 'PostHeader',
+  name: 'ArticleHeader',
   components: { Star },
 })
 </script>
@@ -39,5 +39,3 @@ export default defineComponent({
     </div>
   </div>
 </template>
-
-<style scoped></style>

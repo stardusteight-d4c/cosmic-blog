@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import ArrowsIn from '../../../atoms/icons/ArrowsIn.vue'
-import ArrowsOut from '../../../atoms/icons/ArrowsOut.vue'
+import { ArrowsIn, ArrowsOut } from '@/atoms/icons'
 
 export default defineComponent({
   name: 'PostScale',
@@ -26,8 +25,8 @@ export default defineComponent({
       @click="handleScale"
       class="bg-[#252525] cursor-pointer shadow-md shadow-black/20 z-50 rounded-sm w-[50px] h-[50px] relative flex items-center justify-center"
     >
-      <ArrowsOut v-if="!scaleUp" color="#F2F2F250" />
-      <ArrowsIn v-if="scaleUp" color="#F2F2F250" />
+      <ArrowsOut v-if="!scaleUp" color="#F2F2F280" />
+      <ArrowsIn v-if="scaleUp" color="#F2F2F280" />
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Pen from '../../../atoms/icons/Pen.vue'
+import Pen from '@/atoms/icons/Pen.vue'
 
 export default defineComponent({
   name: 'NewPostButton',
@@ -27,7 +27,7 @@ button {
   background-clip: padding-box;
   color: #f2f2f2;
   padding: 4px 10px;
-  border-radius: 2px;
+  border-radius: 999px;
   transition: all 0.5s ease;
 }
 

@@ -21,10 +21,10 @@ export default defineComponent({
 
 <template>
   <svg
-    v-bind:class="class"
     xmlns="http://www.w3.org/2000/svg"
-    v-bind:width="width"
-    v-bind:height="height"
+    :class="class"
+    :width="width"
+    :height="height"
     fill="#3b82f6"
     viewBox="0 0 256 256"
   >

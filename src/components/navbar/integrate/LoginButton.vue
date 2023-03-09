@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import ArrowRight from '../../../atoms/icons/ArrowRight.vue'
+import ArrowRight from '@/atoms/icons/ArrowRight.vue'
 
 export default defineComponent({
   name: 'LoginButton',
@@ -27,7 +27,7 @@ button {
   background-clip: padding-box;
   color: #f2f2f2;
   padding: 4px 10px;
-  border-radius: 2px;
+  border-radius: 999px;
   transition: all 0.5s ease;
 }
 
