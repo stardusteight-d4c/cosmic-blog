@@ -6,7 +6,7 @@ export default defineComponent({
   props: {
     color: {
       type: String,
-      default: '#F2F2F270',
+      default: '#F2F2F2',
     },
   },
 })

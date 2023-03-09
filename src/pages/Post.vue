@@ -9,10 +9,10 @@ import {
   onBeforeMount,
 } from 'vue'
 import { useRoute } from 'vue-router'
-import Navbar from '../components/Navbar.vue'
-import Star from '../atoms/Star.vue'
+import Navbar from '../components/navbar/Navbar.vue'
+import Star from '../atoms/icons/Star.vue'
 import comment from '../assets/comment.svg'
-import DonutChart from '../components/DonutChart.vue'
+import DonutChart from '../components/post/DonutChart.vue'
 
 // atribuir limite de caracteres no comentário 5000 ?
 // criar modal de confirmação do delete

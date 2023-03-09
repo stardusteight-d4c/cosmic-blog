@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
-import Navbar from '../components/Navbar.vue'
+import Navbar from '../components/navbar/Navbar.vue'
 import github from '../assets/social/github.svg'
 import linkedin from '../assets/social/linkedin.svg'
 import instagram from '../assets/social/instagram.svg'
@@ -10,7 +10,7 @@ import facebook from '../assets/social/facebook.svg'
 import email from '../assets/social/email.svg'
 import star from '../assets/star.svg'
 import comment from '../assets/comment.svg'
-import PostCard from '../components/PostCard.vue'
+import PostCard from '../components/post/PostCard.vue'
 
 export default defineComponent({
   name: 'Profile',

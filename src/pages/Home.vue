@@ -5,8 +5,8 @@ import myMemoji01 from '../assets/my-memoji01.png'
 import myMemoji02 from '../assets/my-memoji02.png'
 import myMemoji03 from '../assets/my-memoji03.png'
 import smilingHeartEyes from '../assets/smiling-face-with-heart-eyes.png'
-import PostCard from '../components/PostCard.vue'
-import Navbar from '../components/Navbar.vue'
+import PostCard from '../components/post/PostCard.vue'
+import Navbar from '../components/navbar/Navbar.vue'
 type techs = 'backend' | 'language' | 'frontend' | 'database'
 
 export default defineComponent({
