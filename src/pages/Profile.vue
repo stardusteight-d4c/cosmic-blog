@@ -10,7 +10,7 @@ import facebook from '../assets/social/facebook.svg'
 import email from '../assets/social/email.svg'
 import star from '../assets/star.svg'
 import comment from '../assets/comment.svg'
-import PostCard from '../components/post/PostCard.vue'
+import PostCard from '../components/post/globals/Card.vue'
 
 export default defineComponent({
   name: 'Profile',

@@ -20,7 +20,7 @@ export default defineComponent({
     stroke-linecap="round"
     fill="none"
     stroke-width="2"
-    v-bind:stroke="color"
+    :stroke="color"
     height="24"
     width="24"
     viewBox="0 0 24 24"
@@ -32,5 +32,3 @@ export default defineComponent({
     />
   </svg>
 </template>
-
-<style scoped></style>

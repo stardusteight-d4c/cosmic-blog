@@ -12,8 +12,8 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
-    return { styles }
+  setup(props, { emit }) {
+    return { styles, props }
   },
 })
 </script>
@@ -24,7 +24,7 @@ export default defineComponent({
       <div :class="styles.contentWrapper">
         <div :class="styles.logoContainer">
           <Logo />
-          <h2 :class="styles.path">/ {{ path }}</h2>
+          <h2 :class="styles.path">/ {{ props.path }}</h2>
         </div>
         <div :class="styles.buttonsContainer">
           <NewPostButton />

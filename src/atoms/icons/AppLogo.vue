@@ -58,5 +58,3 @@ export default defineComponent({
     ></line>
   </svg>
 </template>
-
-<style scoped></style>

@@ -6,21 +6,23 @@ import {
   onBeforeUnmount,
   watch,
   nextTick,
-  onBeforeMount,
 } from 'vue'
 import { useRoute } from 'vue-router'
 import Navbar from '../components/navbar/Navbar.vue'
 import Star from '../atoms/icons/Star.vue'
 import comment from '../assets/comment.svg'
-import DonutChart from '../components/post/DonutChart.vue'
-
+import DonutChart from '../components/post/integrate/DonutChart.vue'
+import PostHeader from '../components/post/Header.vue'
+import ProgressBar from '../components/post/integrate/ProgressBar.vue'
+import Scale from '../components/post/integrate/Scale.vue'
+import { log } from 'console'
 // atribuir limite de caracteres no comentário 5000 ?
 // criar modal de confirmação do delete
 // mexer no componente rich text
 
 export default defineComponent({
   name: 'Post',
-  components: { Navbar, Star, DonutChart },
+  components: { Navbar, Star, DonutChart, PostHeader, ProgressBar, Scale },
   computed: {
     postId(): string {
       return String(this.$route.params.id)
@@ -58,7 +60,9 @@ export default defineComponent({
 
     const adjustTextarea = () => {
       nextTick(() => {
-        const textarea = document.getElementById(HTML_ELEMENT_ID.commentTextarea)!
+        const textarea = document.getElementById(
+          HTML_ELEMENT_ID.commentTextarea
+        )!
         textarea.style.height = 'auto'
         textarea.style.height = `${textarea.scrollHeight}px`
         textareaHeight.value = `${textarea.scrollHeight}px`
@@ -91,6 +95,10 @@ export default defineComponent({
       )! as HTMLTextAreaElement
     })
 
+    function scaleChangeObserver(payload: boolean) {
+      scaleUp.value = payload
+    }
+
     onBeforeUnmount(() => {
       window.removeEventListener('scroll', onScroll)
 
@@ -102,6 +110,7 @@ export default defineComponent({
     return {
       comment,
       selectedEditComment,
+      scaleChangeObserver,
       scrollPercentage,
       scaleUp,
       showCommentTextarea,
@@ -116,70 +125,17 @@ export default defineComponent({
 
 <template>
   <div class="bg-[#1a1a1a] text-[#F2F2F2] w-screen">
+  <div class="flex flex-col items-end justify-end gap-y-4 w-fit h-fit fixed bottom-4 right-4">
+    <Scale @scaleChanged="scaleChangeObserver" />
+    <ProgressBar />
+  </div>
     <Navbar path="post" />
     <div class="max-w-[725px] w-full mx-auto mb-28">
       <div
         :id="HTML_ELEMENT_ID.post"
         class="relative shadow-md shadow-black/20"
       >
-        <div class="w-fit h-fit fixed bottom-4 right-4">
-          <div class="flex items-center gap-x-2 group">
-            <span
-              class="animate-span hidden group-hover:block text-[#F2F2F2]/70"
-              >Progress {{ parseInt(scrollPercentage.toFixed(0)) }}%
-            </span>
-            <div
-              class="bg-[#252525] cursor-pointer shadow-md shadow-black/20 z-50 rounded-sm w-[50px] h-[50px] relative flex items-center justify-center"
-            >
-              <DonutChart :percentage="scrollPercentage" class="w-8" />
-            </div>
-          </div>
-        </div>
-        <div class="w-fit h-fit fixed bottom-20 right-4">
-          <div class="flex items-center gap-x-2 group">
-            <span
-              class="animate-span hidden group-hover:block text-[#F2F2F2]/70"
-            >
-              {{ scaleUp ? 'Scale Down' : 'Scale Up' }}
-            </span>
-            <div
-              @click="scaleUp = !scaleUp"
-              class="bg-[#252525] cursor-pointer shadow-md shadow-black/20 z-50 rounded-sm w-[50px] h-[50px] relative flex items-center justify-center"
-            >
-              <ph-arrows-out v-if="!scaleUp" :size="32" />
-              <ph-arrows-in-cardinal v-if="scaleUp" :size="32" />
-            </div>
-          </div>
-        </div>
-        <div class="relative">
-          <img
-            src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
-            class="w-full h-[325px] rounded-t-sm object-cover"
-          />
-          <div class="mt-2 text-sm absolute cursor-default left-4 top-2">
-            <span
-              class="shadow-black/50 shadow-md inline-block rounded-sm border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
-              >#Javascript</span
-            >
-            <span
-              class="shadow-black/50 shadow-md inline-block rounded-sm border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
-              >#Node.js</span
-            >
-            <span
-              class="shadow-black/50 shadow-md inline-block rounded-sm border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
-              >#React</span
-            >
-            <span
-              class="shadow-black/50 shadow-md inline-block rounded-sm border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
-              >#Vue.js</span
-            >
-          </div>
-          <div
-            class="shadow-black/50 shadow-md absolute right-4 top-2 mt-1 p-[2px] rounded-sm border-[#F2F2F2]/20 bg-[#1a1a1a]"
-          >
-            <Star color="#F2F2F280" class="w-8 h-8 cursor-pointer" />
-          </div>
-        </div>
+        <PostHeader />
         <div
           :class="{
             'scale-[1.30]': scaleUp,
@@ -323,7 +279,7 @@ export default defineComponent({
               v-show="selectedEditComment"
               :value="edit"
               @input="adjustTextarea"
-              />
+            />
             <button v-show="selectedEditComment">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -371,20 +327,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
-@keyframes from-left {
-  0% {
-    transform: translateX(50px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0px);
-    opacity: 1;
-  }
-}
 
-.animate-span {
-  animation: from-left ease-in 0.2s;
-}
 
 .scrollHiddenCSO::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */

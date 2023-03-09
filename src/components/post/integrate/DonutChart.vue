@@ -24,7 +24,7 @@ export default defineComponent({
 
 <template>
   <svg :key="percentage" :style="{ '--percentage': percentage }">
-    <circle cx="50%" cy="50%" r="15" opacity="0.1" stroke="#D9D9D9" />
+    <circle cx="50%" cy="50%" r="15" opacity="0.5" f stroke="#F2F2F250" />
     <circle
       cx="50%"
       cy="50%"
