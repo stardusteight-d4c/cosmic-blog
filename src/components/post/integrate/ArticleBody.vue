@@ -10,6 +10,10 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    showFooter: {
+      type: Boolean,
+      default: true,
+    }
   },
   setup(props, { emit }) {
     return { props }
@@ -20,8 +24,9 @@ export default defineComponent({
 <template>
   <div
     :class="{
+      'pb-8': !props.showFooter,
       'scale-[1.30]': props.scaleUp,
-      'bg-[#252525] rounded-b-sm mb-28 pt-4 z-50 relative shadow-md shadow-black/20 duration-500 cursor-default transition-all': true,
+      'bg-[#252525] rounded-b-sm mb-28 pt-4 z-50 relative shadow-sm shadow-black/20 duration-500 cursor-default transition-all': true,
     }"
   >
     <div class="px-4">
@@ -77,7 +82,7 @@ export default defineComponent({
         culpa voluptas possimus facere a dolores, nisi nobis repellat.
       </p>
     </div>
-    <div class="border-t border-[#F2F2F2]/20 py-4 mt-8 text-[#F2F2F2]/50">
+    <div v-if="props.showFooter" class="border-t border-[#F2F2F2]/20 py-4 mt-8 text-[#F2F2F2]/50">
       <span class="flex items-center justify-center gap-x-1">
         <StarIcon color="#F2F2F250" class="w-4 -mt-[1px]" /> Starred • 38
       </span>

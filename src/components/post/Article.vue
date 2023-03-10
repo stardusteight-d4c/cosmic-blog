@@ -12,18 +12,30 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    showFooter: {
+      type: Boolean,
+      default: true,
+    },
+    coverImage: {
+      type: String,
+    },
+    tags: {
+      type: Array<string>,
+    },
   },
   setup(props) {
     const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
+    const headerProps = { coverImage: props.coverImage, tags: props.tags }
+    const bodyProps = { showFooter: props.showFooter, scaleUp: props.scaleUp }
 
-    return { props, HTML_ID }
+    return { bodyProps, headerProps, HTML_ID }
   },
 })
 </script>
 
 <template>
   <div :id="HTML_ID.post" class="relative shadow-md shadow-black/20">
-    <ArticleHeader />
-    <ArticleBody :scale-up="props.scaleUp" />
+    <ArticleHeader v-bind="headerProps" />
+    <ArticleBody v-bind="bodyProps" />
   </div>
 </template>
