@@ -22,11 +22,29 @@ export default defineComponent({
     tags: {
       type: Array<string>,
     },
+    date: {
+      type: Date,
+    },
+    title: {
+      type: String,
+    },
+    body: {
+      type: String,
+    },
   },
   setup(props) {
     const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
     const headerProps = { coverImage: props.coverImage, tags: props.tags }
-    const bodyProps = { showFooter: props.showFooter, scaleUp: props.scaleUp }
+    const bodyProps = {
+      showFooter: props.showFooter,
+      scaleUp: props.scaleUp,
+      title: props.title,
+      date: props.date,
+      body: props.body,
+    }
+
+    console.log(bodyProps);
+    
 
     return { bodyProps, headerProps, HTML_ID }
   },
@@ -34,7 +52,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <div :id="HTML_ID.post" class="relative shadow-md shadow-black/20">
+  <div
+    :key="coverImage"
+    :id="HTML_ID.post"
+    class="relative shadow-md shadow-black/20"
+  >
     <ArticleHeader v-bind="headerProps" />
     <ArticleBody v-bind="bodyProps" />
   </div>

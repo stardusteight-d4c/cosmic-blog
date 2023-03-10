@@ -4,11 +4,13 @@ import { handleMarkdown } from '../utils/handle-markdown'
 import Navbar from '@/components/navbar/Navbar.vue'
 import Article from '@/components/post/Article.vue'
 
-// Gerar url da coverImg no serviço de storage do supabase
+// Gerar url da coverImg no serviço de storage do supabase, mas isto apenas quando enviar ao servidor,
+// para a preview gere uma string base64 e envie-à como props
+
 // Fazer toda preview do post recebendo os dados do rich text editor
 // refatorar...
 
-
+// definir as variaveis do post em um obejeto
 export default defineComponent({
   name: 'CreatePost',
   components: { Navbar, Article },
@@ -24,9 +26,28 @@ export default defineComponent({
     const oldValue = ref('')
     const coverImage = ref<FileList | null>(null)
     const inputFile = ref()
+    const title = ref('')
+    const body = ref('')
+    const date = ref(new Date())
     const showPreview = ref(false)
     const activeItem = ref<'edit' | 'preview'>('edit')
     const textarea = ref<HTMLTextAreaElement>()
+
+   
+    const previewProps = ref({
+      showFooter: false,
+      scaleUp: false,
+      tags: selectedTags,
+      coverImage: '',
+      title: title,
+      date: date,
+      body: textContent
+    })
+
+    watch(([title, textContent]), (newValue) => {
+      console.log('newValue',newValue);
+      
+    })
 
     const handleSelected = (type: string) => {
       const textareaElement = textarea.value
@@ -96,8 +117,9 @@ export default defineComponent({
         coverImage.value = files
 
         reader.onload = () => {
-          const base64String = reader.result
-          console.log(base64String)
+          const base64 = reader.result
+          console.log(base64)
+          previewProps.value.coverImage = String(base64)
         }
       }
     }
@@ -149,6 +171,7 @@ export default defineComponent({
       getSave,
       save,
       coverImage,
+      title,
       selectedTags,
       showPreview,
       handleTags,
@@ -157,6 +180,7 @@ export default defineComponent({
       onKeyDown,
       onFileChange,
       activeItem,
+      previewProps,
       tag,
       inputFile,
       isFocused,
@@ -174,13 +198,16 @@ export default defineComponent({
     <div class="max-w-[725px] h-full w-full mx-auto mb-8">
       <Navbar path="new" />
       <div v-if="showPreview" class="text-[#F2F2F2]">
-        <button
-          @click="showPreview = false"
-          class="flex mb-5 items-center gap-x-2 active:scale-90 rounded-full text-sm md:text-base transition-all duration-300 font-medium py-2 px-3 bg-[#f2f2f2]/5"
-        >
-          <ph-arrow-u-up-left :size="20" class="font-bold" /> Back
-        </button>
-        <Article :showFooter="false" :scale-up="false" :tags="selectedTags" />
+        <div class="w-full h-fit relative">
+          <button
+            @click="showPreview = false"
+            class="flex mb-6 items-center gap-x-2 active:scale-90 rounded-full text-sm md:text-base transition-all duration-300 font-medium py-2 px-3 bg-[#f2f2f2]/5"
+          >
+            <ph-arrow-u-up-left :size="20" class="font-bold" /> Back
+          </button>
+          <h2 class="text-3xl font-semibold absolute left-1/2 -translate-x-1/2 top-1 text-[#F2F2F2]/80">Preview</h2>
+        </div>
+        <Article v-bind="previewProps" />
       </div>
       <div
         v-if="!showPreview"
@@ -219,6 +246,7 @@ export default defineComponent({
         />
         <input
           type="text"
+          v-model="title"
           v-on:focus="isFocused = 'title'"
           placeholder="New post title here..."
           class="bg-[#1a1a1a] shadow-inner shadow-black/50 p-2 outline-none placeholder:text-[#F2F2F2]/30 text-2xl mt-4 w-full"
@@ -227,7 +255,7 @@ export default defineComponent({
           <span
             v-for="(tag, index) in selectedTags"
             :key="index"
-            class="shadow-black/50 shadow-md inline-block rounded-sm border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
+            class="shadow-black/50 whitespace-nowrap shadow-md inline-block rounded-sm border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2"
             >{{ tag }}</span
           >
           <input
@@ -301,13 +329,13 @@ export default defineComponent({
               id="textarea"
               :spellcheck="false"
               contenteditable="true"
-              v-bind="textContent"
+              v-model="textContent"
               @keydown.tab.prevent="insertTab"
               @keydown.ctrl.s.prevent="save"
               @keydown.ctrl.a="getSave"
               @input="adjustTextarea"
               v-on:focus="isFocused = 'textarea'"
-              class="scrollHiddenCSO scrollHideenIEF min-h-[230px] bg-[#1a1a1a] shadow-inner shadow-black/50 p-4 h-full py-4 border-b border-b-[#F2F2F2]/20 outline-none w-full"
+              class="scrollHiddenCSO scrollHideenIEF overflow-hidden resize-none min-h-[230px] bg-[#1a1a1a] shadow-inner shadow-black/50 p-4 h-full py-4 border-b border-b-[#F2F2F2]/20 outline-none w-full"
             />
           </div>
         </div>
