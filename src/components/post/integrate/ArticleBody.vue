@@ -6,6 +6,7 @@ import {
   Calendar as CalendarIcon,
 } from '@/atoms/icons'
 import * as marked from 'marked'
+import { dateFormat } from '@/utils/date-format'
 
 export default defineComponent({
   name: 'ArticleBody',
@@ -38,7 +39,7 @@ export default defineComponent({
     articleBody.innerHTML = htmlBody.value
     })
 
-    return { props, htmlBody }
+    return { props, htmlBody, dateFormat }
   },
 })
 </script>
@@ -55,7 +56,7 @@ export default defineComponent({
       <span
         class="my-2 font-medium text-base text-[#F2F2F2]/60 flex items-center justify-center gap-x-1"
       >
-        <CalendarIcon size="20" color="#F2F2F270" />{{ props.date }}
+        <CalendarIcon size="20" color="#F2F2F270" />{{ dateFormat(props.date!) }}
       </span>
 
       <h1
@@ -63,9 +64,9 @@ export default defineComponent({
       >
         {{ props.title }}
       </h1>
-      <div class="border-b border-[#F2F2F2]/20 w-[50%] mx-auto mt-8 h-0" />
+      <div class="border-b border-[#F2F2F2]/20 w-[50%] mx-auto my-8 h-0" />
 
-      <div id="articleBody" class="articleBody" />
+      <div id="articleBody" class="articleBody text-[#F2F2F2]/80 break-words text-justify text-lg font-medium" />
     </div>
     <div
       v-if="props.showFooter"
@@ -82,7 +83,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.articleBody p {
-  color: green;
+articleBody pre {
+  background: #00000050;
 }
 </style>

@@ -90,18 +90,6 @@ export default defineComponent({
       console.log(selectedTags)
     })
 
-    const textareaHeight = ref('')
-    const proceedToDelete = ref(false)
-
-    const adjustTextarea = () => {
-      nextTick(() => {
-        const textarea = document.getElementById('textarea')!
-        textarea.style.height = 'auto'
-        textarea.style.height = `${textarea.scrollHeight}px`
-        textareaHeight.value = `${textarea.scrollHeight}px`
-      })
-    }
-
     function onFileChange(event: Event) {
       const input = event.target as HTMLInputElement
       const files = input.files as FileList
@@ -175,8 +163,6 @@ export default defineComponent({
       selectedTags,
       showPreview,
       handleTags,
-      textareaHeight,
-      adjustTextarea,
       onKeyDown,
       onFileChange,
       activeItem,
@@ -333,9 +319,8 @@ export default defineComponent({
               @keydown.tab.prevent="insertTab"
               @keydown.ctrl.s.prevent="save"
               @keydown.ctrl.a="getSave"
-              @input="adjustTextarea"
               v-on:focus="isFocused = 'textarea'"
-              class="scrollHiddenCSO scrollHideenIEF overflow-hidden resize-none min-h-[230px] bg-[#1a1a1a] shadow-inner shadow-black/50 p-4 h-full py-4 border-b border-b-[#F2F2F2]/20 outline-none w-full"
+              class="min-h-[230px] bg-[#1a1a1a] shadow-inner shadow-black/50 p-4 h-full py-4 border-b border-b-[#F2F2F2]/20 outline-none w-full"
             />
           </div>
         </div>
@@ -400,13 +385,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.scrollHiddenCSO::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
-}
-.scrollHideenIEF {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
 .button {
   display: flex;
   align-items: center;
