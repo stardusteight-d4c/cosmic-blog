@@ -7,8 +7,6 @@ import {
 } from '@/atoms/icons'
 import * as marked from 'marked'
 import { dateFormat } from '@/utils/date-format'
-import Prism from 'prismjs'
-
 
 export default defineComponent({
   name: 'ArticleBody',
@@ -36,28 +34,11 @@ export default defineComponent({
     const htmlBody = ref(marked.marked(props.body!))
 
     onMounted(() => {
-   
-
       const articleBody = document.getElementById(
         'articleBody'
       )! as HTMLDivElement
       articleBody.innerHTML = htmlBody.value
     })
-
-    setTimeout(() => {
-      const jsBlockElement = document.querySelectorAll('code.language-js')
-      console.log('jsBlockElement', jsBlockElement)
-
-      jsBlockElement.forEach((element) => {
-        console.log('aaaaaa')
-
-        element.classList.add('language-javascript')
-      })
-    }, 500)
-
-    window.Prism = window.Prism || {};
-    window.Prism.manual = true;
-    Prism.highlightAll(); // highlight your code on mount
 
     return { props, htmlBody, dateFormat }
   },
@@ -109,27 +90,55 @@ export default defineComponent({
 
 <style>
 .articleBody {
-  @apply text-[#F2F2F2]/90;
+  color: #f2f2f2;
+  opacity: 0.8;
+  overflow: hidden;
 }
 .articleBody h2 {
-  @apply !text-3xl !text-[#F2F2F2];
+  font-size: 1.875rem /* 30px */ !important;
+  line-height: 2.25rem /* 36px */ !important;
+  color: #f2f2f2 !important;
 }
 .articleBody h3 {
-  @apply !text-2xl !text-[#F2F2F2];
+  font-size: 1.5rem /* 24px */ !important;
+  line-height: 2rem /* 32px */ !important;
+  color: #f2f2f2 !important;
 }
 .articleBody h4 {
-  @apply !text-xl !text-[#F2F2F2];
+  font-size: 1.25rem /* 20px */ !important;
+  line-height: 1.75rem /* 28px */ !important;
+  color: #f2f2f2 !important;
 }
 .articleBody h5 {
-  @apply !text-lg !text-[#F2F2F2];
+  font-size: 1.125rem /* 18px */ !important;
+  line-height: 1.75rem /* 28px */ !important;
+  color: #f2f2f2 !important;
 }
 .articleBody h6 {
-  @apply !text-base !text-[#F2F2F2];
+  font-size: 1rem /* 16px */ !important;
+  line-height: 1.5rem /* 24px */ !important;
+  color: #f2f2f2 !important;
 }
-/* .articleBody pre {
-  @apply w-full bg-black/50 overflow-x-scroll rounded-sm p-4 text-base;
+
+.articleBody pre {
+  max-width: 100%;
+  background-color: rgb(0 0 0 / 0.5);
+  margin-block: 19px;
+  border-radius: 0.125rem /* 2px */;
+  font-size: 1rem /* 16px */;
+  line-height: 1.5rem /* 24px */;
+  overflow-x: scroll;
+  -webkit-box-shadow: inset 7px 7px 12px -4px rgba(0, 0, 0, 1);
+  -moz-box-shadow: inset 7px 7px 12px -4px rgba(0, 0, 0, 1);
+  box-shadow: inset 7px 7px 12px -4px rgba(0, 0, 0, 1);
+  padding: 1em !important;
+  box-sizing: content-box;
 }
 .articleBody code {
-  @apply w-full overflow-scroll;
-} */
+  width: 90%;
+  color: white;
+  font-weight: 300;
+  box-sizing: content-box;
+  margin-left: 14px;
+}
 </style>
