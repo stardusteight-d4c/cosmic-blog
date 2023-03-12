@@ -14,12 +14,14 @@
     "marked": "^4.2.12",
     "phosphor-vue": "^4.4.1",
     "portal-vue": "^3.0.0",
+    "prismjs": "^1.29.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@types/marked": "^4.0.8",
+    "@types/prismjs": "^1.26.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",

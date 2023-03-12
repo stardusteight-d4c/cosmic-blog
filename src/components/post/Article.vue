@@ -43,9 +43,6 @@ export default defineComponent({
       body: props.body,
     }
 
-    console.log(bodyProps);
-    
-
     return { bodyProps, headerProps, HTML_ID }
   },
 })

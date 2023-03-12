@@ -8,9 +8,9 @@ import Article from '@/components/post/Article.vue'
 // para a preview gere uma string base64 e envie-à como props
 
 // Fazer toda preview do post recebendo os dados do rich text editor
-// refatorar...
+// Salvar os dados do editor em localstorage
 
-// definir as variaveis do post em um obejeto
+// definir as variaveis do post em um objeto
 export default defineComponent({
   name: 'CreatePost',
   components: { Navbar, Article },
@@ -33,7 +33,6 @@ export default defineComponent({
     const activeItem = ref<'edit' | 'preview'>('edit')
     const textarea = ref<HTMLTextAreaElement>()
 
-   
     const previewProps = ref({
       showFooter: false,
       scaleUp: false,
@@ -41,13 +40,12 @@ export default defineComponent({
       coverImage: '',
       title: title,
       date: date,
-      body: textContent
+      body: textContent,
     })
 
-    watch(([title, textContent]), (newValue) => {
-      console.log('newValue',newValue);
-      
-    })
+    // watch([title, textContent], (newValue) => {
+    //   console.log('newValue', newValue)
+    // })
 
     const handleSelected = (type: string) => {
       const textareaElement = textarea.value
@@ -78,17 +76,17 @@ export default defineComponent({
       textareaElement.selectionEnd = selectionEnd + 1
     }
 
-    watch(isFocused, (newValue, oldValue) => {
-      console.log(`isFocused changed from ${oldValue} to ${newValue}`)
-    })
+    // watch(isFocused, (newValue, oldValue) => {
+    //   console.log(`isFocused changed from ${oldValue} to ${newValue}`)
+    // })
 
-    watch(coverImage, () => {
-      console.log(coverImage.value)
-    })
+    // watch(coverImage, () => {
+    //   console.log(coverImage.value)
+    // })
 
-    watch(tag, () => {
-      console.log(selectedTags)
-    })
+    // watch(tag, () => {
+    //   console.log(selectedTags)
+    // })
 
     function onFileChange(event: Event) {
       const input = event.target as HTMLInputElement
@@ -106,7 +104,7 @@ export default defineComponent({
 
         reader.onload = () => {
           const base64 = reader.result
-          console.log(base64)
+          // console.log(base64)
           previewProps.value.coverImage = String(base64)
         }
       }
@@ -191,7 +189,11 @@ export default defineComponent({
           >
             <ph-arrow-u-up-left :size="20" class="font-bold" /> Back
           </button>
-          <h2 class="text-3xl font-semibold absolute left-1/2 -translate-x-1/2 top-1 text-[#F2F2F2]/80">Preview</h2>
+          <h2
+            class="text-3xl font-semibold absolute left-1/2 -translate-x-1/2 top-1 text-[#F2F2F2]/80"
+          >
+            Preview
+          </h2>
         </div>
         <Article v-bind="previewProps" />
       </div>
