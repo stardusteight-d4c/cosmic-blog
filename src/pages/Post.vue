@@ -11,6 +11,8 @@ import {
   Pagination,
 } from '@/components/post'
 import { HTML_ELEMENT_IDS_POST_PAGE } from '../utils/html-ids'
+import TextAlign from '@/components/post/integrate/TextAlign.vue'
+import TextOpacity from '@/components/post/integrate/TextOpacity.vue'
 
 // mexer no componente rich text
 
@@ -24,6 +26,8 @@ export default defineComponent({
     SubmitComment,
     Comment,
     Pagination,
+    TextOpacity,
+    TextAlign,
   },
   computed: {
     postId(): string {
@@ -55,12 +59,14 @@ export default defineComponent({
     <div
       class="flex flex-col items-end justify-end gap-y-4 w-fit h-fit fixed bottom-4 right-4"
     >
+    <TextOpacity />
+      <TextAlign />
       <PostScale @scaleChanged="scaleChangeObserver" />
       <PostProgressBar />
     </div>
     <Navbar path="post" />
     <div class="max-w-[725px] w-full mx-auto mb-28">
-      <Article :scale-up="scaleUp" />
+      <Article :scaleUp="scaleUp" />
       <div>
         <h2
           class="text-2xl text-[#F2F2F2]/50 border-b border-[#F2F2F2]/20 mb-8 pb-2"

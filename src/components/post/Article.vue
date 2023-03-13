@@ -43,6 +43,9 @@ export default defineComponent({
       body: props.body,
     }
 
+    console.log('props.scaleUp', props.scaleUp);
+    
+
     return { bodyProps, headerProps, HTML_ID }
   },
 })
@@ -50,7 +53,6 @@ export default defineComponent({
 
 <template>
   <div
-    :key="coverImage"
     :id="HTML_ID.post"
     class="relative shadow-md shadow-black/20"
   >
