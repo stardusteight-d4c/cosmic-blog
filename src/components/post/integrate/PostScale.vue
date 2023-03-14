@@ -17,7 +17,7 @@ export default defineComponent({
       const articleBody = document.getElementById(HTML_ID.articleBody)!
       if (scaleUp.value === true) {
         commentsSection.style.marginTop = `${marginTopOnScaleUp.value}px`
-        articleBody.style.transform = 'scale(1.3)'
+        articleBody.style.transform = 'scale(1.2)'
         articleBody.style.marginTop = '-200px'
         articleBody.style.transformOrigin = 'top'
       } else {
@@ -35,7 +35,7 @@ export default defineComponent({
       const articleBody = document.getElementById(HTML_ID.articleBody)!
       const marginBottomArticleBody = 112
       const originalHeight = articleBody?.clientHeight
-      const heightOnScaleUp = originalHeight * 1.3 // 30%
+      const heightOnScaleUp = originalHeight * 1.2 // 20%
       const heightIncrease = heightOnScaleUp - originalHeight
       const marginTop = heightIncrease + marginBottomArticleBody
       marginTopOnScaleUp.value = marginTop

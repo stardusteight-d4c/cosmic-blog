@@ -42,7 +42,7 @@ export default defineComponent({
     :id="HTML_ID.articleBody"
     :class="{
       'pb-8': !props.showFooter,
-      'bg-[#252525] relative rounded-b-sm overflow-hidden mb-28 pt-4 z-50 shadow-sm shadow-black/20 duration-500 cursor-default transition-all': true,
+      'bg-[#252525] relative rounded-b-sm overflow-hidden mb-28 pt-4 z-50 shadow-sm shadow-black/20 duration-300 cursor-default transition-all': true,
     }"
   >
     <div class="px-4">
@@ -62,8 +62,9 @@ export default defineComponent({
       <div class="border-b border-[#F2F2F2]/20 w-[50%] mx-auto my-8 h-0" />
 
       <div
+        :id="HTML_ID.htmlBody"
         v-html="htmlBody"
-        class="articleBody text-[#F2F2F2]/80 break-words text-justify text-lg font-medium"
+        class="articleBody text-[#F2F2F280] break-words text-lg font-medium"
       />
     </div>
     <div
@@ -91,32 +92,37 @@ export default defineComponent({
 .articleBody h2 {
   font-size: 1.875rem /* 30px */ !important;
   line-height: 2.25rem /* 36px */ !important;
-  color: #f2f2f2 !important;
+  color: #F2F2F2 !important;
   margin-bottom: 12px;
+  font-weight: 900;
 }
 .articleBody h3 {
   font-size: 1.5rem /* 24px */ !important;
   line-height: 2rem /* 32px */ !important;
-  color: #f2f2f2 !important;
+  color: #F2F2F2 !important;
   margin-bottom: 12px;
+  font-weight: 900;
 }
 .articleBody h4 {
   font-size: 1.25rem /* 20px */ !important;
   line-height: 1.75rem /* 28px */ !important;
-  color: #f2f2f2 !important;
+  color: #F2F2F2 !important;
   margin-bottom: 12px;
+  font-weight: 900;
 }
 .articleBody h5 {
   font-size: 1.125rem /* 18px */ !important;
   line-height: 1.75rem /* 28px */ !important;
-  color: #f2f2f2 !important;
+  color: #F2F2F2 !important;
   margin-bottom: 12px;
+  font-weight: 900;
 }
 .articleBody h6 {
   font-size: 1rem /* 16px */ !important;
   line-height: 1.5rem /* 24px */ !important;
-  color: #f2f2f2 !important;
+  color: #F2F2F2 !important;
   margin-bottom: 12px;
+  font-weight: 900;
 }
 
 /* CODE BLOCK */
