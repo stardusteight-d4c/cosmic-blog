@@ -47,35 +47,15 @@ export default defineComponent({
     const articleBody = ref<HTMLDivElement | null>(null)
     const state = reactive({
       scaleUp: false,
-      marginTopOnScaleUp: 0,
     })
 
-    onMounted(() => {
-      computedMarginTopOnScaleUp()
-    })
-
-    const computedMarginTopOnScaleUp = () => {
-      const articleBody = document.getElementById(HTML_ID.articleBody)!
-      const marginBottomArticleBody = 112
-      const originalHeight = articleBody?.clientHeight
-      const heightOnScaleUp = originalHeight * 1.3 // 30%
-      const heightIncrease = heightOnScaleUp - originalHeight
-      const marginTop = heightIncrease + marginBottomArticleBody
-      state.marginTopOnScaleUp = marginTop
-    }
-
-    function scaleChangeObserver(payload: boolean) {
-      state.scaleUp = payload
-    }
-
+  
     // Debug reasons
     // watch(state, (newValue) => {
     //   console.log('newValue', newValue.marginTopOnScaleUp)
     // })
-    
 
     return {
-      scaleChangeObserver,
       articleBody,
       ...toRefs(state),
       HTML_ID,
@@ -92,13 +72,13 @@ export default defineComponent({
     >
       <TextOpacity />
       <TextAlign />
-      <PostScale @scaleChanged="scaleChangeObserver" />
+      <PostScale  />
       <PostProgressBar />
     </div>
     <Navbar path="post" />
     <div class="max-w-[725px] w-full mx-auto mb-28">
       <Article :scaleUp="scaleUp" />
-      <div v-bind:style="{ marginTop: scaleUp ? `${marginTopOnScaleUp!}px` : '0px' }">
+      <section :id="HTML_ID.commentsSection">
         <h2
           class="text-2xl text-[#F2F2F2]/50 border-b border-[#F2F2F2]/20 mb-8 pb-2"
         >
@@ -107,7 +87,7 @@ export default defineComponent({
         <SubmitComment />
         <Comment />
         <Pagination />
-      </div>
+      </section>
     </div>
   </div>
 </template>

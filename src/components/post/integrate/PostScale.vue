@@ -1,18 +1,46 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import { ArrowsIn, ArrowsOut } from '@/atoms/icons'
+import { HTML_ELEMENT_IDS_POST_PAGE } from '@/utils/html-ids'
 
 export default defineComponent({
   name: 'PostScale',
   components: { ArrowsOut, ArrowsIn },
   setup(_props, { emit }) {
     const scaleUp = ref(false)
+    const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
+    const marginTopOnScaleUp = ref(0)
+
     function handleScale() {
       scaleUp.value = !scaleUp.value
-      
-      emit('scaleChanged', scaleUp.value)
-      console.log('emitiu o evento -> scaleUp:', scaleUp.value);
+      const commentsSection = document.getElementById(HTML_ID.commentsSection)!
+      const articleBody = document.getElementById(HTML_ID.articleBody)!
+      if (scaleUp.value === true) {
+        commentsSection.style.marginTop = `${marginTopOnScaleUp.value}px`
+        articleBody.style.transform = 'scale(1.3)'
+        articleBody.style.marginTop = '-200px'
+        articleBody.style.transformOrigin = 'top'
+      } else {
+        commentsSection.style.marginTop = '0px'
+        articleBody.style.transform = 'scale(1)'
+        articleBody.style.marginTop = '0'
+      }
     }
+
+    onMounted(() => {
+      computedMarginTopOnScaleUp()
+    })
+
+    const computedMarginTopOnScaleUp = () => {
+      const articleBody = document.getElementById(HTML_ID.articleBody)!
+      const marginBottomArticleBody = 112
+      const originalHeight = articleBody?.clientHeight
+      const heightOnScaleUp = originalHeight * 1.3 // 30%
+      const heightIncrease = heightOnScaleUp - originalHeight
+      const marginTop = heightIncrease + marginBottomArticleBody
+      marginTopOnScaleUp.value = marginTop
+    }
+
     return { scaleUp, handleScale }
   },
 })

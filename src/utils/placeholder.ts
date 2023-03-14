@@ -1,24 +1,4 @@
-export const placeholder = `Recebi hoje o livro "Domain Driven Design: Atacando as Complexidades no Coração do Software" de Eric Evans, uma leitura obrigatória para desenvolvedores de software que desejam aprimorar suas habilidades em modelagem de domínios e arquitetura de software.
-<br /><br />
-Nele é apresentado um conjunto de conceitos e padrões para a criação de sistemas de software complexos, enfatizando a importância da compreensão do domínio do problema e da colaboração entre desenvolvedores e especialistas do domínio, e a necessidade de se criar um modelo de domínio rico em informações e expressividade, capaz de refletir a realidade do problema e servir como base para a implementação do software.
-<br /><br />
-### Segunda parte - o autoconhecimento
-Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
-<br /><br />
-#### Clean Architecture
-Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
-<br /><br />
-Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
-Nele é apresentado um conjunto de conceitos e padrões para a criação de sistemas de software complexos, enfatizando a importância da compreensão do domínio do problema e da colaboração entre desenvolvedores e especialistas do domínio, e a necessidade de se criar um modelo de domínio rico em informações e expressividade, capaz de refletir a realidade do problema e servir como base para a implementação do software.
-<br /><br />
-### Segunda parte - o autoconhecimento
-Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
-<br /><br />
-#### Clean Architecture
-Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
-<br /><br />
-Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
-
+export const placeholder = `
 Nele é apresentado um conjunto de conceitos e padrões para a criação de sistemas de software complexos, enfatizando a importância da compreensão do domínio do problema e da colaboração entre desenvolvedores e especialistas do domínio, e a necessidade de se criar um modelo de domínio rico em informações e expressividade, capaz de refletir a realidade do problema e servir como base para a implementação do software.
 <br /><br />
 ### Segunda parte - o autoconhecimento
@@ -53,7 +33,123 @@ Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tent
 Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
 <br /><br />
 Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
-
+Nele é apresentado um conjunto de conceitos e padrões para a criação de sistemas de software complexos, enfatizando a importância da compreensão do domínio do problema e da colaboração entre desenvolvedores e especialistas do domínio, e a necessidade de se criar um modelo de domínio rico em informações e expressividade, capaz de refletir a realidade do problema e servir como base para a implementação do software.
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+Nele é apresentado um conjunto de conceitos e padrões para a criação de sistemas de software complexos, enfatizando a importância da compreensão do domínio do problema e da colaboração entre desenvolvedores e especialistas do domínio, e a necessidade de se criar um modelo de domínio rico em informações e expressividade, capaz de refletir a realidade do problema e servir como base para a implementação do software.
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />Nele é apresentado um conjunto de conceitos e padrões para a criação de sistemas de software complexos, enfatizando a importância da compreensão do domínio do problema e da colaboração entre desenvolvedores e especialistas do domínio, e a necessidade de se criar um modelo de domínio rico em informações e expressividade, capaz de refletir a realidade do problema e servir como base para a implementação do software.
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+Nele é apresentado um conjunto de conceitos e padrões para a criação de sistemas de software complexos, enfatizando a importância da compreensão do domínio do problema e da colaboração entre desenvolvedores e especialistas do domínio, e a necessidade de se criar um modelo de domínio rico em informações e expressividade, capaz de refletir a realidade do problema e servir como base para a implementação do software.
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />Nele é apresentado um conjunto de conceitos e padrões para a criação de sistemas de software complexos, enfatizando a importância da compreensão do domínio do problema e da colaboração entre desenvolvedores e especialistas do domínio, e a necessidade de se criar um modelo de domínio rico em informações e expressividade, capaz de refletir a realidade do problema e servir como base para a implementação do software.
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+Nele é apresentado um conjunto de conceitos e padrões para a criação de sistemas de software complexos, enfatizando a importância da compreensão do domínio do problema e da colaboração entre desenvolvedores e especialistas do domínio, e a necessidade de se criar um modelo de domínio rico em informações e expressividade, capaz de refletir a realidade do problema e servir como base para a implementação do software.
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />Nele é apresentado um conjunto de conceitos e padrões para a criação de sistemas de software complexos, enfatizando a importância da compreensão do domínio do problema e da colaboração entre desenvolvedores e especialistas do domínio, e a necessidade de se criar um modelo de domínio rico em informações e expressividade, capaz de refletir a realidade do problema e servir como base para a implementação do software.
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+Nele é apresentado um conjunto de conceitos e padrões para a criação de sistemas de software complexos, enfatizando a importância da compreensão do domínio do problema e da colaboração entre desenvolvedores e especialistas do domínio, e a necessidade de se criar um modelo de domínio rico em informações e expressividade, capaz de refletir a realidade do problema e servir como base para a implementação do software.
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
+#### Clean Architecture
+Porém enquanto a Clean Architecture fornece uma estrutura para organizar o código em camadas, com a camada de domínio no centro, o Domain-Driven Design fornece orientações sobre como modelar esse domínio de forma eficaz. E assim, eles fornecem uma base sólida para o desenvolvimento de software bem estruturado, com baixo acoplamento (no qual se refere que os diferentes componentes ou módulos do sistema devem ter poucas dependências entre si) e alta coesão (uma responsabilidade única bem definida entre estes componentes), capaz de representar adequadamente as necessidades e os processos do negócio e permitindo assim a evolução do sistema com menor impacto em outras partes.
+<br /><br />
+Enfim... agora posso me aprofundar nestes conceitos das palavras de quem o próprio o cunhou, uhuu!! u.u
+<br /><br />
+### Segunda parte - o autoconhecimento
+Nos últimos meses comecei a estudar mais sobre Clean Architecture e acabei tento bastante contato com aplicações backend seguindo o Domain-Driven Design (DDD). Clean Architecture e o DDD possuem uma relação muito próxima, já que ambos se concentram em como organizar o código em torno do domínio do negócio.
+<br /><br />
 \`\`\`ts
 onMounted(() => {
   const articleBody = document.getElementById(

@@ -14,10 +14,6 @@ export default defineComponent({
   name: 'ArticleBody',
   components: { StarIcon, ChatIcon, CalendarIcon },
   props: {
-    scaleUp: {
-      type: Boolean,
-      required: true,
-    },
     showFooter: {
       type: Boolean,
       default: true,
@@ -46,7 +42,6 @@ export default defineComponent({
     :id="HTML_ID.articleBody"
     :class="{
       'pb-8': !props.showFooter,
-      'scale-[1.3] -mt-[200px] origin-top': props.scaleUp,
       'bg-[#252525] relative rounded-b-sm overflow-hidden mb-28 pt-4 z-50 shadow-sm shadow-black/20 duration-500 cursor-default transition-all': true,
     }"
   >

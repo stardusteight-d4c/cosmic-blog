@@ -8,10 +8,7 @@ export default defineComponent({
   name: 'Article',
   components: { ArticleHeader, ArticleBody },
   props: {
-    scaleUp: {
-      type: Boolean,
-      required: true,
-    },
+
     showFooter: {
       type: Boolean,
       default: true,
@@ -38,13 +35,10 @@ export default defineComponent({
     const headerProps = ref({ coverImage: props.coverImage, tags: props.tags })
     const bodyProps = reactive({
       showFooter: toRef(props, 'showFooter'),
-      scaleUp: toRef(props, 'scaleUp'),
       title: toRef(props, 'title'),
       date: toRef(props, 'date'),
       body: toRef(props, 'body'),
     })
-
-    console.log('bodyProps.scaleUp -> Article', bodyProps.scaleUp)
 
     return { bodyProps, headerProps, HTML_ID, articleBody }
   },
