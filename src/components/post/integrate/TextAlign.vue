@@ -1,17 +1,23 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { ArrowsIn, ArrowsOut } from '@/atoms/icons'
+import TextAlignJustify from '@/atoms/icons/TextAlignJustify.vue'
+import TextAlignLeft from '@/atoms/icons/TextAlignLeft.vue'
 
 export default defineComponent({
   name: 'PostScale',
-  components: { ArrowsOut, ArrowsIn },
+  components: { ArrowsOut, ArrowsIn, TextAlignJustify, TextAlignLeft },
   setup(_props, { emit }) {
-    // const scaleUp = ref(false)
-    // function handleScale() {
-    //   scaleUp.value = !scaleUp.value
-    //   emit('scaleChanged', scaleUp.value)
-    // }
-    // return { scaleUp, handleScale }
+    const textAlign = ref<'left' | 'justify'>('justify')
+    function handleTextAlign() {
+      if (textAlign.value === 'justify') {
+        textAlign.value = 'left'
+      } else {
+        textAlign.value = 'justify'
+      }
+      emit('TextAlignChanged', textAlign.value)
+    }
+    return { textAlign, handleTextAlign }
   },
 })
 </script>
@@ -19,12 +25,14 @@ export default defineComponent({
 <template>
   <div class="flex items-center gap-x-2 group">
     <span class="animate-span hidden group-hover:block text-[#F2F2F2]/70">
-      <!-- {{ scaleUp ? 'Scale Down' : 'Scale Up' }} -->
+      {{ textAlign === 'justify' ? 'Align Justify' : 'Align Left' }}
     </span>
     <div
+      @click="handleTextAlign"
       class="bg-[#252525] cursor-pointer shadow-md shadow-black/20 z-50 rounded-sm w-[50px] h-[50px] relative flex items-center justify-center"
     >
-    <ph-text-align-justify :size="32" />
+      <TextAlignJustify v-if="textAlign === 'justify'" color="#F2F2F280" />
+      <TextAlignLeft v-else color="#F2F2F280" />
     </div>
   </div>
 </template>

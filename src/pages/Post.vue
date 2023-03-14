@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
 import Navbar from '@/components/navbar/Navbar.vue'
 import {
@@ -38,15 +38,20 @@ export default defineComponent({
     const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
     const route = useRoute()
     const id = route.params.id
-    const scaleUp = ref(false)
+
+    const state = {
+      scaleUp: ref(false),
+    }
 
     function scaleChangeObserver(payload: boolean) {
-      scaleUp.value = payload
+      state.scaleUp.value = payload;
     }
+
+    
 
     return {
       scaleChangeObserver,
-      scaleUp,
+      ...toRefs(state),
       HTML_ID,
     }
   },
@@ -59,7 +64,7 @@ export default defineComponent({
     <div
       class="flex flex-col items-end justify-end gap-y-4 w-fit h-fit fixed bottom-4 right-4"
     >
-    <TextOpacity />
+      <TextOpacity />
       <TextAlign />
       <PostScale @scaleChanged="scaleChangeObserver" />
       <PostProgressBar />

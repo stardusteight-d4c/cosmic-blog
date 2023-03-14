@@ -9,7 +9,9 @@ export default defineComponent({
     const scaleUp = ref(false)
     function handleScale() {
       scaleUp.value = !scaleUp.value
+      
       emit('scaleChanged', scaleUp.value)
+      console.log('emitiu o evento -> scaleUp:', scaleUp.value);
     }
     return { scaleUp, handleScale }
   },
@@ -26,7 +28,7 @@ export default defineComponent({
       class="bg-[#252525] cursor-pointer shadow-md shadow-black/20 z-50 rounded-sm w-[50px] h-[50px] relative flex items-center justify-center"
     >
       <ArrowsOut v-if="!scaleUp" color="#F2F2F280" />
-      <ArrowsIn v-if="scaleUp" color="#F2F2F280" />
+      <ArrowsIn v-else color="#F2F2F280" />
     </div>
   </div>
 </template>
