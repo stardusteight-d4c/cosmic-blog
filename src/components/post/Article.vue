@@ -34,6 +34,7 @@ export default defineComponent({
   },
   setup(props) {
     const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
+    const articleBody = ref(null)
     const headerProps = ref({ coverImage: props.coverImage, tags: props.tags })
     const bodyProps = reactive({
       showFooter: toRef(props, 'showFooter'),
@@ -45,7 +46,7 @@ export default defineComponent({
 
     console.log('bodyProps.scaleUp -> Article', bodyProps.scaleUp)
 
-    return { bodyProps, headerProps, HTML_ID }
+    return { bodyProps, headerProps, HTML_ID, articleBody }
   },
 })
 </script>
@@ -53,6 +54,6 @@ export default defineComponent({
 <template>
   <div :id="HTML_ID.post" class="relative shadow-md shadow-black/20">
     <ArticleHeader v-bind="headerProps" />
-    <ArticleBody v-bind="bodyProps" />
+    <ArticleBody ref="articleBody" v-bind="bodyProps" />
   </div>
 </template>
