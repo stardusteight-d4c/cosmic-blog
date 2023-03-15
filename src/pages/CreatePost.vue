@@ -61,19 +61,7 @@ export default defineComponent({
       if (!textareaElement) {
         return
       }
-      const selectionStart = textareaElement.selectionStart
-      const selectionEnd = textareaElement.selectionEnd
-
-      const newValue =
-        textareaElement.value.slice(0, selectionStart) +
-        '\t' +
-        textareaElement.value.slice(selectionEnd)
-
-      textContent.value = newValue
-      oldValue.value = textareaElement.value
-
-      textareaElement.selectionStart = selectionStart + 1
-      textareaElement.selectionEnd = selectionEnd + 1
+      handleMarkdown(textareaElement, 'tab')
     }
 
     // watch(isFocused, (newValue, oldValue) => {

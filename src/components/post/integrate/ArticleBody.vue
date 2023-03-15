@@ -177,12 +177,14 @@ export default defineComponent({
   object-fit: cover;
 }
 
+/* BLOCKQUOTE */
 .articleBody blockquote {
   border-left: 2px solid #f2f2f298;
   padding-left: 8px;
   background-color: #18181890;
 }
 
+/* STRONG */
 .articleBody strong {
   font-weight: 700;
 }
