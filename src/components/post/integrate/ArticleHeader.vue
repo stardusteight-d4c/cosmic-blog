@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Star from '@/atoms/icons/Star.vue'
+import CoverPlaceholder from '@/assets/cover-placeholder.webp'
 
 export default defineComponent({
   name: 'ArticleHeader',
@@ -13,12 +14,20 @@ export default defineComponent({
       type: Array<string>,
     },
   },
+  setup(props, ctx) {
+    return {
+      CoverPlaceholder,
+    }
+  },
 })
 </script>
 
 <template>
   <div class="relative">
-    <img :src="coverImage" class="w-full h-[325px] rounded-t-sm object-cover" />
+    <img
+      :src="coverImage === '' ? CoverPlaceholder : coverImage"
+      class="w-full h-[325px] rounded-t-sm object-cover"
+    />
     <div class="mt-2 text-sm absolute cursor-default left-4 top-2">
       <span
         v-for="(tag, index) in tags"

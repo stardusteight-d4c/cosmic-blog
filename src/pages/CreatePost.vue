@@ -3,6 +3,7 @@ import { defineComponent, ref, watch, nextTick } from 'vue'
 import { handleMarkdown } from '../utils/handle-markdown'
 import Navbar from '@/components/navbar/Navbar.vue'
 import Article from '@/components/post/Article.vue'
+import SavePopUp from '@/components/SavePopUp.vue'
 
 // Gerar url da coverImg no serviço de storage do supabase, mas isto apenas quando enviar ao servidor,
 // para a preview gere uma string base64 e envie-à como props
@@ -13,7 +14,7 @@ import Article from '@/components/post/Article.vue'
 // definir as variaveis do post em um objeto
 export default defineComponent({
   name: 'CreatePost',
-  components: { Navbar, Article },
+  components: { Navbar, Article, SavePopUp },
   setup() {
     const iconStyle = {
       weight: 'fill',
@@ -23,15 +24,14 @@ export default defineComponent({
     const selectedTags: any[] = []
     const isFocused = ref<'title' | 'textarea' | 'tags' | undefined>(undefined)
     const textContent = ref('')
-    const oldValue = ref('')
     const coverImage = ref<FileList | null>(null)
     const inputFile = ref()
     const title = ref('')
-    const body = ref('')
     const date = ref(new Date())
     const showPreview = ref(false)
     const activeItem = ref<'edit' | 'preview'>('edit')
     const textarea = ref<HTMLTextAreaElement>()
+    const proceedToSave = ref(false)
 
     const previewProps = ref({
       showFooter: false,
@@ -62,6 +62,10 @@ export default defineComponent({
         return
       }
       handleMarkdown(textareaElement, 'tab')
+    }
+
+    function closedSavePopUpObserver() {
+      proceedToSave.value = false
     }
 
     // watch(isFocused, (newValue, oldValue) => {
@@ -146,6 +150,7 @@ export default defineComponent({
       save,
       coverImage,
       title,
+      closedSavePopUpObserver,
       selectedTags,
       showPreview,
       handleTags,
@@ -153,6 +158,7 @@ export default defineComponent({
       onFileChange,
       activeItem,
       previewProps,
+      proceedToSave,
       tag,
       inputFile,
       isFocused,
@@ -167,6 +173,7 @@ export default defineComponent({
 
 <template>
   <div class="bg-[#1a1a1a] min-h-screen w-screen">
+    <portal-target name="savePopUp"></portal-target>
     <div class="max-w-[725px] h-full w-full mx-auto mb-8">
       <Navbar path="new" />
       <div v-if="showPreview" class="text-[#F2F2F2]">
@@ -296,7 +303,16 @@ export default defineComponent({
             </div>
             <div class="flex items-center">
               <ph-eye v-on:click="showPreview = true" v-bind="iconStyle" />
-              <ph-floppy-disk v-on:click="save" v-bind="iconStyle" />
+              <ph-floppy-disk
+                v-on:click="proceedToSave = true"
+                v-bind="iconStyle"
+              />
+              <SavePopUp
+                v-if="proceedToSave"
+                @closedSavePopUp="closedSavePopUpObserver"
+              />
+
+              <ph-download-simple v-on:click="getSave" v-bind="iconStyle" />
             </div>
           </div>
           <div class="flex gap-2 w-full h-auto mx-auto rounded-b-lg">
@@ -306,8 +322,6 @@ export default defineComponent({
               :spellcheck="false"
               v-model="textContent"
               @keydown.tab.prevent="insertTab"
-              @keydown.ctrl.s.prevent="save"
-              @keydown.ctrl.a="getSave"
               v-on:focus="isFocused = 'textarea'"
               class="min-h-[230px] bg-[#1a1a1a] shadow-inner shadow-black/50 p-4 h-full py-4 border-b border-b-[#F2F2F2]/20 outline-none w-full"
             />

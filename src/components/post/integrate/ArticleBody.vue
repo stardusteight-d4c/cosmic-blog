@@ -60,7 +60,7 @@ export default defineComponent({
       <h1
         class="text-4xl bg-gradient-to-t from-blue-500 to-violet-500 bg-clip-text text-transparent font-bold text-center"
       >
-        {{ props.title }}
+        {{ props.title === '' ? 'Untitled' : props.title }}
       </h1>
       <div class="border-b border-[#F2F2F2]/20 w-[50%] mx-auto my-8 h-0" />
 
@@ -132,12 +132,15 @@ export default defineComponent({
 .articleBody pre {
   max-width: 100%;
   background-color: #181818;
-  margin-block: 19px;
+  margin-block: 8px;
   border-radius: 0.125rem /* 2px */;
   font-size: 1rem /* 16px */;
   line-height: 1.5rem /* 24px */;
   text-align: left !important;
   overflow-x: scroll;
+  border-radius: 2px;
+  background: #181818;
+  box-shadow: inset 7px 7px 14px #111111, inset -7px -7px 14px #1f1f1f;
   padding: 1em !important;
   box-sizing: content-box;
 }
@@ -145,8 +148,7 @@ export default defineComponent({
   width: 90%;
   color: #f2f2f2;
   font-weight: 300;
-  background-color: #181818;
-  padding: 4px 8px;
+  background-color: transparent;
   text-align: left !important;
   box-sizing: content-box;
   border-radius: 0.125rem /* 2px */;
@@ -172,7 +174,7 @@ export default defineComponent({
 
 /* IMAGE */
 .articleBody img {
-  border-radius: 4px;
+  border-radius: 2px;
   width: 100%;
   object-fit: cover;
 }
