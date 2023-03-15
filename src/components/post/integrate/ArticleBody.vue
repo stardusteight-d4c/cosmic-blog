@@ -20,16 +20,19 @@ export default defineComponent({
     },
     date: {
       type: Date,
+      required: true,
     },
     title: {
       type: String,
+      required: true,
     },
     body: {
       type: String,
+      required: true,
     },
   },
   setup(props, { emit }) {
-    const htmlBody = ref(marked.marked(placeholder))
+    const htmlBody = ref(marked.marked(props.body))
     const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
 
     return { props, htmlBody, dateFormat, HTML_ID }
@@ -92,52 +95,49 @@ export default defineComponent({
 .articleBody h2 {
   font-size: 1.875rem /* 30px */ !important;
   line-height: 2.25rem /* 36px */ !important;
-  color: #F2F2F2 !important;
+  color: #f2f2f2 !important;
   margin-bottom: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 .articleBody h3 {
   font-size: 1.5rem /* 24px */ !important;
   line-height: 2rem /* 32px */ !important;
-  color: #F2F2F2 !important;
+  color: #f2f2f2 !important;
   margin-bottom: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 .articleBody h4 {
   font-size: 1.25rem /* 20px */ !important;
   line-height: 1.75rem /* 28px */ !important;
-  color: #F2F2F2 !important;
+  color: #f2f2f2 !important;
   margin-bottom: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 .articleBody h5 {
   font-size: 1.125rem /* 18px */ !important;
   line-height: 1.75rem /* 28px */ !important;
-  color: #F2F2F2 !important;
+  color: #f2f2f2 !important;
   margin-bottom: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 .articleBody h6 {
   font-size: 1rem /* 16px */ !important;
   line-height: 1.5rem /* 24px */ !important;
-  color: #F2F2F2 !important;
+  color: #f2f2f2 !important;
   margin-bottom: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 /* CODE BLOCK */
 .articleBody pre {
   max-width: 100%;
-  background-color: rgb(0 0 0 / 0.5);
+  background-color: #181818;
   margin-block: 19px;
   border-radius: 0.125rem /* 2px */;
   font-size: 1rem /* 16px */;
   line-height: 1.5rem /* 24px */;
   text-align: left !important;
   overflow-x: scroll;
-  -webkit-box-shadow: inset 7px 7px 12px -4px rgba(0, 0, 0, 1);
-  -moz-box-shadow: inset 7px 7px 12px -4px rgba(0, 0, 0, 1);
-  box-shadow: inset 7px 7px 12px -4px rgba(0, 0, 0, 1);
   padding: 1em !important;
   box-sizing: content-box;
 }
@@ -145,9 +145,12 @@ export default defineComponent({
   width: 90%;
   color: #f2f2f2;
   font-weight: 300;
+  background-color: #181818;
+  padding: 4px 8px;
   text-align: left !important;
   box-sizing: content-box;
-  margin-left: 14px;
+  border-radius: 0.125rem /* 2px */;
+  cursor: text;
 }
 
 /* TABLE */
@@ -169,7 +172,18 @@ export default defineComponent({
 
 /* IMAGE */
 .articleBody img {
-  border-radius: 2px;
+  border-radius: 4px;
+  width: 100%;
   object-fit: cover;
+}
+
+.articleBody blockquote {
+  border-left: 2px solid #f2f2f298;
+  padding-left: 8px;
+  background-color: #18181890;
+}
+
+.articleBody strong {
+  font-weight: 700;
 }
 </style>

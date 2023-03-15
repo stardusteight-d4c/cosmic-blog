@@ -4,7 +4,7 @@ import Lightbulb from '@/atoms/icons/Lightbulb.vue'
 import { HTML_ELEMENT_IDS_POST_PAGE } from '@/utils/html-ids'
 
 export default defineComponent({
-  name: 'PostScale',
+  name: 'TextAlign',
   components: { Lightbulb },
   setup(_props, { emit }) {
     const opacity = ref<'80' | '90' | '100'>('80')

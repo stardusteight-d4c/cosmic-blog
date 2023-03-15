@@ -7,7 +7,7 @@ import { HTML_ELEMENT_IDS_POST_PAGE } from '@/utils/html-ids'
 import TextAlignCenter from '@/atoms/icons/TextAlignCenter.vue'
 
 export default defineComponent({
-  name: 'PostScale',
+  name: 'TextAlign',
   components: {
     ArrowsOut,
     ArrowsIn,

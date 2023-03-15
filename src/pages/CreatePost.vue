@@ -316,7 +316,6 @@ export default defineComponent({
               ref="textarea"
               id="textarea"
               :spellcheck="false"
-              contenteditable="true"
               v-model="textContent"
               @keydown.tab.prevent="insertTab"
               @keydown.ctrl.s.prevent="save"
@@ -329,60 +328,6 @@ export default defineComponent({
         <button class="button">Submit</button>
       </div>
     </div>
-    <!-- Fazer isto aqui em forma de um toast, notificator -->
-    <!-- <div class="hidden lg:block">
-      <div
-        v-if="isFocused === 'title'"
-        class="max-w-[350px] text-[#F2F2F2] ml-4"
-      >
-        <h3 class="font-semibold text-xl text-[#F2F2F2]/80">
-          Writing a Great Post Title
-        </h3>
-        <span
-          class="text-[#F2F2F2]/50 text-sm !leading-[20px] mt-2 inline-block"
-        >
-          Think of your post title as a super short (but compelling!)
-          description — like an overview of the actual post in one short
-          sentence. Use keywords where appropriate to help ensure people can
-          find your post by search.
-        </span>
-      </div>
-      <div
-        v-if="isFocused === 'textarea'"
-        class="max-w-[350px] text-[#F2F2F2] ml-4"
-      >
-        <h3 class="font-semibold text-xl text-[#F2F2F2]/80">Editor Basics</h3>
-        <span
-          class="text-[#F2F2F2]/50 text-sm !leading-[20px] mt-2 inline-block"
-        >
-          Use Markdown to write and format posts. Commonly used syntax Embed
-          rich content such as Tweets, YouTube videos, etc. Use the complete
-          URL: {% embed https://... %}. See a list of supported embeds. In
-          addition to images for the post's content, you can also drag and drop
-          a cover image.
-        </span>
-      </div>
-      <div
-        v-if="isFocused === 'tags'"
-        class="max-w-[350px] text-[#F2F2F2] ml-4"
-      >
-        <h3 class="font-semibold text-xl text-[#F2F2F2]/80">
-          Tagging Guidelines
-        </h3>
-        <span
-          class="text-[#F2F2F2]/50 text-sm !leading-[20px] mt-2 inline-block"
-        >
-          Tags help people find your post. Think of tags as the topics or
-          categories that best describe your post. Add up to four
-          comma-separated tags per post. <br />
-          <br />
-          Combine tags to reach the appropriate subcommunities. <br />
-          <br />
-          Use existing tags whenever possible. Some tags, such as “help” or
-          “healthydebate”, have special posting guidelines.
-        </span>
-      </div>
-    </div> -->
   </div>
 </template>
 
