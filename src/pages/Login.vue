@@ -1,18 +1,29 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import Navbar from '@/components/navbar/Navbar.vue'
+import ChooseAvatarPopUp from '@/components/ChooseAvatarPopUp.vue'
 
 export default defineComponent({
   name: 'Login',
-  components: { Navbar },
+  components: { Navbar, ChooseAvatarPopUp },
+  setup() {
+    const proceedToChooseAvatar = ref(false)
+
+    function closedChooseAvatarObserver() {
+      proceedToChooseAvatar.value = false
+    }
+
+    return { proceedToChooseAvatar, closedChooseAvatarObserver }
+  },
 })
 </script>
 
 <template>
   <div class="bg-[#1a1a1a] text-[#F2F2F2] min-h-screen w-screen">
+    <portal-target name="chooseAvatarPopUp"></portal-target>
     <div class="max-w-[725px] h-full w-full mx-auto mb-8">
       <Navbar path="login" />
-      <div class="shadowww w-[650px] mx-auto p-4 bg-[#252525] rounded-sm">
+      <div class="shadowww w-full mx-auto py-8 px-14 rounded-sm">
         <div>
           <h1 class="text-4xl font-bold mb-8">Sign Up</h1>
         </div>
@@ -77,19 +88,34 @@ export default defineComponent({
             </label>
           </div>
         </div>
-        <div>
-          <h2 class="text-2xl font-bold text-center">Select your avatar!</h2>
-          <div class="w-full flex items-center justify-center h-48 relative">
+        <div class="mt-4">
+          <h2 class="text-2xl font-bold text-center mb-8">
+            Choose your avatar!
+          </h2>
+          <div class="w-full flex items-center justify-center h-32 relative">
             <div
-              class="box-animate w-28 h-28 absolute z-10 bg-gradient-to-t from-blue-500 to-violet-500 rounded-full mx-auto"
-            />
-            <div
-              class="w-[105px] h-[105px] pointer-events-none absolute z-50 bg-[#1a1a1a] rounded-full mx-auto"
-            />
-            <img
+              class="w-32 h-32 rounded-full hover:scale-105 ease-in-out active:scale-95 transition-all duration-150 relative cursor-pointer flex items-center justify-center"
+            >
+              <img
+                @click="proceedToChooseAvatar = true"
+                src="../assets/avatar-placeholder.svg"
+                class="inner-shadow w-32 bg-[#1A1A1A] absolute z-[100] rounded-full object-cover"
+              />
+              <ChooseAvatarPopUp
+                @closedChooseAvatarPopUp="closedChooseAvatarObserver"
+                v-if="proceedToChooseAvatar"
+              />
+              <!-- <img
               src="../assets/avatar01.png"
-              class="pendulum absolute pointer-events-none w-32 z-[100] mx-auto"
-            />
+              class="pendulum overflow-visible absolute pointer-events-none w-32 z-[100] mx-auto"
+            /> -->
+              <!-- <div
+                class="box-animate w-32 h-32  absolute z-10 bg-gradient-to-t from-blue-500 to-violet-500 rounded-full mx-auto"
+              />
+              <div
+                class="inner-shadow w-[120px] h-[120px] pointer-events-none  absolute z-50 bg-[#1a1a1a] rounded-full mx-auto"
+              /> -->
+            </div>
           </div>
         </div>
       </div>
@@ -98,8 +124,11 @@ export default defineComponent({
 </template>
 
 <style scoped>
+.inner-shadow {
+  box-shadow: inset 0 0 10px #00000080;
+}
 .shadowww {
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+  box-shadow: rgba(0, 0, 0, 0.459) 0px 20px 30px;
 }
 .form-control {
   position: relative;

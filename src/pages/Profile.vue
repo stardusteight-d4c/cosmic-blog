@@ -40,7 +40,7 @@ export default defineComponent({
             class="box-animate w-40 h-40 absolute z-10 bg-gradient-to-t from-blue-500 to-violet-500 rounded-full mx-auto"
           />
           <div
-            class="w-[150px] h-[150px] pointer-events-none absolute z-50 bg-[#1a1a1a] rounded-full mx-auto"
+            class="inner-shadow  w-[150px] h-[150px] pointer-events-none absolute z-50 bg-[#1a1a1a] rounded-full mx-auto"
           />
           <img
             src="../assets/my-memoji02.png"
@@ -185,6 +185,9 @@ export default defineComponent({
 </template>
 
 <style scoped>
+.inner-shadow {
+  box-shadow: inset 0 0 10px #00000080;
+}
 .box-animate {
   animation: scale 1s infinite alternate;
 }
