@@ -1,14 +1,44 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
+import { chooseAvatars } from '@/utils/mock-data'
+import { log } from 'console'
 
 export default defineComponent({
   name: 'ChooseAvatarPopUp',
   setup(_props, { emit }) {
+    const page = ref(1)
+    const avatars = chooseAvatars
+    const selectedAvatar = ref<null | string>(null)
+
+    const slicedAvatars = computed(() => {
+      const itemsPerPage = 3
+      const startIndex = (page.value - 1) * itemsPerPage
+      const endIndex = page.value * itemsPerPage
+      return avatars.slice(startIndex, endIndex)
+    })
+
     function handleCancel() {
       emit('closedChooseAvatarPopUp')
     }
+    function handleSelect() {
+      emit('selectedChooseAvatarPopUp', { id: selectedAvatar.value })
+      emit('closedChooseAvatarPopUp')
+    }
+
+    function handlePage() {
+      if (page.value === 1) {
+        page.value = 2
+      } else {
+        page.value = 1
+      }
+    }
 
     return {
+      page,
+      handlePage,
+      handleSelect,
+      selectedAvatar,
+      slicedAvatars,
       handleCancel,
     }
   },
@@ -28,25 +58,50 @@ export default defineComponent({
           class="text-center inline-block w-[250px] text-sm text-[#F2F2F2]/70 mt-2"
           >Now you can select and see how the avatar will look on your profile.
         </span>
-        <div class="grid grid-cols-3 my-8 px-2 gap-x-2 relative w-fit h-fit">
-          <ph-arrow-left :size="32" class="absolute -left-10 top-1/2 -translate-y-1/2 text-[#F2F2F2]/80 cursor-pointer" />
-          <ph-arrow-right :size="32" class="absolute -right-10 top-1/2 -translate-y-1/2 text-[#F2F2F2]/80 cursor-pointer" />
-          <img
-            src="../assets/avatar01.png"
-            class="w-24 col-span-1 cursor-pointer transition-all ease-in-out duration-300 hover:scale-105 hover:bg-white/5 rounded-md"
+        <div class="grid grid-cols-3 my-8 px-2 gap-x-4 relative w-fit h-fit">
+          <ph-arrow-left
+            @click="handlePage"
+            v-if="page === 2"
+            :size="32"
+            class="absolute -left-10 top-1/2 -translate-y-1/2 text-[#F2F2F2]/80 cursor-pointer"
+          />
+          <ph-arrow-right
+            @click="handlePage"
+            v-if="page === 1"
+            :size="32"
+            class="absolute -right-10 top-1/2 -translate-y-1/2 text-[#F2F2F2]/80 cursor-pointer"
           />
           <img
-            src="../assets/avatar02.png"
-            class="w-24 col-span-1 cursor-pointer transition-all ease-in-out duration-300 hover:scale-105 hover:bg-white/5 rounded-md"
+            @click="selectedAvatar = slicedAvatars[0].id"
+            :src="slicedAvatars[0].url"
+            :class="{
+              'scale-110 !bg-[#F2F2F2]/20':
+                selectedAvatar === slicedAvatars[0].id,
+              'w-24 p-2 col-span-1 cursor-pointer transition-all ease-in-out duration-300 hover:bg-[#F2F2F2]/5 rounded-md': true,
+            }"
           />
           <img
-            src="../assets/avatar03.png"
-            class="w-24 col-span-1 cursor-pointer transition-all ease-in-out duration-300 hover:scale-105 hover:bg-white/5 rounded-md"
+            @click="selectedAvatar = slicedAvatars[1].id"
+            :src="slicedAvatars[1].url"
+            :class="{
+              'scale-110 !bg-[#F2F2F2]/20':
+                selectedAvatar === slicedAvatars[1].id,
+              'w-24 p-2 col-span-1 cursor-pointer transition-all ease-in-out duration-300 hover:bg-[#F2F2F2]/5 rounded-md': true,
+            }"
+          />
+          <img
+            @click="selectedAvatar = slicedAvatars[2].id"
+            :src="slicedAvatars[2].url"
+            :class="{
+              'scale-110 !bg-[#F2F2F2]/20':
+                selectedAvatar === slicedAvatars[2].id,
+              'w-24 p-2 col-span-1 cursor-pointer transition-all ease-in-out duration-300 hover:bg-[#F2F2F2]/5 rounded-md': true,
+            }"
           />
         </div>
       </div>
       <div class="flex items-center mx-auto mt-4 gap-x-2 w-fit">
-        <button class="bg-blue-500">Select</button>
+        <button @click="handleSelect" class="bg-blue-500">Select</button>
         <button @click="handleCancel" class="bg-[#252525]">Cancel</button>
       </div>
     </div>

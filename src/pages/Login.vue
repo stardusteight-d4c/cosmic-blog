@@ -1,19 +1,42 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import Navbar from '@/components/navbar/Navbar.vue'
 import ChooseAvatarPopUp from '@/components/ChooseAvatarPopUp.vue'
+import { chooseAvatars } from '@/utils/mock-data'
 
 export default defineComponent({
   name: 'Login',
   components: { Navbar, ChooseAvatarPopUp },
   setup() {
     const proceedToChooseAvatar = ref(false)
+    const selectedAvatar = ref<null | string>(null)
 
     function closedChooseAvatarObserver() {
       proceedToChooseAvatar.value = false
     }
+    function selectedChooseAvatarPopUpObserver(payload: { id: string }) {
+      console.log(payload.id)
 
-    return { proceedToChooseAvatar, closedChooseAvatarObserver }
+      selectedAvatar.value = payload.id
+    }
+
+    function getUrlById(id: string): string | undefined {
+      const avatar = chooseAvatars.find((avatar) => avatar.id === id)
+      return avatar?.url
+    }
+
+    const avatarUrl = computed(() => {
+      return getUrlById(selectedAvatar.value!)
+    })
+
+    return {
+      proceedToChooseAvatar,
+      selectedAvatar,
+      avatarUrl,
+      chooseAvatars,
+      closedChooseAvatarObserver,
+      selectedChooseAvatarPopUpObserver,
+    }
   },
 })
 </script>
@@ -97,24 +120,32 @@ export default defineComponent({
               class="w-32 h-32 rounded-full hover:scale-105 ease-in-out active:scale-95 transition-all duration-150 relative cursor-pointer flex items-center justify-center"
             >
               <img
+                v-if="selectedAvatar === null"
                 @click="proceedToChooseAvatar = true"
                 src="../assets/avatar-placeholder.svg"
                 class="inner-shadow w-32 bg-[#1A1A1A] absolute z-[100] rounded-full object-cover"
               />
               <ChooseAvatarPopUp
+                @selectedChooseAvatarPopUp="selectedChooseAvatarPopUpObserver"
                 @closedChooseAvatarPopUp="closedChooseAvatarObserver"
                 v-if="proceedToChooseAvatar"
               />
-              <!-- <img
-              src="../assets/avatar01.png"
-              class="pendulum overflow-visible absolute pointer-events-none w-32 z-[100] mx-auto"
-            /> -->
-              <!-- <div
-                class="box-animate w-32 h-32  absolute z-10 bg-gradient-to-t from-blue-500 to-violet-500 rounded-full mx-auto"
-              />
               <div
-                class="inner-shadow w-[120px] h-[120px] pointer-events-none  absolute z-50 bg-[#1a1a1a] rounded-full mx-auto"
-              /> -->
+                @click="proceedToChooseAvatar = true"
+                v-if="selectedAvatar"
+                class="absolute inset-0 flex items-center justify-center"
+              >
+                <img
+                  :src="avatarUrl!"
+                  class="pendulum overflow-visible absolute pointer-events-none w-36 z-[100] mx-auto"
+                />
+                <div
+                  class="box-animate w-32 h-32 absolute z-10 bg-gradient-to-t from-blue-500 to-violet-500 rounded-full mx-auto"
+                />
+                <div
+                  class="inner-shadow w-[120px] h-[120px] pointer-events-none absolute z-50 bg-[#1a1a1a] rounded-full mx-auto"
+                />
+              </div>
             </div>
           </div>
         </div>

@@ -1,28 +1,57 @@
-import node from './assets/tech-icons/backend/node.svg'
-import fastify from './assets/tech-icons/backend/fastify.svg'
-import nest from './assets/tech-icons/backend/nest.svg'
-import docker from './assets/tech-icons/backend/docker.svg'
-import stripe from './assets/tech-icons/backend/stripe.svg'
+import node from '@/assets/tech-icons/backend/node.svg'
+import fastify from '@/assets/tech-icons/backend/fastify.svg'
+import nest from '@/assets/tech-icons/backend/nest.svg'
+import docker from '@/assets/tech-icons/backend/docker.svg'
+import stripe from '@/assets/tech-icons/backend/stripe.svg'
 
-import javascript from './assets/tech-icons/languages/javascript.svg'
-import typescript from './assets/tech-icons/languages/typescript.svg'
-import graphql from './assets/tech-icons/languages/graphql.svg'
-import html from './assets/tech-icons/languages/html.svg'
-import css from './assets/tech-icons/languages/css.svg'
+import javascript from '@/assets/tech-icons/languages/javascript.svg'
+import typescript from '@/assets/tech-icons/languages/typescript.svg'
+import graphql from '@/assets/tech-icons/languages/graphql.svg'
+import html from '@/assets/tech-icons/languages/html.svg'
+import css from '@/assets/tech-icons/languages/css.svg'
 
-import react from './assets/tech-icons/frontend/react.svg'
-import vue from './assets/tech-icons/frontend/vue.svg'
-import tailwindcss from './assets/tech-icons/frontend/tailwindcss.svg'
-import stitches from './assets/tech-icons/frontend/stitches.svg'
-import vite from './assets/tech-icons/frontend/vite.svg'
-import hygraph from './assets/tech-icons/frontend/hygraph.svg'
+import react from '@/assets/tech-icons/frontend/react.svg'
+import vue from '@/assets/tech-icons/frontend/vue.svg'
+import tailwindcss from '@/assets/tech-icons/frontend/tailwindcss.svg'
+import stitches from '@/assets/tech-icons/frontend/stitches.svg'
+import vite from '@/assets/tech-icons/frontend/vite.svg'
+import hygraph from '@/assets/tech-icons/frontend/hygraph.svg'
 
-import mongodb from './assets/tech-icons/databases/mongodb.svg'
-import mysql from './assets/tech-icons/databases/mysql.svg'
-import knex from './assets/tech-icons/databases/knex.svg'
-import mongoose from './assets/tech-icons/databases/mongoose.svg'
-import prisma from './assets/tech-icons/databases/prisma.svg'
-import supabase from './assets/tech-icons/databases/supabase.svg'
+import mongodb from '@/assets/tech-icons/databases/mongodb.svg'
+import mysql from '@/assets/tech-icons/databases/mysql.svg'
+import knex from '@/assets/tech-icons/databases/knex.svg'
+import mongoose from '@/assets/tech-icons/databases/mongoose.svg'
+import prisma from '@/assets/tech-icons/databases/prisma.svg'
+import supabase from '@/assets/tech-icons/databases/supabase.svg'
+
+import Mavatar0101 from '@/assets/avatars/m-avatar-01-1.png'
+import Mavatar0102 from '@/assets/avatars/m-avatar-01-2.png'
+import Mavatar0103 from '@/assets/avatars/m-avatar-01-3.png'
+
+import Favatar0101 from '@/assets/avatars/f-avatar-01-1.png'
+import Favatar0102 from '@/assets/avatars/f-avatar-01-2.png'
+import Favatar0103 from '@/assets/avatars/f-avatar-01-3.png'
+
+import Mavatar0201 from '@/assets/avatars/m-avatar-02-1.png'
+import Mavatar0202 from '@/assets/avatars/m-avatar-02-2.png'
+import Mavatar0203 from '@/assets/avatars/m-avatar-02-3.png'
+
+import Favatar0201 from '@/assets/avatars/f-avatar-02-1.png'
+import Favatar0202 from '@/assets/avatars/f-avatar-02-2.png'
+import Favatar0203 from '@/assets/avatars/f-avatar-02-3.png'
+
+import Mavatar0301 from '@/assets/avatars/m-avatar-03-1.png'
+import Mavatar0302 from '@/assets/avatars/m-avatar-03-2.png'
+import Mavatar0303 from '@/assets/avatars/m-avatar-03-3.png'
+
+import Favatar0301 from '@/assets/avatars/f-avatar-03-1.png'
+import Favatar0302 from '@/assets/avatars/f-avatar-03-2.png'
+import Favatar0303 from '@/assets/avatars/f-avatar-03-3.png'
+
+interface ChooseAvatars {
+  url: string
+  id: string
+}
 
 interface Techs {
   backend: Array<string>
@@ -30,6 +59,15 @@ interface Techs {
   frontend: Array<string>
   database: Array<string>
 }
+
+export const chooseAvatars: Array<ChooseAvatars> = [
+  { url: Mavatar0101, id: 'Mavatar01' },
+  { url: Favatar0101, id: 'Favatar01' },
+  { url: Mavatar0201, id: 'Mavatar02' },
+  { url: Favatar0201, id: 'Favatar02' },
+  { url: Mavatar0301, id: 'Mavatar03' },
+  { url: Favatar0301, id: 'Favatar03' },
+]
 
 export const techs: Techs = {
   backend: [node, fastify, nest, docker, stripe],
