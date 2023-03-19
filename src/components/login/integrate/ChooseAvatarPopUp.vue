@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
 import { chooseAvatars } from '@/utils/mock-data'
-import { log } from 'console'
 
 export default defineComponent({
   name: 'ChooseAvatarPopUp',
