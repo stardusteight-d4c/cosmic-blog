@@ -4,7 +4,7 @@ import {
   Chat as ChatIcon,
   Star as StarIcon,
   Calendar as CalendarIcon,
-} from '@/atoms/icons'
+} from '@globals/atoms/icons'
 import * as marked from 'marked'
 import { dateFormat } from '@/utils/date-format'
 import { placeholder } from '@/utils/placeholder'

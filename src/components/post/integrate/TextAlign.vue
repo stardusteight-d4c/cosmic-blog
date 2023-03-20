@@ -1,10 +1,10 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { ArrowsIn, ArrowsOut } from '@/atoms/icons'
-import TextAlignJustify from '@/atoms/icons/TextAlignJustify.vue'
-import TextAlignLeft from '@/atoms/icons/TextAlignLeft.vue'
+import { ArrowsIn, ArrowsOut } from '@globals/atoms/icons'
+import TextAlignJustify from '@globals/atoms/icons/TextAlignJustify.vue'
+import TextAlignLeft from '@globals/atoms/icons/TextAlignLeft.vue'
 import { HTML_ELEMENT_IDS_POST_PAGE } from '@/utils/html-ids'
-import TextAlignCenter from '@/atoms/icons/TextAlignCenter.vue'
+import TextAlignCenter from '@globals/atoms/icons/TextAlignCenter.vue'
 
 export default defineComponent({
   name: 'TextAlign',
@@ -37,7 +37,9 @@ export default defineComponent({
 
 <template>
   <div class="flex items-center gap-x-2 group">
-    <span class="animate-span font-medium bg-black/90 rounded-full px-4 py-2 hidden group-hover:block text-[#F2F2F2]/70">
+    <span
+      class="animate-span font-medium bg-black/90 rounded-full px-4 py-2 hidden group-hover:block text-[#F2F2F2]/70"
+    >
       {{
         (textAlign === 'justify' && 'Align Justify') ||
         (textAlign === 'left' && 'Align Left')

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import Lightbulb from '@/atoms/icons/Lightbulb.vue'
+import Lightbulb from '@globals/atoms/icons/Lightbulb.vue'
 import { HTML_ELEMENT_IDS_POST_PAGE } from '@/utils/html-ids'
 
 export default defineComponent({

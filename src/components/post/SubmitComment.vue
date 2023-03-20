@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
-import Send from '@/atoms/icons/Send.vue'
+import Send from '@globals/atoms/icons/Send.vue'
 
 export default defineComponent({
   name: 'SubmitComment',

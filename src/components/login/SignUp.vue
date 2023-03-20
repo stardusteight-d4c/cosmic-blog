@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import ArrowRight from '@/atoms/icons/ArrowRight.vue'
+import ArrowRight from '@globals/atoms/icons/ArrowRight.vue'
 import ChooseAvatarPopUp from '@/components/login/integrate/ChooseAvatarPopUp.vue'
 import ChooseAvatarForm from '@/components/login/ChooseAvatarForm.vue'
 

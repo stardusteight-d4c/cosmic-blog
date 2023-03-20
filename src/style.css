@@ -18,7 +18,63 @@ body {
   border-radius: 20px;
 }
 
+/* Navbar Profile Animation */
+.spinner {
+  background-image: linear-gradient(#8b5cf6 35%, #3b82f6);
+  width: 24px;
+  height: 24px;
+  animation: spinning82341 1.7s linear infinite;
+  text-align: center;
+  border-radius: 50px;
+  cursor: pointer;
+  filter: blur(1px);
+  box-shadow: 0px -5px 20px 0px #8b5cf6, 0px 5px 20px 0px #3b82f6;
+}
+.spinner1 {
+  background-color: rgb(36, 36, 36);
+  width: 24px;
+  height: 24px;
+  border-radius: 50px;
+  filter: blur(10px);
+}
+@keyframes spinning82341 {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
+/* Header Dropdown Triangle */
+.triangle {
+  width: 15px;
+  height: 10px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
 
-
+/* Header Techs Animations */
+@keyframes tech-from-up {
+  0% {
+    transform: translate3d(0px, -150px, 0px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0px, 0px, 0px);
+    opacity: 1;
+  }
+}
+@keyframes tech-from-down {
+  0% {
+    transform: translate3d(0px, 150px, 0px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0px, 0px, 0px);
+    opacity: 1;
+  }
+}
+.animate-tech-from-up {
+  animation: tech-from-up 0.7s ease-out;
+}
+.animate-tech-from-down {
+  animation: tech-from-down 0.7s ease-out;
+}
 

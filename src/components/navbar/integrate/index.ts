@@ -1,6 +1,6 @@
 import Logo from './Logo.vue'
-import NewPostButton from './NewPostButton.vue'
-import LoginButton from './LoginButton.vue'
-import ProfileButton from './ProfileButton.vue'
+import ButtonNewPost from './ButtonNewPost.vue'
+import ButtonLogin from './ButtonLogin.vue'
+import ButtonProfile from './ButtonProfile.vue'
 
-export { Logo, NewPostButton, LoginButton, ProfileButton }
+export { Logo, ButtonNewPost, ButtonLogin, ButtonProfile }

@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import headerBackground from '@/assets/hero.png'
-import TechItem from './integrate/TechItem.vue'
-import Memoji from './integrate/Memoji.vue'
-import { headerStyles } from './styles'
+import { TechItem, Memoji } from './integrate'
+import { headerStyles as css } from './styles'
 type Types = 'backend' | 'language' | 'frontend' | 'database'
 
-const css = headerStyles
 const types: Array<Types> = ['backend', 'language', 'frontend', 'database']
 </script>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AppLogo from '@/atoms/icons/AppLogo.vue'
+import AppLogo from '@globals/atoms/icons/AppLogo.vue'
 
 export default defineComponent({
   name: 'Logo',

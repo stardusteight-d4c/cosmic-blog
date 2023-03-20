@@ -3,9 +3,8 @@ import { ref } from 'vue'
 import myMemoji01 from '@/assets/my-memoji01.png'
 import myMemoji02 from '@/assets/my-memoji02.png'
 import myMemoji03 from '@/assets/my-memoji03.png'
-import { memojiStyles } from './styles'
+import { memojiStyles as css } from './styles'
 
-const css = memojiStyles
 const memojis: string[] = [myMemoji01, myMemoji02, myMemoji03]
 const currentMemoji = ref(0)
 

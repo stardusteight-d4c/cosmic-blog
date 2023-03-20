@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, defineProps } from 'vue'
 import { techs, descriptions } from '@/utils/data'
-import { techItemStyles } from './styles'
+import { techItemStyles as css } from './styles'
 type Techs = 'backend' | 'language' | 'frontend' | 'database'
 
 const props = defineProps({
@@ -15,7 +15,6 @@ const props = defineProps({
   },
 })
 
-const css = techItemStyles
 const currentTechs = ref([0, 0, 0, 0])
 
 function handleTechs(array: Techs) {
@@ -48,40 +47,3 @@ function isEven(number: number): boolean {
     </div>
   </div>
 </template>
-
-<style scoped>
-.triangle {
-  width: 15px;
-  height: 10px;
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-}
-
-@keyframes tech-from-up {
-  0% {
-    transform: translate3d(0px, -150px, 0px);
-    opacity: 0;
-  }
-  100% {
-    transform: translate3d(0px, 0px, 0px);
-    opacity: 1;
-  }
-}
-
-@keyframes tech-from-down {
-  0% {
-    transform: translate3d(0px, 150px, 0px);
-    opacity: 0;
-  }
-  100% {
-    transform: translate3d(0px, 0px, 0px);
-    opacity: 1;
-  }
-}
-
-.animate-tech-from-up {
-  animation: tech-from-up 0.7s ease-out;
-}
-.animate-tech-from-down {
-  animation: tech-from-down 0.7s ease-out;
-}
-</style>

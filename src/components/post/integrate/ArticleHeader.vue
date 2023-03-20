@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Star from '@/atoms/icons/Star.vue'
+import Star from '@globals/atoms/icons/Star.vue'
 import CoverPlaceholder from '@/assets/cover-placeholder.webp'
 
 export default defineComponent({

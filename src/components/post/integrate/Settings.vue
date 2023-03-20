@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
-import { ArrowsIn, ArrowsOut } from '@/atoms/icons'
+import { ArrowsIn, ArrowsOut } from '@globals/atoms/icons'
 import { HTML_ELEMENT_IDS_POST_PAGE } from '@/utils/html-ids'
 
 export default defineComponent({

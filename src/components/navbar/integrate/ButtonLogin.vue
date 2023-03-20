@@ -1,18 +1,18 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Pen from '@/atoms/icons/Pen.vue'
+import ArrowRight from '@globals/atoms/icons/ArrowRight.vue'
 
 export default defineComponent({
-  name: 'NewPostButton',
-  components: { Pen },
+  name: 'LoginButton',
+  components: { ArrowRight },
 })
 </script>
 
 <template>
-  <router-link to="/create-post">
+  <router-link to="/login">
     <button>
-      <Pen />
-      New
+      <ArrowRight />
+      Login
     </button>
   </router-link>
 </template>

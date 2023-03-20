@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { baseLayoutSlotStyles } from './styles'
-
-const css = baseLayoutSlotStyles
+import { baseLayoutSlotStyles as css } from './styles'
 </script>
 
 <template>
