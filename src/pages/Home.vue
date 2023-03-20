@@ -1,5 +1,4 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import Navbar from '@/components/navbar/Navbar.vue'
 import {
   BaseLayoutSlot,
@@ -8,12 +7,6 @@ import {
   PostGallery,
   Footer,
 } from '@/components/home'
-
-export default defineComponent({
-  name: 'Home',
-  components: { BaseLayoutSlot, Navbar, Header, Bio, PostGallery, Footer },
-  setup() {},
-})
 </script>
 
 <template>
