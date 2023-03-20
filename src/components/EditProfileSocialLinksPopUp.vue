@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { socialNetworks } from '@/utils/data'
 import { removeScrollBehavior } from '@/utils/remove-scroll-behavior'
 import { restoreScrollBehavior } from '@/utils/restore-scroll-behavior'
@@ -10,8 +10,36 @@ export default defineComponent({
   setup(_props, { emit }) {
     const showSocialNetworks = ref(false)
     const selectedSocialNetwork = ref(socialNetworks[0])
-
     removeScrollBehavior()
+
+    function detectClickOutsideElement(event: MouseEvent, elementID: string) {
+      const element: HTMLElement = document.getElementById(elementID)!
+      const clickedOutside =
+        !element.contains(event.target as Node) &&
+        !element.isSameNode(event.target as Node)
+      return clickedOutside
+    }
+
+    const handleClickOutsideOfNetworksListDropDown = (event: MouseEvent) => {
+      const clickedOutside = detectClickOutsideElement(event, 'networksList')
+      if (clickedOutside && showSocialNetworks.value === true) {
+        showSocialNetworks.value = false
+      }
+    }
+
+    onMounted(() => {
+      document.addEventListener(
+        'click',
+        handleClickOutsideOfNetworksListDropDown
+      )
+    })
+
+    onUnmounted(() => {
+      document.removeEventListener(
+        'click',
+        handleClickOutsideOfNetworksListDropDown
+      )
+    })
 
     function handleCancel() {
       restoreScrollBehavior()
@@ -45,6 +73,7 @@ export default defineComponent({
         </span>
         <div class="flex items-center gap-x-2 mt-4">
           <div
+            id="networksList"
             @click="showSocialNetworks = !showSocialNetworks"
             class="bg-[#1A1A1A] relative p-1 rounded-md cursor-pointer border border-[#F2F2F220]"
           >
