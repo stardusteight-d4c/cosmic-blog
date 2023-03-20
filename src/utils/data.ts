@@ -48,6 +48,13 @@ import Favatar0301 from '@/assets/avatars/f-avatar-03-1.png'
 import Favatar0302 from '@/assets/avatars/f-avatar-03-2.png'
 import Favatar0303 from '@/assets/avatars/f-avatar-03-3.png'
 
+import github from '@/assets/social/github.svg'
+import linkedin from '@/assets/social/linkedin.svg'
+import instagram from '@/assets/social/instagram.svg'
+import twitter from '@/assets/social/twitter.svg'
+import facebook from '@/assets/social/facebook.svg'
+import email from '@/assets/social/email.svg'
+
 interface ChooseAvatars {
   url: string
   id: string
@@ -59,6 +66,20 @@ interface Techs {
   frontend: Array<string>
   database: Array<string>
 }
+
+interface SocialNetwork {
+  url: string
+  name: string
+}
+
+export const socialNetworks: Array<SocialNetwork> = [
+  { url: github, name: 'Github' },
+  { url: linkedin, name: 'LinkedIn' },
+  { url: instagram, name: 'Instagram' },
+  { url: twitter, name: 'Twitter' },
+  { url: facebook, name: 'Facebook' },
+  { url: email, name: 'Email' },
+]
 
 export const chooseAvatars: Array<ChooseAvatars> = [
   { url: Mavatar0101, id: 'Mavatar01' },

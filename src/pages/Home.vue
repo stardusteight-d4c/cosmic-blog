@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
-import { techs, descriptions } from '../utils/mock-data'
+import { techs, descriptions } from '../utils/data'
 import myMemoji01 from '../assets/my-memoji01.png'
 import myMemoji02 from '../assets/my-memoji02.png'
 import myMemoji03 from '../assets/my-memoji03.png'

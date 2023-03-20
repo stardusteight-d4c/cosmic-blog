@@ -14,6 +14,7 @@
     "marked": "^4.2.12",
     "phosphor-vue": "^4.4.1",
     "portal-vue": "^3.0.0",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
     "vue3-highlightjs": "^1.0.5",

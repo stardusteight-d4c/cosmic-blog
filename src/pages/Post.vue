@@ -68,7 +68,7 @@ export default defineComponent({
   <div class="bg-[#1a1a1a] text-[#F2F2F2] h-fit overflow-hidden w-screen">
     <portal-target name="deletePopUp"></portal-target>
     <div
-      class="flex flex-col items-end justify-end gap-y-4 w-fit h-fit fixed bottom-4 right-4"
+      class="flex z-[1000] flex-col items-end justify-end gap-y-4 w-fit h-fit fixed bottom-4 right-4"
     >
       <TextOpacity />
       <TextAlign />

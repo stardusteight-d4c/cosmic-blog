@@ -1,20 +1,16 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import Navbar from '../components/navbar/Navbar.vue'
-import github from '../assets/social/github.svg'
-import linkedin from '../assets/social/linkedin.svg'
-import instagram from '../assets/social/instagram.svg'
-import twitter from '../assets/social/twitter.svg'
-import facebook from '../assets/social/facebook.svg'
-import email from '../assets/social/email.svg'
 import star from '../assets/star.svg'
 import comment from '../assets/comment.svg'
 import PostCard from '../components/post/globals/Card.vue'
+import EditProfileSocialLinks from '@/components/EditProfileSocialLinksPopUp.vue'
+import { socialNetworks } from '@/utils/data'
 
 export default defineComponent({
   name: 'Profile',
-  components: { Navbar, PostCard },
+  components: { Navbar, PostCard, EditProfileSocialLinks },
   computed: {
     username(): string {
       return String(this.$route.params.username)
@@ -23,15 +19,26 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const username = route.params.username
-    const networks = [github, linkedin, instagram, twitter, facebook, email]
+    const editSocialLinks = ref(false)
 
-    return { networks, star, comment }
+    function closedEditSocialLinksPopUpObserver() {
+      editSocialLinks.value = false
+    }
+
+    return {
+      socialNetworks,
+      star,
+      comment,
+      editSocialLinks,
+      closedEditSocialLinksPopUpObserver,
+    }
   },
 })
 </script>
 
 <template>
   <div class="bg-[#1a1a1a] text-[#F2F2F2] w-screen">
+    <portal-target name="editProfileSocialLinks"></portal-target>
     <Navbar v-bind:path="username" />
     <div class="max-w-[725px] w-full mx-auto">
       <div>
@@ -40,12 +47,25 @@ export default defineComponent({
             class="box-animate w-40 h-40 absolute z-10 bg-gradient-to-t from-blue-500 to-violet-500 rounded-full mx-auto"
           />
           <div
-            class="inner-shadow  w-[150px] h-[150px] pointer-events-none absolute z-50 bg-[#1a1a1a] rounded-full mx-auto"
+            class="inner-shadow w-[150px] h-[150px] pointer-events-none absolute z-50 bg-[#1a1a1a] rounded-full mx-auto"
           />
-          <img
-            src="../assets/my-memoji02.png"
-            class="pendulum absolute pointer-events-none w-48 z-[100] mx-auto"
-          />
+          <div class="absolute w-48 h-48">
+            <img
+              src="../assets/my-memoji02.png"
+              class="pendulum absolute top-0 pointer-events-none w-48 z-[100] mx-auto"
+            />
+            <ph-pencil-line
+              @click="editSocialLinks = true"
+              :size="38"
+              class="inner-shadow hover:scale-105 transition-all cursor-pointer absolute bg-[#1a1a1a] text-[#f2f2f2] p-2 rounded-full top-5 right-4 z-[200]"
+            />
+            <EditProfileSocialLinks
+              v-if="editSocialLinks"
+              @closedEditProfileSocialLinksPopUp="
+                closedEditSocialLinksPopUpObserver
+              "
+            />
+          </div>
         </div>
         <div class="flex flex-col items-center justify-center">
           <h1 class="capitalize font-semibold text-3xl mt-2">
@@ -55,40 +75,11 @@ export default defineComponent({
             class="flex items-center justify-center flex-wrap gap-x-4 w-[300px] mt-4"
           >
             <a
+              v-for="social in socialNetworks"
               href=""
               target="_blank"
               class="flex transition-all duration-300 ease-in-out items-center gap-x-1 text-[#F2F2F2]/70 w-fit font-medium border-b border-b-transparent hover:border-b-[#F2F2F2]/70"
-              ><img :src="networks[0]" alt="GitHub" width="20" />GitHub</a
-            >
-            <a
-              href=""
-              target="_blank"
-              class="flex transition-all duration-300 ease-in-out items-center gap-x-1 text-[#F2F2F2]/70 w-fit font-medium border-b border-b-transparent hover:border-b-[#F2F2F2]/70"
-              ><img :src="networks[1]" alt="LinkedIn" width="20" />LinkedIn</a
-            >
-            <a
-              href=""
-              target="_blank"
-              class="flex transition-all duration-300 ease-in-out items-center gap-x-1 text-[#F2F2F2]/70 w-fit font-medium border-b border-b-transparent hover:border-b-[#F2F2F2]/70"
-              ><img :src="networks[2]" alt="Instagram" width="20" />Instagram</a
-            >
-            <a
-              href=""
-              target="_blank"
-              class="flex transition-all duration-300 ease-in-out items-center gap-x-1 text-[#F2F2F2]/70 w-fit font-medium border-b border-b-transparent hover:border-b-[#F2F2F2]/70"
-              ><img :src="networks[3]" alt="Twitter" width="20" />Twitter</a
-            >
-            <a
-              href=""
-              target="_blank"
-              class="flex transition-all duration-300 ease-in-out items-center gap-x-1 text-[#F2F2F2]/70 w-fit font-medium border-b border-b-transparent hover:border-b-[#F2F2F2]/70"
-              ><img :src="networks[4]" alt="Facebook" width="20" />Facebook</a
-            >
-            <a
-              href=""
-              target="_blank"
-              class="flex transition-all duration-300 ease-in-out items-center gap-x-1 text-[#F2F2F2]/70 w-fit font-medium border-b border-b-transparent hover:border-b-[#F2F2F2]/70"
-              ><img :src="networks[5]" alt="Email" width="20" />Email</a
+              ><img :src="social.url" width="20" />{{ social.name }}</a
             >
           </div>
         </div>
@@ -113,10 +104,10 @@ export default defineComponent({
               <h3 class="text-xl text-[#f2f2f2]/70 font-medium">Comments</h3>
               <img :src="comment" class="w-6" />
             </div>
-            <div
-              class="flex flex-col mb-28 items-center gap-y-4 mt-4"
-            >
-              <div class="bg-[#252525] p-2 rounded-sm hover:scale-[1.02] transition-all duration-100 ease-linear hover:shadow-md hover:shadow-black/20 cursor-pointer">
+            <div class="flex flex-col mb-28 items-center gap-y-4 mt-4">
+              <div
+                class="bg-[#252525] p-2 rounded-sm hover:scale-[1.02] transition-all duration-100 ease-linear hover:shadow-md hover:shadow-black/20 cursor-pointer"
+              >
                 <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
                   GO! RN - Gestão de conhecimento focado em evolução do time
                 </h2>
@@ -136,7 +127,9 @@ export default defineComponent({
                   sequi, cupiditate deserunt.</span
                 >
               </div>
-              <div class="bg-[#252525] p-2 rounded-sm hover:scale-[1.02] transition-all duration-100 ease-linear hover:shadow-md hover:shadow-black/20 cursor-pointer">
+              <div
+                class="bg-[#252525] p-2 rounded-sm hover:scale-[1.02] transition-all duration-100 ease-linear hover:shadow-md hover:shadow-black/20 cursor-pointer"
+              >
                 <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
                   GO! RN - Gestão de conhecimento focado em evolução do time
                 </h2>
@@ -156,7 +149,9 @@ export default defineComponent({
                   sequi, cupiditate deserunt.</span
                 >
               </div>
-              <div class="bg-[#252525] p-2 rounded-sm hover:scale-[1.02] transition-all duration-100 ease-linear hover:shadow-md hover:shadow-black/20 cursor-pointer">
+              <div
+                class="bg-[#252525] p-2 rounded-sm hover:scale-[1.02] transition-all duration-100 ease-linear hover:shadow-md hover:shadow-black/20 cursor-pointer"
+              >
                 <h2 class="leading-5 h-[40px] line-clamp-2 font-medium">
                   GO! RN - Gestão de conhecimento focado em evolução do time
                 </h2>

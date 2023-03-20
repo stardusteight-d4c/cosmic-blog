@@ -32,7 +32,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const htmlBody = ref(marked.marked(props.body))
+    const htmlBody = ref(marked.marked(placeholder))
     const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
 
     return { props, htmlBody, dateFormat, HTML_ID }

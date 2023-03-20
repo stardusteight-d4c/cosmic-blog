@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
 import ChooseAvatarPopUp from '@/components/login/integrate/ChooseAvatarPopUp.vue'
-import { chooseAvatars } from '@/utils/mock-data'
+import { chooseAvatars } from '@/utils/data'
 import avatarPlaceholder from '@/assets/avatar-placeholder.svg'
 
 export default defineComponent({

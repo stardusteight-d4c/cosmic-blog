@@ -29,10 +29,10 @@ export default defineComponent({
   },
 })
 </script>
-
+<!-- No donut se a escala estiver em +30% ao a cada 3% adicionar 1% -->
 <template>
   <div class="flex items-center gap-x-2 group">
-    <span class="animate-span hidden group-hover:block text-[#F2F2F2]/70"
+    <span class="animate-span font-medium bg-black/90 rounded-full px-4 py-2 hidden group-hover:block text-[#F2F2F2]/70"
       >Progress {{ parseInt(scrollPercentage.toFixed(0)) }}%
     </span>
     <div
