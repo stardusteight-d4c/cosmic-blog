@@ -1,5 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { removeScrollBehavior } from '@/utils/remove-scroll-behavior'
+import { restoreScrollBehavior } from '@/utils/restore-scroll-behavior'
 
 export default defineComponent({
   name: 'SavePopUp',
@@ -12,7 +14,10 @@ export default defineComponent({
       emit('closedSavePopUp')
     }
 
+    removeScrollBehavior()
+
     function handleCancel() {
+      restoreScrollBehavior()
       emit('closedSavePopUp')
     }
 

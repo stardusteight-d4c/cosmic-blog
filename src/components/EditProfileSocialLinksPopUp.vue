@@ -1,6 +1,9 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import { socialNetworks } from '@/utils/data'
+import { removeScrollBehavior } from '@/utils/remove-scroll-behavior'
+import { restoreScrollBehavior } from '@/utils/restore-scroll-behavior'
+
 // fazer a validação se de fato é um link de perfil da rede social
 export default defineComponent({
   name: 'EditProfileSocialLinksPopUp',
@@ -8,7 +11,10 @@ export default defineComponent({
     const showSocialNetworks = ref(false)
     const selectedSocialNetwork = ref(socialNetworks[0])
 
+    removeScrollBehavior()
+
     function handleCancel() {
+      restoreScrollBehavior()
       emit('closedEditProfileSocialLinksPopUp')
     }
 
