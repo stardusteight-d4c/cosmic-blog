@@ -1,8 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
 import { chooseAvatars } from '@/utils/data'
-import { removeScrollBehavior } from '@/utils/remove-scroll-behavior'
-import { restoreScrollBehavior } from '@/utils/restore-scroll-behavior'
 
 export default defineComponent({
   name: 'ChooseAvatarPopUp',
@@ -10,8 +8,6 @@ export default defineComponent({
     const page = ref(1)
     const avatars = chooseAvatars
     const selectedAvatar = ref<null | string>(null)
-
-    removeScrollBehavior()
 
     const slicedAvatars = computed(() => {
       const itemsPerPage = 3
@@ -21,7 +17,6 @@ export default defineComponent({
     })
 
     function handleCancel() {
-      restoreScrollBehavior()
       emit('closedChooseAvatarPopUp')
     }
     function handleSelect() {

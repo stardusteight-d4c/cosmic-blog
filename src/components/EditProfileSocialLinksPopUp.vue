@@ -1,8 +1,6 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { socialNetworks } from '@/utils/data'
-import { removeScrollBehavior } from '@/utils/remove-scroll-behavior'
-import { restoreScrollBehavior } from '@/utils/restore-scroll-behavior'
 
 // fazer a validação se de fato é um link de perfil da rede social
 export default defineComponent({
@@ -10,7 +8,6 @@ export default defineComponent({
   setup(_props, { emit }) {
     const showSocialNetworks = ref(false)
     const selectedSocialNetwork = ref(socialNetworks[0])
-    removeScrollBehavior()
 
     function detectClickOutsideElement(event: MouseEvent, elementID: string) {
       const element: HTMLElement = document.getElementById(elementID)!
@@ -42,7 +39,6 @@ export default defineComponent({
     })
 
     function handleCancel() {
-      restoreScrollBehavior()
       emit('closedEditProfileSocialLinksPopUp')
     }
 

@@ -1,0 +1,5 @@
+export { default as BaseLayoutSlot } from './BaseLayoutSlot.vue'
+export { default as Header } from './Header.vue'
+export { default as Bio } from './Bio.vue'
+export { default as PostGallery } from './PostGallery.vue'
+export { default as Footer } from './Footer.vue'

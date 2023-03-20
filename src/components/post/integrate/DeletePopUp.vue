@@ -1,15 +1,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { removeScrollBehavior } from '@/utils/remove-scroll-behavior'
-import { restoreScrollBehavior } from '@/utils/restore-scroll-behavior'
 
 export default defineComponent({
   name: 'DeletePopUp',
   setup(_props, { emit }) {
-    removeScrollBehavior()
 
     function handleCancel() {
-      restoreScrollBehavior()
       emit('closedDeletePopUp')
     }
 
