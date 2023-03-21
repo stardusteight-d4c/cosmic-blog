@@ -7,8 +7,8 @@ import {
   watch,
   nextTick,
 } from 'vue'
-import { HTML_ELEMENT_IDS_POST_PAGE } from '../../utils/html-ids'
-import DeletePopUp from './integrate/DeletePopUp.vue'
+import { HTML_ELEMENT_IDS_POST_PAGE } from '../../../utils/html-ids'
+import DeletePopUp from './DeletePopUp.vue'
 // Quando o usuário clicar em seu comentário em Profile redirecioanar para o post e seu comentário
 // Inserir dinâmicamente uma propriedade ID no wrapper do comentário com o id do Comentário no Banco de Dados
 // http://localhost:5173/post/455446461/#IDdoComentário

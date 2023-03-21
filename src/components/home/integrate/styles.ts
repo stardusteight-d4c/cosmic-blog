@@ -30,7 +30,7 @@ export const searchBarStyles = {
 
 export const paginationStyles = {
   wrapper: `flex items-center justify-end mt-4 text-[#7c7c7c]`,
-  arrowLeft: `cursor-pointer hover:text-[#b8b8b8] p-1 rotate-180`,
+  arrowLeft: `cursor-pointer hover:text-[#b8b8b8] p-1 rotate-180 antialiased`,
   pageCount: `text-2xl mx-1 font-semibold`,
   arrowRight: `cursor-pointer hover:text-[#b8b8b8] p-1`,
 }

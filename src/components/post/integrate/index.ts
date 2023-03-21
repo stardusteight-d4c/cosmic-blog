@@ -1,0 +1,8 @@
+export { default as ProgressBar } from './ProgressBar.vue'
+export { default as Scale } from './Scale.vue'
+export { default as Align } from './Align.vue'
+export { default as Opacity } from './Opacity.vue'
+export { default as SubmitComment } from './SubmitComment.vue'
+export { default as Comment } from './Comment.vue'
+export { default as Pagination } from './Pagination.vue'
+export { default as Options } from './Options.vue'

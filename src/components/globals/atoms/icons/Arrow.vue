@@ -5,7 +5,7 @@
     stroke-linejoin="round"
     stroke-linecap="round"
     fill="currentColor"
-    stroke-width="3"
+    stroke-width="2"
     stroke="currentColor"
     height="24"
     width="24"
