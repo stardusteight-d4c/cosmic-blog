@@ -1,73 +1,38 @@
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { ArrowsIn, ArrowsOut } from '@globals/atoms/icons'
-import TextAlignJustify from '@globals/atoms/icons/TextAlignJustify.vue'
-import TextAlignLeft from '@globals/atoms/icons/TextAlignLeft.vue'
-import { HTML_ELEMENT_IDS_POST_PAGE } from '@/utils/html-ids'
-import TextAlignCenter from '@globals/atoms/icons/TextAlignCenter.vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { AlignLeft, AlignJustify } from '@globals/atoms/icons'
+import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
+import { alignStyles as css } from './styles'
 
-export default defineComponent({
-  name: 'TextAlign',
-  components: {
-    ArrowsOut,
-    ArrowsIn,
-    TextAlignJustify,
-    TextAlignLeft,
-    TextAlignCenter,
-  },
-  setup(_props, { emit }) {
-    const textAlign = ref<'left' | 'justify' | 'center'>('left')
-    const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
+const textAlign = ref<'left' | 'justify' | 'center'>('left')
 
-    function handleTextAlign() {
-      const htmlBody = document.getElementById(HTML_ID.htmlBody)!
+function handleTextAlign() {
+  const htmlBody = document.getElementById(ids.htmlBody)!
+  if (textAlign.value === 'left') {
+    textAlign.value = 'justify'
+    htmlBody.style.textAlign = 'justify'
+  } else if (textAlign.value === 'justify') {
+    textAlign.value = 'left'
+    htmlBody.style.textAlign = 'left'
+  }
+}
 
-      if (textAlign.value === 'left') {
-        textAlign.value = 'justify'
-        htmlBody.style.textAlign = 'justify'
-      } else if (textAlign.value === 'justify') {
-        textAlign.value = 'left'
-        htmlBody.style.textAlign = 'left'
-      }
-    }
-    return { textAlign, handleTextAlign }
-  },
-})
+function handleSpanText() {
+  return (
+    (textAlign.value === 'justify' && 'Align Justify') ||
+    (textAlign.value === 'left' && 'Align Left')
+  )
+}
 </script>
 
 <template>
-  <div class="flex items-center gap-x-2 group">
-    <span
-      class="animate-span font-medium bg-black/90 rounded-full px-4 py-2 hidden group-hover:block text-[#F2F2F2]/70"
-    >
-      {{
-        (textAlign === 'justify' && 'Align Justify') ||
-        (textAlign === 'left' && 'Align Left')
-      }}
+  <div :class="css.wrapper">
+    <span :class="css.span">
+      {{ handleSpanText() }}
     </span>
-    <div
-      @click="handleTextAlign"
-      class="bg-[#252525] cursor-pointer shadow-md shadow-black/20 z-50 rounded-sm w-[50px] h-[50px] relative flex items-center justify-center"
-    >
-      <TextAlignJustify v-if="textAlign === 'justify'" color="#F2F2F280" />
-      <TextAlignLeft v-else color="#F2F2F280" />
+    <div @click="handleTextAlign" :class="css.alignIconContainer">
+      <AlignJustify v-if="textAlign === 'justify'" color="#F2F2F280" />
+      <AlignLeft v-else color="#F2F2F280" />
     </div>
   </div>
 </template>
-
-<style scoped>
-@keyframes from-left {
-  0% {
-    transform: translateX(50px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0px);
-    opacity: 1;
-  }
-}
-
-.animate-span {
-  animation: from-left ease-in 0.2s;
-}
-</style>

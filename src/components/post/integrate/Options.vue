@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ProgressBar, Scale, Align, Opacity } from '.'
+import { optionsStyles as css } from './styles'
 </script>
 
 <template>
-  <div
-    class="flex z-[1000] flex-col items-end justify-end gap-y-4 w-fit h-fit fixed bottom-4 right-4"
-  >
+  <div :class="css.wrapper">
     <Opacity />
     <Align />
     <Scale />

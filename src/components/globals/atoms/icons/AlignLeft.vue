@@ -1,23 +1,9 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'TextAlignLeft',
-  props: {
-    color: {
-      type: String,
-      default: '#F2F2F2',
-    },
-  },
-})
-</script>
-
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="32"
     height="32"
-    :fill="color"
+    fill="currentColor"
     viewBox="0 0 256 256"
   >
     <path

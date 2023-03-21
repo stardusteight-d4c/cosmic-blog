@@ -1,40 +1,47 @@
-<script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import DonutChart from './DonutChart.vue'
+import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
 
-export default defineComponent({
-  name: 'PostProgressBar',
-  components: { DonutChart },
+const scrollPercentage = ref(0)
 
-  setup() {
-    const scrollPercentage = ref(0)
+function onScroll() {
+  const articleBody = document.getElementById(ids.articleBody)!
+  const computedStyle = window.getComputedStyle(articleBody)
+  const matrixScale = computedStyle.getPropertyValue('transform')
+  // matrix(1, 0, 0, 1, 0, 0) or matrix(1.2, 0, 0, 1.2, 0, 0)
+  const postHeight = document.getElementById('post')!.clientHeight
 
-    const onScroll = () => {
-      const postHeight = document.getElementById('post')!.clientHeight
-      const windowHeight = window.innerHeight
-      const scrollY = window.scrollY
-      const maxScrollY = postHeight - windowHeight
-      const newScrollPercentage = Math.min(scrollY / maxScrollY, 1) * 100
-      scrollPercentage.value = newScrollPercentage
-    }
+  if (matrixScale === 'matrix(1, 0, 0, 1, 0, 0)' || matrixScale === 'none') {
+    const windowHeight = window.innerHeight * 1
+    const scrollY = window.scrollY
+    const maxScrollY = postHeight * 1 - windowHeight // +0% (default)
 
-    onMounted(() => {
-      window.addEventListener('scroll', onScroll)
-    })
-    onUnmounted(() => {
-      window.removeEventListener('scroll', onScroll)
-    })
+    const newScrollPercentage = Math.min(scrollY / maxScrollY, 1) * 100
+    scrollPercentage.value = newScrollPercentage
+  } else if (matrixScale === 'matrix(1.2, 0, 0, 1.2, 0, 0)') {
+    const windowHeight = window.innerHeight
+    const scrollY = window.scrollY
+    const maxScrollY = postHeight * 1.2 - windowHeight // +20%
 
-    return { scrollPercentage }
-  },
+    const newScrollPercentage = Math.min(scrollY / maxScrollY, 1) * 100
+    scrollPercentage.value = newScrollPercentage
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', onScroll)
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
 })
 </script>
 
 <template>
-  <!-- No donut se a escala estiver em +30% ao a cada 3% adicionar 1% -->
+  <!-- No donut se a escala estiver em +30% a cada 3% adicionar 1% -->
   <div class="flex items-center gap-x-2 group">
     <span
-      class="animate-span font-medium bg-black/90 rounded-full px-4 py-2 hidden group-hover:block text-[#F2F2F2]/70"
+      class="options-animate-span font-medium bg-black/90 rounded-full px-4 py-2 hidden group-hover:block text-[#F2F2F2]/70"
       >Progress {{ parseInt(scrollPercentage.toFixed(0)) }}%
     </span>
     <div
@@ -44,20 +51,3 @@ export default defineComponent({
     </div>
   </div>
 </template>
-
-<style scoped>
-@keyframes from-left {
-  0% {
-    transform: translateX(50px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0px);
-    opacity: 1;
-  }
-}
-
-.animate-span {
-  animation: from-left ease-in 0.2s;
-}
-</style>

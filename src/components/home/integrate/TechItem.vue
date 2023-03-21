@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { techs, descriptions } from '@/utils/data'
 import { techItemStyles as css } from './styles'
+import { isEven } from '@/utils/isEven';
 type Techs = 'backend' | 'language' | 'frontend' | 'database'
 
 defineProps({
@@ -27,10 +28,6 @@ function handleTechs(array: Techs) {
   } else if (currentTechs.value[currentTech] === lastItemIndex - 1) {
     currentTechs.value[currentTech] = 0
   }
-}
-
-function isEven(number: number): boolean {
-  return number % 2 === 0
 }
 </script>
 

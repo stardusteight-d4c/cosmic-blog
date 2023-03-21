@@ -7,10 +7,13 @@ export { default as Pen } from './Pen.vue'
 export { default as AppLogo } from './AppLogo.vue'
 export { default as Calendar } from './Calendar.vue'
 export { default as Copyright } from './Copyright.vue'
+export { default as Lightbulb } from './Lightbulb.vue'
+export { default as AlignLeft } from './AlignLeft.vue'
+export { default as AlignJustify } from './AlignJustify.vue'
+export { default as ArrowsIn } from './ArrowsIn.vue'
+export { default as ArrowsOut } from './ArrowsOut.vue'
 
-import ArrowsIn from './ArrowsIn.vue'
-import ArrowsOut from './ArrowsOut.vue'
 import Star from './Star.vue'
 import Chat from './Chat.vue'
 
-export { ArrowsIn, ArrowsOut, Star, Chat }
+export {  Star, Chat }

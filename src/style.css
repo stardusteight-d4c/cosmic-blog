@@ -100,3 +100,18 @@ body {
 .animate-tech-from-down {
   animation: tech-from-down 0.7s ease-out;
 }
+
+/* Post Options Span Animation  */
+@keyframes options-from-left {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+.options-animate-span {
+  animation: options-from-left ease-in 0.2s;
+}
