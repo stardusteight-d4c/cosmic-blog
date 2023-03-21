@@ -1,30 +1,25 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
 
-export default defineComponent({
-  name: 'DonutChart',
-  props: {
-    percentage: {
-      type: Number,
-      required: true,
-      validator: (value: number) => value >= 0 && value <= 100,
-    },
+const props = defineProps({
+  percentage: {
+    type: Number,
+    required: true,
   },
-  computed: {
-    circleStyle(): { 'stroke-dashoffset': number } {
-      const circumference = Math.round(2 * 3.14 * 15) // 94,2
-      const fillLength = circumference - (circumference * this.percentage) / 100 // 47
-      return {
-        'stroke-dashoffset': fillLength,
-      }
-    },
-  },
+})
+
+const circleStyle = computed((): { 'stroke-dashoffset': number } => {
+  const circumference = Math.round(2 * 3.14 * 15) // 94,2
+  const fillLength = circumference - (circumference * props.percentage) / 100 // 47
+  return {
+    'stroke-dashoffset': fillLength,
+  }
 })
 </script>
 
 <template>
   <svg :key="percentage" :style="{ '--percentage': percentage }">
-    <circle cx="50%" cy="50%" r="15" opacity="0.5" f stroke="#F2F2F250" />
+    <circle cx="50%" cy="50%" r="15" opacity="0.5" stroke="#F2F2F250" />
     <circle
       cx="50%"
       cy="50%"
@@ -57,7 +52,7 @@ svg {
 svg circle {
   stroke-width: 5;
   fill: none;
-  stroke-dasharray: 94.2;  /* circumference */
+  stroke-dasharray: 94.2; /* circumference */
 }
 svg circle:nth-child(1) {
   stroke-dashoffset: 0;
