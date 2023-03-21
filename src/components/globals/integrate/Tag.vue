@@ -10,5 +10,6 @@ defineProps({
 </script>
 
 <template>
+  <!-- localhost:5173/post/search?tag=typescript -->
   <span :class="css.tag">#{{ tag }}</span>
 </template>

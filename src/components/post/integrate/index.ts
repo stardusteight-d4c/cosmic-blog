@@ -7,3 +7,7 @@ export { default as SubmitComment } from './SubmitComment.vue'
 export { default as Comment } from './Comment.vue'
 export { default as Pagination } from './Pagination.vue'
 export { default as Options } from './Options.vue'
+export { default as ArticleHeader } from './ArticleHeader.vue'
+export { default as ArticleBody } from './ArticleBody.vue'
+export { default as ArticleFooter } from './ArticleFooter.vue'
+

@@ -1,86 +1,55 @@
-<script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
-import {
-  Chat as ChatIcon,
-  Star as StarIcon,
-  Calendar as CalendarIcon,
-} from '@globals/atoms/icons'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Calendar } from '@globals/atoms/icons'
 import * as marked from 'marked'
 import { dateFormat } from '@/utils/date-format'
 import { placeholder } from '@/utils/placeholder'
 import { HTML_ELEMENT_IDS_POST_PAGE } from '@/utils/html-ids'
+import { ArticleFooter } from '.'
+import { articleBodyStyles as css } from './styles'
 
-export default defineComponent({
-  name: 'ArticleBody',
-  components: { StarIcon, ChatIcon, CalendarIcon },
-  props: {
-    showFooter: {
-      type: Boolean,
-      default: true,
-    },
-    date: {
-      type: Date,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    body: {
-      type: String,
-      required: true,
-    },
+defineProps({
+  showFooter: {
+    type: Boolean,
+    default: true,
   },
-  setup(props, { emit }) {
-    const htmlBody = ref(marked.marked(placeholder))
-    const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
-
-    return { props, htmlBody, dateFormat, HTML_ID }
+  date: {
+    type: Date,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  body: {
+    type: String,
+    required: true,
   },
 })
+
+const htmlBody = ref(marked.marked(placeholder))
+const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
 </script>
 
 <template>
-  <div
-    :id="HTML_ID.articleBody"
-    :class="{
-      'pb-8': !props.showFooter,
-      'bg-[#252525] relative rounded-b-sm overflow-hidden mb-28 pt-4 z-50 shadow-sm shadow-black/20 duration-300 cursor-default transition-all': true,
-    }"
-  >
-    <div class="px-4">
-      <span
-        class="my-2 font-medium text-base text-[#F2F2F2]/60 flex items-center justify-center gap-x-1"
-      >
-        <CalendarIcon size="20" color="#F2F2F270" />{{
-          dateFormat(props.date!)
+  <div :id="HTML_ID.articleBody" :class="css.wrapper(showFooter)">
+    <div :class="css.articleContentContainer">
+      <span :class="css.date">
+        <Calendar width="20" heigth="20" color="#F2F2F270" />{{
+          dateFormat(date!)
         }}
       </span>
-
-      <h1
-        class="text-4xl bg-gradient-to-t from-blue-500 to-violet-500 bg-clip-text text-transparent font-bold text-center"
-      >
-        {{ props.title === '' ? 'Untitled' : props.title }}
+      <h1 :class="css.title">
+        {{ title === '' ? 'Untitled' : title }}
       </h1>
-      <div class="border-b border-[#F2F2F2]/20 w-[50%] mx-auto my-8 h-0" />
-
+      <div :class="css.divider" />
       <div
         :id="HTML_ID.htmlBody"
         v-html="htmlBody"
-        class="articleBody text-[#F2F2F280] break-words text-lg font-medium"
+        :class="css.articleContent"
       />
     </div>
-    <div
-      v-if="props.showFooter"
-      class="border-t border-[#F2F2F2]/20 py-4 mt-8 text-[#F2F2F2]/50"
-    >
-      <span class="flex items-center justify-center gap-x-1">
-        <StarIcon color="#F2F2F250" class="w-4 -mt-[1px]" /> Starred • 38
-      </span>
-      <span class="flex items-center justify-center gap-x-1">
-        <ChatIcon color="#F2F2F250" class="w-4 -mt-[1px]" /> Comments • 2
-      </span>
-    </div>
+    <ArticleFooter />
   </div>
 </template>
 

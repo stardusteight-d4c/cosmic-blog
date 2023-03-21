@@ -8,7 +8,7 @@ const id = route.params.id
 
 const articleProps = {
   coverImage: '',
-  tags: [''],
+  tags: ['typescript', 'nodejs', 'vuejs', "nest"],
   date: new Date(),
   title: '',
   body: '',
@@ -16,6 +16,7 @@ const articleProps = {
 </script>
 
 <template>
+  <!-- Fazer HIDE AND OPEN Options component -->
   <BaseLayoutSlot>
     <template #navbar>
       <Navbar path="home" />
