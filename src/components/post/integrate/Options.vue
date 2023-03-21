@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ProgressBar, Scale, Align, Opacity } from '.'
+import { ProgressBar, Scale, Align, Opacity, BackToTop } from '.'
 import { optionsStyles as css } from './styles'
 </script>
 
@@ -9,5 +9,6 @@ import { optionsStyles as css } from './styles'
     <Align />
     <Scale />
     <ProgressBar />
+    <BackToTop />
   </div>
 </template>

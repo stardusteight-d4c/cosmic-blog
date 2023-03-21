@@ -12,6 +12,7 @@ export { default as AlignLeft } from './AlignLeft.vue'
 export { default as AlignJustify } from './AlignJustify.vue'
 export { default as ArrowsIn } from './ArrowsIn.vue'
 export { default as ArrowsOut } from './ArrowsOut.vue'
+export { default as Top } from './Top.vue'
 
 import Star from './Star.vue'
 import Chat from './Chat.vue'

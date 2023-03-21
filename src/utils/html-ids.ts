@@ -6,4 +6,5 @@ export const HTML_ELEMENT_IDS_POST_PAGE = {
   commentTextarea: 'commentTextarea',
   articleBody: 'articleBody',
   htmlBody: 'htmlBody',
+  readingProgress: 'readingProgress',
 }

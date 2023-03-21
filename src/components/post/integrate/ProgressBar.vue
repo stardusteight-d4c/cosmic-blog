@@ -35,6 +35,9 @@ onUnmounted(() => {
 
 <template>
   <div :class="css.wrapper">
+    <span :id="ids.readingProgress" class="invisible">{{
+      parseInt(scrollPercentage.toFixed(0))
+    }}</span>
     <span :class="css.span"
       >Progress {{ parseInt(scrollPercentage.toFixed(0)) }}%
     </span>
