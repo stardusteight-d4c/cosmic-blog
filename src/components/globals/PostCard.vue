@@ -1,0 +1,41 @@
+<script setup lang="ts">
+import { Calendar } from '@globals/atoms/icons'
+import Tag from './integrate/Tag.vue'
+import { postCardStyles as css } from './styles'
+
+defineProps({
+  isMinimalist: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const tags = ['typescript', 'vuejs', 'nestjs', 'knex']
+</script>
+
+<template>
+  <router-link to="/post/455446461" :class="css.wrapper">
+    <img
+      v-if="!isMinimalist"
+      src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
+      :class="css.cover"
+    />
+    <div :class="css.infosContainer">
+      <h2 :class="css.title">
+        GO! RN - Gestão de conhecimento focado em evolução do time
+      </h2>
+      <div :class="css.calendarContainer">
+        <Calendar width="18" height="18" />Mar 5, 2023
+      </div>
+      <span :class="css.previewText"
+        >Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cumque at et
+        voluptatem iusto ex impedit quod eos asperiores placeat libero, qui
+        dicta esse in, vero explicabo laboriosam sequi, cupiditate
+        deserunt.</span
+      >
+      <div :class="css.tagsContainer">
+        <Tag v-for="tag in tags" :tag="tag" />
+      </div>
+    </div>
+  </router-link>
+</template>

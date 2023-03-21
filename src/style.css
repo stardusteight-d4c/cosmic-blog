@@ -18,6 +18,29 @@ body {
   border-radius: 20px;
 }
 
+.inner-shadow-input {
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5, 10);
+}
+
+/* Handle Search Bar Animation */
+@keyframes search-bar-from-left {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.search-bar-animated-left {
+  animation: search-bar-from-left ease-in 0.3s;
+}
+
 /* Navbar Profile Animation */
 .spinner {
   background-image: linear-gradient(#8b5cf6 35%, #3b82f6);
@@ -77,4 +100,3 @@ body {
 .animate-tech-from-down {
   animation: tech-from-down 0.7s ease-out;
 }
-

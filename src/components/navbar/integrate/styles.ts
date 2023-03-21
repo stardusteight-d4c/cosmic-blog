@@ -8,6 +8,7 @@ export const profileButtonStyles = {
   appLogo: `absolute top-0`,
 }
 
-export const buttonNewPostStyles = {
-  button: ``
+export const logoStyles = {
+  wrapper: `flex items-center`,
+  cosmicSpan: `uppercase tracking-widest font-bold text-lg lg:text-3xl`,
 }

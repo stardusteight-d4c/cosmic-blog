@@ -1,20 +1,15 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'AppLogo',
-  props: {
-    class: {
-      type: String,
-    },
-    width: {
-      type: String,
-      default: '32',
-    },
-    height: {
-      type: String,
-      default: '32',
-    },
+<script setup lang="ts">
+defineProps({
+  class: {
+    type: String,
+  },
+  width: {
+    type: String,
+    default: '32',
+  },
+  height: {
+    type: String,
+    default: '32',
   },
 })
 </script>

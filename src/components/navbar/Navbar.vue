@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import { Logo, ButtonNewPost, ButtonLogin, ButtonProfile } from './integrate'
 import { styles as css } from './styles'
 
-const props = defineProps({
+defineProps({
   path: {
     type: String,
     required: true,
@@ -17,7 +16,7 @@ const props = defineProps({
       <div :class="css.contentWrapper">
         <div :class="css.logoContainer">
           <Logo />
-          <h2 :class="css.path">/ {{ props.path }}</h2>
+          <h2 :class="css.path">/ {{ path }}</h2>
         </div>
         <div :class="css.buttonsContainer">
           <ButtonNewPost />

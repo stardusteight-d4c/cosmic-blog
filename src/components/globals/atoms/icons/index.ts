@@ -1,10 +1,16 @@
-import AppLogo from './AppLogo.vue'
-import ArrowRight from './ArrowRight.vue'
+export { default as Faders } from './Faders.vue'
+export { default as MagnifyingGlass } from './MagnifyingGlass.vue'
+export { default as SquaresFour } from './SquaresFour.vue'
+export { default as X } from './X.vue'
+export { default as Arrow } from './Arrow.vue'
+export { default as Pen } from './Pen.vue'
+export { default as AppLogo } from './AppLogo.vue'
+export { default as Calendar } from './Calendar.vue'
+export { default as Copyright } from './Copyright.vue'
+
 import ArrowsIn from './ArrowsIn.vue'
 import ArrowsOut from './ArrowsOut.vue'
 import Star from './Star.vue'
-import Pen from './Pen.vue'
 import Chat from './Chat.vue'
-import Calendar from './Calendar.vue'
 
-export { AppLogo, ArrowRight, ArrowsIn, ArrowsOut, Star, Pen, Chat, Calendar }
+export { ArrowsIn, ArrowsOut, Star, Chat }

@@ -1,18 +1,11 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import AppLogo from '@globals/atoms/icons/AppLogo.vue'
-
-export default defineComponent({
-  name: 'Logo',
-  components: { AppLogo },
-})
+import { logoStyles as css } from './styles'
 </script>
 
 <template>
-  <router-link to="/" class="flex items-center">
+  <router-link to="/" :class="css.wrapper">
     <AppLogo />
-    <span class="uppercase tracking-widest font-bold text-lg lg:text-3xl"
-      >Cosmic</span
-    >
+    <span :class="css.cosmicSpan">Cosmic</span>
   </router-link>
 </template>

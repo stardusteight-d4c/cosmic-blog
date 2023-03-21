@@ -1,46 +1,12 @@
-<script lang="ts">
-import { defineComponent } from 'vue'
-import ArrowRight from '@globals/atoms/icons/ArrowRight.vue'
-
-export default defineComponent({
-  name: 'LoginButton',
-  components: { ArrowRight },
-})
+<script setup lang="ts">
+import Btn from '@globals/Btn.vue'
+import Arrow from '@globals/atoms/icons/Arrow.vue'
 </script>
 
 <template>
   <router-link to="/login">
-    <button>
-      <ArrowRight />
-      Login
-    </button>
+    <Btn title="Login" class="text-[#F2F2F2]">
+      <template #icon><Arrow width="16"  /></template>
+    </Btn>
   </router-link>
 </template>
-
-<style scoped>
-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-image: linear-gradient(to top, #3b82f6, #8b5cf6);
-  background-clip: padding-box;
-  color: #f2f2f2;
-  padding: 4px 10px;
-  border-radius: 999px;
-  transition: all 0.5s ease;
-}
-
-button:active {
-  transform: scale(1) !important;
-  transition: all 100ms ease;
-}
-
-button:hover {
-  transform: scale(1.1);
-}
-
-button svg {
-  width: 16px;
-}
-</style>
