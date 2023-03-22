@@ -6,7 +6,7 @@ import { alignStyles as css } from './styles'
 
 const textAlign = ref<'left' | 'justify' | 'center'>('left')
 
-function handleTextAlign() {
+function handleTextAlign(): void {
   const htmlBody = document.getElementById(ids.htmlBody)!
   if (textAlign.value === 'left') {
     textAlign.value = 'justify'
@@ -17,7 +17,7 @@ function handleTextAlign() {
   }
 }
 
-function handleSpanText() {
+function handleSpanText(): false | 'Align Justify' | 'Align Left' {
   return (
     (textAlign.value === 'justify' && 'Align Justify') ||
     (textAlign.value === 'left' && 'Align Left')

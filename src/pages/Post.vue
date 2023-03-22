@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import Navbar from '@/components/navbar/Navbar.vue'
 import { BaseLayoutSlot, Article, Comments } from '@/components/post'
 
 const route = useRoute()
@@ -18,9 +17,6 @@ const articleProps = {
 <template>
   <!-- Fazer HIDE AND OPEN Options component -->
   <BaseLayoutSlot>
-    <template #navbar>
-      <Navbar path="home" />
-    </template>
     <template #main>
       <Article v-bind="articleProps" />
       <Comments />

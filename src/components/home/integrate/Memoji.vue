@@ -8,7 +8,7 @@ import { memojiStyles as css } from './styles'
 const memojis: string[] = [myMemoji01, myMemoji02, myMemoji03]
 const currentMemoji = ref(0)
 
-function handleMemoji() {
+function handleMemoji(): void {
   const penultimateItemIndex = memojis.length - 2
   const lastItemIndex = memojis.length
   if (currentMemoji.value <= penultimateItemIndex) {

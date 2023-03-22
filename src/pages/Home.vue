@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Navbar from '@/components/navbar/Navbar.vue'
 import {
   BaseLayoutSlot,
   Header,
@@ -11,9 +10,6 @@ import {
 
 <template>
   <BaseLayoutSlot>
-    <template #navbar>
-      <Navbar path="home" />
-    </template>
     <template #header>
       <Header />
     </template>

@@ -5,11 +5,10 @@ import { baseLayoutSlotStyles as css } from './styles'
 
 <template>
   <div :class="css.wrapper">
-    <Navbar path="home" />
-    <slot name="header"></slot>
-    <div :class="css.mainContent">
-      <slot></slot>
+    <portal-target name="chooseAvatarPopUp"></portal-target>
+    <div :class="css.container">
+      <Navbar path="login" />
+      <slot name="main"></slot>
     </div>
-    <slot name="footer"></slot>
   </div>
 </template>

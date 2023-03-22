@@ -6,15 +6,14 @@ import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
 
 const showElement = ref(false)
 
-window.onscroll = function () {
+window.onscroll = function (): void {
   scrollFunction()
 }
 
-function scrollFunction() {
+function scrollFunction(): void {
   const readingProgress = document.getElementById(
     ids.readingProgress
   )?.textContent
-
   if (Number(readingProgress) > 50) {
     showElement.value = true
   } else {
@@ -22,15 +21,14 @@ function scrollFunction() {
   }
 }
 
-function backToTop() {
-  const position = document.documentElement.scrollTop || document.body.scrollTop;
-
+function backToTop(): void {
+  const position = document.documentElement.scrollTop || document.body.scrollTop
   if (position > 0) {
-    window.requestAnimationFrame(backToTop);
+    window.requestAnimationFrame(backToTop)
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
-    });
+      behavior: 'smooth',
+    })
   }
 }
 </script>

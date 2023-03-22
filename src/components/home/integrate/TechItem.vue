@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { techs, descriptions } from '@/utils/data'
 import { techItemStyles as css } from './styles'
-import { isEven } from '@/utils/isEven';
+import { isEven } from '@/utils/isEven'
 type Techs = 'backend' | 'language' | 'frontend' | 'database'
 
 defineProps({
@@ -18,7 +18,7 @@ defineProps({
 
 const currentTechs = ref([0, 0, 0, 0])
 
-function handleTechs(array: Techs) {
+function handleTechs(array: Techs): void {
   const techsKeys = ['backend', 'language', 'frontend', 'database']
   const currentTech = techsKeys.findIndex((item) => item === array)
   const penultimateItemIndex = techs[array].length - 2
@@ -28,6 +28,7 @@ function handleTechs(array: Techs) {
   } else if (currentTechs.value[currentTech] === lastItemIndex - 1) {
     currentTechs.value[currentTech] = 0
   }
+  return
 }
 </script>
 

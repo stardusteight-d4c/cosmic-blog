@@ -21,7 +21,7 @@ const textareaHeight = ref('')
 const selectedEditComment = ref(false)
 const proceedToDelete = ref(false)
 
-function adjustTextarea() {
+function adjustTextarea(): void {
   nextTick(() => {
     const textarea = document.getElementById(ids.commentTextarea)!
     textarea.style.height = 'auto'
@@ -30,18 +30,18 @@ function adjustTextarea() {
   })
 }
 
-function showCommentTextarea() {
+function showCommentTextarea(): void {
   selectedEditComment.value = !selectedEditComment.value
   const commentDivHeight = commentElement.value!.offsetHeight
   if (!selectedEditComment) return
   commentEditableElement.value!.style.minHeight = `${commentDivHeight}px`
 }
 
-function closedDeletePopUpObserver() {
+function closedDeletePopUpObserver(): void {
   proceedToDelete.value = false
 }
 
-function handleClickOutsideOfEdit(event: MouseEvent) {
+function handleClickOutsideOfEdit(event: MouseEvent): void {
   const { clickedOutside, elementCliked } = detectClickOutsideElement(
     event,
     ids.editComment
@@ -56,7 +56,7 @@ function handleClickOutsideOfEdit(event: MouseEvent) {
   }
 }
 
-onMounted(() => {
+onMounted((): void => {
   document.addEventListener('click', handleClickOutsideOfEdit)
   commentElement.value = document.getElementById(
     ids.commentDiv
@@ -65,7 +65,7 @@ onMounted(() => {
     ids.commentTextarea
   )! as HTMLTextAreaElement
 })
-onUnmounted(() => {
+onUnmounted((): void => {
   document.removeEventListener('click', handleClickOutsideOfEdit)
 })
 </script>

@@ -6,7 +6,7 @@ import { progressBarStyles as css } from './styles'
 
 const scrollPercentage = ref(0)
 
-function handleArticleReadingScrollPercentage() {
+function handleArticleReadingScrollPercentage(): void {
   const articleBody = document.getElementById(ids.articleBody)!
   const computedStyle = window.getComputedStyle(articleBody)
   const matrixScale = computedStyle.getPropertyValue('transform')
@@ -25,10 +25,10 @@ function handleArticleReadingScrollPercentage() {
   }
 }
 
-onMounted(() => {
+onMounted((): void => {
   window.addEventListener('scroll', handleArticleReadingScrollPercentage)
 })
-onUnmounted(() => {
+onUnmounted((): void => {
   window.removeEventListener('scroll', handleArticleReadingScrollPercentage)
 })
 </script>

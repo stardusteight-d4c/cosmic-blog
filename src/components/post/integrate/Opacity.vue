@@ -6,7 +6,7 @@ import { opacityStyles as css } from './styles'
 
 const opacity = ref<'80' | '90' | '100'>('80')
 
-function handleOpacity() {
+function handleOpacity(): void {
   const element = document.getElementById(ids.htmlBody)!
   if (opacity.value === '80') {
     element.style.color = '#F2F2F299'
@@ -20,7 +20,11 @@ function handleOpacity() {
   }
 }
 
-function handleSpanText() {
+function handleSpanText():
+  | false
+  | 'Brightness I'
+  | 'Brightness II'
+  | 'Brightness III' {
   return (
     (opacity.value === '80' && 'Brightness I') ||
     (opacity.value === '90' && 'Brightness II') ||
@@ -28,7 +32,7 @@ function handleSpanText() {
   )
 }
 
-function handleColor() {
+function handleColor(): '#F2F2F299' | '#CCC' | '#F2F2F280' {
   return (
     (opacity.value === '80' && '#F2F2F280') ||
     (opacity.value === '90' ? '#F2F2F299' : '#CCC')

@@ -7,11 +7,11 @@ import { scaleStyles as css } from './styles'
 const scaleUp = ref(false)
 const marginTopOnScaleUp = ref(0)
 
-onMounted(() => {
+onMounted((): void => {
   computedMarginTopOnScaleUp()
 })
 
-function handleScale() {
+function handleScale(): void {
   scaleUp.value = !scaleUp.value
   const commentsSection = document.getElementById(ids.commentsSection)!
   const articleBody = document.getElementById(ids.articleBody)!
@@ -27,7 +27,7 @@ function handleScale() {
   }
 }
 
-function computedMarginTopOnScaleUp() {
+function computedMarginTopOnScaleUp(): void {
   const articleBody = document.getElementById(ids.articleBody)!
   const marginBottomArticleBody = 112
   const originalHeight = articleBody?.clientHeight
@@ -37,7 +37,7 @@ function computedMarginTopOnScaleUp() {
   marginTopOnScaleUp.value = marginTop
 }
 
-function handleSpanText() {
+function handleSpanText(): 'Scale Up' | 'Scale Down' {
   return scaleUp.value ? 'Scale Up' : 'Scale Down'
 }
 </script>
