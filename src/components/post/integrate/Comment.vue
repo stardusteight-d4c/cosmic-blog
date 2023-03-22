@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { DeletePopUp } from '@/components/pop-ups'
 import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
-import DeletePopUp from '../../pop-ups/DeletePopUp.vue'
-import { Edit, Trash } from '@/components/globals/atoms/icons'
+import { Edit, Trash } from '@globals/atoms/icons'
 import memoji from '@/assets/my-memoji02.png'
 import Btn from '@/components/globals/Btn.vue'
-import { commentStyles as css } from './styles'
 import { detectClickOutsideElement } from '@/utils/detect-click-outside-element'
+import { commentStyles as css } from './styles'
 
 // Quando o usuário clicar em seu comentário em Profile redirecioanar para o post e seu comentário
 // Inserir dinâmicamente uma propriedade ID no wrapper do comentário com o id do Comentário no Banco de Dados

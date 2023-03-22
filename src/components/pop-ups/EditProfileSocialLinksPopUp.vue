@@ -1,50 +1,33 @@
-<script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { socialNetworks } from '@/utils/data'
 import { detectClickOutsideElement } from '@/utils/detect-click-outside-element'
-
 // fazer a validação se de fato é um link de perfil da rede social
-export default defineComponent({
-  name: 'EditProfileSocialLinksPopUp',
-  setup(_props, { emit }) {
-    const showSocialNetworks = ref(false)
-    const selectedSocialNetwork = ref(socialNetworks[0])
 
-    const handleClickOutsideOfNetworksListDropDown = (event: MouseEvent) => {
-      const { clickedOutside } = detectClickOutsideElement(
-        event,
-        'networksList'
-      )
-      if (clickedOutside && showSocialNetworks.value === true) {
-        showSocialNetworks.value = false
-      }
-    }
+const emit = defineEmits(['closedEditProfileSocialLinksPopUp'])
 
-    onMounted(() => {
-      document.addEventListener(
-        'click',
-        handleClickOutsideOfNetworksListDropDown
-      )
-    })
+const showSocialNetworks = ref(false)
+const selectedSocialNetwork = ref(socialNetworks[0])
 
-    onUnmounted(() => {
-      document.removeEventListener(
-        'click',
-        handleClickOutsideOfNetworksListDropDown
-      )
-    })
+function handleClickOutsideOfNetworksListDropDown(event: MouseEvent) {
+  const { clickedOutside } = detectClickOutsideElement(event, 'networksList')
+  if (clickedOutside && showSocialNetworks.value === true) {
+    showSocialNetworks.value = false
+  }
+}
 
-    function handleCancel() {
-      emit('closedEditProfileSocialLinksPopUp')
-    }
+function handleCancel() {
+  emit('closedEditProfileSocialLinksPopUp')
+}
 
-    return {
-      handleCancel,
-      socialNetworks,
-      selectedSocialNetwork,
-      showSocialNetworks,
-    }
-  },
+onMounted(() => {
+  document.addEventListener('click', handleClickOutsideOfNetworksListDropDown)
+})
+onUnmounted(() => {
+  document.removeEventListener(
+    'click',
+    handleClickOutsideOfNetworksListDropDown
+  )
 })
 </script>
 
@@ -93,37 +76,11 @@ export default defineComponent({
         </div>
       </div>
       <div class="flex items-center mx-auto mt-4 gap-x-2 w-fit">
-        <button class="bg-blue-500">Save</button>
-        <button @click="handleCancel" class="bg-[#252525]">Cancel</button>
+        <button class="popup-button bg-blue-500">Save</button>
+        <button @click="handleCancel" class="popup-button bg-[#252525]">
+          Cancel
+        </button>
       </div>
     </div>
   </portal>
 </template>
-
-<style scoped>
-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 80px;
-  background-clip: padding-box;
-  color: #f2f2f2;
-  padding: 4px 10px;
-  border-radius: 999px;
-  transition: all 0.5s ease;
-}
-
-button:active {
-  transform: scale(1) !important;
-  transition: all 100ms ease;
-}
-
-button:hover {
-  transform: scale(1.1);
-}
-
-button svg {
-  width: 16px;
-}
-</style>

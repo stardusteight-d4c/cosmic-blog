@@ -135,3 +135,28 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* PopUp Buttons */
+.popup-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 80px;
+  background-clip: padding-box;
+  color: #f2f2f2;
+  padding: 4px 10px;
+  border-radius: 999px;
+  transition: all 0.5s ease;
+}
+
+.popup-button:active {
+  transform: scale(1) !important;
+  transition: all 100ms ease;
+}
+.popup-button:hover {
+  transform: scale(1.1);
+}
+.popup-button svg {
+  width: 16px;
+}
