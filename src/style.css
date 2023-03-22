@@ -8,7 +8,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 8px;
   height: 8px;
 }
 
@@ -114,4 +114,15 @@ body {
 }
 .options-animate-span {
   animation: options-from-left ease-in 0.2s;
+}
+
+/* Post Submit */
+.textarea-submit-comment {
+  background: #252525;
+  font-size: 16px;
+}
+.triangle-submit-comment {
+  width: 25px;
+  height: 13px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }

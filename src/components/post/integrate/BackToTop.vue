@@ -23,12 +23,15 @@ function scrollFunction() {
 }
 
 function backToTop() {
-  document.body.scrollTop = 0 // For Safari
-  document.documentElement.scrollTop = 0 // For Chrome, Firefox, IE and Opera
+  const position = document.documentElement.scrollTop || document.body.scrollTop;
 
-  setTimeout(() => {
-    showElement.value = false
-  }, 100)
+  if (position > 0) {
+    window.requestAnimationFrame(backToTop);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
 }
 </script>
 

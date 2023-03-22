@@ -49,7 +49,7 @@ const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
         :class="css.articleContent"
       />
     </div>
-    <ArticleFooter />
+    <ArticleFooter v-if="showFooter" />
   </div>
 </template>
 

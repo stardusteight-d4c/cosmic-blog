@@ -14,7 +14,5 @@ export { default as ArrowsIn } from './ArrowsIn.vue'
 export { default as ArrowsOut } from './ArrowsOut.vue'
 export { default as Top } from './Top.vue'
 export { default as Star } from './Star.vue'
-
-import Chat from './Chat.vue'
-
-export { Chat }
+export { default as Chat } from './Chat.vue'
+export { default as Edit } from './Edit.vue'

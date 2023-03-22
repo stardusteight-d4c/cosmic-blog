@@ -1,79 +1,50 @@
-<script lang="ts">
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  onBeforeUnmount,
-  watch,
-  nextTick,
-} from 'vue'
-import { HTML_ELEMENT_IDS_POST_PAGE } from '../../../utils/html-ids'
+<script setup lang="ts">
+import { ref, onMounted, nextTick } from 'vue'
+import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
 import DeletePopUp from './DeletePopUp.vue'
+import { Edit } from '@/components/globals/atoms/icons'
+import memoji from '@/assets/my-memoji02.png'
+import Btn from '@/components/globals/Btn.vue'
 // Quando o usuário clicar em seu comentário em Profile redirecioanar para o post e seu comentário
 // Inserir dinâmicamente uma propriedade ID no wrapper do comentário com o id do Comentário no Banco de Dados
 // http://localhost:5173/post/455446461/#IDdoComentário
-export default defineComponent({
-  name: 'Comment',
-  components: { DeletePopUp },
-  setup(props, ctx) {
-    const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
-    const selectedEditComment = ref(false)
-    const edit = ref(
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aut consequatur temporibus, possimus mollitia voluptates ratione maxime voluptatibus labore accusantium unde nulla reiciendis explicabo tempore dolor totam a consequuntur adipisci.'
-    )
-    const commentEditableElement = ref<HTMLTextAreaElement | null>(null)
-    const commentElement = ref<HTMLDivElement | null>(null)
-    const textareaHeight = ref('')
-    const proceedToDelete = ref(false)
 
-    const adjustTextarea = () => {
-      nextTick(() => {
-        const textarea = document.getElementById(HTML_ID.commentTextarea)!
-        textarea.style.height = 'auto'
-        textarea.style.height = `${textarea.scrollHeight}px`
-        textareaHeight.value = `${textarea.scrollHeight}px`
-      })
-    }
-    const showCommentTextarea = () => {
-      selectedEditComment.value = !selectedEditComment.value
-      const commentDivHeight = commentElement.value!.offsetHeight
-      if (!selectedEditComment) return
-      console.log(
-        commentElement.value,
-        commentEditableElement.value,
-        commentDivHeight
-      )
-      commentEditableElement.value!.style.minHeight = `${commentDivHeight}px`
-    }
-    onMounted(() => {
-      commentElement.value = document.getElementById(
-        HTML_ID.commentDiv
-      )! as HTMLDivElement
-      commentEditableElement.value = document.getElementById(
-        HTML_ID.commentTextarea
-      )! as HTMLTextAreaElement
-    })
-    onBeforeUnmount(() => {
-      watch(edit, (editNewValue) => {
-        console.log(editNewValue)
-      })
-    })
+const selectedEditComment = ref(false)
+const edit = ref(
+  'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aut consequatur temporibus, possimus mollitia voluptates ratione maxime voluptatibus labore accusantium unde nulla reiciendis explicabo tempore dolor totam a consequuntur adipisci.'
+)
+const commentEditableElement = ref<HTMLTextAreaElement | null>(null)
+const commentElement = ref<HTMLDivElement | null>(null)
+const textareaHeight = ref('')
+const proceedToDelete = ref(false)
 
-    function closedDeletePopUpObserver() {
-      proceedToDelete.value = false
-    }
+function adjustTextarea() {
+  nextTick(() => {
+    const textarea = document.getElementById(ids.commentTextarea)!
+    textarea.style.height = 'auto'
+    textarea.style.height = `${textarea.scrollHeight}px`
+    textareaHeight.value = `${textarea.scrollHeight}px`
+  })
+}
 
-    return {
-      selectedEditComment,
-      showCommentTextarea,
-      adjustTextarea,
-      edit,
-      proceedToDelete,
-      HTML_ID,
-      textareaHeight,
-      closedDeletePopUpObserver,
-    }
-  },
+function showCommentTextarea() {
+  selectedEditComment.value = !selectedEditComment.value
+  const commentDivHeight = commentElement.value!.offsetHeight
+  if (!selectedEditComment) return
+  commentEditableElement.value!.style.minHeight = `${commentDivHeight}px`
+}
+
+function closedDeletePopUpObserver() {
+  proceedToDelete.value = false
+}
+
+onMounted(() => {
+  commentElement.value = document.getElementById(
+    ids.commentDiv
+  )! as HTMLDivElement
+  commentEditableElement.value = document.getElementById(
+    ids.commentTextarea
+  )! as HTMLTextAreaElement
 })
 </script>
 
@@ -82,56 +53,44 @@ export default defineComponent({
     <div class="flex flex-col items-start w-full">
       <div class="flex items-center justify-between w-full">
         <div class="flex items-center cursor-pointer">
-          <img
-            src="../../assets/my-memoji02.png"
-            class="w-16 h-16 -ml-4 -mt-4"
-          />
+          <img :src="memoji" class="w-16 h-16 -ml-4 -mt-4" />
           <h3 class="text-lg font-semibold -mt-3">#Stardusteight</h3>
         </div>
         <div class="-mt-[10px] flex items-center gap-x-2 text-[#7c7c7c]">
-          <div @click="showCommentTextarea" class="cursor-pointer">
-            <ph-pen-nib
-              :size="24"
-              :class="{
-                'text-blue-500': selectedEditComment,
-                'p-[2px]': true,
-              }"
-            />
-          </div>
-          <div @click="proceedToDelete = true" class="cursor-pointer">
-            <ph-trash-simple :size="24" class="p-[2px]" />
-            <DeletePopUp v-if="proceedToDelete" @closedDeletePopUp="closedDeletePopUpObserver" />
-          </div>
+          <Edit
+            @click="showCommentTextarea"
+            width="24"
+            height="24"
+            :class="{
+              'text-blue-500': selectedEditComment,
+              'p-[2px] cursor-pointer': true,
+            }"
+          />
+          <ph-trash-simple
+            @click="proceedToDelete = true"
+            :size="24"
+            class="p-[2px] cursor-pointer"
+          />
+          <DeletePopUp
+            v-if="proceedToDelete"
+            @closedDeletePopUp="closedDeletePopUpObserver"
+          />
         </div>
       </div>
       <textarea
-        :id="HTML_ID.commentTextarea"
+        :id="ids.commentTextarea"
         :spellcheck="false"
         class="scrollHiddenCSO scrollHideenIEF h-auto border-blue-500 border bg-[#1a1a1a] resize-none block p-2 w-full mt-1 rounded-sm outline-none"
         v-show="selectedEditComment"
         :value="edit"
         @input="adjustTextarea"
       />
-      <button v-show="selectedEditComment">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
-          class="css-i6dzq1"
-          stroke-linejoin="round"
-          stroke-linecap="round"
-          stroke-width="16"
-          fill="#F2F2F2"
-          viewBox="0 0 256 256"
-        >
-          <path
-            d="M240,100.68a15.86,15.86,0,0,0-4.69-11.31L166.63,20.68a16,16,0,0,0-22.63,0L115.57,49.11l-58,21.77A16.06,16.06,0,0,0,47.35,83.23L24.11,222.68A8,8,0,0,0,32,232a8.4,8.4,0,0,0,1.32-.11l139.44-23.24a16,16,0,0,0,12.35-10.17l21.77-58L235.31,112A15.87,15.87,0,0,0,240,100.68Zm-69.87,92.19L55.32,212l47.37-47.37a28,28,0,1,0-11.32-11.32L44,200.7,63.13,85.86,118,65.29,190.7,138ZM104,140a12,12,0,1,1,12,12A12,12,0,0,1,104,140Zm96-15.32L131.31,56l24-24L224,100.68Z"
-          ></path>
-        </svg>
+      <Btn title="Update" v-show="selectedEditComment">
+        <template #icon><Edit class="mt-[1px]" /></template>
         Update
-      </button>
+      </Btn>
       <div
-        :id="HTML_ID.commentDiv"
+        :id="ids.commentDiv"
         v-show="!selectedEditComment"
         class="block bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm"
       >

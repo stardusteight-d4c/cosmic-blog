@@ -1,17 +1,57 @@
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     required: true,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 })
 </script>
 
 <template>
   <button
-    class="flex items-center active:scale-100 hover:scale-105 justify-center py-1 px-[10px] rounded-full transition-all ease-in-out duration-[0.5] gap-2 bg-gradient-to-t from-blue-500 to-violet-500 bg-clip-padding text-[#F2F2F2]"
+    :disabled="disabled"
   >
     <slot name="icon"></slot>
-    {{ props.title }}
+    {{ title }}
   </button>
 </template>
+
+<style scoped>
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 16px;
+  background-image: linear-gradient(to top, #3b82f6, #8b5cf6);
+  background-clip: padding-box;
+  color: #f2f2f2;
+  padding: 4px 8px;
+  border-radius: 999px;
+  margin-top: 4px;
+  transition: all 0.5s ease;
+}
+
+button:active:not(:disabled) {
+  transform: scale(1) !important;
+  transition: all 100ms ease;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  filter: brightness(0.8);
+  transition: none;
+}
+
+button:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+button svg {
+  width: 16px;
+}
+</style>

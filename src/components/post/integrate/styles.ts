@@ -55,3 +55,37 @@ export const articleBodyStyles = {
   divider: `border-b border-[#F2F2F2]/20 w-[50%] mx-auto my-8 h-0`,
   articleContent: `articleBody text-[#F2F2F280] break-words text-lg font-medium`,
 }
+
+export const articleFooterStyles = {
+  wrapper: `border-t flex gap-x-2 items-center justify-center border-[#F2F2F2]/10 py-4 mt-8 text-[#F2F2F2]/60`,
+  iconContainer: `flex items-center gap-x-1`,
+  icon: `w-4 -mt-[1px]`,
+  dividerSpan: `text-2xl mb-1 text-[#F2F2F2]/20`,
+}
+
+export const submitCommentStyles = {
+  wrapper: `flex items-start w-full`,
+  memoji: `w-24 h-24 -ml-6 -mt-4`,
+  contentContainer: `relative z-0 w-full`,
+  triangleSubmit: `triangle-submit-comment absolute top-[22px] -left-[19px] bg-[#252525] -rotate-90`,
+  textarea: `textarea-submit-comment group border border-transparent rounded-sm focus:border-blue-500 transition-all text-[#F2F2F2]/80 w-full h-40 outline-none p-4 bg-[#252525] resize-none`,
+  footerContainer: `flex items-center justify-between`,
+  handleCountColor: (countCharacters: number) => {
+    return {
+      'text-[#f2f2f280]': countCharacters <= 300,
+      'text-orange-500': countCharacters > 300 && countCharacters <= 500,
+      'text-red-600': countCharacters > 500,
+      'font-medium': true,
+    }
+  },
+}
+
+export const commentStyles = {
+  wrapper: `mt-14 bg-[#252525] rounded-sm p-4`,
+  contentCotainer: `flex flex-col items-start w-full`,
+  header: `flex items-center justify-between w-full`,
+  authorInfosContainer: `flex items-center cursor-pointer`,
+  authorImage: `w-16 h-16 -ml-4 -mt-4`,
+  authorName: `text-lg font-semibold -mt-3`,
+  operationsContainer: `-mt-[10px] flex items-center gap-x-2 text-[#7c7c7c]`,
+}

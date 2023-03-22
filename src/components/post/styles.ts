@@ -6,3 +6,7 @@ export const baseLayoutSlotStyles = {
 export const articleStyles = {
   wrapper: `relative shadow-md shadow-black/20`,
 }
+
+export const commentsStyles = {
+  title: `text-2xl text-[#F2F2F2]/50 border-b border-[#F2F2F2]/20 mb-8 pb-2`,
+}
