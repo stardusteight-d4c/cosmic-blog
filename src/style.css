@@ -126,3 +126,12 @@ body {
   height: 13px;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
+
+/* Scroll Hidden */
+.scrollHiddenCSO::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+.scrollHiddenIEF {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

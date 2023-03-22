@@ -88,4 +88,27 @@ export const commentStyles = {
   authorImage: `w-16 h-16 -ml-4 -mt-4`,
   authorName: `text-lg font-semibold -mt-3`,
   operationsContainer: `-mt-[10px] flex items-center gap-x-2 text-[#7c7c7c]`,
+  handleEdit: (selectedEditComment: boolean) => {
+    return {
+      'text-blue-500': selectedEditComment,
+      'p-[2px] cursor-pointer': true,
+    }
+  },
+  handleDelete: (proceedToDelete: boolean) => {
+    return {
+      'text-red-500': proceedToDelete === true,
+      'p-[2px] cursor-pointer': true,
+    }
+  },
+  textareaEdit: `scrollHiddenCSO scrollHiddenIEF h-auto border-blue-500 border bg-[#1a1a1a] resize-none block p-2 w-full mt-1 rounded-sm outline-none`,
+  btnSubmit: `w-fit ml-auto`,
+  btnIcon: `mt-[1px]`,
+  commentContainer: `block bg-[#1a1a1a] p-2 w-full mt-1 rounded-sm`,
+}
+
+export const paginationStyles = {
+  wrapper: `flex items-center justify-end mt-4 text-[#7c7c7c]`,
+  arrowLeft: `cursor-pointer hover:text-[#b8b8b8] p-1 rotate-180 antialiased`,
+  pageCount: `text-2xl mx-1 font-semibold`,
+  arrowRight: `cursor-pointer hover:text-[#b8b8b8] p-1`,
 }

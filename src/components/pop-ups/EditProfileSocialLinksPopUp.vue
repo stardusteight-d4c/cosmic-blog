@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import { socialNetworks } from '@/utils/data'
+import { detectClickOutsideElement } from '@/utils/detect-click-outside-element'
 
 // fazer a validação se de fato é um link de perfil da rede social
 export default defineComponent({
@@ -9,16 +10,11 @@ export default defineComponent({
     const showSocialNetworks = ref(false)
     const selectedSocialNetwork = ref(socialNetworks[0])
 
-    function detectClickOutsideElement(event: MouseEvent, elementID: string) {
-      const element: HTMLElement = document.getElementById(elementID)!
-      const clickedOutside =
-        !element.contains(event.target as Node) &&
-        !element.isSameNode(event.target as Node)
-      return clickedOutside
-    }
-
     const handleClickOutsideOfNetworksListDropDown = (event: MouseEvent) => {
-      const clickedOutside = detectClickOutsideElement(event, 'networksList')
+      const { clickedOutside } = detectClickOutsideElement(
+        event,
+        'networksList'
+      )
       if (clickedOutside && showSocialNetworks.value === true) {
         showSocialNetworks.value = false
       }

@@ -3,7 +3,7 @@ import { defineComponent, ref, watch, nextTick } from 'vue'
 import { handleMarkdown } from '../utils/handle-markdown'
 import Navbar from '@/components/navbar/Navbar.vue'
 import Article from '@/components/post/Article.vue'
-import SavePopUp from '@/components/SavePopUp.vue'
+import SavePopUp from '@/components/pop-ups/SavePopUp.vue'
 
 // Gerar url da coverImg no serviço de storage do supabase, mas isto apenas quando enviar ao servidor,
 // para a preview gere uma string base64 e envie-à como props

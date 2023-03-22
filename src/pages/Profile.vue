@@ -5,7 +5,7 @@ import Navbar from '../components/navbar/Navbar.vue'
 import star from '../assets/star.svg'
 import comment from '../assets/comment.svg'
 import PostCard from '@globals/PostCard.vue'
-import EditProfileSocialLinks from '@/components/EditProfileSocialLinksPopUp.vue'
+import EditProfileSocialLinks from '@/components/pop-ups/EditProfileSocialLinksPopUp.vue'
 import { socialNetworks } from '@/utils/data'
 
 export default defineComponent({
