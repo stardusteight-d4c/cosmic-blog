@@ -55,19 +55,19 @@ import twitter from '@/assets/social/twitter.svg'
 import facebook from '@/assets/social/facebook.svg'
 import email from '@/assets/social/email.svg'
 
-interface ChooseAvatars {
+export interface ChooseAvatars {
   url: string
   id: string
 }
 
-interface Techs {
+export interface Techs {
   backend: Array<string>
   language: Array<string>
   frontend: Array<string>
   database: Array<string>
 }
 
-interface SocialNetwork {
+export interface SocialNetwork {
   url: string
   name: string
 }
