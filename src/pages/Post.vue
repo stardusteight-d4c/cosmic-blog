@@ -15,7 +15,6 @@ const articleProps = {
 </script>
 
 <template>
-  <!-- Fazer HIDE AND OPEN Options component -->
   <BaseLayoutSlot>
     <template #main>
       <Article v-bind="articleProps" />
