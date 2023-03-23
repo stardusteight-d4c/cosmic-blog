@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import memoji from '@/assets/my-memoji02.png'
 import { postCommentStyles as css } from './styles'
 
 const route = useRoute()
@@ -16,7 +15,6 @@ const username = Array.isArray(route.params.username)
       GO! RN - Gestão de conhecimento focado em evolução do time
     </h2>
     <div :class="css.authorInfos">
-      <img :src="memoji" :class="css.authorImg" />
       #{{ username }}
     </div>
     <p :class="css.commentParagraph">

@@ -23,6 +23,14 @@ export const savePopUpStyles = {
   btnCancel: `popup-button bg-[#252525]`,
 }
 
+export const importSavePopUpStyles = {
+  floppyDiskIcon: `text-blue-500`,
+  title: `text-3xl font-semibold`,
+  span: `text-center inline-block w-[250px] text-sm text-[#F2F2F2]/70 mt-2`,
+  BtnSave: `popup-button bg-blue-500`,
+  btnCancel: `popup-button bg-[#252525]`,
+}
+
 export const editProfileSocialPopUpStyles = {
   smileyIcon: `text-blue-500`,
   title: `text-3xl font-semibold`,

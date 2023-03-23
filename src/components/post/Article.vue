@@ -11,28 +11,29 @@ const props = defineProps({
   },
   coverImage: {
     type: String,
-    required: true,
   },
   tags: {
     type: Array<string>,
-    required: true,
   },
   date: {
     type: Date,
-    required: true,
   },
   title: {
     type: String,
-    required: true,
   },
   body: {
     type: String,
-    required: true,
   },
 })
 
+console.log(props.body);
+
+
 const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
-const headerProps = ref({ coverImage: props.coverImage, tags: props.tags })
+const headerProps = reactive({
+  coverImage: toRef(props, 'coverImage'),
+  tags: toRef(props, 'tags'),
+})
 const bodyProps = reactive({
   showFooter: toRef(props, 'showFooter'),
   title: toRef(props, 'title'),

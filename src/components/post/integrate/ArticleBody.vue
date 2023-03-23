@@ -15,19 +15,17 @@ defineProps({
   },
   date: {
     type: Date,
-    required: true,
   },
   title: {
     type: String,
-    required: true,
   },
   body: {
     type: String,
-    required: true,
   },
 })
 
-const htmlBody = ref(marked.marked(placeholder))
+// const htmlBody = ref(marked.marked(placeholder))
+const htmlBody = ref()
 const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
 </script>
 
@@ -45,7 +43,7 @@ const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
       <div :class="css.divider" />
       <div
         :id="HTML_ID.htmlBody"
-        v-html="htmlBody"
+        v-html="marked.marked(body!)"
         :class="css.articleContent"
       />
     </div>
