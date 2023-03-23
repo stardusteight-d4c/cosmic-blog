@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Header, Footer } from './integrate'
+import { Header, SocialLinks } from './integrate'
 </script>
 
 <template>
   <Header />
-  <Footer />
+  <SocialLinks />
 </template>

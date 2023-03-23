@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import ChooseAvatarPopUp from '@/components/pop-ups/ChooseAvatarPopUp.vue'
+import { ChooseAvatarPopUp } from '@/components/pop-ups'
 import { chooseAvatars } from '@/utils/data'
 import avatarPlaceholder from '@/assets/avatar-placeholder.svg'
 import { ArrowUUPLeft } from '@globals/atoms/icons'

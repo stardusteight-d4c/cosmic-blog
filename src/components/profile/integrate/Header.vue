@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import EditProfileSocialLinks from '@/components/pop-ups/EditProfileSocialLinksPopUp.vue'
+import { EditProfileSocialLinksPopUp } from '@/components/pop-ups'
+import { PencilLine } from '@globals/atoms/icons'
 import memoji from '@/assets/my-memoji02.png'
+import { headerStyles as css } from './styles'
 
 const route = useRoute()
 const username = Array.isArray(route.params.username)
@@ -16,30 +18,22 @@ function closedEditSocialLinksPopUpObserver() {
 </script>
 
 <template>
-   <div class="w-full mt-8 flex items-center justify-center h-48 relative">
-    <div
-      class="box-animate w-40 h-40 absolute z-10 bg-gradient-to-t from-blue-500 to-violet-500 rounded-full mx-auto"
-    />
-    <div
-      class="inner-shadow w-[150px] h-[150px] pointer-events-none absolute z-50 bg-[#1a1a1a] rounded-full mx-auto"
-    />
-    <div class="absolute w-48 h-48">
-      <img
-        :src="memoji"
-        class="pendulum absolute top-0 pointer-events-none w-48 z-[100] mx-auto"
-      />
-      <ph-pencil-line
+  <div :class="css.wrapper">
+    <div :class="css.boxAnimate" />
+    <div :class="css.backgroundOverlay" />
+    <div :class="css.avatarImageWrapper">
+      <img :src="memoji" :class="css.avatarImage" />
+      <PencilLine
         @click="editSocialLinks = true"
-        :size="38"
-        class="inner-shadow hover:scale-105 transition-all cursor-pointer absolute bg-[#1a1a1a] text-[#f2f2f2] p-2 rounded-full top-5 right-4 z-[200]"
+        width="38"
+        height="38"
+        :class="css.editIcon"
       />
-      <EditProfileSocialLinks
+      <EditProfileSocialLinksPopUp
         v-if="editSocialLinks"
         @closedEditProfileSocialLinksPopUp="closedEditSocialLinksPopUpObserver"
       />
     </div>
   </div>
-  <h1 class="capitalize font-semibold mx-auto w-fit text-3xl mt-2">
-    #{{ username }}'s Profile
-  </h1>
+  <h1 :class="css.username">#{{ username }}'s Profile</h1>
 </template>
