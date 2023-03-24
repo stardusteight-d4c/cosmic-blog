@@ -16,6 +16,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@globals/*": ["src/components/globals/*"],
+      "@interfaces/*": ["src/@interfaces/*"],
+      "@store/*": ["src/store/*"],
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

@@ -1,26 +1,12 @@
 <script setup lang="ts">
 import Article from '@/components/post/Article.vue'
+import { useAppStore } from '@store/index'
+import { computed } from 'vue';
 
 const emit = defineEmits(['backToEditor'])
+const store = useAppStore()
 
-const previewProps = defineProps({
-  coverImage: {
-    type: String,
-  },
-  tags: {
-    type: Array<string>,
-  },
-  date: {
-    type: Date,
-    required: true,
-  },
-  title: {
-    type: String,
-  },
-  body: {
-    type: String,
-  },
-})
+const editorData = computed(() => store.state.article.textEditorData)
 
 function handleBackToEditor() {
   emit('backToEditor')
@@ -42,6 +28,6 @@ function handleBackToEditor() {
         Preview
       </h2>
     </div>
-    <Article v-bind="{...previewProps}" :showFooter="false" />
+    <Article v-bind="{...editorData}" :showFooter="false" />
   </div>
 </template>

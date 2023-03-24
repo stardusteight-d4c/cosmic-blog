@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, reactive, toRef } from 'vue'
-import { HTML_ELEMENT_IDS_POST_PAGE } from '@/utils/html-ids'
+import {  reactive, toRef } from 'vue'
+import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
 import { ArticleHeader, ArticleBody } from './integrate'
 import { articleStyles as css } from './styles'
 
@@ -26,10 +26,6 @@ const props = defineProps({
   },
 })
 
-console.log(props.body);
-
-
-const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
 const headerProps = reactive({
   coverImage: toRef(props, 'coverImage'),
   tags: toRef(props, 'tags'),
@@ -43,7 +39,7 @@ const bodyProps = reactive({
 </script>
 
 <template>
-  <div :id="HTML_ID.post" :class="css.wrapper">
+  <div :id="ids.post" :class="css.wrapper">
     <ArticleHeader v-bind="headerProps" />
     <ArticleBody v-bind="bodyProps" />
   </div>

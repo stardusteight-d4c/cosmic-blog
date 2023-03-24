@@ -4,27 +4,16 @@ import {
   PreviewPost,
   BaseLayoutSlot,
 } from '@/components/create-post'
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 
 const showPreview = ref(false)
-const previewPostProps = ref<any>({
-  tags: '',
-  coverImage: '',
-  title: '',
-  date: '',
-  body: '',
-})
 
-function showPreviewObserver(payload: {}): void {
+function showPreviewObserver(): void {
   if (showPreview.value === false) {
-    console.log('payload', payload)
-    previewPostProps.value = payload
     showPreview.value = true
   } else {
     showPreview.value = false
   }
-  console.log(previewPostProps);
-  
 }
 </script>
 
@@ -32,9 +21,8 @@ function showPreviewObserver(payload: {}): void {
   <BaseLayoutSlot>
     <template #main>
       <PreviewPost
-        v-bind="previewPostProps"
         @backToEditor="showPreviewObserver"
-        v-show="showPreview"
+        v-if="showPreview"
       />
       <RichTextEditor
         @showPreview="showPreviewObserver"

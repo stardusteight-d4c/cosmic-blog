@@ -2,21 +2,22 @@
 import { ref, reactive, watch, toRaw } from 'vue'
 import { handleMarkdown } from '@/utils/handle-markdown'
 import SavePopUp from '@/components/pop-ups/SavePopUp.vue'
+import { useAppStore } from '@store/index'
+import { MUTATION_SEED_TEXT_EDITOR_DATA } from '@store/mutations'
 
 const emit = defineEmits(['showPreview'])
+const store = useAppStore()
 // Gerar url da coverImg no serviço de storage do supabase, mas isto apenas quando enviar ao servidor,
 // para a preview gere uma string base64 e envie-à como props
 
-// Fazer toda preview do post recebendo os dados do rich text editor
 // Salvar os dados do editor em localstorage
 
-// definir as variaveis do post em um objeto
 const iconStyle = {
   weight: 'fill',
   class: `p-2 text-[#F2F2F2] text-[35px] md:text-[42refpx] font-bold hover:bg-[#F2F2F2]/10 transition-all duration-300 ease-in-out rounded-sm cursor-pointer`,
 }
 const tag = ref('')
-const selectedTags = reactive<Array<string>>([])
+const selectedTags = ref<Array<string>>([])
 const textContent = ref('')
 const coverImage = ref<FileList | null>(null)
 const inputFile = ref()
@@ -32,7 +33,7 @@ const editorData: {
   date: Date
   body: string
 } = reactive({
-  tags: [],
+  tags: selectedTags.value,
   coverImage: '',
   title: title.value,
   date: date,
@@ -85,12 +86,12 @@ function handleTags() {
     window.alert('As tags devem conter entre 3 e 10 caracteres')
     return
   }
-  if (selectedTags.length === 4) {
+  if (selectedTags.value.length === 4) {
     window.alert('Você atingiu o limite de tags')
     return
   }
-  selectedTags.push(tag.value)
-  editorData.tags.push(tag.value)
+  selectedTags.value.push(tag.value)
+  // editorData.tags.push(tag.value)
   tag.value = ''
 }
 
@@ -101,8 +102,8 @@ const onClickUpload = () => {
 
 function onKeyDown(event: KeyboardEvent) {
   if (event.key === 'Backspace' && tag.value === '') {
-    selectedTags.pop()
-    editorData.tags.pop()
+    selectedTags.value.pop()
+    // editorData.tags.pop()
   }
 }
 function getSave() {
@@ -114,13 +115,15 @@ function getSave() {
 }
 
 function handleShowPreview() {
+  // const myTags = editorData.tags.map(tag => tag)
   const payload = {
-    tags: toRaw(editorData.tags),
+    tags: editorData.tags,
     coverImage: editorData.coverImage,
     title: editorData.title,
     date: editorData.date,
     body: editorData.body,
   }
+  store.commit(MUTATION_SEED_TEXT_EDITOR_DATA, payload)
   emit('showPreview', payload)
 }
 </script>
