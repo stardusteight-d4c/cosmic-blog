@@ -38,7 +38,7 @@ function onFileChange(event: Event): void {
   const maxFileSize = 3 * 1024 * 1024 // 3MB
   const file = files[0]
   if (file && file.size > maxFileSize) {
-    alert('O arquivo selecionado é maior do que 3MB')
+    notify('ERROR', 'The selected file is larger than 3MB!')
     input.value = ''
   } else {
     const reader = new FileReader()
@@ -57,7 +57,7 @@ function handleTags(): void {
     return
   }
   if (editorData.tags.length === 4) {
-    notify('WARNING', 'You have reached the tag limit')
+    notify('WARNING', 'You have reached the tag limit.')
     return
   }
   editorData.tags.push(tag.value)

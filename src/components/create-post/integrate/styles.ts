@@ -14,3 +14,8 @@ export const headerStyles = {
   tag: `shadow-black/50 whitespace-nowrap shadow-md inline-block rounded-sm border-[#F2F2F2]/20 lowercase bg-[#1a1a1a] p-1 text-xs mr-2`,
   tagInput: `w-full bg-transparent text-base outline-none placeholder:text-[#F2F2F2]/30`,
 }
+
+export const controlsStyles = {
+  flexCenter: `flex items-center`,
+  iconStyle: `p-2 text-[#F2F2F2] fill-[#F2F2F2] text-[35px] md:text-[42px] font-bold hover:bg-[#F2F2F2]/10 transition-all duration-300 ease-in-out rounded-sm cursor-pointer`,
+}

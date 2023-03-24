@@ -45,5 +45,3 @@ function insertTab(event: KeyboardEvent): void {
     </div>
   </div>
 </template>
-
-<style scoped></style>
