@@ -11,4 +11,5 @@ export const HTML_ELEMENT_IDS_POST_PAGE = {
 
 export const HTML_ELEMENT_IDS_CREATE_POST_PAGE = {
   textareaEditor: 'textareaEditor',
+  inputFile: 'inputFile',
 }
