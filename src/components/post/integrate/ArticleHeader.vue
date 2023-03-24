@@ -7,6 +7,7 @@ import { articleHeaderStyles as css } from './styles'
 defineProps({
   coverImage: {
     type: String,
+    default: '',
   },
   tags: {
     type: Array<string>,

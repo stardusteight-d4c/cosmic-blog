@@ -1,18 +1,28 @@
 <script setup lang="ts">
 import { BaseLayoutSlot } from '.'
-import { FloppyDisk } from '@/components/@globals/atoms/icons'
+import { Download } from '@/components/@globals/atoms/icons'
+import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils/html-ids'
 import { importSavePopUpStyles as css } from './styles'
-// import {}
-const emit = defineEmits(['closedImportSavePopUp'])
+import useNotificator from '@/hooks/Notificator'
 
-function getSave() {
+const emit = defineEmits(['closedImportSavePopUp'])
+const { notify } = useNotificator()
+
+function getSave(): void {
   const savedText = localStorage.getItem('saveText')
   if (!savedText) {
+    notify('ERROR', 'No save found.')
+    emit('closedImportSavePopUp')
     return
   }
-  // textarea.value!.value = savedText
+  const textareaElement: HTMLTextAreaElement = document.getElementById(
+    ids.textareaEditor
+  ) as HTMLTextAreaElement
+  textareaElement.value = savedText
+  emit('closedImportSavePopUp')
 }
-function handleCancel() {
+
+function handleCancel(): void {
   emit('closedImportSavePopUp')
 }
 </script>
@@ -21,7 +31,7 @@ function handleCancel() {
   <portal to="importSavePopUp">
     <BaseLayoutSlot>
       <template #content>
-        <FloppyDisk width="48" height="48" :class="css.floppyDiskIcon" />
+        <Download width="48" height="48" :class="css.downloadIcon" />
         <h2 :class="css.title">Are you sure?</h2>
         <span :class="css.span"
           >This action will import the saved text, your current progress will be
@@ -29,7 +39,7 @@ function handleCancel() {
         </span>
       </template>
       <template #operations>
-        <button @click="getSave" :class="css.BtnSave">Import Save</button>
+        <button @click="getSave" :class="css.BtnSave">Import</button>
         <button @click="handleCancel" :class="css.btnCancel">Cancel</button>
       </template>
     </BaseLayoutSlot>

@@ -6,3 +6,9 @@ export const baseLayoutSlotStyles = {
 export const richTextEditorStyles = {
   wrapper: `text-[#F2F2F2] bg-[#252525] h-auto w-full overflow-hidden rounded-sm p-4`,
 }
+
+export const previewPostStyles = {
+  wrapper: `w-full h-fit relative text-[#F2F2F2]`,
+  backToEditorBtn: `flex mb-6 items-center gap-x-2 active:scale-90 rounded-full text-sm md:text-base transition-all duration-300 font-medium py-2 px-3 bg-[#f2f2f2]/5`,
+  title: `text-3xl font-semibold absolute left-1/2 -translate-x-1/2 top-1 text-[#F2F2F2]/80`,
+}

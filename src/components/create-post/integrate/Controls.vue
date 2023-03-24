@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { handleMarkdown } from '@/utils/handle-markdown'
-import { SavePopUp } from '@/components/pop-ups'
+import { SavePopUp, ImportSavePopUp } from '@/components/pop-ups'
 import { useAppStore } from '@store/index'
 import {
   MUTATION_SEED_TEXT_EDITOR_DATA,
@@ -18,12 +18,9 @@ onMounted((): void => {
 })
 
 const store = useAppStore()
-const textContent = ref('')
 const textarea = ref<HTMLTextAreaElement>()
 const proceedToSave = ref(false)
-const editorData = reactive({
-  body: textContent,
-})
+const proceedToImport = ref(false)
 
 function handleSelected(type: string): void {
   const textareaElement = textarea.value
@@ -37,17 +34,13 @@ function closedSavePopUpObserver(): void {
   proceedToSave.value = false
 }
 
-function getSave(): void {
-  const savedText = localStorage.getItem('saveText')
-  if (!savedText) {
-    return
-  }
-  textarea.value!.value = savedText
+function closedImportSavePopUpObserver(): void {
+  proceedToImport.value = false
 }
 
 function handleShowPreview(): void {
   const payload = {
-    body: editorData.body,
+    body: textarea.value?.value,
   }
   store.commit(MUTATION_SEED_TEXT_EDITOR_DATA, { ...payload })
   store.commit(MUTATION_EVENT_SHOW_PREVIEW, true)
@@ -69,12 +62,16 @@ const iconsFirstSection = [
 const iconsSecondSection = [
   { Icon: Icon.Eye, execute: () => handleShowPreview() },
   { Icon: Icon.FloppyDisk, execute: () => (proceedToSave.value = true) },
-  { Icon: Icon.Download, execute: () => getSave() },
+  { Icon: Icon.Download, execute: () => (proceedToImport.value = true) },
 ]
 </script>
 
 <template>
   <SavePopUp v-if="proceedToSave" @closedSavePopUp="closedSavePopUpObserver" />
+  <ImportSavePopUp
+    v-if="proceedToImport"
+    @closedImportSavePopUp="closedImportSavePopUpObserver"
+  />
   <div :class="css.flexCenter">
     <div v-for="item in iconsFirstSection">
       <component

@@ -24,7 +24,7 @@ export const savePopUpStyles = {
 }
 
 export const importSavePopUpStyles = {
-  floppyDiskIcon: `text-blue-500`,
+  downloadIcon: `text-blue-500`,
   title: `text-3xl font-semibold`,
   span: `text-center inline-block w-[250px] text-sm text-[#F2F2F2]/70 mt-2`,
   BtnSave: `popup-button bg-blue-500`,
