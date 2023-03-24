@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { Navbar } from '@/components/navbar'
+import { baseLayoutSlotStyles as css } from './styles'
 </script>
 
 <template>
-<div class="bg-[#1a1a1a] min-h-screen w-screen">
+  <div :class="css.wrapper">
     <portal-target name="savePopUp"></portal-target>
-    <div class="max-w-[725px] h-full w-full mx-auto mb-8">
+    <div :class="css.container">
       <Navbar path="new" />
       <slot name="main"></slot>
     </div>

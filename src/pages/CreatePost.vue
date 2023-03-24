@@ -1,33 +1,21 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import {
   RichTextEditor,
   PreviewPost,
   BaseLayoutSlot,
 } from '@/components/create-post'
-import { ref } from 'vue'
+import { useAppStore } from '@store/index'
+const store = useAppStore()
 
-const showPreview = ref(false)
-
-function showPreviewObserver(): void {
-  if (showPreview.value === false) {
-    showPreview.value = true
-  } else {
-    showPreview.value = false
-  }
-}
+const showPreview = computed(() => store.state.article.showPreview)
 </script>
 
 <template>
   <BaseLayoutSlot>
     <template #main>
-      <PreviewPost
-        @backToEditor="showPreviewObserver"
-        v-if="showPreview"
-      />
-      <RichTextEditor
-        @showPreview="showPreviewObserver"
-        v-show="!showPreview"
-      />
+      <RichTextEditor v-show="!showPreview" />
+      <PreviewPost v-show="showPreview" />
     </template>
   </BaseLayoutSlot>
 </template>

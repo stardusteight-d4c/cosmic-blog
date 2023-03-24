@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import Article from '@/components/post/Article.vue'
+import { MUTATION_EVENT_SHOW_PREVIEW } from '@/store/mutations';
 import { useAppStore } from '@store/index'
 import { computed } from 'vue';
 
-const emit = defineEmits(['backToEditor'])
 const store = useAppStore()
 
 const editorData = computed(() => store.state.article.textEditorData)
 
 function handleBackToEditor() {
-  emit('backToEditor')
+  store.commit(MUTATION_EVENT_SHOW_PREVIEW, false)
 }
 </script>
 

@@ -21,6 +21,7 @@ defineProps({
   },
   body: {
     type: String,
+    default: '',
   },
 })
 

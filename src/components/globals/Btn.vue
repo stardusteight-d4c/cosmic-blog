@@ -30,7 +30,7 @@ button {
   background-image: linear-gradient(to top, #3b82f6, #8b5cf6);
   background-clip: padding-box;
   color: #f2f2f2;
-  padding: 4px 8px;
+  padding: 4px 12px;
   border-radius: 999px;
   margin-top: 4px;
   transition: all 0.5s ease;

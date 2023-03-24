@@ -12,7 +12,14 @@ export interface AppState {
 export const store = createStore<AppState>({
   state: {
     article: {
-      textEditorData: null,
+      textEditorData: {
+        tags: [],
+        coverImage: '',
+        title: '',
+        date: new Date(),
+        body: '',
+      },
+      showPreview: false,
     },
   },
   modules: { article },
