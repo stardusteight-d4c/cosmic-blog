@@ -21,6 +21,19 @@ const textareaHeight = ref('')
 const selectedEditComment = ref(false)
 const proceedToDelete = ref(false)
 
+onMounted((): void => {
+  document.addEventListener('click', handleClickOutsideOfEdit)
+  commentElement.value = document.getElementById(
+    ids.commentDiv
+  )! as HTMLDivElement
+  commentEditableElement.value = document.getElementById(
+    ids.commentTextarea
+  )! as HTMLTextAreaElement
+})
+onUnmounted((): void => {
+  document.removeEventListener('click', handleClickOutsideOfEdit)
+})
+
 function adjustTextarea(): void {
   nextTick(() => {
     const textarea = document.getElementById(ids.commentTextarea)!
@@ -55,19 +68,6 @@ function handleClickOutsideOfEdit(event: MouseEvent): void {
     selectedEditComment.value = false
   }
 }
-
-onMounted((): void => {
-  document.addEventListener('click', handleClickOutsideOfEdit)
-  commentElement.value = document.getElementById(
-    ids.commentDiv
-  )! as HTMLDivElement
-  commentEditableElement.value = document.getElementById(
-    ids.commentTextarea
-  )! as HTMLTextAreaElement
-})
-onUnmounted((): void => {
-  document.removeEventListener('click', handleClickOutsideOfEdit)
-})
 </script>
 
 <template>

@@ -13,6 +13,16 @@ const emit = defineEmits(['closedEditProfileSocialLinksPopUp'])
 const showSocialNetworks = ref(false)
 const selectedSocialNetwork = ref(socialNetworks[0])
 
+onMounted(() => {
+  document.addEventListener('click', handleClickOutsideOfNetworksListDropDown)
+})
+onUnmounted(() => {
+  document.removeEventListener(
+    'click',
+    handleClickOutsideOfNetworksListDropDown
+  )
+})
+
 function handleClickOutsideOfNetworksListDropDown(event: MouseEvent) {
   const { clickedOutside } = detectClickOutsideElement(event, 'networksList')
   if (clickedOutside && showSocialNetworks.value === true) {
@@ -23,16 +33,6 @@ function handleClickOutsideOfNetworksListDropDown(event: MouseEvent) {
 function handleCancel() {
   emit('closedEditProfileSocialLinksPopUp')
 }
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutsideOfNetworksListDropDown)
-})
-onUnmounted(() => {
-  document.removeEventListener(
-    'click',
-    handleClickOutsideOfNetworksListDropDown
-  )
-})
 </script>
 
 <template>

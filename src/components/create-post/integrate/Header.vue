@@ -4,15 +4,16 @@ import { useAppStore } from '@store/index'
 import { MUTATION_SEED_TEXT_EDITOR_DATA } from '@store/mutations'
 import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils/html-ids'
 import type { IHeadArticleData } from '@interfaces/article'
+import useNotificator from '@/hooks/Notificator'
 
 // Gerar url da coverImg no serviço de storage do supabase, mas isto apenas quando enviar ao servidor,
 // para a preview gere uma string base64 e envie-à como props
 
 const store = useAppStore()
+const { notify } = useNotificator()
 
-const tag = ref('')
+const tag = ref<string>('')
 const fileUploaded = ref<FileList | null>(null)
-
 const editorData: IHeadArticleData = reactive({
   coverImage: '',
   title: '',
@@ -40,8 +41,8 @@ function onFileChange(event: Event): void {
     input.value = ''
   } else {
     const reader = new FileReader()
-    reader.readAsDataURL(file)
     fileUploaded.value = files
+    reader.readAsDataURL(file)
     reader.onload = () => {
       const base64 = reader.result
       editorData.coverImage = String(base64)
@@ -50,8 +51,9 @@ function onFileChange(event: Event): void {
 }
 
 function handleTags(): void {
-  if (tag.value.length > 10 || tag.value.length < 3) {
-    window.alert('As tags devem conter entre 3 e 10 caracteres')
+  if (tag.value.length > 15 || tag.value.length < 3) {
+    notify('WARNING', 'Tags must contain between 3 and 15 characters.')
+    // window.alert('')
     return
   }
   if (editorData.tags.length === 4) {
