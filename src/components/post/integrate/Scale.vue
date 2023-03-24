@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { ArrowsIn, ArrowsOut } from '@globals/atoms/icons'
+import { ArrowsIn, ArrowsOut } from '@/components/@globals/atoms/icons'
 import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
 import { scaleStyles as css } from './styles'
 

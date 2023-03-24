@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { socialNetworks } from '@/utils/data'
 import { detectClickOutsideElement } from '@/utils/detect-click-outside-element'
-import { Smiley } from '@globals/atoms/icons'
+import { Smiley } from '@/components/@globals/atoms/icons'
 import { BaseLayoutSlot } from '.'
 import { editProfileSocialPopUpStyles as css } from './styles'
 

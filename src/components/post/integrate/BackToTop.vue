@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Top } from '@globals/atoms/icons'
+import { Top } from '@/components/@globals/atoms/icons'
 import { backToTopStyles as css } from './styles'
 import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
 

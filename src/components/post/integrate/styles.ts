@@ -44,7 +44,7 @@ export const articleHeaderStyles = {
 }
 
 export const articleBodyStyles = {
-  wrapper: (showFooter: boolean) => {
+  wrapper: (showFooter: boolean): string => {
     return `${
       !showFooter && 'pb-8'
     } bg-[#252525] relative rounded-b-sm overflow-hidden mb-28 pt-4 z-50 shadow-sm shadow-black/10 duration-300 cursor-default transition-all`

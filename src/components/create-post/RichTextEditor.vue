@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Header, Editor } from './integrate'
-import Btn from '../globals/Btn.vue'
+import Btn from '../@globals/Btn.vue'
 import { richTextEditorStyles as css } from './styles'
 </script>
 

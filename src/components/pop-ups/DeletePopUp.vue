@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { XCircle } from '@globals/atoms/icons'
+import { XCircle } from '@/components/@globals/atoms/icons'
 import { BaseLayoutSlot } from '.'
 import { deletePopUpStyles as css } from './styles'
 

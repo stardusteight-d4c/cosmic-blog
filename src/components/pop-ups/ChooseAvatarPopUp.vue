@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { chooseAvatars } from '@/utils/data'
-import { UserCirclePlus, Arrow } from '@globals/atoms/icons'
+import { UserCirclePlus, Arrow } from '@/components/@globals/atoms/icons'
 import { BaseLayoutSlot } from '.'
 import { chooseAvatarPopUpStyles as css } from './styles'
 

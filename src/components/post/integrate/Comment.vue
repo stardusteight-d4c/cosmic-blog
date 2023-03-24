@@ -4,7 +4,7 @@ import { DeletePopUp } from '@/components/pop-ups'
 import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
 import { Edit, Trash } from '@globals/atoms/icons'
 import memoji from '@/assets/my-memoji02.png'
-import Btn from '@/components/globals/Btn.vue'
+import Btn from '@globals/Btn.vue'
 import { detectClickOutsideElement } from '@/utils/detect-click-outside-element'
 import { commentStyles as css } from './styles'
 

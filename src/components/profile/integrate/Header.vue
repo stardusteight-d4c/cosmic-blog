@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { EditProfileSocialLinksPopUp } from '@/components/pop-ups'
-import { PencilLine } from '@globals/atoms/icons'
+import { PencilLine } from '@/components/@globals/atoms/icons'
 import memoji from '@/assets/my-memoji02.png'
 import { headerStyles as css } from './styles'
 

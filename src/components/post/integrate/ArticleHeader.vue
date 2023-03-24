@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Tag from '@/components/globals/integrate/Tag.vue'
+import Tag from '@globals/integrate/Tag.vue'
 import Star from '@globals/atoms/icons/Star.vue'
 import coverPlaceholder from '@/assets/cover-placeholder.webp'
 import { articleHeaderStyles as css } from './styles'

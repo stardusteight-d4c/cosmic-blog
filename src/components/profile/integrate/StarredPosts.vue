@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PostCard from '@globals/PostCard.vue'
-import { Star } from '@globals/atoms/icons'
+import { Star } from '@/components/@globals/atoms/icons'
 import { starredPostsStyles as css } from './styles'
 </script>
 

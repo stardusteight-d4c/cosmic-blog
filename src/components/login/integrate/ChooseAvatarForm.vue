@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import { ChooseAvatarPopUp } from '@/components/pop-ups'
 import { chooseAvatars } from '@/utils/data'
 import avatarPlaceholder from '@/assets/avatar-placeholder.svg'
-import { ArrowUUPLeft } from '@globals/atoms/icons'
+import { ArrowUUPLeft } from '@/components/@globals/atoms/icons'
 import { chooseAvatarFormStyles as css } from './styles'
 
 const emit = defineEmits(['backStep'])

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Chat, Star } from '@globals/atoms/icons'
+import { Chat, Star } from '@/components/@globals/atoms/icons'
 import { articleFooterStyles as css } from './styles'
 </script>
 

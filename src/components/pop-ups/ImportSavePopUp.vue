@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BaseLayoutSlot } from '.'
-import { FloppyDisk } from '@globals/atoms/icons'
+import { FloppyDisk } from '@/components/@globals/atoms/icons'
 import { importSavePopUpStyles as css } from './styles'
 // import {}
 const emit = defineEmits(['closedImportSavePopUp'])

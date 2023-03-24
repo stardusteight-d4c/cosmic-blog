@@ -38,7 +38,7 @@ export const store = createStore<AppState>({
           state.notifications = state.notifications.filter(
             (notification) => notification.id !== newNotification.id
           )
-        }, 5000)
+        }, 4000)
       }
 
       if (notificationDoesNotExistYet) {

@@ -14,7 +14,7 @@ const notifications = computed(() => store.state.notifications)
 
 <template>
   <div
-    class="absolute left-1/2 -translate-x-1/2 bottom-5 z-[1000] text-[#F2F2F2]"
+    class="absolute left-1/2 -translate-x-1/2 bottom-[14px] z-[1000] text-[#F2F2F2]"
   >
     <div
       :class="ctx[notification.type]"
@@ -22,7 +22,7 @@ const notifications = computed(() => store.state.notifications)
       :key="notification.id"
     >
       <h2 class="text-xl text-center">{{ notification.title }}</h2>
-      <p class="text-lg">{{ notification.content }}</p>
+      <p>{{ notification.content }}</p>
     </div>
   </div>
 </template>
@@ -35,7 +35,8 @@ const notifications = computed(() => store.state.notifications)
   backdrop-filter: blur(7.5px);
   -webkit-backdrop-filter: blur(7.5px);
   border-radius: 900px;
-  border: 1px solid rgb(0, 255, 0, 0.5);
+  border: 1px solid #00fe93;
+  margin-top: 14px;
 }
 .notification-container-error {
   background: rgba(64, 44, 44, 0.05);
@@ -44,7 +45,8 @@ const notifications = computed(() => store.state.notifications)
   backdrop-filter: blur(7.5px);
   -webkit-backdrop-filter: blur(7.5px);
   border-radius: 900px;
-  border: 1px solid rgba(255, 0, 0, 0.5);
+  border: 1px solid #ff008a;
+  margin-top: 14px;
 }
 .notification-container-warning {
   background: rgba(64, 44, 44, 0.05);
@@ -53,6 +55,7 @@ const notifications = computed(() => store.state.notifications)
   backdrop-filter: blur(7.5px);
   -webkit-backdrop-filter: blur(7.5px);
   border-radius: 900px;
-  border: 1px solid rgba(255, 255, 0, 0.5);
+  border: 1px solid #f7ff60;
+  margin-top: 14px;
 }
 </style>

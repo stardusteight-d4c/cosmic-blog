@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SquaresFour } from '@globals/atoms/icons'
+import { SquaresFour } from '@/components/@globals/atoms/icons'
 import SearchBar from './SearchBar.vue'
 import { postHeaderStyles as css } from './styles'
 </script>

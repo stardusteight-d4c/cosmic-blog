@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Calendar } from '@globals/atoms/icons'
+import { Calendar } from '@/components/@globals/atoms/icons'
 import * as marked from 'marked'
 import { dateFormat } from '@/utils/date-format'
 import { placeholder } from '@/utils/placeholder'

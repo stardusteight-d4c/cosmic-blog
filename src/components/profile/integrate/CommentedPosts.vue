@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PostComment } from '.'
-import { Chat } from '@globals/atoms/icons'
+import { Chat } from '@/components/@globals/atoms/icons'
 import { commentedPostsStyles as css } from './styles'
 </script>
 

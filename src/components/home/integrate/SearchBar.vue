@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { MagnifyingGlass, X, Faders } from '@globals/atoms/icons'
+import { MagnifyingGlass, X, Faders } from '@/components/@globals/atoms/icons'
 import { searchBarStyles as css } from './styles'
 
 const setSearch = ref(false)
