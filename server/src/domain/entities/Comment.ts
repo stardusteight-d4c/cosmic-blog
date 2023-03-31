@@ -1,24 +1,24 @@
 import { randomUUID } from 'node:crypto'
-import { Author, AuthorObject } from './Author'
+import { User, UserObject } from './User'
 
 export interface CommentObject {
   id: string
   postedAt: Date
-  author: AuthorObject
+  author: UserObject
   body: string
 }
 
 export class Comment {
   id: string
   postedAt: Date
-  author: Author
+  author: User
   body: string
 
   constructor(properties: CommentObject) {
     this.id = properties.id || randomUUID()
     this.body = properties.body
     this.postedAt = properties.postedAt
-    this.author = new Author(properties.author)
+    this.author = new User(properties.author)
   }
 
   public get object(): CommentObject {
@@ -30,7 +30,7 @@ export class Comment {
     }
   }
 
-  public canEdit(author: Author): boolean {
-    return this.author.id === author.id
-  }
+  // public canEdit(author: User): boolean {
+  //   return this.author.id === author.id
+  // }
 }

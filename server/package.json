@@ -2,13 +2,13 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/infra/server.ts",
     "build": "tsup src",
-    "start": "node dist/infra/server.js", 
+    "start": "node dist/infra/server.js",
     "test": "vitest",
+    "dev-test": "nodemon --watch '**/*.ts' --exec 'ts-node' test.ts",
     "coverage": "vitest run --coverage"
   },
   "keywords": [],
@@ -21,6 +21,7 @@
     "vitest": "^0.29.8"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11"
+    "@types/node": "^18.15.11",
+    "nodemon": "^2.0.22"
   }
 }
