@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/infra/server.ts",
+    "build": "tsup src",
+    "start": "node dist/infra/server.js", 
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "keywords": [],
+  "author": "Stardusteight-d4c (https://github.com/stardusteight-d4c)",
+  "license": "ISC",
+  "dependencies": {
+    "tsup": "^6.7.0",
+    "tsx": "^3.12.6",
+    "typescript": "^5.0.3",
+    "vitest": "^0.29.8"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11"
+  }
+}
