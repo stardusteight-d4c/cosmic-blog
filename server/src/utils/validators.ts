@@ -31,6 +31,12 @@ namespace Validators {
       throw new Error('Incorrect current password.')
     }
   }
+
+  export function checkPrimitiveType(data: { validating: any; type: string }) {
+    if (typeof data.validating !== data.type) {
+      throw new Error(`The validating is not of type ${data.type}.`)
+    }
+  }
 }
 
 export default Validators

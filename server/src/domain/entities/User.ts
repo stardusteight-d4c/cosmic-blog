@@ -6,11 +6,11 @@ import { Post, PostObject } from './Post'
 export type userRole = 'author-blog' | 'default-user'
 
 export interface UserObject {
-  id: string
+  id?: string
   email: string
   username: string
   password: string
-  type: userRole
+  type?: userRole
   favoritedPosts?: FavoriteObject[]
   commentedPosts?: CommentObject[]
   publishedPosts?: PostObject[]
@@ -18,9 +18,9 @@ export interface UserObject {
 
 export interface UserRepository {
   createUser(user: User): User
-  getUserById(id: string): User | undefined
-  getUserByEmail(email: string): User | undefined
-  deleteUser(id: string): void
+  deleteUser(id: string): User 
+  findUserById(id: string): User | undefined
+  findUserByEmail(email: string): User | undefined
   changeEmail(data: { currentPassword: string; newEmail: string }): void
   changePassword(data: { currentPassword: string; newPassword: string }): void
   toggleFavorite(userId: string, postId: string): void
@@ -37,11 +37,11 @@ export class User {
   #publishedPosts: Post[] = []
 
   constructor(properties: UserObject) {
-    this.#id = properties.id
+    this.#id = properties.id!
     this.#email = properties.email
     this.#username = properties.username
     this.#password = properties.password
-    this.#type = properties.type
+    this.#type = properties.type!
   }
 
   public get object(): UserObject {
