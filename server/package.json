@@ -12,7 +12,7 @@
     "coverage": "vitest run --coverage"
   },
   "keywords": [],
-  "author": "Stardusteight-d4c (https://github.com/stardusteight-d4c)",
+  "author": "stardusteight-d4c (https://github.com/stardusteight-d4c)",
   "license": "ISC",
   "dependencies": {
     "tsup": "^6.7.0",

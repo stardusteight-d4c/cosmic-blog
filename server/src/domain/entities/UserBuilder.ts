@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import { validatePassword, validateEmail, validateUsername } from '../../utils'
+import Validators from '../../utils/validators'
 import { User } from './User'
 
 export class UserBuilder {
@@ -14,19 +14,19 @@ export class UserBuilder {
   }
 
   setEmail(email: string) {
-    validateEmail(email)
+    Validators.validateEmail(email)
     this.email = email
     return this
   }
 
   setUsername(username: string) {
-    validateUsername(username)
+    Validators.validateUsername(username)
     this.username = username
     return this
   }
 
   setPassword(password: string) {
-    validatePassword(password)
+    Validators.validatePassword(password)
     this.password = password
     return this
   }

@@ -33,6 +33,7 @@ authorInstance.changeEmail({
 })
 console.log(authorInstance.object)
 
+
 // const post = new Post(myPost)
 // console.log(post.tags);
 
