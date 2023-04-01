@@ -17,6 +17,8 @@ export interface PostObject {
 }
 
 export class Post {
+  static allPosts: Post[] = []
+
   id: string
   title: string
   body: string
@@ -43,6 +45,8 @@ export class Post {
     this.favorites = properties.favorites
       ? properties.favorites.map((favorite) => new Favorite(favorite))
       : []
+
+    Post.allPosts.push(this)
   }
 
   public get object(): PostObject {

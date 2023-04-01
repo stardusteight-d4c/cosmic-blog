@@ -1,29 +1,35 @@
-import { randomUUID } from 'node:crypto'
-import { User } from "./User";
-import { Post } from "./Post";
-
 export interface FavoriteObject {
-  id: string;
-  user: User;
-  post: Post;
+  userId: string
+  postId: string
 }
 
 export class Favorite {
-  id: string;
-  user: User;
-  post: Post;
+  #userId: string
+  #postId: string
 
   constructor(properties: FavoriteObject) {
-    this.id = properties.id || randomUUID();
-    this.user = properties.user;
-    this.post = properties.post;
+    this.#userId = properties.userId
+    this.#postId = properties.postId
   }
 
   get object(): FavoriteObject {
     return {
-      id: this.id,
-      user: this.user,
-      post: this.post,
-    };
+      userId: this.#userId,
+      postId: this.#postId,
+    }
+  }
+
+  public get userId(): string {
+    return this.#userId
+  }
+  public set userId(_value: string) {
+    throw new Error('Value object properties cannot be changed.')
+  }
+
+  public get postId(): string {
+    return this.#postId
+  }
+  public set postId(_value: string) {
+    throw new Error('Value object properties cannot be changed.')
   }
 }

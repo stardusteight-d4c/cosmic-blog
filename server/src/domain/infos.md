@@ -65,3 +65,23 @@ Note that namespace elements need to be exported to be accessible outside the na
 One advantage of namespaces is that they can be split across multiple files, allowing code to be organized in a more modular way. To do this, simply declare the same namespace in each file and add the specific declarations for that file within the namespace code block. When compiling TypeScript files, the compiler will merge all files that are part of the same namespace into a single JavaScript file.
 
 However, it is important to remember that excessive use of namespaces can lead to confusing and difficult to maintain code, especially when the namespace starts to get very large. In these cases, it is recommended to use other design patterns, such as modules or classes with static methods, to organize the code more efficiently.
+
+## Value Object
+
+Value Object is a software design concept that represents an object that is semantic value, that is, its value is defined by its properties and not by its identity. In other words, it is a class that represents a specific value, not an object with a unique identity.
+
+A common example of a value object is a class that represents a date. The date itself does not have a unique identity, what matters are its values, such as day, month and year. Other examples include currencies, addresses, phone numbers and many others.
+
+A Value Object is immutable, that is, once created, its properties cannot be changed. This ensures that objects are consistent across the entire system and simplifies business logic.
+
+Also, value objects are compared based on their properties and not their identities, which makes it easier to compare and use in collections, for example.
+
+In summary, value objects are objects that represent a semantic value and are immutable, being compared based on their properties. They are an important domain modeling tool in object-oriented systems.
+
+## Entities x Builders x Services
+
+At the domain layer, entities represent business object models, and may be responsible for storing and manipulating their own data. Builders, in turn, are used to create instances of entities, and can perform validations or apply business rules before initializing objects. Services, on the other hand, are responsible for implementing system functionalities, which involve interactions between entities and possibly other layers of the application.
+
+This way, we have a clear separation of responsibilities, which makes the application easier to understand, test and maintain. It is an approach that follows the principles of the object-oriented programming paradigm, and is widely used in large software projects.
+
+The responsibility for validating the parameters should be on the service layer. The in-memory database layer (InMemoryDatabase) should only be responsible for storing and retrieving data, while the service layer should handle business rules and validate the data before persisting it in the database. This ensures that the data stored in the in-memory database is consistent and coherent, as well as making the code easier to maintain, as the validation logic will be centralized in a single location.

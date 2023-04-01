@@ -22,6 +22,15 @@ namespace Validators {
       throw new Error('Password must be at least 8 characters and a number.')
     }
   }
+
+  export function compareCurrentPassword(data: {
+    inputPassword: string
+    currentPassword: string
+  }): void {
+    if (data.inputPassword !== data.currentPassword) {
+      throw new Error('Incorrect current password.')
+    }
+  }
 }
 
 export default Validators
