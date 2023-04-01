@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import { validatePassword, validateEmail } from '../../utils'
+import { validatePassword } from '../../utils'
 
 export interface UserObject {
   id?: string
@@ -15,9 +15,6 @@ export class User {
   #password: string
 
   constructor(properties: UserObject) {
-    validatePassword(properties.password)
-    validateEmail(properties.email)
-
     this.#id = properties.id || randomUUID()
     this.#email = properties.email
     this.#username = properties.username
