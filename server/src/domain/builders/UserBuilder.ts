@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
 import Validators from "../../utils/validators";
-import { CommentObject } from "../entities/Comment";
-import { FavoriteObject } from "../entities/Favorite";
-import { PostObject } from "../entities/Post";
+import { Comment } from "../entities/Comment";
+import { Favorite, FavoriteObject } from "../entities/Favorite";
+import { Post, PostObject } from "../entities/Post";
 import { User, userRole } from "../entities/User";
 
 export class UserBuilder {
@@ -11,9 +11,9 @@ export class UserBuilder {
   #username: string | undefined;
   #password: string | undefined;
   #type: userRole | undefined;
-  #favoritedPosts: FavoriteObject[] = [];
-  #commentedPosts: CommentObject[] = [];
-  #publishedPosts: PostObject[] = [];
+  #favoritedPosts: Favorite[] = [];
+  #commentedPosts: Comment[] = [];
+  #publishedPosts: Post[] = [];
 
   public setId(id: string) {
     this.#id = id;
@@ -38,6 +38,21 @@ export class UserBuilder {
     return this;
   }
 
+  setFavoritedPosts(favoritedPosts: Favorite[]): UserBuilder {
+    this.#favoritedPosts = favoritedPosts;
+    return this;
+  }
+
+  setCommentedPosts(commentedPosts: Comment[]): UserBuilder {
+    this.#commentedPosts = commentedPosts;
+    return this;
+  }
+
+  setPublishedPosts(publishedPosts: Post[]): UserBuilder {
+    this.#publishedPosts = publishedPosts;
+    return this;
+  }
+
   public build(): User {
     if (!this.#email) {
       throw new Error("Email is required.");
@@ -54,9 +69,9 @@ export class UserBuilder {
       username: this.#username,
       password: this.#password,
       type: this.#type ?? "default-user",
-      favoritedPosts: this.#favoritedPosts,
-      commentedPosts: this.#commentedPosts,
-      publishedPosts: this.#publishedPosts,
+      favoritedPosts: this.#favoritedPosts.map((post) => post.object),
+      commentedPosts: this.#commentedPosts.map((comment) => comment.object),
+      publishedPosts: this.#publishedPosts.map((post) => post.object),
     });
   }
 }

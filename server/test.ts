@@ -15,23 +15,35 @@ const myUser: UserReflectObject = {
 
 const asyncFunction = async () => {
   const userInstance = await userService.createUser(myUser)
-  console.log(userInstance.reflect.id);
-  
-  // console.log('userInstance.email', userInstance.email);
 
-  
-  
-  const newInstance = await userService.changeEmail({
+  console.log(userInstance?.reflect);
+
+
+  const newInstance = await userService.changePassword({
     userId: userInstance!.reflect.id!,
     confirmationPassword: userInstance.reflect.password,
-    newEmail: 'email@email.com',
+    newPassword: 'senhaaaa78',
   })
-  const findMyUser = await userService.findUserByEmail(
-    'johndoe@example.com'
-    )
-    
-    console.log('findMyUser?.reflect', findMyUser?.reflect)
-    console.log('newInstance.reflect', newInstance!.reflect);
+
+  console.log(newInstance?.reflect);
+  
+  const newInstance2 = await userService.changePassword({
+    userId: userInstance!.reflect.id!,
+    confirmationPassword: 'senhaaaa78',
+    newPassword: 'senhaaaa79',
+  })
+
+  console.log(await userService.findUserByEmail('johndoe@example.com').then(data => data?.reflect));
+  
+  const newInstance3 = await userService.changeEmail({
+    userId: newInstance2!.reflect.id!,
+    confirmationPassword: newInstance2!.reflect.password,
+    newEmail: 'newemail@email.com',
+  })
+
+  console.log(newInstance3?.reflect);
+  
+
 }
 
 asyncFunction()

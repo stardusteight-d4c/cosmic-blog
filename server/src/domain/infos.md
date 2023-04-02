@@ -98,3 +98,29 @@ The responsibility for validating the parameters should be on the service layer.
 Services não altera a instância original da entidade, apenas clones destas entidades no repositório
 
 Sim, isso é correto. O objetivo dos serviços é orquestrar a lógica de negócios da aplicação, enquanto os repositórios são responsáveis por manipular e persistir os dados no banco de dados. Dessa forma, o serviço deve trabalhar com clones da entidade que foram obtidos através do repositório, para evitar efeitos colaterais indesejados. Assim, quando uma alteração é feita através do serviço, ela é primeiro aplicada na entidade clonada, para depois ser persistida no banco de dados através do repositório.
+
+O seu design de código parece estar seguindo o princípio de encapsulamento, onde os atributos privados da entidade User não são acessíveis diretamente fora da classe e só podem ser alterados através dos métodos do serviço e do repositório. Isso é uma boa prática de programação orientada a objetos, pois ajuda a garantir a integridade dos dados e evita efeitos colaterais indesejados.
+
+A utilização do objeto Reflect também parece ser uma boa abordagem para garantir a imutabilidade dos dados da entidade e permitir que o repositório possa manipular clones ou espelhos desses objetos. Isso pode ajudar a evitar problemas de concorrência em ambientes com múltiplas threads ou processos.
+
+No geral, o seu design de código parece ser sólido e bem estruturado. No entanto, é importante lembrar de realizar testes abrangentes para garantir que o seu código funcione conforme o esperado e atenda aos requisitos de negócio do seu projeto.
+Gabriel Sena
+Uma das ideias do dominio é fazer seu código funcionar sem ao menos precisar da camada de aplicação ou infraestrutura, certo?
+
+Sim, exatamente. A camada de domínio é uma parte isolada da aplicação que contém a lógica de negócios e as regras de negócios do sistema. O objetivo é que o código da camada de domínio possa funcionar independentemente da camada de aplicação ou infraestrutura, tornando mais fácil testar e manter essa parte da aplicação. Além disso, a camada de domínio deve ser projetada para ser facilmente compreensível e escalável, o que significa que o código deve ser bem estruturado e organizado em torno das entidades e objetos de domínio do sistema.
+Gabriel Sena
+Falando sobre meu design de código, é correto o service assim como o repositório sempre retornar uma nova instância da classe User? export interface UserRepository {
+  createUser(user: User): Promise<User>;
+  deleteUser(userId: string): Promise<User>;
+  findUserById(userId: string): Promise<User | undefined>;
+  findUserByEmail(email: string): Promise<User | undefined>;
+  changeEmail(updatedUser: User): Promise<User>;
+  changePassword(updatedUser: User): Promise<User>;
+  toggleFavorite(userId: string, postId: string): Promise<void>;
+}
+
+Sim, é uma boa prática retornar uma nova instância da classe User ao invés de retornar a instância original. Isso é importante porque permite que seu código seja mais seguro e imutável. Quando você retorna uma nova instância, você pode ter certeza de que a instância original não será modificada acidentalmente ou intencionalmente. Além disso, você pode ter certeza de que o código que está trabalhando com a instância original não será afetado pelas mudanças feitas em outras partes do código.
+
+Ao retornar uma nova instância, você também está seguindo o princípio da imutabilidade, que é importante para garantir a integridade dos dados e evitar efeitos colaterais indesejados. Por exemplo, se você retornar a instância original do usuário, um código que tem referência a essa instância pode alterar seus atributos sem o conhecimento do seu serviço ou repositório. Isso pode levar a resultados inesperados e difíceis de depurar.
+
+Portanto, retornar uma nova instância de User é uma boa prática e ajuda a tornar seu código mais seguro e previsível.

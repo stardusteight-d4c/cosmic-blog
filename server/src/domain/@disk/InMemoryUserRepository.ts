@@ -12,7 +12,7 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   private async replaceUser(updatedUser: User): Promise<User> {
-    const existingUser = await this.findUserById(updatedUser.reflect.id!) 
+    const existingUser = await this.findUserById(updatedUser.reflect.id!);
     if (!existingUser) {
       throw new Error(`No user found with id: ${updatedUser.reflect.id}`);
     }
@@ -20,7 +20,7 @@ export class InMemoryUserRepository implements UserRepository {
     this.#users.set(updatedUser.reflect.id!, updatedUser);
     return updatedUser;
   }
-  
+
   public async createUser(user: User): Promise<User> {
     this.#users.set(user.reflect.id!, user);
     return user;
@@ -44,22 +44,12 @@ export class InMemoryUserRepository implements UserRepository {
 
   public async changeEmail(updatedUser: User): Promise<User> {
     const user = await this.replaceUser(updatedUser);
-
     return user;
   }
 
-  public async changePassword(data: {
-    currentPassword: string;
-    newPassword: string;
-  }): Promise<void> {
-    const user = Array.from(this.#users.values()).find(
-      (user) => user.password === data.currentPassword,
-    );
-    if (user) {
-      user.password = data.newPassword;
-    } else {
-      throw new Error("User not found or password is incorrect");
-    }
+  public async changePassword(updatedUser: User): Promise<User> {
+    const user = await this.replaceUser(updatedUser);
+    return user;
   }
 
   public async toggleFavorite(userId: string, postId: string): Promise<void> {

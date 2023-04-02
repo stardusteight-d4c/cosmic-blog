@@ -55,13 +55,43 @@ export default class UserService {
         currentPassword: user.password,
       });
 
-      const updatedUser = new UserBuilder()
+      const updatedUserInstance = new UserBuilder()
         .setId(user.reflect.id!)
         .setEmail(data.newEmail)
         .setUsername(user.reflect.username)
         .setPassword(user.reflect.password)
         .build();
-      const changedUser = await this.#userRepository.changeEmail(updatedUser);
+      const changedUser = await this.#userRepository.changeEmail(
+        updatedUserInstance,
+      );
+      return changedUser;
+    } else {
+      throw new Error(`The user with ID: ${data.userId} was not found.`);
+    }
+  }
+
+  public async changePassword(data: {
+    userId: string;
+    confirmationPassword: string;
+    newPassword: string;
+  }): Promise<User | undefined> {
+    Validators.checkPrimitiveType({ validating: data.userId, type: "string" });
+    Validators.validatePassword(data.newPassword);
+    const user = await this.#userRepository.findUserById(data.userId);
+    if (user) {
+      Validators.compareCurrentPassword({
+        inputPassword: data.confirmationPassword,
+        currentPassword: user.password,
+      });
+      const updatedUserInstance = new UserBuilder()
+        .setId(user.reflect.id!)
+        .setEmail(user.reflect.email)
+        .setUsername(user.reflect.username)
+        .setPassword(data.newPassword)
+        .build();
+      const changedUser = await this.#userRepository.changePassword(
+        updatedUserInstance,
+      );
       return changedUser;
     } else {
       throw new Error(`The user with ID: ${data.userId} was not found.`);

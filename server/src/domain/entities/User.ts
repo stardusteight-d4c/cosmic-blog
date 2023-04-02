@@ -1,4 +1,3 @@
-import Validators from "../../utils/validators";
 import { Comment, CommentObject } from "./Comment";
 import { Favorite, FavoriteObject } from "./Favorite";
 import { Post, PostObject } from "./Post";
@@ -22,10 +21,7 @@ export interface UserRepository {
   findUserById(userId: string): Promise<User | undefined>;
   findUserByEmail(email: string): Promise<User | undefined>;
   changeEmail(updatedUser: User): Promise<User>;
-  changePassword(data: {
-    currentPassword: string;
-    newPassword: string;
-  }): Promise<void>;
+  changePassword(updatedUser: User): Promise<User>;
   toggleFavorite(userId: string, postId: string): Promise<void>;
 }
 
@@ -61,7 +57,7 @@ export class User {
   }
   public set reflect(_values: UserReflectObject) {
     throw new Error(
-      "Cannot access id property directly. Use the reflect object in the User instead.",
+      "Cannot modify reflect object directly. Use the UserService methods instead.",
     );
   }
 
@@ -119,29 +115,6 @@ export class User {
     throw new Error("Cannot modify favoritedPosts property directly.");
   }
 
-  // public changeEmail(data: {
-  //   currentPassword: string
-  //   newEmail: string
-  // }): void {
-  //   Validators.compareCurrentPassword({
-  //     inputPassword: data.currentPassword,
-  //     currentPassword: this.#password,
-  //   })
-  //   Validators.validateEmail(data.newEmail)
-  //   this.#email = data.newEmail
-  // }
-
-  // public changePassword(data: {
-  //   currentPassword: string
-  //   newPassword: string
-  // }): void {
-  //   Validators.compareCurrentPassword({
-  //     inputPassword: data.currentPassword,
-  //     currentPassword: this.#password,
-  //   })
-  //   Validators.validatePassword(data.newPassword)
-  //   this.#password = data.newPassword
-  // }
 
   // public toggleFavorite(postId: string): void {
   //   if (typeof postId !== 'string') {
