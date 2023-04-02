@@ -1,47 +1,50 @@
-import Validators from '../../utils/validators'
-import { Comment, CommentObject } from './Comment'
-import { Favorite, FavoriteObject } from './Favorite'
-import { Post, PostObject } from './Post'
+import Validators from "../../utils/validators";
+import { Comment, CommentObject } from "./Comment";
+import { Favorite, FavoriteObject } from "./Favorite";
+import { Post, PostObject } from "./Post";
 
-export type userRole = 'author-blog' | 'default-user'
+export type userRole = "author-blog" | "default-user";
 
 export interface UserObject {
-  id?: string
-  email: string
-  username: string
-  password: string
-  type?: userRole
-  favoritedPosts?: FavoriteObject[]
-  commentedPosts?: CommentObject[]
-  publishedPosts?: PostObject[]
+  id?: string;
+  email: string;
+  username: string;
+  password: string;
+  type?: userRole;
+  favoritedPosts?: FavoriteObject[];
+  commentedPosts?: CommentObject[];
+  publishedPosts?: PostObject[];
 }
 
 export interface UserRepository {
-  createUser(user: User): User
-  deleteUser(id: string): User 
-  findUserById(id: string): User | undefined
-  findUserByEmail(email: string): User | undefined
-  changeEmail(data: { currentPassword: string; newEmail: string }): void
-  changePassword(data: { currentPassword: string; newPassword: string }): void
-  toggleFavorite(userId: string, postId: string): void
+  createUser(user: User): Promise<User>;
+  deleteUser(userId: string): Promise<User>;
+  findUserById(userId: string): Promise<User | undefined>;
+  findUserByEmail(email: string): Promise<User | undefined>;
+  changeEmail(updatedUser: User): Promise<User>;
+  changePassword(data: {
+    currentPassword: string;
+    newPassword: string;
+  }): Promise<void>;
+  toggleFavorite(userId: string, postId: string): Promise<void>;
 }
 
 export class User {
-  #id: string
-  #email: string
-  #username: string
-  #password: string
-  #type: userRole
-  #favoritedPosts: Favorite[] = []
-  #commentedPosts: Comment[] = []
-  #publishedPosts: Post[] = []
+  #id: string;
+  #email: string;
+  #username: string;
+  #password: string;
+  #type: userRole;
+  #favoritedPosts: Favorite[] = [];
+  #commentedPosts: Comment[] = [];
+  #publishedPosts: Post[] = [];
 
   constructor(properties: UserObject) {
-    this.#id = properties.id!
-    this.#email = properties.email
-    this.#username = properties.username
-    this.#password = properties.password
-    this.#type = properties.type!
+    this.#id = properties.id!;
+    this.#email = properties.email;
+    this.#username = properties.username;
+    this.#password = properties.password;
+    this.#type = properties.type!;
   }
 
   public get object(): UserObject {
@@ -54,91 +57,99 @@ export class User {
       favoritedPosts: this.#favoritedPosts.map((post) => post.object),
       commentedPosts: this.#commentedPosts.map((comment) => comment.object),
       publishedPosts: this.#publishedPosts.map((post) => post.object),
-    }
+    };
   }
 
   public get id(): string {
-    return this.#id
+    return this.#id;
   }
   public set id(_value: string) {
-    throw new Error('Cannot modify id property directly.')
+    throw new Error("Cannot modify id property directly.");
   }
 
   public get email(): string {
-    return this.#email
+    return this.#email;
   }
   public set email(_value: string) {
-    throw new Error('Cannot modify email property directly.')
+    throw new Error(
+      "Cannot modify email property directly. Use the changeEmail method in the UserService instead.",
+    );
   }
 
   public get username(): string {
-    return this.#username
+    return this.#username;
   }
   public set username(_value: string) {
-    throw new Error('Cannot modify username property directly.')
+    throw new Error(
+      "Cannot modify username property directly. Use the changeUsername method in the UserService instead.",
+    );
   }
 
   public get password(): string {
-    return this.#password
+    return this.#password;
   }
   public set password(_value: string) {
-    throw new Error('Cannot modify password property directly.')
+    throw new Error(
+      "Cannot modify password property directly. Use the changePassword method in the UserService instead.",
+    );
   }
 
   public get type(): string {
-    return this.#type
+    return this.#type;
   }
   public set type(_value: string) {
-    throw new Error('Cannot modify type property directly.')
+    throw new Error(
+      "Cannot modify user type property directly. Use the changeRole method in the UserService instead.",
+    );
   }
 
   public get favoritedPosts(): FavoriteObject[] {
-    return this.#favoritedPosts.map((post) => post.object)
+    return this.#favoritedPosts.map((post) => post.object);
   }
   public set favoritedPosts(_value: FavoriteObject[]) {
-    throw new Error('Cannot modify favoritedPosts property directly.')
+    throw new Error("Cannot modify favoritedPosts property directly.");
   }
 
-  public changeEmail(data: {
-    currentPassword: string
-    newEmail: string
-  }): void {
-    Validators.compareCurrentPassword({
-      inputPassword: data.currentPassword,
-      currentPassword: this.#password,
-    })
-    Validators.validateEmail(data.newEmail)
-    this.#email = data.newEmail
-  }
+  // public changeEmail(data: {
+  //   currentPassword: string
+  //   newEmail: string
+  // }): void {
+  //   Validators.compareCurrentPassword({
+  //     inputPassword: data.currentPassword,
+  //     currentPassword: this.#password,
+  //   })
+  //   Validators.validateEmail(data.newEmail)
+  //   this.#email = data.newEmail
+  // }
 
-  public changePassword(data: {
-    currentPassword: string
-    newPassword: string
-  }): void {
-    Validators.compareCurrentPassword({
-      inputPassword: data.currentPassword,
-      currentPassword: this.#password,
-    })
-    Validators.validatePassword(data.newPassword)
-    this.#password = data.newPassword
-  }
+  // public changePassword(data: {
+  //   currentPassword: string
+  //   newPassword: string
+  // }): void {
+  //   Validators.compareCurrentPassword({
+  //     inputPassword: data.currentPassword,
+  //     currentPassword: this.#password,
+  //   })
+  //   Validators.validatePassword(data.newPassword)
+  //   this.#password = data.newPassword
+  // }
 
-  public toggleFavorite(postId: string): void {
-    if (typeof postId !== 'string') {
-      throw new Error('The parameter must be a String.')
-    }
-    // mover allPosts para um PostService
-    const post = Post.allPosts.find((post) => post.id === postId)
-    if (!post) {
-      throw new Error(`No post found with id: ${postId}`)
-    }
-    const index = this.#favoritedPosts.findIndex(
-      (favorite) => favorite.postId === postId
-    )
-    if (index === -1) {
-      this.#favoritedPosts.push(new Favorite({ userId: this.#id, postId }))
-    } else {
-      this.#favoritedPosts.splice(index, 1)
-    }
-  }
+  // public toggleFavorite(postId: string): void {
+  //   if (typeof postId !== 'string') {
+  //     throw new Error('The parameter must be a String.')
+  //   }
+  //   // mover allPosts para um PostService
+  //   const post = Post.allPosts.find((post) => post.id === postId)
+  //   if (!post) {
+  //     throw new Error(`No post found with id: ${postId}`)
+  //   }
+  //   const index = this.#favoritedPosts.findIndex(
+  //     (favorite) => favorite.postId === postId
+  //   )
+  //   if (index === -1) {
+  //     this.#favoritedPosts.push(new Favorite({ userId: this.#id, postId }))
+  //   } else {
+  //     this.#favoritedPosts.splice(index, 1)
+  //   }
+  // }
 }

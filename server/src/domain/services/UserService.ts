@@ -1,59 +1,70 @@
-import { User, UserObject, UserRepository } from '../entities/User'
-import { UserBuilder } from '../builders/UserBuilder'
-import Validators from '../../utils/validators'
+import { User, UserObject, UserRepository } from "../entities/User";
+import { UserBuilder } from "../builders/UserBuilder";
+import Validators from "../../utils/validators";
 
 export default class UserService {
-  #userRepository: UserRepository
+  #userRepository: UserRepository;
 
   constructor(userRepository: UserRepository) {
-    this.#userRepository = userRepository
+    this.#userRepository = userRepository;
   }
 
-  public createUser(user: UserObject): User {
+  public async createUser(user: UserObject): Promise<User> {
     const newUser = new UserBuilder()
       .setEmail(user.email)
       .setUsername(user.username)
       .setPassword(user.password)
-      .build()
-    this.#userRepository.createUser(newUser)
-    return newUser
+      .build();
+    await this.#userRepository.createUser(newUser);
+    return newUser;
   }
 
-  public deleteUser(userId: string): User | undefined {
-    Validators.checkPrimitiveType({ validating: userId, type: 'string' })
-    const userExists = this.#userRepository.findUserById(userId)
+  public async deleteUser(userId: string): Promise<User | undefined> {
+    Validators.checkPrimitiveType({ validating: userId, type: "string" });
+    const userExists = await this.#userRepository.findUserById(userId);
     if (userExists) {
-      const deletedUser = this.#userRepository.deleteUser(userId)
-      return deletedUser
+      const deletedUser = await this.#userRepository.deleteUser(userId);
+      return deletedUser;
     } else {
-      throw new Error(`The user with ID: ${userId} was not found.`)
+      throw new Error(`The user with ID: ${userId} was not found.`);
     }
   }
 
-  public findUserById(userId: string): User | undefined {
-    Validators.checkPrimitiveType({ validating: userId, type: 'string' })
-    return this.#userRepository.findUserById(userId)
+  public async findUserById(userId: string): Promise<User | undefined> {
+    Validators.checkPrimitiveType({ validating: userId, type: "string" });
+    return await this.#userRepository.findUserById(userId);
   }
 
-  public findUserByEmail(userEmail: string): User | undefined {
-    Validators.checkPrimitiveType({ validating: userEmail, type: 'string' })
-    Validators.validateEmail(userEmail)
-    return this.#userRepository.findUserByEmail(userEmail)
+  public async findUserByEmail(userEmail: string): Promise<User | undefined> {
+    Validators.checkPrimitiveType({ validating: userEmail, type: "string" });
+    Validators.validateEmail(userEmail);
+    return await this.#userRepository.findUserByEmail(userEmail);
   }
 
-  public changeEmail(data: {
-    userId: string
-    currentPassword: string
-    newEmail: string
-  }): void {
-
-    
-
-    // Validators.compareCurrentPassword({
-    //   inputPassword: data.currentPassword,
-    //   currentPassword:,
-    // })
-    Validators.validateEmail(data.newEmail)
-    // this.#email = data.newEmail
+  public async changeEmail(data: {
+    userId: string;
+    confirmationPassword: string;
+    newEmail: string;
+  }): Promise<User | undefined> {
+    Validators.checkPrimitiveType({ validating: data.userId, type: "string" });
+    Validators.validateEmail(data.newEmail);
+    const user = await this.#userRepository.findUserById(data.userId);
+    if (user) {
+      Validators.compareCurrentPassword({
+        inputPassword: data.confirmationPassword,
+        currentPassword: user.password,
+      });
+      
+      const updatedUser = new UserBuilder()
+        .setId(user.object.id!)
+        .setEmail(data.newEmail)
+        .setUsername(user.object.username)
+        .setPassword(user.object.password)
+        .build();
+      const changedUser = await this.#userRepository.changeEmail(updatedUser);
+      return changedUser;
+    } else {
+      throw new Error(`The user with ID: ${data.userId} was not found.`);
+    }
   }
 }

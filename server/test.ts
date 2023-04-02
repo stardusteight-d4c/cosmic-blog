@@ -13,20 +13,22 @@ const myUser: UserObject = {
   password: 'pa$$word1',
 }
 
-const userInstance = userService.createUser(myUser)
+const asyncFunction = async () => {
+  const userInstance = await userService.createUser(myUser)
+  console.log(userInstance.object.id);
+  
+  await userService.changeEmail({
+    userId: userInstance!.object.id!,
+    confirmationPassword: userInstance.object.password,
+    newEmail: 'email@email.com',
+  })
+  const findMyUser = await userService.findUserByEmail(
+    'email@email.com'
+  )
+  console.log('findMyUser', findMyUser?.object)
+}
 
-
-
-
-
-const findMyUser = userService.findUserByEmail(userInstance.object.email)
-
-console.log('findMyUser', findMyUser?.object);
-
-
-
-
-
+asyncFunction()
 
 // const userInstance = new UserBuilder()
 //   .setEmail('johndoe@example.com')
