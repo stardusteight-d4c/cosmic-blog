@@ -1,4 +1,4 @@
-import { User, UserObject, UserRepository } from "../entities/User";
+import { User, UserReflectObject, UserRepository } from "../entities/User";
 import { UserBuilder } from "../builders/UserBuilder";
 import Validators from "../../utils/validators";
 
@@ -9,14 +9,14 @@ export default class UserService {
     this.#userRepository = userRepository;
   }
 
-  public async createUser(user: UserObject): Promise<User> {
+  public async createUser(user: UserReflectObject): Promise<User> {
     const newUser = new UserBuilder()
       .setEmail(user.email)
       .setUsername(user.username)
       .setPassword(user.password)
       .build();
-    await this.#userRepository.createUser(newUser);
-    return newUser;
+    const userInstance = await this.#userRepository.createUser(newUser);
+    return userInstance;
   }
 
   public async deleteUser(userId: string): Promise<User | undefined> {
@@ -54,12 +54,12 @@ export default class UserService {
         inputPassword: data.confirmationPassword,
         currentPassword: user.password,
       });
-      
+
       const updatedUser = new UserBuilder()
-        .setId(user.object.id!)
+        .setId(user.reflect.id!)
         .setEmail(data.newEmail)
-        .setUsername(user.object.username)
-        .setPassword(user.object.password)
+        .setUsername(user.reflect.username)
+        .setPassword(user.reflect.password)
         .build();
       const changedUser = await this.#userRepository.changeEmail(updatedUser);
       return changedUser;

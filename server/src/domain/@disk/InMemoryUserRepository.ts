@@ -1,5 +1,5 @@
 import { Favorite } from "../entities/Favorite";
-import { User, UserRepository } from "../entities/User";
+import { User, UserReflectObject, UserRepository } from "../entities/User";
 
 export class InMemoryUserRepository implements UserRepository {
   #users: Map<string, User> = new Map();
@@ -11,23 +11,18 @@ export class InMemoryUserRepository implements UserRepository {
     throw new Error("Cannot modify users property directly.");
   }
 
-  // Como a minha entidade só é uma definição de Objeto, não é possível alterar 
-  // seus valores diretamente, apenas é possível excluir e criar um novo com
-  // as propriedades atualizadas, assim torna-se impossível realizar qualquer método de
-  // modificação que não esteja defenido em algum repositório, pois esta é a função dos 
-  // repositórios, implementar os comportamentos/métodos da entidade.
   private async replaceUser(updatedUser: User): Promise<User> {
-    const existingUser = await this.findUserById(updatedUser.id);
+    const existingUser = await this.findUserById(updatedUser.reflect.id!) 
     if (!existingUser) {
-      throw new Error(`No user found with id: ${updatedUser.id}`);
+      throw new Error(`No user found with id: ${updatedUser.reflect.id}`);
     }
-    this.#users.delete(existingUser.id);
-    this.#users.set(updatedUser.id, updatedUser);
+    this.#users.delete(existingUser.reflect.id!);
+    this.#users.set(updatedUser.reflect.id!, updatedUser);
     return updatedUser;
   }
-
+  
   public async createUser(user: User): Promise<User> {
-    this.#users.set(user.id, user);
+    this.#users.set(user.reflect.id!, user);
     return user;
   }
 
@@ -37,7 +32,7 @@ export class InMemoryUserRepository implements UserRepository {
 
   public async findUserByEmail(email: string): Promise<User | undefined> {
     return Array.from(this.#users.values()).find(
-      (user) => user.email === email,
+      (user) => user.reflect.email === email,
     );
   }
 

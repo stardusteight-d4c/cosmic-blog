@@ -15,30 +15,30 @@ export class UserBuilder {
   #commentedPosts: CommentObject[] = [];
   #publishedPosts: PostObject[] = [];
 
-  setId(id: string) {
+  public setId(id: string) {
     this.#id = id;
     return this;
   }
 
-  setEmail(email: string) {
+  public setEmail(email: string): UserBuilder {
     Validators.validateEmail(email);
     this.#email = email;
     return this;
   }
 
-  setUsername(username: string) {
+  public setUsername(username: string): UserBuilder {
     Validators.validateUsername(username);
     this.#username = username;
     return this;
   }
 
-  setPassword(password: string) {
+  public setPassword(password: string): UserBuilder {
     Validators.validatePassword(password);
     this.#password = password;
     return this;
   }
 
-  build() {
+  public build(): User {
     if (!this.#email) {
       throw new Error("Email is required.");
     }

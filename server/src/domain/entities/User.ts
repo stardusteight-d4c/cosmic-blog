@@ -5,7 +5,7 @@ import { Post, PostObject } from "./Post";
 
 export type userRole = "author-blog" | "default-user";
 
-export interface UserObject {
+export interface UserReflectObject {
   id?: string;
   email: string;
   username: string;
@@ -39,7 +39,7 @@ export class User {
   #commentedPosts: Comment[] = [];
   #publishedPosts: Post[] = [];
 
-  constructor(properties: UserObject) {
+  constructor(properties: UserReflectObject) {
     this.#id = properties.id!;
     this.#email = properties.email;
     this.#username = properties.username;
@@ -47,7 +47,7 @@ export class User {
     this.#type = properties.type!;
   }
 
-  public get object(): UserObject {
+  public get reflect(): UserReflectObject {
     return {
       id: this.#id,
       email: this.#email,
@@ -59,16 +59,25 @@ export class User {
       publishedPosts: this.#publishedPosts.map((post) => post.object),
     };
   }
+  public set reflect(_values: UserReflectObject) {
+    throw new Error(
+      "Cannot access id property directly. Use the reflect object in the User instead.",
+    );
+  }
 
   public get id(): string {
-    return this.#id;
+    throw new Error(
+      "Cannot access id property directly. Use the reflect object in the User instead.",
+    );
   }
   public set id(_value: string) {
     throw new Error("Cannot modify id property directly.");
   }
 
   public get email(): string {
-    return this.#email;
+    throw new Error(
+      "Cannot access email property directly. Use the reflect object in the User instead.",
+    );
   }
   public set email(_value: string) {
     throw new Error(

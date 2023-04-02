@@ -85,3 +85,16 @@ At the domain layer, entities represent business object models, and may be respo
 This way, we have a clear separation of responsibilities, which makes the application easier to understand, test and maintain. It is an approach that follows the principles of the object-oriented programming paradigm, and is widely used in large software projects.
 
 The responsibility for validating the parameters should be on the service layer. The in-memory database layer (InMemoryDatabase) should only be responsible for storing and retrieving data, while the service layer should handle business rules and validate the data before persisting it in the database. This ensures that the data stored in the in-memory database is consistent and coherent, as well as making the code easier to maintain, as the validation logic will be centralized in a single location.
+
+
+
+
+ // Como a minha entidade só é uma definição de Objeto, não é possível alterar 
+  // seus valores diretamente, apenas é possível excluir e criar um novo com
+  // as propriedades atualizadas, assim torna-se impossível realizar qualquer método de
+  // modificação que não esteja defenido em algum repositório, pois esta é a função dos 
+  // repositórios, implementar os comportamentos/métodos da entidade.
+
+Services não altera a instância original da entidade, apenas clones destas entidades no repositório
+
+Sim, isso é correto. O objetivo dos serviços é orquestrar a lógica de negócios da aplicação, enquanto os repositórios são responsáveis por manipular e persistir os dados no banco de dados. Dessa forma, o serviço deve trabalhar com clones da entidade que foram obtidos através do repositório, para evitar efeitos colaterais indesejados. Assim, quando uma alteração é feita através do serviço, ela é primeiro aplicada na entidade clonada, para depois ser persistida no banco de dados através do repositório.

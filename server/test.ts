@@ -2,12 +2,12 @@ import { Post, PostObject } from './src/domain/entities/Post'
 import { UserBuilder } from './src/domain/builders/UserBuilder'
 import UserService from './src/domain/services/UserService'
 import { InMemoryUserRepository } from './src/domain/@disk/InMemoryUserRepository'
-import { User, UserObject } from './src/domain/entities/User'
+import { User, UserReflectObject } from './src/domain/entities/User'
 
 const inMemoryUserRepository = new InMemoryUserRepository()
 const userService = new UserService(inMemoryUserRepository)
 
-const myUser: UserObject = {
+const myUser: UserReflectObject = {
   username: 'johndoe8',
   email: 'johndoe@example.com',
   password: 'pa$$word1',
@@ -15,17 +15,23 @@ const myUser: UserObject = {
 
 const asyncFunction = async () => {
   const userInstance = await userService.createUser(myUser)
-  console.log(userInstance.object.id);
+  console.log(userInstance.reflect.id);
   
-  await userService.changeEmail({
-    userId: userInstance!.object.id!,
-    confirmationPassword: userInstance.object.password,
+  // console.log('userInstance.email', userInstance.email);
+
+  
+  
+  const newInstance = await userService.changeEmail({
+    userId: userInstance!.reflect.id!,
+    confirmationPassword: userInstance.reflect.password,
     newEmail: 'email@email.com',
   })
   const findMyUser = await userService.findUserByEmail(
-    'email@email.com'
-  )
-  console.log('findMyUser', findMyUser?.object)
+    'johndoe@example.com'
+    )
+    
+    console.log('findMyUser?.reflect', findMyUser?.reflect)
+    console.log('newInstance.reflect', newInstance!.reflect);
 }
 
 asyncFunction()
