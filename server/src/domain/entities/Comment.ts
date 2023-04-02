@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { User, UserReflectObject } from "./User";
+import { User, IUserReflectObject } from "./User";
 
-export interface CommentReflectObject {
+export interface ICommentReflectObject {
   id: string;
   postedAt: Date;
-  author: UserReflectObject;
+  author: IUserReflectObject;
   body: string;
 }
 
@@ -14,14 +14,14 @@ export class Comment {
   author: User;
   body: string;
 
-  constructor(properties: CommentReflectObject) {
+  constructor(properties: ICommentReflectObject) {
     this.id = properties.id || randomUUID();
     this.body = properties.body;
     this.postedAt = properties.postedAt;
     this.author = new User(properties.author);
   }
 
-  public get reflect(): CommentReflectObject {
+  public get reflect(): ICommentReflectObject {
     return {
       id: this.id,
       body: this.body,

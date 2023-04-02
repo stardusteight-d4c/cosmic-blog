@@ -1,4 +1,4 @@
-export interface FavoriteReflectObject {
+export interface IFavoriteReflectObject {
   userId: string;
   postId: string;
 }
@@ -7,12 +7,12 @@ export class Favorite {
   #userId: string;
   #postId: string;
 
-  constructor(properties: FavoriteReflectObject) {
+  constructor(properties: IFavoriteReflectObject) {
     this.#userId = properties.userId;
     this.#postId = properties.postId;
   }
 
-  get reflect(): FavoriteReflectObject {
+  get reflect(): IFavoriteReflectObject {
     return {
       userId: this.#userId,
       postId: this.#postId,

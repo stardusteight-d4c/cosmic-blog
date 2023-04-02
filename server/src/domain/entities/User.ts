@@ -1,6 +1,7 @@
-import { Comment, CommentReflectObject } from "./Comment";
-import { Favorite, FavoriteReflectObject } from "./Favorite";
-import { Post, PostReflectObject } from "./Post";
+import { FavoritePostCommand } from "../buses/commands/UserCommand";
+import { Comment, ICommentReflectObject } from "./Comment";
+import { Favorite, IFavoriteReflectObject } from "./Favorite";
+import { Post, IPostReflectObject } from "./Post";
 
 export type TUserRole = "author-blog" | "default-user";
 
@@ -20,9 +21,9 @@ export interface IUserReflectObject {
   password: string;
   userRole?: TUserRole;
   socialLinks?: ISocialLinks | undefined;
-  favoritedPosts?: FavoriteReflectObject[];
-  commentedPosts?: CommentReflectObject[];
-  publishedPosts?: PostReflectObject[];
+  favoritedPosts?: IFavoriteReflectObject[];
+  commentedPosts?: ICommentReflectObject[];
+  publishedPosts?: IPostReflectObject[];
 }
 
 export interface IUserRepository {
@@ -36,7 +37,6 @@ export interface IUserRepository {
 }
 
 export interface IUserService {
-  emit_favoritedThePost(userId: string, postId: string): Promise<void>;
   createUser(user: IUserReflectObject): Promise<User>;
   deleteUser(userId: string): Promise<User | undefined>;
   findUserById(userId: string): Promise<User | undefined>;
@@ -51,6 +51,10 @@ export interface IUserService {
     confirmationPassword: string;
     newPassword: string;
   }): Promise<User | undefined>;
+  // CommandEmitters
+  emitFavoritePostCommand(userId: string, postId: string): Promise<void>
+  // CommandHandlers
+  eventHandlerFavoritePostCommand(command: FavoritePostCommand): Promise<void>
 }
 
 export class User {
@@ -165,12 +169,12 @@ export class User {
     );
   }
 
-  public get favoritedPosts(): FavoriteReflectObject[] {
+  public get favoritedPosts(): IFavoriteReflectObject[] {
     throw new Error(
       "Cannot access favoritedPosts property directly. Use the reflect object in the User instead.",
     );
   }
-  public set favoritedPosts(_value: FavoriteReflectObject[]) {
+  public set favoritedPosts(_value: IFavoriteReflectObject[]) {
     throw new Error("Cannot modify favoritedPosts property directly.");
   }
 

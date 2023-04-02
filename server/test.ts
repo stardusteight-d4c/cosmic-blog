@@ -1,12 +1,25 @@
-import { Post, PostReflectObject } from './src/domain/entities/Post'
-import { UserBuilder } from './src/domain/builders/UserBuilder'
+import { IPostReflectObject } from './src/domain/entities/Post'
 import UserService from './src/domain/services/UserService'
 import { InMemoryUserRepository } from './src/domain/disk/InMemoryUserRepository'
-import { User, IUserReflectObject } from './src/domain/entities/User'
-import { PostBuilder } from './src/domain/builders/PostBuilder'
+import { IUserReflectObject } from './src/domain/entities/User'
+import { InMemoryPostRepository } from './src/domain/disk/InMemoryPostRepository'
+import PostService from './src/domain/services/PostService'
+import { UserPublisher } from './src/domain/buses/publishers/UserPublisher'
+import UserObserver from './src/domain/buses/observers/UserObserver'
 
 const inMemoryUserRepository = new InMemoryUserRepository()
-const userService = new UserService(inMemoryUserRepository)
+const inMemoryPostRepository = new InMemoryPostRepository()
+const userPublisher = new UserPublisher()
+
+const userService = new UserService({
+  userPublisher: userPublisher,
+  userRepository: inMemoryUserRepository,
+  postRepository: inMemoryPostRepository,
+})
+
+userPublisher.register(new UserObserver(userService))
+
+const postService = new PostService(inMemoryPostRepository)
 const myUser: IUserReflectObject = {
   username: 'johndoe8',
   email: 'johndoe@example.com',
@@ -16,41 +29,24 @@ const myUser: IUserReflectObject = {
 const asyncFunction = async () => {
   const userInstance = await userService.createUser(myUser)
 
-  const postInstance = new PostBuilder()
-    .setTitle('Título do post!')
-    .setBody(
-      'Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi'
-    )
-    .setTags(['nodejs', 'typescript', 'ddd'])
-    .setCoverImage(
-      'https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a'
-    )
-    .setPostedIn(new Date())
-    .setAuthor(userInstance)
-    .build()
+  const postObject: IPostReflectObject = {
+    title: 'Título doaaa post!',
+    body: 'Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi',
+    tags: ['nodejs', 'typescript', 'ddd'],
+    coverImage:
+      'https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a',
+    postedIn: new Date(),
+    author: userInstance.reflect,
+  }
 
-    console.log(postInstance.reflect);
-    
+  const postInstance = await postService.createPost(postObject)
 
-  // console.log(
-  //   await userService
-  //     .findUserById(userInstance.reflect.id!)
-  //     .then((data) => data?.reflect)
-  // )
+  // console.log(postInstance.reflect)
 
-  const retornaNovaIstancia = await userService.changeEmail({
-    confirmationPassword: userInstance.reflect.password,
-    newEmail: 'newEmail@email.com',
-    userId: userInstance.reflect.id!,
-  })
-
-  const user = await userService
-    .findUserByEmail(retornaNovaIstancia!.reflect.email!)
-    .then((data) => data?.reflect)
-
-  await userService.deleteUser(retornaNovaIstancia!.reflect.id!)
-
-  // console.log(user)
+  await userService.emitFavoritePostCommand(
+    userInstance.reflect.id!,
+    postInstance.reflect.id!
+  )
 }
 
 asyncFunction()

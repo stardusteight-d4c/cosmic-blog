@@ -1,8 +1,8 @@
-import { Comment, CommentReflectObject } from "./Comment";
-import { Favorite, FavoriteReflectObject } from "./Favorite";
-import { User, UserReflectObject } from "./User";
+import { Comment, ICommentReflectObject } from "./Comment";
+import { Favorite, IFavoriteReflectObject } from "./Favorite";
+import { User, IUserReflectObject } from "./User";
 
-export interface PostReflectObject {
+export interface IPostReflectObject {
   id?: string;
   title: string;
   body: string;
@@ -10,10 +10,18 @@ export interface PostReflectObject {
   coverImage: string;
   postedIn: Date;
   lastChange?: Date;
-  author: UserReflectObject;
-  favorites?: FavoriteReflectObject[];
-  comments?: CommentReflectObject[];
+  author: IUserReflectObject;
+  favorites?: IFavoriteReflectObject[];
+  comments?: ICommentReflectObject[];
 }
+
+export interface IPostRepository {
+  createPost(post: Post): Promise<Post>;
+  deletePost(postId: string): Promise<Post | undefined>;
+  findPostById(postId: string): Promise<Post | undefined>;
+}
+
+export interface IPostService {}
 
 export class Post {
   #id: string;
@@ -27,7 +35,7 @@ export class Post {
   #favorites: Favorite[] = [];
   #comments: Comment[] = [];
 
-  constructor(properties: PostReflectObject) {
+  constructor(properties: IPostReflectObject) {
     this.#id = properties.id!;
     this.#title = properties.title;
     this.#body = properties.body;
@@ -44,7 +52,7 @@ export class Post {
       : [];
   }
 
-  public get reflect(): PostReflectObject {
+  public get reflect(): IPostReflectObject {
     return {
       id: this.#id,
       title: this.#title,
