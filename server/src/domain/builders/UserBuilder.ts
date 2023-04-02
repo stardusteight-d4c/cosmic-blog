@@ -1,16 +1,17 @@
 import { randomUUID } from "node:crypto";
 import Validators from "../../utils/validators";
 import { Comment } from "../entities/Comment";
-import { Favorite, FavoriteObject } from "../entities/Favorite";
-import { Post, PostObject } from "../entities/Post";
-import { User, userRole } from "../entities/User";
+import { Favorite} from "../entities/Favorite";
+import { Post } from "../entities/Post";
+import { ISocialLinks, User, TUserRole } from "../entities/User";
 
 export class UserBuilder {
   #id: string | undefined;
   #email: string | undefined;
   #username: string | undefined;
   #password: string | undefined;
-  #type: userRole | undefined;
+  #userRole: TUserRole | undefined;
+  #socialLinks: ISocialLinks | undefined = undefined;
   #favoritedPosts: Favorite[] = [];
   #commentedPosts: Comment[] = [];
   #publishedPosts: Post[] = [];
@@ -38,17 +39,17 @@ export class UserBuilder {
     return this;
   }
 
-  setFavoritedPosts(favoritedPosts: Favorite[]): UserBuilder {
+  public setFavoritedPosts(favoritedPosts: Favorite[]): UserBuilder {
     this.#favoritedPosts = favoritedPosts;
     return this;
   }
 
-  setCommentedPosts(commentedPosts: Comment[]): UserBuilder {
+  public setCommentedPosts(commentedPosts: Comment[]): UserBuilder {
     this.#commentedPosts = commentedPosts;
     return this;
   }
 
-  setPublishedPosts(publishedPosts: Post[]): UserBuilder {
+  public setPublishedPosts(publishedPosts: Post[]): UserBuilder {
     this.#publishedPosts = publishedPosts;
     return this;
   }
@@ -68,10 +69,11 @@ export class UserBuilder {
       email: this.#email,
       username: this.#username,
       password: this.#password,
-      type: this.#type ?? "default-user",
-      favoritedPosts: this.#favoritedPosts.map((post) => post.object),
-      commentedPosts: this.#commentedPosts.map((comment) => comment.object),
-      publishedPosts: this.#publishedPosts.map((post) => post.object),
+      userRole: this.#userRole ?? "default-user",
+      socialLinks: this.#socialLinks,
+      favoritedPosts: this.#favoritedPosts.map((post) => post.reflect),
+      commentedPosts: this.#commentedPosts.map((comment) => comment.reflect),
+      publishedPosts: this.#publishedPosts.map((post) => post.reflect),
     });
   }
 }

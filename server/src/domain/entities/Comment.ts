@@ -1,33 +1,33 @@
-import { randomUUID } from 'node:crypto'
-import { User, UserObject } from './User'
+import { randomUUID } from "node:crypto";
+import { User, UserReflectObject } from "./User";
 
-export interface CommentObject {
-  id: string
-  postedAt: Date
-  author: UserObject
-  body: string
+export interface CommentReflectObject {
+  id: string;
+  postedAt: Date;
+  author: UserReflectObject;
+  body: string;
 }
 
 export class Comment {
-  id: string
-  postedAt: Date
-  author: User
-  body: string
+  id: string;
+  postedAt: Date;
+  author: User;
+  body: string;
 
-  constructor(properties: CommentObject) {
-    this.id = properties.id || randomUUID()
-    this.body = properties.body
-    this.postedAt = properties.postedAt
-    this.author = new User(properties.author)
+  constructor(properties: CommentReflectObject) {
+    this.id = properties.id || randomUUID();
+    this.body = properties.body;
+    this.postedAt = properties.postedAt;
+    this.author = new User(properties.author);
   }
 
-  public get object(): CommentObject {
+  public get reflect(): CommentReflectObject {
     return {
       id: this.id,
       body: this.body,
       postedAt: this.postedAt,
-      author: this.author.object,
-    }
+      author: this.author.reflect,
+    };
   }
 
   // public canEdit(author: User): boolean {

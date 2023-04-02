@@ -1,7 +1,7 @@
 import { Favorite } from "../entities/Favorite";
-import { User, UserReflectObject, UserRepository } from "../entities/User";
+import { User, IUserRepository } from "../entities/User";
 
-export class InMemoryUserRepository implements UserRepository {
+export class InMemoryUserRepository implements IUserRepository {
   #users: Map<string, User> = new Map();
 
   public get users() {
@@ -29,8 +29,6 @@ export class InMemoryUserRepository implements UserRepository {
   public async deleteUser(userId: string): Promise<User> {
     const user = await this.findUserById(userId);
     this.#users.delete(userId);
-    console.log('usuário supostamente deletado');
-    
     return user!;
   }
 

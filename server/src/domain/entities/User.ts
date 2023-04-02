@@ -1,21 +1,31 @@
-import { Comment, CommentObject } from "./Comment";
-import { Favorite, FavoriteObject } from "./Favorite";
-import { Post, PostObject } from "./Post";
+import { Comment, CommentReflectObject } from "./Comment";
+import { Favorite, FavoriteReflectObject } from "./Favorite";
+import { Post, PostReflectObject } from "./Post";
 
-export type userRole = "author-blog" | "default-user";
+export type TUserRole = "author-blog" | "default-user";
 
-export interface UserReflectObject {
+export interface ISocialLinks {
+  github?: string;
+  linkedin?: string;
+  instagram?: string;
+  twitter?: string;
+  facebook?: string;
+  email?: string;
+}
+
+export interface IUserReflectObject {
   id?: string;
   email: string;
   username: string;
   password: string;
-  type?: userRole;
-  favoritedPosts?: FavoriteObject[];
-  commentedPosts?: CommentObject[];
-  publishedPosts?: PostObject[];
+  userRole?: TUserRole;
+  socialLinks?: ISocialLinks | undefined;
+  favoritedPosts?: FavoriteReflectObject[];
+  commentedPosts?: CommentReflectObject[];
+  publishedPosts?: PostReflectObject[];
 }
 
-export interface UserRepository {
+export interface IUserRepository {
   createUser(user: User): Promise<User>;
   deleteUser(userId: string): Promise<User>;
   findUserById(userId: string): Promise<User | undefined>;
@@ -25,37 +35,67 @@ export interface UserRepository {
   toggleFavorite(userId: string, postId: string): Promise<void>;
 }
 
+export interface IUserService {
+  emit_favoritedThePost(userId: string, postId: string): Promise<void>;
+  createUser(user: IUserReflectObject): Promise<User>;
+  deleteUser(userId: string): Promise<User | undefined>;
+  findUserById(userId: string): Promise<User | undefined>;
+  findUserByEmail(email: string): Promise<User | undefined>;
+  changeEmail(data: {
+    userId: string;
+    confirmationPassword: string;
+    newEmail: string;
+  }): Promise<User | undefined>;
+  changePassword(data: {
+    userId: string;
+    confirmationPassword: string;
+    newPassword: string;
+  }): Promise<User | undefined>;
+}
+
 export class User {
   #id: string;
   #email: string;
   #username: string;
   #password: string;
-  #type: userRole;
+  #userRole: TUserRole;
+  #socialLinks: ISocialLinks | undefined;
   #favoritedPosts: Favorite[] = [];
   #commentedPosts: Comment[] = [];
   #publishedPosts: Post[] = [];
 
-  constructor(properties: UserReflectObject) {
+  constructor(properties: IUserReflectObject) {
     this.#id = properties.id!;
     this.#email = properties.email;
     this.#username = properties.username;
     this.#password = properties.password;
-    this.#type = properties.type!;
+    this.#userRole = properties.userRole!;
+    this.#socialLinks = properties.socialLinks;
+    this.#favoritedPosts = properties.favoritedPosts
+      ? properties.favoritedPosts.map((favorite) => new Favorite(favorite))
+      : [];
+    this.#commentedPosts = properties.commentedPosts
+      ? properties.commentedPosts.map((favorite) => new Comment(favorite))
+      : [];
+    this.#publishedPosts = properties.publishedPosts
+      ? properties.publishedPosts.map((favorite) => new Post(favorite))
+      : [];
   }
 
-  public get reflect(): UserReflectObject {
+  public get reflect(): IUserReflectObject {
     return {
       id: this.#id,
       email: this.#email,
       username: this.#username,
       password: this.#password,
-      type: this.#type,
-      favoritedPosts: this.#favoritedPosts.map((post) => post.object),
-      commentedPosts: this.#commentedPosts.map((comment) => comment.object),
-      publishedPosts: this.#publishedPosts.map((post) => post.object),
+      userRole: this.#userRole,
+      socialLinks: this.#socialLinks,
+      favoritedPosts: this.#favoritedPosts.map((post) => post.reflect),
+      commentedPosts: this.#commentedPosts.map((comment) => comment.reflect),
+      publishedPosts: this.#publishedPosts.map((post) => post.reflect),
     };
   }
-  public set reflect(_values: UserReflectObject) {
+  public set reflect(_values: IUserReflectObject) {
     throw new Error(
       "Cannot modify reflect object directly. Use the UserService methods instead.",
     );
@@ -70,6 +110,17 @@ export class User {
     throw new Error("Cannot modify id property directly.");
   }
 
+  public get type(): string {
+    throw new Error(
+      "Cannot access type property directly. Use the reflect object in the User instead.",
+    );
+  }
+  public set type(_value: string) {
+    throw new Error(
+      "Cannot modify user type property directly. Use the changeRole method in the UserService instead.",
+    );
+  }
+
   public get email(): string {
     throw new Error(
       "Cannot access email property directly. Use the reflect object in the User instead.",
@@ -82,7 +133,9 @@ export class User {
   }
 
   public get username(): string {
-    return this.#username;
+    throw new Error(
+      "Cannot access username property directly. Use the reflect object in the User instead.",
+    );
   }
   public set username(_value: string) {
     throw new Error(
@@ -91,7 +144,9 @@ export class User {
   }
 
   public get password(): string {
-    return this.#password;
+    throw new Error(
+      "Cannot access password property directly. Use the reflect object in the User instead.",
+    );
   }
   public set password(_value: string) {
     throw new Error(
@@ -99,22 +154,25 @@ export class User {
     );
   }
 
-  public get type(): string {
-    return this.#type;
-  }
-  public set type(_value: string) {
+  public get socialLinks(): Object[] {
     throw new Error(
-      "Cannot modify user type property directly. Use the changeRole method in the UserService instead.",
+      "Cannot access socialLinks property directly. Use the reflect object in the User instead.",
+    );
+  }
+  public set socialLinks(_value: Object[]) {
+    throw new Error(
+      "Cannot modify socialLinks property directly. Use the editSocialLinks method in the UserService instead.",
     );
   }
 
-  public get favoritedPosts(): FavoriteObject[] {
-    return this.#favoritedPosts.map((post) => post.object);
+  public get favoritedPosts(): FavoriteReflectObject[] {
+    throw new Error(
+      "Cannot access favoritedPosts property directly. Use the reflect object in the User instead.",
+    );
   }
-  public set favoritedPosts(_value: FavoriteObject[]) {
+  public set favoritedPosts(_value: FavoriteReflectObject[]) {
     throw new Error("Cannot modify favoritedPosts property directly.");
   }
-
 
   // public toggleFavorite(postId: string): void {
   //   if (typeof postId !== 'string') {

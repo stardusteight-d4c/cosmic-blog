@@ -1,15 +1,24 @@
-import { User, UserReflectObject, UserRepository } from "../entities/User";
+import {
+  User,
+  IUserReflectObject,
+  IUserRepository,
+  IUserService,
+} from "../entities/User";
 import { UserBuilder } from "../builders/UserBuilder";
 import Validators from "../../utils/validators";
 
-export default class UserService {
-  #userRepository: UserRepository;
+export default class UserService implements IUserService {
+  #userRepository: IUserRepository;
 
-  constructor(userRepository: UserRepository) {
+  constructor(userRepository: IUserRepository) {
     this.#userRepository = userRepository;
   }
 
-  public async createUser(user: UserReflectObject): Promise<User> {
+  emit_favoritedThePost(userId: string, postId: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  public async createUser(user: IUserReflectObject): Promise<User> {
     const newUser = new UserBuilder()
       .setEmail(user.email)
       .setUsername(user.username)
@@ -52,9 +61,8 @@ export default class UserService {
     if (user) {
       Validators.compareCurrentPassword({
         inputPassword: data.confirmationPassword,
-        currentPassword: user.password,
+        currentPassword: user.reflect.password,
       });
-
       const updatedUserInstance = new UserBuilder()
         .setId(user.reflect.id!)
         .setEmail(data.newEmail)
