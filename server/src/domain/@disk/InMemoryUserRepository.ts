@@ -26,6 +26,14 @@ export class InMemoryUserRepository implements UserRepository {
     return user;
   }
 
+  public async deleteUser(userId: string): Promise<User> {
+    const user = await this.findUserById(userId);
+    this.#users.delete(userId);
+    console.log('usuário supostamente deletado');
+    
+    return user!;
+  }
+
   public async findUserById(userId: string): Promise<User | undefined> {
     return this.#users.get(userId);
   }
@@ -34,12 +42,6 @@ export class InMemoryUserRepository implements UserRepository {
     return Array.from(this.#users.values()).find(
       (user) => user.reflect.email === email,
     );
-  }
-
-  public async deleteUser(userId: string): Promise<User> {
-    const user = await this.findUserById(userId);
-    this.#users.delete(userId);
-    return user!;
   }
 
   public async changeEmail(updatedUser: User): Promise<User> {
