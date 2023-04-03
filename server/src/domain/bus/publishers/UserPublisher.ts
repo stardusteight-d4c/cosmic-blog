@@ -9,10 +9,11 @@ export class UserPublisher {
   register(observer: IObserver) {
     this.servicesObservers.push(observer);
   }
-  publish(command: Command) {
+  async publish(command: Command) {
     for (const observer of this.servicesObservers) {
       if (observer.operations.includes(command.operation)) {
-        observer.notifyService(command);
+        const response = await observer.notifyService(command);
+        return response
       }
     }
   }

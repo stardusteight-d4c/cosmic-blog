@@ -146,3 +146,8 @@ No geral, um barramento é uma estrutura de software que permite a comunicação
 Na estrutura de diretórios que você apresentou, existem diretórios separados para "commands", "observers" e "publishers", o que sugere que há uma separação clara entre componentes que emitem comandos (commands), que recebem notificações de eventos (observers) e que publicam eventos (publishers). Isso é uma boa prática de design, pois permite separar as responsabilidades desses componentes e facilita a manutenção do sistema.
 
 Portanto, embora não seja possível afirmar com certeza se essa estrutura de diretórios é um barramento completo ou apenas parte dele, ela definitivamente pode ser utilizada como parte de um barramento em um sistema.
+
+
+Observers: Notifies other services that are interested
+on an action/event that was triggered 
+by others services of other entities.

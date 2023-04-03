@@ -4,8 +4,8 @@ import { InMemoryUserRepository } from './src/domain/disk/InMemoryUserRepository
 import { IUserReflectObject } from './src/domain/entities/User'
 import { InMemoryPostRepository } from './src/domain/disk/InMemoryPostRepository'
 import PostService from './src/domain/services/PostService'
-import { UserPublisher } from './src/domain/buses/publishers/UserPublisher'
-import UserObserver from './src/domain/buses/observers/UserObserver'
+import { UserPublisher } from './src/domain/bus/publishers/UserPublisher'
+import UserObserver from './src/domain/bus/observers/UserObserver'
 
 const inMemoryUserRepository = new InMemoryUserRepository()
 const inMemoryPostRepository = new InMemoryPostRepository()
@@ -41,12 +41,19 @@ const asyncFunction = async () => {
 
   const postInstance = await postService.createPost(postObject)
 
-  // console.log(postInstance.reflect)
-
-  await userService.emitFavoritePostCommand(
+   const response = await userService.publishFavoritePostCommand(
     userInstance.reflect.id!,
     postInstance.reflect.id!
   )
+
+  console.log(response?.reflect);
+  
+
+
+
+  // console.log(
+  //   await userService.findUserById(userInstance.reflect.id!).then((data) => data?.reflect.favoritedPosts)
+  // )
 }
 
 asyncFunction()

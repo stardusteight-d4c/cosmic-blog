@@ -8,7 +8,7 @@
     "build": "tsup src",
     "start": "node dist/infra/server.js",
     "test": "vitest",
-    "dev-test": "nodemon --watch '**/*.ts' --exec 'ts-node' test.ts",
+    "test-domain-dev": "nodemon --watch '**/*.ts' --exec 'ts-node' test-domain-interface.ts",
     "coverage": "vitest run --coverage"
   },
   "keywords": [],

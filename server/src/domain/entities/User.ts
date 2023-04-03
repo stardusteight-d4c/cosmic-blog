@@ -1,4 +1,4 @@
-import { FavoritePostCommand } from "../buses/commands/UserCommand";
+import { FavoritePostCommand } from "../bus/commands/UserCommand";
 import { Comment, ICommentReflectObject } from "./Comment";
 import { Favorite, IFavoriteReflectObject } from "./Favorite";
 import { Post, IPostReflectObject } from "./Post";
@@ -33,7 +33,7 @@ export interface IUserRepository {
   findUserByEmail(email: string): Promise<User | undefined>;
   changeEmail(updatedUser: User): Promise<User>;
   changePassword(updatedUser: User): Promise<User>;
-  toggleFavorite(userId: string, postId: string): Promise<void>;
+  toggleFavorite(updatedUser: User): Promise<User>;
 }
 
 export interface IUserService {
@@ -51,10 +51,15 @@ export interface IUserService {
     confirmationPassword: string;
     newPassword: string;
   }): Promise<User | undefined>;
-  // CommandEmitters
-  emitFavoritePostCommand(userId: string, postId: string): Promise<void>
+  // CommandPublishers
+  publishFavoritePostCommand(
+    userId: string,
+    postId: string,
+  ): Promise<User | undefined>;
   // CommandHandlers
-  eventHandlerFavoritePostCommand(command: FavoritePostCommand): Promise<void>
+  handlerFavoritePostCommand(
+    command: FavoritePostCommand,
+  ): Promise<User | undefined>;
 }
 
 export class User {
@@ -94,7 +99,7 @@ export class User {
       password: this.#password,
       userRole: this.#userRole,
       socialLinks: this.#socialLinks,
-      favoritedPosts: this.#favoritedPosts.map((post) => post.reflect),
+      favoritedPosts: this.#favoritedPosts.map((favorite) => favorite.reflect),
       commentedPosts: this.#commentedPosts.map((comment) => comment.reflect),
       publishedPosts: this.#publishedPosts.map((post) => post.reflect),
     };

@@ -52,18 +52,8 @@ export class InMemoryUserRepository implements IUserRepository {
     return user;
   }
 
-  public async toggleFavorite(userId: string, postId: string): Promise<void> {
-    const user = this.#users.get(userId);
-    if (user) {
-      const index = user.favoritedPosts.findIndex(
-        (fav) => fav.postId === postId,
-      );
-      if (index === -1) {
-        user.favoritedPosts.push(new Favorite({ postId, userId: user.id }));
-      } else {
-        user.favoritedPosts.splice(index, 1);
-      }
-      this.#users.set(user.id, user);
-    }
+  public async toggleFavorite(updatedUser: User): Promise<User> {
+    const user = await this.replaceUser(updatedUser);
+    return user;
   }
 }

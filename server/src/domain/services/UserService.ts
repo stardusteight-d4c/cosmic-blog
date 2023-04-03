@@ -7,10 +7,9 @@ import {
 import { UserBuilder } from "../builders/UserBuilder";
 import Validators from "../../utils/validators";
 import { IPostRepository } from "../entities/Post";
-import { FavoritePostCommand } from "../buses/commands/UserCommand";
-import Command from "../buses/commands/ICommand";
-import ICommand from "../buses/commands/ICommand";
-import { UserPublisher } from "../buses/publishers/UserPublisher";
+import { FavoritePostCommand } from "../bus/commands/UserCommand";
+import { UserPublisher } from "../bus/publishers/UserPublisher";
+import { Favorite } from "../entities/Favorite";
 
 export default class UserService implements IUserService {
   #userPublisher: UserPublisher;
@@ -27,10 +26,10 @@ export default class UserService implements IUserService {
     this.#postRepository = params.postRepository;
   }
 
-  public async emitFavoritePostCommand(
+  public async publishFavoritePostCommand(
     userId: string,
     postId: string,
-  ): Promise<void> {
+  ): Promise<User | undefined> {
     Validators.checkPrimitiveType({ validating: userId, type: "string" });
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
     const user = await this.#userRepository.findUserById(userId);
@@ -42,9 +41,9 @@ export default class UserService implements IUserService {
       throw new Error(`The post with ID: ${postId} was not found.`);
     }
 
-
     const favoritePostCommand = new FavoritePostCommand(userId, postId);
-    this.#userPublisher.publish(favoritePostCommand);
+    const response = this.#userPublisher.publish(favoritePostCommand);
+    return response;
   }
 
   public async createUser(user: IUserReflectObject): Promise<User> {
@@ -135,11 +134,51 @@ export default class UserService implements IUserService {
     }
   }
 
-  public async eventHandlerFavoritePostCommand(
+  public async handlerFavoritePostCommand(
     favoritePostCommand: FavoritePostCommand,
-  ): Promise<void> {
-    console.log(
-      `O comando chegou em userService através de UserObserver: ${favoritePostCommand}`,
-    );
+  ): Promise<User | undefined> {
+    const { userId, postId } = favoritePostCommand;
+    const user = await this.#userRepository.findUserById(userId);
+    if (user) {
+      const index = user.reflect.favoritedPosts!.findIndex(
+        (fav) => fav.postId === postId,
+      );
+      const isNotFavorited = index === -1;
+      if (isNotFavorited) {
+        const newFavorite = new Favorite({ userId, postId });
+        const updatedFavoritedPosts = [
+          ...(user.reflect.favoritedPosts?.map(
+            (favorite) =>
+              new Favorite({
+                userId: favorite.userId,
+                postId: favorite.postId,
+              }),
+          ) ?? []),
+          newFavorite,
+        ];
+        const updatedUserInstance = new UserBuilder()
+          .setId(user.reflect.id!)
+          .setEmail(user.reflect.email)
+          .setUsername(user.reflect.username)
+          .setPassword(user.reflect.password)
+          .setFavoritedPosts(updatedFavoritedPosts)
+          .build();
+        await this.#userRepository.toggleFavorite(updatedUserInstance);
+        return updatedUserInstance;
+      } else {
+        const updatedFavoritedPosts = user.reflect.favoritedPosts?.filter(
+          (favorite) => favorite.postId !== postId,
+        );
+        const updatedUserInstance = new UserBuilder()
+          .setId(user.reflect.id!)
+          .setEmail(user.reflect.email)
+          .setUsername(user.reflect.username)
+          .setPassword(user.reflect.password)
+          .setFavoritedPosts(updatedFavoritedPosts as Favorite[])
+          .build();
+        await this.#userRepository.toggleFavorite(updatedUserInstance);
+        return updatedUserInstance;
+      }
+    }
   }
 }

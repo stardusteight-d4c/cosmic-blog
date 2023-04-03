@@ -7,11 +7,12 @@ export default class UserObserver implements IObserver {
   operations: string[] = ["favorite_post_command"];
   constructor(readonly userService: UserService) {}
 
-  async notifyService(command: ICommand): Promise<void> {
+  async notifyService(command: ICommand): Promise<any> {
     if (command.operation === "favorite_post_command") {
-      await this.userService.eventHandlerFavoritePostCommand(
+      const response = await this.userService.handlerFavoritePostCommand(
         command as FavoritePostCommand,
       );
+      return response;
     }
   }
 }
