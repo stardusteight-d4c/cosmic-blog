@@ -1,7 +1,6 @@
-import { Favorite } from "../entities/Favorite";
-import { User, IUserRepository } from "../entities/User";
+import { User, IUserRepository } from ".";
 
-export class InMemoryUserRepository implements IUserRepository {
+export default class UserInMemoryRepository implements IUserRepository {
   #users: Map<string, User> = new Map();
 
   public get users() {

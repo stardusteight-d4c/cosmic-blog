@@ -9,11 +9,17 @@
     "strictPropertyInitialization": false,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@domain/*": ["src/domain/*"]
+    }
   },
   "ts-node": {
-    "transpileOnly": true
+    "transpileOnly": true,
+    "require": ["tsconfig-paths/register"]
   },
-  "include": ["src/**/*.ts", "test-domain-interface.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }

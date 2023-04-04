@@ -1,6 +1,7 @@
-import { Comment, ICommentReflectObject } from "./Comment";
-import { Favorite, IFavoriteReflectObject } from "./Favorite";
-import { User, IUserReflectObject } from "./User";
+import { FavoritePostCommand } from ".";
+import { User, IUserReflectObject } from "@domain/user";
+import { Comment, ICommentReflectObject } from "@domain/comment";
+import { Favorite, IFavoriteReflectObject } from "@domain/favorite";
 
 export interface IPostReflectObject {
   id?: string;
@@ -19,9 +20,22 @@ export interface IPostRepository {
   createPost(post: Post): Promise<Post>;
   deletePost(postId: string): Promise<Post | undefined>;
   findPostById(postId: string): Promise<Post | undefined>;
+  toggleFavorite(updatedPost: Post): Promise<Post>;
 }
 
-export interface IPostService {}
+export interface IPostService {
+  createPost(post: IPostReflectObject): Promise<Post>;
+  findPostById(postId: string): Promise<Post | undefined>;
+  // CommandPublishers
+  publishFavoritePostCommand(
+    userId: string,
+    postId: string,
+  ): Promise<Post | undefined>;
+  // CommandHandlers
+  handlerFavoritePostCommand(
+    command: FavoritePostCommand,
+  ): Promise<Post | undefined>;
+}
 
 export class Post {
   #id: string;

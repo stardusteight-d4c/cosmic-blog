@@ -1,6 +1,6 @@
-import { IPostRepository, Post } from "../entities/Post";
+import { IPostRepository, Post } from ".";
 
-export class InMemoryPostRepository implements IPostRepository {
+export default class PostInMemoryRepository implements IPostRepository {
   #posts: Map<string, Post> = new Map();
 
   public get posts() {
@@ -13,7 +13,7 @@ export class InMemoryPostRepository implements IPostRepository {
   private async replacePost(updatedPost: Post): Promise<Post> {
     const existingPost = await this.findPostById(updatedPost.reflect.id!);
     if (!existingPost) {
-      throw new Error(`No user found with id: ${updatedPost.reflect.id}`);
+      throw new Error(`No post found with id: ${updatedPost.reflect.id}`);
     }
     this.#posts.delete(existingPost.reflect.id!);
     this.#posts.set(updatedPost.reflect.id!, updatedPost);
@@ -33,5 +33,10 @@ export class InMemoryPostRepository implements IPostRepository {
 
   public async findPostById(postId: string): Promise<Post | undefined> {
     return this.#posts.get(postId);
+  }
+
+  public async toggleFavorite(updatedPost: Post): Promise<Post> {
+    const post = await this.replacePost(updatedPost);
+    return post;
   }
 }

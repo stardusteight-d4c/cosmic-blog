@@ -1,4 +1,4 @@
-import ICommand from '../commands/ICommand'
+import ICommand from './ICommand'
 
 export default interface IObserver {
   operations: string[];

@@ -1,4 +1,4 @@
-import ICommand from "./ICommand";
+import { ICommand } from "@domain/@interfaces";
 
 export class FavoritePostCommand implements ICommand {
   operation = "favorite_post_command";

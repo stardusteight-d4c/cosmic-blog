@@ -1,15 +1,16 @@
 import { randomUUID } from "node:crypto";
-import Validators from "../../utils/validators";
-import { Comment } from "../entities/Comment";
-import { Favorite} from "../entities/Favorite";
-import { Post } from "../entities/Post";
-import { ISocialLinks, User, TUserRole } from "../entities/User";
+import { ISocialLinks, User, TUserRole } from ".";
+import Validators from "@/utils/validators";
+import { Post } from "@domain/post";
+import { Comment } from "@domain/comment";
+import { Favorite } from "@domain/favorite";
 
-export class UserBuilder {
+export default class UserBuilder {
   #id: string | undefined;
   #email: string | undefined;
   #username: string | undefined;
   #password: string | undefined;
+  #avatar: string | undefined;
   #userRole: TUserRole | undefined;
   #socialLinks: ISocialLinks | undefined = undefined;
   #favoritedPosts: Favorite[] = [];
@@ -36,6 +37,11 @@ export class UserBuilder {
   public setPassword(password: string): UserBuilder {
     Validators.validatePassword(password);
     this.#password = password;
+    return this;
+  }
+
+  public setAvatar(avatar: string): UserBuilder {
+    this.#avatar = avatar;
     return this;
   }
 
@@ -69,6 +75,7 @@ export class UserBuilder {
       email: this.#email,
       username: this.#username,
       password: this.#password,
+      avatar: this.#avatar,
       userRole: this.#userRole ?? "default-user",
       socialLinks: this.#socialLinks,
       favoritedPosts: this.#favoritedPosts.map((post) => post.reflect),

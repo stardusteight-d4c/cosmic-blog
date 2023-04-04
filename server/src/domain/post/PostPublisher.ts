@@ -1,7 +1,6 @@
-import Command from "../commands/ICommand";
-import IObserver from "../observers/IObserver";
+import { ICommand, IObserver } from "@domain/@interfaces";
 
-export class UserPublisher {
+export default class PostPublisher {
   servicesObservers: IObserver[];
   constructor() {
     this.servicesObservers = [];
@@ -9,12 +8,14 @@ export class UserPublisher {
   register(observer: IObserver) {
     this.servicesObservers.push(observer);
   }
-  async publish(command: Command) {
+  async publish(command: ICommand) {
+    const responses = [];
     for (const observer of this.servicesObservers) {
       if (observer.operations.includes(command.operation)) {
         const response = await observer.notifyService(command);
-        return response
+        responses.push(response);
       }
     }
+    return responses;
   }
 }

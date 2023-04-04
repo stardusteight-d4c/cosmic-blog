@@ -1,7 +1,6 @@
-import UserService from "../../services/UserService";
-import ICommand from "../commands/ICommand";
-import { FavoritePostCommand } from "../commands/UserCommand";
-import IObserver from "./IObserver";
+import { UserService } from ".";
+import { FavoritePostCommand } from "@domain/post";
+import { ICommand, IObserver } from "@domain/@interfaces";
 
 export default class UserObserver implements IObserver {
   operations: string[] = ["favorite_post_command"];
@@ -16,9 +15,3 @@ export default class UserObserver implements IObserver {
     }
   }
 }
-
-// aí no PostObserver nos favoritados apenas retirar ou colocar o id do úsuario
-// const account = this.accountRepository.get(command.accountDocument);
-// if (account) {
-//   account[this.operation](command.amount);
-// }

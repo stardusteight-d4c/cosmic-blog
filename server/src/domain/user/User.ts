@@ -1,7 +1,6 @@
-import { FavoritePostCommand } from "../bus/commands/UserCommand";
-import { Comment, ICommentReflectObject } from "./Comment";
-import { Favorite, IFavoriteReflectObject } from "./Favorite";
-import { Post, IPostReflectObject } from "./Post";
+import { Post, IPostReflectObject, FavoritePostCommand } from "@domain/post";
+import { Comment, ICommentReflectObject } from "@domain/comment";
+import { Favorite, IFavoriteReflectObject } from "@domain/favorite";
 
 export type TUserRole = "author-blog" | "default-user";
 
@@ -19,6 +18,7 @@ export interface IUserReflectObject {
   email: string;
   username: string;
   password: string;
+  avatar?: string;
   userRole?: TUserRole;
   socialLinks?: ISocialLinks | undefined;
   favoritedPosts?: IFavoriteReflectObject[];
@@ -51,11 +51,6 @@ export interface IUserService {
     confirmationPassword: string;
     newPassword: string;
   }): Promise<User | undefined>;
-  // CommandPublishers
-  publishFavoritePostCommand(
-    userId: string,
-    postId: string,
-  ): Promise<User | undefined>;
   // CommandHandlers
   handlerFavoritePostCommand(
     command: FavoritePostCommand,
@@ -67,6 +62,7 @@ export class User {
   #email: string;
   #username: string;
   #password: string;
+  #avatar: string | undefined;
   #userRole: TUserRole;
   #socialLinks: ISocialLinks | undefined;
   #favoritedPosts: Favorite[] = [];
@@ -78,6 +74,7 @@ export class User {
     this.#email = properties.email;
     this.#username = properties.username;
     this.#password = properties.password;
+    this.#avatar = properties.avatar;
     this.#userRole = properties.userRole!;
     this.#socialLinks = properties.socialLinks;
     this.#favoritedPosts = properties.favoritedPosts
@@ -97,6 +94,7 @@ export class User {
       email: this.#email,
       username: this.#username,
       password: this.#password,
+      avatar: this.#avatar,
       userRole: this.#userRole,
       socialLinks: this.#socialLinks,
       favoritedPosts: this.#favoritedPosts.map((favorite) => favorite.reflect),
@@ -182,23 +180,4 @@ export class User {
   public set favoritedPosts(_value: IFavoriteReflectObject[]) {
     throw new Error("Cannot modify favoritedPosts property directly.");
   }
-
-  // public toggleFavorite(postId: string): void {
-  //   if (typeof postId !== 'string') {
-  //     throw new Error('The parameter must be a String.')
-  //   }
-  //   // mover allPosts para um PostService
-  //   const post = Post.allPosts.find((post) => post.id === postId)
-  //   if (!post) {
-  //     throw new Error(`No post found with id: ${postId}`)
-  //   }
-  //   const index = this.#favoritedPosts.findIndex(
-  //     (favorite) => favorite.postId === postId
-  //   )
-  //   if (index === -1) {
-  //     this.#favoritedPosts.push(new Favorite({ userId: this.#id, postId }))
-  //   } else {
-  //     this.#favoritedPosts.splice(index, 1)
-  //   }
-  // }
 }

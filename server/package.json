@@ -8,20 +8,19 @@
     "build": "tsup src",
     "start": "node dist/infra/server.js",
     "test": "vitest",
-    "test-domain-dev": "nodemon --watch '**/*.ts' --exec 'ts-node' test-domain-interface.ts",
+    "test-domain": "nodemon --watch '**/*.ts' --exec 'ts-node' src/application/script-domain-interface.ts",
     "coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "stardusteight-d4c (https://github.com/stardusteight-d4c)",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "nodemon": "^2.0.22",
+    "tsconfig-paths": "^4.2.0",
     "tsup": "^6.7.0",
     "tsx": "^3.12.6",
     "typescript": "^5.0.3",
     "vitest": "^0.29.8"
-  },
-  "devDependencies": {
-    "@types/node": "^18.15.11",
-    "nodemon": "^2.0.22"
   }
 }

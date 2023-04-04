@@ -1,10 +1,10 @@
+import { Post } from ".";
 import { randomUUID } from "node:crypto";
-import { Favorite } from "../entities/Favorite";
-import { Comment } from "../entities/Comment";
-import { Post } from "../entities/Post";
-import { User } from "../entities/User";
+import { User } from "@domain/user";
+import { Favorite } from "@domain/favorite";
+import { Comment } from "@domain/comment";
 
-export class PostBuilder {
+export default class PostBuilder {
   #id: string;
   #title: string;
   #body: string;

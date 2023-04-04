@@ -3,13 +3,12 @@ import {
   IUserReflectObject,
   IUserRepository,
   IUserService,
-} from "../entities/User";
-import { UserBuilder } from "../builders/UserBuilder";
-import Validators from "../../utils/validators";
-import { IPostRepository } from "../entities/Post";
-import { FavoritePostCommand } from "../bus/commands/UserCommand";
-import { UserPublisher } from "../bus/publishers/UserPublisher";
-import { Favorite } from "../entities/Favorite";
+  UserBuilder,
+  UserPublisher,
+} from ".";
+import Validators from "@/utils/validators";
+import { Favorite } from "@domain/favorite";
+import { IPostRepository, FavoritePostCommand } from "@domain/post";
 
 export default class UserService implements IUserService {
   #userPublisher: UserPublisher;
@@ -26,31 +25,12 @@ export default class UserService implements IUserService {
     this.#postRepository = params.postRepository;
   }
 
-  public async publishFavoritePostCommand(
-    userId: string,
-    postId: string,
-  ): Promise<User | undefined> {
-    Validators.checkPrimitiveType({ validating: userId, type: "string" });
-    Validators.checkPrimitiveType({ validating: postId, type: "string" });
-    const user = await this.#userRepository.findUserById(userId);
-    const post = await this.#postRepository.findPostById(postId);
-
-    if (!user) {
-      throw new Error(`The user with ID: ${userId} was not found.`);
-    } else if (!post) {
-      throw new Error(`The post with ID: ${postId} was not found.`);
-    }
-
-    const favoritePostCommand = new FavoritePostCommand(userId, postId);
-    const response = this.#userPublisher.publish(favoritePostCommand);
-    return response;
-  }
-
   public async createUser(user: IUserReflectObject): Promise<User> {
     const newUser = new UserBuilder()
       .setEmail(user.email)
       .setUsername(user.username)
       .setPassword(user.password)
+      .setAvatar(user.avatar ? user.avatar : '')
       .build();
     const userInstance = await this.#userRepository.createUser(newUser);
     return userInstance;
