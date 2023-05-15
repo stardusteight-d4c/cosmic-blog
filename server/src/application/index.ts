@@ -94,11 +94,11 @@ async function main() {
 
   const jwt = new MyJWT();
   const createSessionTokenAdapter = new CreateSessionTokenAdapter(jwt);
-  const { user } = await app
+  const { user, sessionToken } = await app
     .getUserUsesCases()
     .registerUser(myUser, createSessionTokenAdapter);
   console.log("user", user.reflect);
-
+  console.log("sessionToken", sessionToken);
 
   // Create Post
   const postObject: IPostReflectObject = {
@@ -112,7 +112,20 @@ async function main() {
   };
 
   const post = await app.getPostUsesCases().createPost(postObject);
-  console.log("post", post.reflect);
+  // console.log("post", post.reflect);
+
+  const favoritedPost = await app
+    .getPostUsesCases()
+    .favoritePost({ userId: user.reflect.id!, postId: post.reflect.id! });
+
+  console.log(favoritedPost.reflect);
+
+  const updatedUser = await app
+    .getUserUsesCases()
+    .findUser({ option: "id", by: user.reflect.id! });
+
+  console.log('updatedUser', updatedUser.reflect);
+  
 }
 
 main();

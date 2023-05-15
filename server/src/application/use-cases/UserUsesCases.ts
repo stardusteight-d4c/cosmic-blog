@@ -17,4 +17,19 @@ export default class UserUsesCases {
     });
     return { user, sessionToken };
   }
+
+  async findUser(request: {
+    option: "email" | "id";
+    by: string;
+  }): Promise<User> {
+    if (request.option === "email") {
+      const user = await this.userService.findUserByEmail(request.by);
+      return user!;
+    } else if (request.option === "id") {
+      const user = await this.userService.findUserById(request.by);
+      return user!
+    } else {
+      throw new Error('Invalid params!')
+    }
+  }
 }
