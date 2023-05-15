@@ -16,8 +16,8 @@ import {
 } from "@/domain/user";
 import CreateSessionTokenAdapter from "./adapters/create-session-token";
 import MyJWT from "./helpers";
-import UserUsesCases from "./use-cases/UserUsesCases";
-import PostUsesCases from "./use-cases/PostUsesCases";
+import { UserUseCases } from "./use-cases/UserUseCases";
+import { PostUseCases } from "./use-cases/PostUseCases";
 
 export interface Initialization {
   services: {
@@ -27,8 +27,8 @@ export interface Initialization {
 }
 
 export class UseCasesApplication {
-  #userUsesCases: UserUsesCases;
-  #postUsesCases: PostUsesCases;
+  #userUseCases: UserUseCases;
+  #postUseCases: PostUseCases;
 
   constructor(
     private userRepository: IUserRepository,
@@ -56,20 +56,16 @@ export class UseCasesApplication {
         postService,
       },
     };
-    this.#userUsesCases = new UserUsesCases(
-      initialization.services.userService,
-    );
-    this.#postUsesCases = new PostUsesCases(
-      initialization.services.postService,
-    );
+    this.#userUseCases = new UserUseCases(initialization.services.userService);
+    this.#postUseCases = new PostUseCases(initialization.services.postService);
   }
 
-  public getUserUsesCases(): UserUsesCases {
-    return this.#userUsesCases;
+  public getUserUsesCases(): UserUseCases {
+    return this.#userUseCases;
   }
 
-  public getPostUsesCases(): PostUsesCases {
-    return this.#postUsesCases;
+  public getPostUsesCases(): PostUseCases {
+    return this.#postUseCases;
   }
 }
 
@@ -114,18 +110,17 @@ async function main() {
   const post = await app.getPostUsesCases().createPost(postObject);
   // console.log("post", post.reflect);
 
-  const favoritedPost = await app
+  await app
     .getPostUsesCases()
-    .favoritePost({ userId: user.reflect.id!, postId: post.reflect.id! });
-
-  console.log(favoritedPost.reflect);
+    .toggleFavoritePost({ userId: user.reflect.id!, postId: post.reflect.id! });
+ 
+  console.log(await app.getPostUsesCases().findPostById(post.reflect.id!).then(data => data?.reflect));
 
   const updatedUser = await app
     .getUserUsesCases()
     .findUser({ option: "id", by: user.reflect.id! });
 
-  console.log('updatedUser', updatedUser.reflect);
-  
+  console.log("updatedUser", updatedUser?.reflect);
 }
 
 main();

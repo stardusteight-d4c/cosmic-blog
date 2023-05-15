@@ -3,7 +3,7 @@ import CreateSessionTokenAdapter from "../adapters/create-session-token";
 
 type RegisterUserResult = { user: User; sessionToken: string };
 
-export default class UserUsesCases {
+export class UserUseCases {
   constructor(private userService: UserService) {}
 
   async registerUser(
@@ -21,15 +21,15 @@ export default class UserUsesCases {
   async findUser(request: {
     option: "email" | "id";
     by: string;
-  }): Promise<User> {
+  }): Promise<User | undefined> {
     if (request.option === "email") {
       const user = await this.userService.findUserByEmail(request.by);
-      return user!;
+      return user;
     } else if (request.option === "id") {
       const user = await this.userService.findUserById(request.by);
-      return user!
+      return user;
     } else {
-      throw new Error('Invalid params!')
+      throw new Error("Invalid params!");
     }
   }
 }
