@@ -3,7 +3,7 @@ import { User } from "@domain/user";
 import { Comment } from "@domain/comment";
 import { Favorite } from "@domain/favorite";
 
-export class Post {
+export default class Post {
   #id: string;
   #title: string;
   #body: string;

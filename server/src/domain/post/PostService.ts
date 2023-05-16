@@ -3,11 +3,10 @@ import {
   IPostReflectObject,
   IPostRepository,
   IPostService,
-  PostBuilder,
   PostPublisher,
   FavoritePostCommand,
 } from ".";
-import { IUserRepository, User } from "@domain/user";
+import { IUserRepository } from "@domain/user/@interfaces";
 import Validators from "@/utils/validators";
 import { Favorite } from "@/domain/favorite";
 import { builderFactory } from "./utils/builderFactory";

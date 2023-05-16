@@ -1,63 +1,9 @@
-import { Post, IPostReflectObject, FavoritePostCommand } from "@domain/post";
-import { Comment, ICommentReflectObject } from "@domain/comment";
+import { Post } from "@domain/post";
+import { Comment } from "@domain/comment";
 import { Favorite, IFavoriteReflectObject } from "@domain/favorite";
+import { ISocialLinks, IUserReflectObject, TUserRole } from "./@interfaces";
 
-export type TUserRole = "author-blog" | "default-user";
-
-export interface ISocialLinks {
-  github?: string;
-  linkedin?: string;
-  instagram?: string;
-  twitter?: string;
-  facebook?: string;
-  email?: string;
-}
-
-export interface IUserReflectObject {
-  id?: string;
-  email: string;
-  username: string;
-  password: string;
-  avatar?: string;
-  userRole?: TUserRole;
-  socialLinks?: ISocialLinks | undefined;
-  favoritedPosts?: IFavoriteReflectObject[];
-  commentedPosts?: ICommentReflectObject[];
-  publishedPosts?: IPostReflectObject[];
-}
-
-export interface IUserRepository {
-  createUser(user: User): Promise<User>;
-  deleteUser(userId: string): Promise<User>;
-  findUserById(userId: string): Promise<User | undefined>;
-  findUserByEmail(email: string): Promise<User | undefined>;
-  changeEmail(updatedUser: User): Promise<User>;
-  changePassword(updatedUser: User): Promise<User>;
-  toggleFavorite(updatedUser: User): Promise<User>;
-}
-
-export interface IUserService {
-  createUser(user: IUserReflectObject): Promise<User>;
-  deleteUser(userId: string): Promise<User | undefined>;
-  findUserById(userId: string): Promise<User | undefined>;
-  findUserByEmail(email: string): Promise<User | undefined>;
-  changeEmail(data: {
-    userId: string;
-    confirmationPassword: string;
-    newEmail: string;
-  }): Promise<User | undefined>;
-  changePassword(data: {
-    userId: string;
-    confirmationPassword: string;
-    newPassword: string;
-  }): Promise<User | undefined>;
-  // CommandHandlers
-  handlerFavoritePostCommand(
-    command: FavoritePostCommand,
-  ): Promise<User | undefined>;
-}
-
-export class User {
+export default class User {
   #id: string;
   #email: string;
   #username: string;
