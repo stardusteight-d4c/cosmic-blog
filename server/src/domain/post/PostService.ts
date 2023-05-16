@@ -10,6 +10,7 @@ import {
 import { IUserRepository, User } from "@domain/user";
 import Validators from "@/utils/validators";
 import { Favorite } from "@/domain/favorite";
+import { builderFactory } from "./utils/builderFactory";
 
 export default class PostService implements IPostService {
   #postPublisher: PostPublisher;
@@ -48,14 +49,7 @@ export default class PostService implements IPostService {
   }
 
   public async createPost(post: IPostReflectObject): Promise<Post> {
-    const newPost = new PostBuilder()
-      .setTitle(post.title)
-      .setBody(post.body)
-      .setTags(post.tags)
-      .setCoverImage(post.coverImage)
-      .setPostedIn(post.postedIn)
-      .setAuthor(new User(post.author))
-      .build();
+    const newPost = builderFactory({ post });
     const postInstance = await this.#postRepository.createPost(newPost);
     return postInstance;
   }
@@ -87,32 +81,20 @@ export default class PostService implements IPostService {
           ) ?? []),
           newFavorite,
         ];
-        const updatedPostInstance = new PostBuilder()
-          .setId(post.reflect.id!)
-          .setTitle(post.reflect.title)
-          .setBody(post.reflect.body)
-          .setTags(post.reflect.tags)
-          .setCoverImage(post.reflect.coverImage)
-          .setPostedIn(post.reflect.postedIn)
-          .setAuthor(new User(post.reflect.author))
-          .setFavorites(updatedPostFavorites)
-          .build();
+        const updatedPostInstance = builderFactory({
+          post: post.reflect,
+          update: { field: "favorites", newData: updatedPostFavorites },
+        });
         await this.#postRepository.toggleFavorite(updatedPostInstance);
         return updatedPostInstance;
       } else {
         const updatedPostFavorites = post.reflect.favorites?.filter(
           (favorite) => favorite.postId !== postId,
         );
-        const updatedPostInstance = new PostBuilder()
-          .setId(post.reflect.id!)
-          .setTitle(post.reflect.title)
-          .setBody(post.reflect.body)
-          .setTags(post.reflect.tags)
-          .setCoverImage(post.reflect.coverImage)
-          .setPostedIn(post.reflect.postedIn)
-          .setAuthor(new User(post.reflect.author))
-          .setFavorites(updatedPostFavorites as Favorite[])
-          .build();
+        const updatedPostInstance = builderFactory({
+          post: post.reflect,
+          update: { field: "favorites", newData: updatedPostFavorites },
+        });
         await this.#postRepository.toggleFavorite(updatedPostInstance);
         return updatedPostInstance;
       }

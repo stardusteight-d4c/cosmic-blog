@@ -1,2 +1,0 @@
-// Favoritar um post deve ser resposabilidade do serviço de post, o post deve emitir o evento
--> Favoritar um post

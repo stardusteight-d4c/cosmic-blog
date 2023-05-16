@@ -1,9 +1,9 @@
+export { Post } from "./Post";
 export {
-  Post,
   IPostReflectObject,
   IPostRepository,
   IPostService,
-} from "./Post";
+} from "./@interfaces";
 export { FavoritePostCommand } from "./PostCommands";
 export { default as PostBuilder } from "./PostBuilder";
 export { default as PostService } from "./PostService";

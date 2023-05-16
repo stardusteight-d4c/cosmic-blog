@@ -1,41 +1,7 @@
-import { FavoritePostCommand } from ".";
-import { User, IUserReflectObject } from "@domain/user";
-import { Comment, ICommentReflectObject } from "@domain/comment";
-import { Favorite, IFavoriteReflectObject } from "@domain/favorite";
-
-export interface IPostReflectObject {
-  id?: string;
-  title: string;
-  body: string;
-  tags: string[];
-  coverImage: string;
-  postedIn: Date;
-  lastChange?: Date;
-  author: IUserReflectObject;
-  favorites?: IFavoriteReflectObject[];
-  comments?: ICommentReflectObject[];
-}
-
-export interface IPostRepository {
-  createPost(post: Post): Promise<Post>;
-  deletePost(postId: string): Promise<Post | undefined>;
-  findPostById(postId: string): Promise<Post | undefined>;
-  toggleFavorite(updatedPost: Post): Promise<Post>;
-}
-
-export interface IPostService {
-  createPost(post: IPostReflectObject): Promise<Post>;
-  findPostById(postId: string): Promise<Post | undefined>;
-  // CommandPublishers
-  publishFavoritePostCommand(
-    userId: string,
-    postId: string,
-  ): Promise<Post | undefined>;
-  // CommandHandlers
-  handlerFavoritePostCommand(
-    command: FavoritePostCommand,
-  ): Promise<Post | undefined>;
-}
+import { IPostReflectObject } from ".";
+import { User } from "@domain/user";
+import { Comment } from "@domain/comment";
+import { Favorite } from "@domain/favorite";
 
 export class Post {
   #id: string;
@@ -80,19 +46,4 @@ export class Post {
       comments: this.#comments.map((comment) => comment.reflect),
     };
   }
-
-  // get tags(): string[] {
-  //   return this._tags;
-  // }
-
-  // set tags(value: string[]) {
-  //   if (value.length > 4) {
-  //     throw new Error("The maximum number of tags allowed is 4.");
-  //   }
-  //   this._tags = value;
-  // }
-
-  // // public canEdit(author: User): boolean {
-  // //   return this.author.id === author.id
-  // // }
 }

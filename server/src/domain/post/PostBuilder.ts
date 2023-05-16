@@ -57,11 +57,19 @@ export default class PostBuilder {
   }
 
   public setFavorites(favorites: Favorite[]): PostBuilder {
+    if (favorites === undefined) {
+      this.#favorites = [];
+      return this;
+    }
     this.#favorites = favorites;
     return this;
   }
 
   public setComments(comments: Comment[]): PostBuilder {
+    if (comments === undefined) {
+      this.#comments = [];
+      return this;
+    }
     this.#comments = comments;
     return this;
   }

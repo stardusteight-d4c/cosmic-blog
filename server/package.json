@@ -8,9 +8,9 @@
     "build": "tsup src",
     "start": "node dist/infra/server.js",
     "test": "vitest",
+    "coverage": "vitest run --coverage",
     "test-domain": "nodemon --watch '**/*.ts' --exec 'ts-node' src/application/domain-client-script.ts",
-    "init": "nodemon --watch '**/*.ts' --exec 'ts-node' src/application/index.ts",
-    "coverage": "vitest run --coverage"
+    "init": "nodemon --watch '**/*.ts' --exec 'ts-node' src/application/index.ts"
   },
   "keywords": [],
   "author": "stardusteight-d4c (https://github.com/stardusteight-d4c)",
