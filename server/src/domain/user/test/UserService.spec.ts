@@ -2,11 +2,11 @@ import { beforeEach, describe, expect, it } from "vitest";
 import {
   IUserReflectObject,
   User,
-  UserInMemoryRepository,
   UserPublisher,
   UserService,
 } from "../index";
-import PostInMemoryRepository from "../../post/PostInMemoryRepository";
+import PostInMemoryRepository from "../../../application/in-memory-repositories/PostInMemoryRepository";
+import UserInMemoryRepository from "@/application/in-memory-repositories/UserInMemoryRepository";
 
 let userService: UserService;
 

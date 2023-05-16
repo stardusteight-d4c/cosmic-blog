@@ -2,16 +2,12 @@ import {
   UserPublisher,
   IUserReflectObject,
   UserObserver,
-  UserInMemoryRepository,
   UserService,
 } from "@/domain/user";
-import {
-  IPostReflectObject,
-  PostInMemoryRepository,
-  PostPublisher,
-  PostService,
-} from "@/domain/post";
+import { IPostReflectObject, PostPublisher, PostService } from "@/domain/post";
 import PostObserver from "@/domain/post/PostObserver";
+import UserInMemoryRepository from "./in-memory-repositories/UserInMemoryRepository";
+import PostInMemoryRepository from "./in-memory-repositories/PostInMemoryRepository";
 
 const UserinMemoryRepository = new UserInMemoryRepository();
 const PostinMemoryRepository = new PostInMemoryRepository();
@@ -30,8 +26,8 @@ const postService = new PostService({
   userRepository: UserinMemoryRepository,
 });
 
-postPublisher.register(new UserObserver(userService))
-postPublisher.register(new PostObserver(postService))
+postPublisher.register(new UserObserver(userService));
+postPublisher.register(new PostObserver(postService));
 
 const myUser: IUserReflectObject = {
   username: "johndoe8",
@@ -54,7 +50,7 @@ const asyncFunction = async () => {
 
   const postInstance = await postService.createPost(postObject);
 
-  const response = await postService.publishFavoritePostCommand(
+  postService.publishFavoritePostCommand(
     userInstance.reflect.id!,
     postInstance.reflect.id!,
   );
@@ -64,14 +60,21 @@ const asyncFunction = async () => {
     postInstance.reflect.id!,
   );
 
+const updatedPostRequest: IPostReflectObject = {
+  ...response2?.reflect!,
+  body: 'body atualizado!'
+} 
+
+ const updatedPostInstance = await postService.updatePost(updatedPostRequest)
+ 
 
   console.log(response2?.reflect);
+  console.log('updatedPostInstance', updatedPostInstance.reflect);
+  
 
-
-
-  console.log(
-    await userService.findUserById(userInstance.reflect.id!).then((data) => data?.reflect)
-  )
+  // console.log(
+  //   await userService.findUserById(userInstance.reflect.id!).then((data) => data?.reflect)
+  // )
 };
 
 asyncFunction();

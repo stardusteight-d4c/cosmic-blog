@@ -53,6 +53,14 @@ export default class PostService implements IPostService {
     return postInstance;
   }
 
+  public async updatePost(post: IPostReflectObject): Promise<Post> {
+    const updatedPost = builderFactory({ post });
+    const updatedPostInstance = await this.#postRepository.updatePost(
+      updatedPost,
+    );
+    return updatedPostInstance;
+  }
+
   public async findPostById(postId: string): Promise<Post | undefined> {
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
     return await this.#postRepository.findPostById(postId);

@@ -1,4 +1,4 @@
-import { IPostRepository, Post } from ".";
+import { IPostRepository, Post } from "../../domain/post";
 
 export default class PostInMemoryRepository implements IPostRepository {
   #posts: Map<string, Post> = new Map();
@@ -22,6 +22,11 @@ export default class PostInMemoryRepository implements IPostRepository {
 
   public async createPost(post: Post): Promise<Post> {
     this.#posts.set(post.reflect.id!, post);
+    return post;
+  }
+
+  public async updatePost(updatedPost: Post): Promise<Post> {
+    const post = await this.replacePost(updatedPost);
     return post;
   }
 

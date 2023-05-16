@@ -1,12 +1,14 @@
-import { Post } from "../Post";
+import { Post } from "..";
 import { FavoritePostCommand } from "../PostCommands";
 import { IPostReflectObject } from "./IPostReflectObject";
 
 export interface IPostService {
   createPost(post: IPostReflectObject): Promise<Post>;
+  updatePost(post: IPostReflectObject): Promise<Post>; // testar
+  // deletar post
   findPostById(postId: string): Promise<Post | undefined>;
-  // deixar um comentário
-  // editar post
+  // buscar por título
+
 
   // CommandPublishers
   publishFavoritePostCommand(
@@ -17,4 +19,5 @@ export interface IPostService {
   handlerFavoritePostCommand(
     command: FavoritePostCommand,
   ): Promise<Post | undefined>;
+  // handlerLeaveCommentPost
 }

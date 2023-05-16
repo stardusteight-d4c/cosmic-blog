@@ -1,5 +1,5 @@
 import { FavoritePostCommand } from "@/domain/post";
-import { User } from "../User";
+import { User } from "..";
 import { IUserReflectObject } from "./IUserReflectObject";
 
 export interface IUserService {

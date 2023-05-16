@@ -1,6 +1,6 @@
 import { User } from "@/domain/user";
 import { IPostReflectObject } from "../@interfaces";
-import { Post } from "../Post";
+import Post from "../Post";
 import PostBuilder from "../PostBuilder";
 import { Favorite } from "@/domain/favorite";
 import { Comment } from "@/domain/comment";
@@ -23,12 +23,12 @@ export function builderFactory({
     .setFavorites(
       update?.field === "favorites"
         ? update.newData
-        : (post.favorites as Favorite[]),
+        : post.favorites?.map((fav) => new Favorite(fav)),
     )
     .setComments(
       update?.field === "comments"
         ? update.newData
-        : (post.comments as Comment[]),
+        : post.comments?.map((comment) => new Comment(comment)),
     )
     .build();
   return updatedPostInstance;

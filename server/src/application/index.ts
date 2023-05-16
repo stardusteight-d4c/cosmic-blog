@@ -1,7 +1,6 @@
 import {
   IPostReflectObject,
   IPostRepository,
-  PostInMemoryRepository,
   PostPublisher,
   PostService,
 } from "@/domain/post";
@@ -9,7 +8,6 @@ import PostObserver from "@/domain/post/PostObserver";
 import {
   IUserReflectObject,
   IUserRepository,
-  UserInMemoryRepository,
   UserObserver,
   UserPublisher,
   UserService,
@@ -18,6 +16,8 @@ import CreateSessionTokenAdapter from "./adapters/create-session-token";
 import MyJWT from "./helpers";
 import { UserUseCases } from "./use-cases/UserUseCases";
 import { PostUseCases } from "./use-cases/PostUseCases";
+import UserInMemoryRepository from "./in-memory-repositories/UserInMemoryRepository";
+import PostInMemoryRepository from "./in-memory-repositories/PostInMemoryRepository";
 
 export interface Initialization {
   services: {
