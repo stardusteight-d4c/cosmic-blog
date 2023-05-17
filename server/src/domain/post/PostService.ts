@@ -6,10 +6,10 @@ import {
   PostPublisher,
   FavoritePostCommand,
 } from ".";
-import { IUserRepository } from "@domain/user/@interfaces";
 import Validators from "@/utils/validators";
 import { Favorite } from "@/domain/favorite";
-import { builderFactory } from "./utils/builderFactory";
+import { IUserRepository } from "@domain/user/@interfaces";
+import { postBuilderFactory } from "./utils/postBuilderFactory";
 
 export default class PostService implements IPostService {
   #postPublisher: PostPublisher;
@@ -25,7 +25,6 @@ export default class PostService implements IPostService {
     this.#postRepository = params.postRepository;
     this.#userRepository = params.userRepository;
   }
-
   public async publishFavoritePostCommand(
     userId: string,
     postId: string,
@@ -48,13 +47,13 @@ export default class PostService implements IPostService {
   }
 
   public async createPost(post: IPostReflectObject): Promise<Post> {
-    const newPost = builderFactory({ post });
+    const newPost = postBuilderFactory({ post });
     const postInstance = await this.#postRepository.createPost(newPost);
     return postInstance;
   }
 
   public async updatePost(post: IPostReflectObject): Promise<Post> {
-    const updatedPost = builderFactory({ post });
+    const updatedPost = postBuilderFactory({ post });
     const updatedPostInstance = await this.#postRepository.updatePost(
       updatedPost,
     );
@@ -64,6 +63,11 @@ export default class PostService implements IPostService {
   public async findPostById(postId: string): Promise<Post | undefined> {
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
     return await this.#postRepository.findPostById(postId);
+  }
+
+  public async findPostByTitle(postTitle: string): Promise<Post | undefined> {
+    Validators.checkPrimitiveType({ validating: postTitle, type: "string" });
+    return await this.#postRepository.findPostByTitle(postTitle);
   }
 
   public async handlerFavoritePostCommand(
@@ -88,7 +92,7 @@ export default class PostService implements IPostService {
           ) ?? []),
           newFavorite,
         ];
-        const updatedPostInstance = builderFactory({
+        const updatedPostInstance = postBuilderFactory({
           post: post.reflect,
           update: { field: "favorites", newData: updatedPostFavorites },
         });
@@ -98,7 +102,7 @@ export default class PostService implements IPostService {
         const updatedPostFavorites = post.reflect.favorites?.filter(
           (favorite) => favorite.postId !== postId,
         );
-        const updatedPostInstance = builderFactory({
+        const updatedPostInstance = postBuilderFactory({
           post: post.reflect,
           update: { field: "favorites", newData: updatedPostFavorites },
         });

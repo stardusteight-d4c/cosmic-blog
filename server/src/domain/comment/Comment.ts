@@ -31,6 +31,7 @@ export class Comment {
   }
 
   // public canEdit(author: User): boolean {
-  //   return this.author.id === author.id
+  //   const isAuthor = this.author.id === author.id
+  //   return isAuthor
   // }
 }

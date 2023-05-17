@@ -4,11 +4,10 @@ import { IPostReflectObject } from "./IPostReflectObject";
 
 export interface IPostService {
   createPost(post: IPostReflectObject): Promise<Post>;
-  updatePost(post: IPostReflectObject): Promise<Post>; // testar
-  // deletar post
+  updatePost(post: IPostReflectObject): Promise<Post>; 
+  // deletar post -> obersver -> deletar comentários -> favoritos
   findPostById(postId: string): Promise<Post | undefined>;
-  // buscar por título
-
+  findPostByTitle(postTitle: string): Promise<Post | undefined>;
 
   // CommandPublishers
   publishFavoritePostCommand(

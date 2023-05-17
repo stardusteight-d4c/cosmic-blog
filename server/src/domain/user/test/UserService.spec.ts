@@ -10,12 +10,11 @@ import UserInMemoryRepository from "@/application/in-memory-repositories/UserInM
 
 let userService: UserService;
 
-describe("User Service", () => {
+describe("UserService", () => {
   beforeEach(() => {
     const userInMemoryRepository = new UserInMemoryRepository();
     const postInMemoryRepository = new PostInMemoryRepository();
     const userPublisher = new UserPublisher();
-
     userService = new UserService({
       userPublisher: userPublisher,
       userRepository: userInMemoryRepository,

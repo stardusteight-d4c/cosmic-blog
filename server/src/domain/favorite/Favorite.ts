@@ -1,9 +1,6 @@
-export interface IFavoriteReflectObject {
-  userId: string;
-  postId: string;
-}
+import { IFavoriteReflectObject } from ".";
 
-export class Favorite {
+export default class Favorite {
   #userId: string;
   #postId: string;
 

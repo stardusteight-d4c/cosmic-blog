@@ -66,10 +66,13 @@ const updatedPostRequest: IPostReflectObject = {
 } 
 
  const updatedPostInstance = await postService.updatePost(updatedPostRequest)
+
+ console.log(await postService.findPostByTitle('Título doaaa post!').then(data => data?.reflect));
+ 
  
 
-  console.log(response2?.reflect);
-  console.log('updatedPostInstance', updatedPostInstance.reflect);
+  // console.log(response2?.reflect);
+  // console.log('updatedPostInstance', updatedPostInstance.reflect);
   
 
   // console.log(

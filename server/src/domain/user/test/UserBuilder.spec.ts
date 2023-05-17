@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { IUserReflectObject, User, UserBuilder } from "../index";
 
-describe("User Builder", () => {
+describe("UserBuilder", () => {
   beforeEach(() => {});
 
   it("must return an instance of User", () => {

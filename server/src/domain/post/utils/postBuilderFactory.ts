@@ -5,7 +5,7 @@ import PostBuilder from "../PostBuilder";
 import { Favorite } from "@/domain/favorite";
 import { Comment } from "@/domain/comment";
 
-export function builderFactory({
+export function postBuilderFactory({
   post,
   update,
 }: {

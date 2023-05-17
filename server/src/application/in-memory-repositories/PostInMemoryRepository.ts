@@ -40,6 +40,15 @@ export default class PostInMemoryRepository implements IPostRepository {
     return this.#posts.get(postId);
   }
 
+  public async findPostByTitle(postTitle: string): Promise<Post | undefined> {
+    for (const post of this.#posts.values()) {
+      if (post.reflect.title.includes(postTitle)) {
+        return post;
+      }
+    }
+    return undefined;
+  }
+
   public async toggleFavorite(updatedPost: Post): Promise<Post> {
     const post = await this.replacePost(updatedPost);
     return post;

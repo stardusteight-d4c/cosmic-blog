@@ -1,1 +1,2 @@
-export { Favorite, IFavoriteReflectObject } from "./Favorite";
+export { default as Favorite } from "./Favorite";
+export { IFavoriteReflectObject } from "./@interfaces/IFavoriteReflectObject";

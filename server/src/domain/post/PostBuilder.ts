@@ -1,5 +1,5 @@
-import { Post } from ".";
 import { randomUUID } from "node:crypto";
+import { Post } from ".";
 import { User } from "@domain/user";
 import { Favorite } from "@domain/favorite";
 import { Comment } from "@domain/comment";
