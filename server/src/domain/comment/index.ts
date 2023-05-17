@@ -1,1 +1,2 @@
-export { Comment, ICommentReflectObject } from "./Comment";
+export { default as Comment } from "./Comment";
+export { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";

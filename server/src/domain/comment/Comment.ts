@@ -1,37 +1,31 @@
 import { randomUUID } from "node:crypto";
-import { User, IUserReflectObject } from "@domain/user";
+import { User } from "@domain/user";
+import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 
-export interface ICommentReflectObject {
-  id: string;
-  postedAt: Date;
-  author: IUserReflectObject;
-  body: string;
-}
-
-export class Comment {
-  id: string;
-  postedAt: Date;
-  author: User;
-  body: string;
+export default class Comment {
+  #id: string;
+  #postedAt: Date;
+  #author: User;
+  #content: string;
 
   constructor(properties: ICommentReflectObject) {
-    this.id = properties.id || randomUUID();
-    this.body = properties.body;
-    this.postedAt = properties.postedAt;
-    this.author = new User(properties.author);
+    this.#id = properties.id || randomUUID();
+    this.#content = properties.content;
+    this.#postedAt = properties.postedAt;
+    this.#author = new User(properties.author);
   }
 
   public get reflect(): ICommentReflectObject {
     return {
-      id: this.id,
-      body: this.body,
-      postedAt: this.postedAt,
-      author: this.author.reflect,
+      id: this.#id,
+      content: this.#content,
+      postedAt: this.#postedAt,
+      author: this.#author.reflect,
     };
   }
 
-  // public canEdit(author: User): boolean {
-  //   const isAuthor = this.author.id === author.id
-  //   return isAuthor
-  // }
+  public canEdit(author: User): boolean {
+    const isAuthor = this.#author.reflect.id === author.reflect.id;
+    return isAuthor;
+  }
 }

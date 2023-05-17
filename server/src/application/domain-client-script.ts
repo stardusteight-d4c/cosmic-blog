@@ -8,6 +8,7 @@ import { IPostReflectObject, PostPublisher, PostService } from "@/domain/post";
 import PostObserver from "@/domain/post/PostObserver";
 import UserInMemoryRepository from "./in-memory-repositories/UserInMemoryRepository";
 import PostInMemoryRepository from "./in-memory-repositories/PostInMemoryRepository";
+import { Comment, ICommentReflectObject } from "@/domain/comment";
 
 const UserinMemoryRepository = new UserInMemoryRepository();
 const PostinMemoryRepository = new PostInMemoryRepository();
@@ -60,20 +61,31 @@ const asyncFunction = async () => {
     postInstance.reflect.id!,
   );
 
-const updatedPostRequest: IPostReflectObject = {
-  ...response2?.reflect!,
-  body: 'body atualizado!'
-} 
+  const updatedPostRequest: IPostReflectObject = {
+    ...response2?.reflect!,
+    body: "body atualizado!",
+  };
 
- const updatedPostInstance = await postService.updatePost(updatedPostRequest)
+  const updatedPostInstance = await postService.updatePost(updatedPostRequest);
 
- console.log(await postService.findPostByTitle('Título doaaa post!').then(data => data?.reflect));
- 
- 
+  console.log(
+    await postService
+      .findPostByTitle("Título doaaa post!")
+      .then((data) => data?.reflect),
+  );
+
+  const commentObj: ICommentReflectObject = {
+    author: userInstance.reflect,
+    content: "hehe post bem massa!",
+    postedAt: new Date(),
+  };
+  const commentInstance = new Comment(commentObj);
+
+  const comment = await postService.publishCommentPost(commentInstance, updatedPostInstance.reflect.id!);
+// console.log(comment?.canEdit(userInstance));
 
   // console.log(response2?.reflect);
   // console.log('updatedPostInstance', updatedPostInstance.reflect);
-  
 
   // console.log(
   //   await userService.findUserById(userInstance.reflect.id!).then((data) => data?.reflect)

@@ -10,6 +10,8 @@ import Validators from "@/utils/validators";
 import { Favorite } from "@/domain/favorite";
 import { IUserRepository } from "@domain/user/@interfaces";
 import { postBuilderFactory } from "./utils/postBuilderFactory";
+import Comment from "../comment/Comment";
+import { CommentPostCommand } from "./PostCommands";
 
 export default class PostService implements IPostService {
   #postPublisher: PostPublisher;
@@ -25,6 +27,7 @@ export default class PostService implements IPostService {
     this.#postRepository = params.postRepository;
     this.#userRepository = params.userRepository;
   }
+
   public async publishFavoritePostCommand(
     userId: string,
     postId: string,
@@ -43,6 +46,29 @@ export default class PostService implements IPostService {
     const response = responses.find(
       (response) => response instanceof Post,
     ) as Post;
+    return response;
+  }
+
+  public async publishCommentPost(
+    comment: Comment,
+    postId: string,
+  ): Promise<Comment | undefined> {
+    const user = await this.#userRepository.findUserById(
+      comment.reflect.author.id!,
+    );
+    const post = await this.#postRepository.findPostById(postId);
+    if (!user) {
+      throw new Error(
+        `The user with ID: ${comment.reflect.author.id} was not found.`,
+      );
+    } else if (!post) {
+      throw new Error(`The post with ID: ${postId} was not found.`);
+    }
+    const commentPostCommand = new CommentPostCommand(comment, postId);
+    const responses = await this.#postPublisher.publish(commentPostCommand);
+    const response = responses.find(
+      (response) => response instanceof Comment,
+    ) as Comment;
     return response;
   }
 
@@ -109,6 +135,32 @@ export default class PostService implements IPostService {
         await this.#postRepository.toggleFavorite(updatedPostInstance);
         return updatedPostInstance;
       }
+    }
+  }
+
+  public async handlerCommentPost(
+    commentPostCommand: CommentPostCommand,
+  ): Promise<Comment | undefined> {
+    const { comment, postId } = commentPostCommand;
+    const post = await this.#postRepository.findPostById(postId);
+    if (post) {
+      const updatedPostComments = [
+        ...(post.reflect.comments?.map(
+          (comment) =>
+            new Comment({
+              id: comment.id,
+              author: comment.author,
+              content: comment.content,
+              postedAt: comment.postedAt,
+            }),
+        ) ?? []),
+        comment,
+      ];
+      postBuilderFactory({
+        post: post!.reflect,
+        update: { field: "comments", newData: updatedPostComments },
+      });
+      return comment;
     }
   }
 }

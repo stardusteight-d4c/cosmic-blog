@@ -9,7 +9,7 @@ export default class Favorite {
     this.#postId = properties.postId;
   }
 
-  get reflect(): IFavoriteReflectObject {
+  public get reflect(): IFavoriteReflectObject {
     return {
       userId: this.#userId,
       postId: this.#postId,
