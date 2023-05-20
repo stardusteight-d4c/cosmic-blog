@@ -1,7 +1,12 @@
+import { Post } from "@/domain/post";
 import { User } from "..";
 import { IUserReflectObject } from "./IUserReflectObject";
 import { Comment } from "@/domain/comment";
-import { CommentPostEvent, FavoritePostEvent } from "@/domain/post/PostEvents";
+import {
+  CommentPostEvent,
+  CreatePostEvent,
+  FavoritePostEvent,
+} from "@/domain/post/PostEvents";
 
 export interface IUserService {
   createUser(user: IUserReflectObject): Promise<User>;
@@ -18,11 +23,10 @@ export interface IUserService {
     confirmationPassword: string;
     newPassword: string;
   }): Promise<User | undefined>;
-  // Event Handlers 
-  handlerFavoritePostEvent(
-    event: FavoritePostEvent,
-  ): Promise<User | undefined>;
+  // Event Handlers
+  handlerCreatePostEvent(event: CreatePostEvent): Promise<User | undefined>;
+  handlerFavoritePostEvent(event: FavoritePostEvent): Promise<User | undefined>;
   handlerCommentPostEvent(
-    commentPostEvent: CommentPostEvent,
+    event: CommentPostEvent,
   ): Promise<Comment | undefined>;
 }

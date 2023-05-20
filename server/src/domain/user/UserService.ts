@@ -12,8 +12,10 @@ import {
   CommentPostEvent,
   FavoritePostEvent,
   IPostRepository,
+  Post,
 } from "@domain/post";
 import { Comment } from "../comment";
+import { CreatePostEvent } from "../post/PostEvents";
 
 export class UserService implements IUserService {
   #userPublisher: UserEventPublisher;
@@ -107,6 +109,44 @@ export class UserService implements IUserService {
       return changedUser;
     } else {
       throw new Error(`The user with ID: ${data.userId} was not found.`);
+    }
+  }
+
+  public async handlerCreatePostEvent(
+    event: CreatePostEvent,
+  ): Promise<User | undefined> {
+    try {
+      const { post } = event;
+      const authorId = post.reflect.author.id;
+      const author = await this.#userRepository.findUserById(authorId!);
+      if (author) {
+        const updatedPublishedPosts = [
+          ...(author.reflect.publishedPosts?.map(
+            (post) =>
+              new Post({
+                id: post.id,
+                author: post.author,
+                title: post.title,
+                body: post.body,
+                coverImage: post.coverImage,
+                tags: post.tags,
+                postedIn: post.postedIn,
+                lastChange: post.lastChange,
+                comments: post.comments,
+                favorites: post.favorites,
+              }),
+          ) ?? []),
+          post,
+        ];
+        const updatedUserInstance = userBuilderFactory({
+          user: author.reflect,
+          update: { field: "posts", newData: updatedPublishedPosts },
+        });
+        await this.#userRepository.updateUser(updatedUserInstance);
+        return updatedUserInstance;
+      }
+    } catch (error) {
+      throw new Error(String(error))
     }
   }
 

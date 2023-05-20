@@ -53,7 +53,7 @@ const asyncFunction = async () => {
     author: userInstance.reflect,
   };
 
-  const postInstance = await postService.createPost(postObject);
+  const postInstance = await postService.emitCreatePostEvent(postObject);
 
   postService.emitFavoritePostEvent(
     userInstance.reflect.id!,

@@ -1,3 +1,3 @@
 export interface IEvent {
-  operation: string;
+  name: string;
 }

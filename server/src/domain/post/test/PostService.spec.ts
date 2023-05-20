@@ -7,6 +7,7 @@ import {
   UserEventObserver,
   UserEventPublisher,
   UserService,
+  userBuilderFactory,
 } from "@/domain/user";
 import { IPostReflectObject } from "../@interfaces";
 import { Comment, ICommentReflectObject } from "@/domain/comment";
@@ -14,6 +15,20 @@ import { Post, PostService, PostEventPublisher, PostEventObserver } from "..";
 
 let postService: PostService;
 let userService: UserService;
+
+const user: IUserReflectObject = {
+  username: "johndoe",
+  email: "johndoe@email.com",
+  password: "pa$$word1",
+};
+const post: IPostReflectObject = {
+  title: "Sample Post",
+  body: "This is the content of the post.",
+  tags: ["tag1", "tag2", "tag3"],
+  coverImage: "https://example.com/cover-image.jpg",
+  postedIn: new Date(),
+  author: user,
+};
 
 describe("PostService", () => {
   beforeEach(() => {
@@ -35,117 +50,59 @@ describe("PostService", () => {
     postPublisher.register(new UserEventObserver(userService));
   });
 
-  it("should be possible to create a post", async () => {
-    const myUser: IUserReflectObject = {
-      username: "johndoe8",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
-    const userInstance = new UserBuilder()
-      .setEmail(myUser.email)
-      .setUsername(myUser.username)
-      .setPassword(myUser.password)
-      .setAvatar(myUser.avatar ? myUser.avatar : "")
-      .build();
-    const postObject: IPostReflectObject = {
-      title: "Título doaaa post!",
-      body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
-      tags: ["nodejs", "typescript", "ddd"],
-      coverImage:
-        "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
-      postedIn: new Date(),
+  it("should be able to create a post", async () => {
+    const userInstance = await userService.createUser(user);
+    const newPost: IPostReflectObject = {
+      ...post,
       author: userInstance.reflect,
     };
-    const postInstance = await postService.createPost(postObject);
+    const postInstance = await postService.emitCreatePostEvent(newPost);
+    const userWhoCommented = await userService.findUserById(
+      userInstance.reflect.id!,
+    );
     expect(postInstance).toBeInstanceOf(Post);
+    expect(userWhoCommented?.reflect.publishedPosts?.length).toStrictEqual(1);
+    expect(userWhoCommented?.reflect.publishedPosts![0].title).toStrictEqual(
+      newPost.title,
+    );
   });
 
-  it("should be possible to update a post", async () => {
-    const myUser: IUserReflectObject = {
-      username: "johndoe8",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
-    const userInstance = new UserBuilder()
-      .setEmail(myUser.email)
-      .setUsername(myUser.username)
-      .setPassword(myUser.password)
-      .setAvatar(myUser.avatar ? myUser.avatar : "")
-      .build();
-    const postObject: IPostReflectObject = {
-      title: "Título doaaa post!",
-      body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
-      tags: ["nodejs", "typescript", "ddd"],
-      coverImage:
-        "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
-      postedIn: new Date(),
+  it("should be able to update a post", async () => {
+    const userInstance = await userService.createUser(user);
+    const newPost: IPostReflectObject = {
+      ...post,
       author: userInstance.reflect,
     };
-    const firstPostInstance = await postService.createPost(postObject);
+    const postInstance = await postService.emitCreatePostEvent(newPost);
     const updatedPostRequest: IPostReflectObject = {
-      ...firstPostInstance?.reflect!,
-      body: "body atualizado!",
+      ...postInstance.reflect,
+      body: "Updating body...",
     };
     const updatedPostInstance = await postService.updatePost(
       updatedPostRequest,
     );
-    expect(updatedPostInstance.reflect.id).toStrictEqual(
-      firstPostInstance.reflect.id,
-    );
-    expect(updatedPostInstance.reflect.body).toStrictEqual(
-      updatedPostRequest.body,
-    );
+    expect(updatedPostInstance.reflect.body).toStrictEqual("Updating body...");
   });
 
-  it("should be possible to fetch a post by id", async () => {
-    const myUser: IUserReflectObject = {
-      username: "johndoe8",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
-    const userInstance = new UserBuilder()
-      .setEmail(myUser.email)
-      .setUsername(myUser.username)
-      .setPassword(myUser.password)
-      .setAvatar(myUser.avatar ? myUser.avatar : "")
-      .build();
-    const postObject: IPostReflectObject = {
-      title: "Título doaaa post!",
-      body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
-      tags: ["nodejs", "typescript", "ddd"],
-      coverImage:
-        "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
-      postedIn: new Date(),
+  it("should be able to find a post by id", async () => {
+    const userInstance = await userService.createUser(user);
+    const newPost: IPostReflectObject = {
+      ...post,
       author: userInstance.reflect,
     };
-    const postInstance = await postService.createPost(postObject);
+    const postInstance = await postService.emitCreatePostEvent(newPost);
     const findPost = await postService.findPostById(postInstance.reflect.id!);
     expect(findPost!.reflect.id).toStrictEqual(postInstance.reflect.id);
     expect(findPost!.reflect).toStrictEqual(postInstance.reflect);
   });
 
-  it("should be possible to find a post by title", async () => {
-    const myUser: IUserReflectObject = {
-      username: "johndoe8",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
-    const userInstance = new UserBuilder()
-      .setEmail(myUser.email)
-      .setUsername(myUser.username)
-      .setPassword(myUser.password)
-      .setAvatar(myUser.avatar ? myUser.avatar : "")
-      .build();
-    const postObject: IPostReflectObject = {
-      title: "Título doaaa post!",
-      body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
-      tags: ["nodejs", "typescript", "ddd"],
-      coverImage:
-        "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
-      postedIn: new Date(),
+  it("should be able to find a post by title", async () => {
+    const userInstance = await userService.createUser(user);
+    const newPost: IPostReflectObject = {
+      ...post,
       author: userInstance.reflect,
     };
-    const postInstance = await postService.createPost(postObject);
+    const postInstance = await postService.emitCreatePostEvent(newPost);
     const findPost = await postService.findPostByTitle(
       postInstance.reflect.title!,
     );
@@ -153,23 +110,13 @@ describe("PostService", () => {
     expect(findPost!.reflect).toStrictEqual(postInstance.reflect);
   });
 
-  it("should be possible to favorite a post and this action be reflected both in the User's favoritedPosts property and in the Post's favorites", async () => {
-    const myUser: IUserReflectObject = {
-      username: "johndoe8",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
-    const userInstance = await userService.createUser(myUser);
-    const postObject: IPostReflectObject = {
-      title: "Título doaaa post!",
-      body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
-      tags: ["nodejs", "typescript", "ddd"],
-      coverImage:
-        "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
-      postedIn: new Date(),
+  it("should be able to favorite a post", async () => {
+    const userInstance = await userService.createUser(user);
+    const newPost: IPostReflectObject = {
+      ...post,
       author: userInstance.reflect,
     };
-    const postInstance = await postService.createPost(postObject);
+    const postInstance = await postService.emitCreatePostEvent(newPost);
     await postService.emitFavoritePostEvent(
       userInstance.reflect.id!,
       postInstance.reflect.id!,
@@ -195,23 +142,13 @@ describe("PostService", () => {
     ).toStrictEqual(postInstance?.reflect.id);
   });
 
-  it("must be possible to comment on a post and this action is reflected both in the Post's comments property and in the User's commentedPosts", async () => {
-    const myUser: IUserReflectObject = {
-      username: "johndoe8",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
-    const userInstance = await userService.createUser(myUser);
-    const postObject: IPostReflectObject = {
-      title: "Título doaaa post!",
-      body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
-      tags: ["nodejs", "typescript", "ddd"],
-      coverImage:
-        "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
-      postedIn: new Date(),
+  it("should be able comment on a post", async () => {
+    const userInstance = await userService.createUser(user);
+    const newPost: IPostReflectObject = {
+      ...post,
       author: userInstance.reflect,
     };
-    const postInstance = await postService.createPost(postObject);
+    const postInstance = await postService.emitCreatePostEvent(newPost);
     const commentObj: ICommentReflectObject = {
       owner: userInstance.reflect,
       content: "hehe post bem massa!",
@@ -250,6 +187,8 @@ describe("PostService", () => {
     );
     expect(newPostInstance2?.reflect.comments?.length).toStrictEqual(2);
     expect(newUserInstance2?.reflect.commentedPosts?.length).toStrictEqual(2);
-    expect(newUserInstance2?.reflect.commentedPosts![1].content).toStrictEqual("hehe post bem bosta!");
+    expect(newUserInstance2?.reflect.commentedPosts![1].content).toStrictEqual(
+      "hehe post bem bosta!",
+    );
   });
 });

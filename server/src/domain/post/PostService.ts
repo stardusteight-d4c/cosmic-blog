@@ -12,20 +12,33 @@ import Validators from "@/utils/validators";
 import { Favorite } from "@/domain/favorite";
 import { IUserRepository } from "@domain/user";
 import { Comment } from "../comment";
+import { IEventPublisher } from "../@interfaces";
+import { CreatePostEvent } from "./PostEvents";
 
 export class PostService implements IPostService {
-  #postPublisher: PostEventPublisher;
+  #postPublisher: IEventPublisher;
   #postRepository: IPostRepository;
   #userRepository: IUserRepository;
 
-  constructor(params: {
+  constructor(implementations: {
     postPublisher: PostEventPublisher;
     userRepository: IUserRepository;
     postRepository: IPostRepository;
   }) {
-    this.#postPublisher = params.postPublisher;
-    this.#postRepository = params.postRepository;
-    this.#userRepository = params.userRepository;
+    this.#postPublisher = implementations.postPublisher;
+    this.#postRepository = implementations.postRepository;
+    this.#userRepository = implementations.userRepository;
+  }
+
+  public async emitCreatePostEvent(post: IPostReflectObject): Promise<Post> {
+    await this.#userRepository.findUserById(post.author.id!);
+    const newPost = postBuilderFactory({ post });
+    const createPostEvent = new CreatePostEvent(newPost);
+    const responses = await this.#postPublisher.emit(createPostEvent);
+    const response = responses.find(
+      (response) => response instanceof Post,
+    ) as Post;
+    return response;
   }
 
   public async emitFavoritePostEvent(
@@ -56,26 +69,13 @@ export class PostService implements IPostService {
     const user = await this.#userRepository.findUserById(
       comment.reflect.owner.id!,
     );
-    const post = await this.#postRepository.findPostById(postId);
-    if (!user) {
-      throw new Error(
-        `The user with ID: ${comment.reflect.owner.id} was not found.`,
-      );
-    } else if (!post) {
-      throw new Error(`The post with ID: ${postId} was not found.`);
-    }
+    await this.#postRepository.findPostById(postId);
     const commentPostEvent = new CommentPostEvent(comment, postId);
     const responses = await this.#postPublisher.emit(commentPostEvent);
     const response = responses.find(
       (response) => response instanceof Comment,
     ) as Comment;
     return response;
-  }
-
-  public async createPost(post: IPostReflectObject): Promise<Post> {
-    const newPost = postBuilderFactory({ post });
-    const postInstance = await this.#postRepository.createPost(newPost);
-    return postInstance;
   }
 
   public async updatePost(post: IPostReflectObject): Promise<Post> {
@@ -96,10 +96,18 @@ export class PostService implements IPostService {
     return await this.#postRepository.findPostByTitle(postTitle);
   }
 
-  public async handlerFavoritePostEvent(
-    favoritePostEvent: FavoritePostEvent,
+  public async handlerCreatePostEvent(
+    event: CreatePostEvent,
   ): Promise<Post | undefined> {
-    const { userId, postId } = favoritePostEvent;
+    const { post } = event;
+    const postInstance = await this.#postRepository.createPost(post);
+    return postInstance;
+  }
+
+  public async handlerFavoritePostEvent(
+    event: FavoritePostEvent,
+  ): Promise<Post | undefined> {
+    const { userId, postId } = event;
     const post = await this.#postRepository.findPostById(postId);
     if (post) {
       const index = post.reflect.favorites!.findIndex(
@@ -139,9 +147,9 @@ export class PostService implements IPostService {
   }
 
   public async handlerCommentPostEvent(
-    commentPostEvent: CommentPostEvent,
+    event: CommentPostEvent,
   ): Promise<Comment | undefined> {
-    const { comment, postId } = commentPostEvent;
+    const { comment, postId } = event;
     const post = await this.#postRepository.findPostById(postId);
     if (post) {
       const updatedPostComments = [

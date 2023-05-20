@@ -1,2 +1,3 @@
 export { IEvent } from "./IEvent";
-export { IEventObserver } from "./IObserver";
+export { IEventObserver } from "./IEventObserver";
+export { IEventPublisher } from "./IEventPublisher";

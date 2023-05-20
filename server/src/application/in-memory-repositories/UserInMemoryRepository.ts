@@ -32,7 +32,11 @@ export class UserInMemoryRepository implements IUserRepository {
   }
 
   public async findUserById(userId: string): Promise<User | undefined> {
-    return this.#users.get(userId);
+    const user = this.#users.get(userId);
+    if (!user) {
+      throw new Error(`No user found with id: ${userId}`);
+    }
+    return user;
   }
 
   public async findUserByEmail(email: string): Promise<User | undefined> {

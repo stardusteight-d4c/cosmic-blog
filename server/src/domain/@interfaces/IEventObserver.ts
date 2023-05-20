@@ -1,6 +1,7 @@
 import { IEvent } from "./IEvent";
 
 export interface IEventObserver {
-  operations: string[];
+  watching: string[];
   notifyService(event: IEvent): any;
 }
+

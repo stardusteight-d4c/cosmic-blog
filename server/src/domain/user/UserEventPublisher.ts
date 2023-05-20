@@ -1,6 +1,6 @@
-import { IEvent, IEventObserver } from "@domain/@interfaces";
+import { IEvent, IEventObserver, IEventPublisher } from "@domain/@interfaces";
 
-export class UserEventPublisher {
+export class UserEventPublisher implements IEventPublisher {
   servicesObservers: IEventObserver[];
   constructor() {
     this.servicesObservers = [];
@@ -8,10 +8,10 @@ export class UserEventPublisher {
   register(observer: IEventObserver) {
     this.servicesObservers.push(observer);
   }
-  async publish(event: IEvent) {
+  async emit(event: IEvent) {
     const responses = [];
     for (const observer of this.servicesObservers) {
-      if (observer.operations.includes(event.operation)) {
+      if (observer.watching.includes(event.name)) {
         const response = await observer.notifyService(event);
         responses.push(response);
       }
