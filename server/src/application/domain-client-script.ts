@@ -51,12 +51,12 @@ const asyncFunction = async () => {
 
   const postInstance = await postService.createPost(postObject);
 
-  postService.publishFavoritePostCommand(
+  postService.publishFavoritePost(
     userInstance.reflect.id!,
     postInstance.reflect.id!,
   );
 
-  const response2 = await postService.publishFavoritePostCommand(
+  const response2 = await postService.publishFavoritePost(
     userInstance2.reflect.id!,
     postInstance.reflect.id!,
   );
@@ -68,28 +68,15 @@ const asyncFunction = async () => {
 
   const updatedPostInstance = await postService.updatePost(updatedPostRequest);
 
-  console.log(
-    await postService
-      .findPostByTitle("Título doaaa post!")
-      .then((data) => data?.reflect),
-  );
-
   const commentObj: ICommentReflectObject = {
-    author: userInstance.reflect,
+    owner: userInstance.reflect,
     content: "hehe post bem massa!",
     postedAt: new Date(),
   };
   const commentInstance = new Comment(commentObj);
 
   const comment = await postService.publishCommentPost(commentInstance, updatedPostInstance.reflect.id!);
-// console.log(comment?.canEdit(userInstance));
 
-  // console.log(response2?.reflect);
-  // console.log('updatedPostInstance', updatedPostInstance.reflect);
-
-  // console.log(
-  //   await userService.findUserById(userInstance.reflect.id!).then((data) => data?.reflect)
-  // )
 };
 
 asyncFunction();

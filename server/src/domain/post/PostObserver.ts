@@ -8,7 +8,7 @@ export default class PostObserver implements IObserver {
 
   async notifyService(command: ICommand): Promise<any> {
     if (command.operation === "favorite_post_command") {
-      const response = await this.postService.handlerFavoritePostCommand(
+      const response = await this.postService.handlerFavoritePost(
         command as FavoritePostCommand,
       );
       return response;

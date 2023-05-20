@@ -28,7 +28,7 @@ export default class PostService implements IPostService {
     this.#userRepository = params.userRepository;
   }
 
-  public async publishFavoritePostCommand(
+  public async publishFavoritePost(
     userId: string,
     postId: string,
   ): Promise<Post | undefined> {
@@ -54,12 +54,12 @@ export default class PostService implements IPostService {
     postId: string,
   ): Promise<Comment | undefined> {
     const user = await this.#userRepository.findUserById(
-      comment.reflect.author.id!,
+      comment.reflect.owner.id!,
     );
     const post = await this.#postRepository.findPostById(postId);
     if (!user) {
       throw new Error(
-        `The user with ID: ${comment.reflect.author.id} was not found.`,
+        `The user with ID: ${comment.reflect.owner.id} was not found.`,
       );
     } else if (!post) {
       throw new Error(`The post with ID: ${postId} was not found.`);
@@ -96,7 +96,7 @@ export default class PostService implements IPostService {
     return await this.#postRepository.findPostByTitle(postTitle);
   }
 
-  public async handlerFavoritePostCommand(
+  public async handlerFavoritePost(
     favoritePostCommand: FavoritePostCommand,
   ): Promise<Post | undefined> {
     const { userId, postId } = favoritePostCommand;
@@ -122,7 +122,7 @@ export default class PostService implements IPostService {
           post: post.reflect,
           update: { field: "favorites", newData: updatedPostFavorites },
         });
-        await this.#postRepository.toggleFavorite(updatedPostInstance);
+        await this.#postRepository.updatePost(updatedPostInstance);
         return updatedPostInstance;
       } else {
         const updatedPostFavorites = post.reflect.favorites?.filter(
@@ -132,7 +132,7 @@ export default class PostService implements IPostService {
           post: post.reflect,
           update: { field: "favorites", newData: updatedPostFavorites },
         });
-        await this.#postRepository.toggleFavorite(updatedPostInstance);
+        await this.#postRepository.updatePost(updatedPostInstance);
         return updatedPostInstance;
       }
     }
@@ -149,17 +149,18 @@ export default class PostService implements IPostService {
           (comment) =>
             new Comment({
               id: comment.id,
-              author: comment.author,
+              owner: comment.owner,
               content: comment.content,
               postedAt: comment.postedAt,
             }),
         ) ?? []),
         comment,
       ];
-      postBuilderFactory({
+      const updatedPost = postBuilderFactory({
         post: post!.reflect,
         update: { field: "comments", newData: updatedPostComments },
       });
+      await this.#postRepository.updatePost(updatedPost);
       return comment;
     }
   }

@@ -48,9 +48,4 @@ export default class PostInMemoryRepository implements IPostRepository {
     }
     return undefined;
   }
-
-  public async toggleFavorite(updatedPost: Post): Promise<Post> {
-    const post = await this.replacePost(updatedPost);
-    return post;
-  }
 }

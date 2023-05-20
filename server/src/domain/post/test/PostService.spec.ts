@@ -13,6 +13,7 @@ import {
 import { IPostReflectObject } from "../@interfaces";
 import Post from "../Post";
 import PostObserver from "../PostObserver";
+import { Comment, ICommentReflectObject } from "@/domain/comment";
 
 let postService: PostService;
 let userService: UserService;
@@ -172,7 +173,7 @@ describe("PostService", () => {
       author: userInstance.reflect,
     };
     const postInstance = await postService.createPost(postObject);
-    await postService.publishFavoritePostCommand(
+    await postService.publishFavoritePost(
       userInstance.reflect.id!,
       postInstance.reflect.id!,
     );
@@ -195,5 +196,45 @@ describe("PostService", () => {
     expect(
       updatedUserInstance?.reflect.favoritedPosts![0].postId,
     ).toStrictEqual(postInstance?.reflect.id);
+  });
+
+  it("must be possible to comment on a post and this action is reflected both in the Post's comments property and in the User's commentedPosts", async () => {
+    const myUser: IUserReflectObject = {
+      username: "johndoe8",
+      email: "johndoe@example.com",
+      password: "pa$$word1",
+    };
+    const userInstance = await userService.createUser(myUser);
+    const postObject: IPostReflectObject = {
+      title: "Título doaaa post!",
+      body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
+      tags: ["nodejs", "typescript", "ddd"],
+      coverImage:
+        "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
+      postedIn: new Date(),
+      author: userInstance.reflect,
+    };
+    const postInstance = await postService.createPost(postObject);
+    const commentObj: ICommentReflectObject = {
+      owner: userInstance.reflect,
+      content: "hehe post bem massa!",
+      postedAt: new Date(),
+    };
+    const commentInstance = new Comment(commentObj);
+    const comment = await postService.publishCommentPost(
+      commentInstance,
+      postInstance.reflect.id!,
+    );
+    const newPostInstance = await postService.findPostById(
+      postInstance.reflect.id!,
+    );
+    const newUserInstance = await userService.findUserById(
+      userInstance.reflect.id!,
+    );
+    expect(comment).toBeInstanceOf(Comment);
+    console.log(newPostInstance?.reflect);
+    
+    expect(newPostInstance?.reflect.comments?.length).toBeGreaterThan(0);
+    expect(newUserInstance?.reflect.commentedPosts?.length).toBeGreaterThan(0);
   });
 });

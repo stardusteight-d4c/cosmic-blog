@@ -6,5 +6,4 @@ export interface IPostRepository {
   updatePost(updatedPost: Post): Promise<Post>;
   findPostById(postId: string): Promise<Post | undefined>;
   findPostByTitle(postTitle: string): Promise<Post | undefined>;
-  toggleFavorite(updatedPost: Post): Promise<Post>;
 }

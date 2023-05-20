@@ -9,6 +9,8 @@ import {
 import Validators from "@/utils/validators";
 import { Favorite } from "@domain/favorite";
 import { IPostRepository, FavoritePostCommand } from "@domain/post";
+import { CommentPostCommand } from "../post/PostCommands";
+import { Comment } from "../comment";
 
 export default class UserService implements IUserService {
   #userPublisher: UserPublisher;
@@ -30,7 +32,7 @@ export default class UserService implements IUserService {
       .setEmail(user.email)
       .setUsername(user.username)
       .setPassword(user.password)
-      .setAvatar(user.avatar ? user.avatar : '')
+      .setAvatar(user.avatar ? user.avatar : "")
       .build();
     const userInstance = await this.#userRepository.createUser(newUser);
     return userInstance;
@@ -114,7 +116,7 @@ export default class UserService implements IUserService {
     }
   }
 
-  public async handlerFavoritePostCommand(
+  public async handlerFavoritePost(
     favoritePostCommand: FavoritePostCommand,
   ): Promise<User | undefined> {
     const { userId, postId } = favoritePostCommand;
@@ -160,5 +162,32 @@ export default class UserService implements IUserService {
         return updatedUserInstance;
       }
     }
+  }
+
+  public async handlerCommentPost(
+    commentPostCommand: CommentPostCommand,
+  ): Promise<Comment | undefined> {
+    const { comment, postId } = commentPostCommand;
+    const user = await this.#userRepository.findUserById(
+      comment.reflect.owner.id!,
+    );
+
+    if (user) {
+      const updatedCommentedPosts = [
+        ...(user.reflect.commentedPosts?.map(
+          (comment) =>
+            new Comment({
+              id: comment.id,
+              owner: comment.owner,
+              content: comment.content,
+              postedAt: comment.postedAt,
+            }),
+        ) ?? []),
+        comment,
+      ];
+    }
+
+    const obj = {} as any;
+    return obj;
   }
 }
