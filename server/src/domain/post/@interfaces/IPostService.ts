@@ -9,12 +9,14 @@ export interface IPostService {
   findPostById(postId: string): Promise<Post | undefined>;
   findPostByTitle(postTitle: string): Promise<Post | undefined>;
 
-  // testar handleCommentPost
+
   // ao criar um post, deve-se também associar tal post ao atributo publishedPosts do usúario
   // -> deve ser publish/event/emissor
 
   // getPosts
   // getPostsByPagination
+  // add amount of comments attribute 
+  // add amount of favorites attribute
 
   // Event Publishers
   emitFavoritePostEvent(

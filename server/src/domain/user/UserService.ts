@@ -173,9 +173,12 @@ export class UserService implements IUserService {
         ) ?? []),
         comment,
       ];
+      const updatedUser = userBuilderFactory({
+        user: user.reflect,
+        update: { field: "comments", newData: updatedCommentedPosts },
+      });
+      await this.#userRepository.updateUser(updatedUser);
+      return comment;
     }
-
-    const obj = {} as any;
-    return obj;
   }
 }

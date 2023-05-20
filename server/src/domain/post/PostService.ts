@@ -157,7 +157,7 @@ export class PostService implements IPostService {
         comment,
       ];
       const updatedPost = postBuilderFactory({
-        post: post!.reflect,
+        post: post.reflect,
         update: { field: "comments", newData: updatedPostComments },
       });
       await this.#postRepository.updatePost(updatedPost);

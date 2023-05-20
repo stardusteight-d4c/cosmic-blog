@@ -229,9 +229,27 @@ describe("PostService", () => {
       userInstance.reflect.id!,
     );
     expect(comment).toBeInstanceOf(Comment);
-    console.log(newPostInstance?.reflect);
+    expect(newPostInstance?.reflect.comments?.length).toStrictEqual(1);
+    expect(newUserInstance?.reflect.commentedPosts?.length).toStrictEqual(1);
+    const commentObj2: ICommentReflectObject = {
+      owner: userInstance.reflect,
+      content: "hehe post bem bosta!",
+      postedAt: new Date(),
+    };
+    const commentInstance2 = new Comment(commentObj2);
+    await postService.emitCommentPostEvent(
+      commentInstance2,
+      postInstance.reflect.id!,
+    );
 
-    expect(newPostInstance?.reflect.comments?.length).toBeGreaterThan(0);
-    // expect(newUserInstance?.reflect.commentedPosts?.length).toBeGreaterThan(0);
+    const newPostInstance2 = await postService.findPostById(
+      postInstance.reflect.id!,
+    );
+    const newUserInstance2 = await userService.findUserById(
+      userInstance.reflect.id!,
+    );
+    expect(newPostInstance2?.reflect.comments?.length).toStrictEqual(2);
+    expect(newUserInstance2?.reflect.commentedPosts?.length).toStrictEqual(2);
+    expect(newUserInstance2?.reflect.commentedPosts![1].content).toStrictEqual("hehe post bem bosta!");
   });
 });
