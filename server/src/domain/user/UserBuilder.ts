@@ -56,16 +56,28 @@ export class UserBuilder {
   }
 
   public setFavoritedPosts(favoritedPosts: Favorite[]): UserBuilder {
+    if (favoritedPosts === undefined) {
+      this.#favoritedPosts = [];
+      return this;
+    }
     this.#favoritedPosts = favoritedPosts;
     return this;
   }
 
   public setCommentedPosts(commentedPosts: Comment[]): UserBuilder {
+    if (commentedPosts === undefined) {
+      this.#commentedPosts = [];
+      return this;
+    }
     this.#commentedPosts = commentedPosts;
     return this;
   }
 
   public setPublishedPosts(publishedPosts: Post[]): UserBuilder {
+    if (publishedPosts === undefined) {
+      this.#publishedPosts = [];
+      return this;
+    }
     this.#publishedPosts = publishedPosts;
     return this;
   }

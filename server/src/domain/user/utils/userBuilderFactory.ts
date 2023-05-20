@@ -9,15 +9,15 @@ export function userBuilderFactory({
 }: {
   user: IUserReflectObject;
   update?: {
-    field: "favorites" | "comments" | "posts";
+    field: "email" | "password" | "favorites" | "comments" | "posts";
     newData: any;
   };
 }): User {
   const updatedUserInstance = new UserBuilder()
     .setId(user.id!)
-    .setEmail(user.email)
+    .setEmail(update?.field === "email" ? update.newData : user.email)
     .setUsername(user.username)
-    .setPassword(user.password)
+    .setPassword(update?.field === "password" ? update.newData : user.password)
     .setAvatar(user.avatar ?? undefined)
     .setUserRole(user.userRole ?? "default-user")
     .setSocialLinks(user.socialLinks)

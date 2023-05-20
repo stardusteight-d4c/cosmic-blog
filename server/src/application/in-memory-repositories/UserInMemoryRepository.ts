@@ -41,17 +41,7 @@ export class UserInMemoryRepository implements IUserRepository {
     );
   }
 
-  public async changeEmail(updatedUser: User): Promise<User> {
-    const user = await this.replaceUser(updatedUser);
-    return user;
-  }
-
-  public async changePassword(updatedUser: User): Promise<User> {
-    const user = await this.replaceUser(updatedUser);
-    return user;
-  }
-
-  public async toggleFavorite(updatedUser: User): Promise<User> {
+  public async updateUser(updatedUser: User): Promise<User> {
     const user = await this.replaceUser(updatedUser);
     return user;
   }

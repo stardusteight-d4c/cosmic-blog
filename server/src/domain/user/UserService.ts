@@ -3,8 +3,8 @@ import {
   IUserReflectObject,
   IUserRepository,
   IUserService,
-  UserBuilder,
   UserEventPublisher,
+  userBuilderFactory,
 } from ".";
 import Validators from "@/utils/validators";
 import { Favorite } from "@domain/favorite";
@@ -31,12 +31,7 @@ export class UserService implements IUserService {
   }
 
   public async createUser(user: IUserReflectObject): Promise<User> {
-    const newUser = new UserBuilder()
-      .setEmail(user.email)
-      .setUsername(user.username)
-      .setPassword(user.password)
-      .setAvatar(user.avatar ? user.avatar : "")
-      .build();
+    const newUser = userBuilderFactory({ user });
     const userInstance = await this.#userRepository.createUser(newUser);
     return userInstance;
   }
@@ -76,13 +71,11 @@ export class UserService implements IUserService {
         inputPassword: data.confirmationPassword,
         currentPassword: user.reflect.password,
       });
-      const updatedUserInstance = new UserBuilder()
-        .setId(user.reflect.id!)
-        .setEmail(data.newEmail)
-        .setUsername(user.reflect.username)
-        .setPassword(user.reflect.password)
-        .build();
-      const changedUser = await this.#userRepository.changeEmail(
+      const updatedUserInstance = userBuilderFactory({
+        user: user.reflect,
+        update: { field: "email", newData: data.newEmail },
+      });
+      const changedUser = await this.#userRepository.updateUser(
         updatedUserInstance,
       );
       return changedUser;
@@ -104,13 +97,11 @@ export class UserService implements IUserService {
         inputPassword: data.confirmationPassword,
         currentPassword: user.password,
       });
-      const updatedUserInstance = new UserBuilder()
-        .setId(user.reflect.id!)
-        .setEmail(user.reflect.email)
-        .setUsername(user.reflect.username)
-        .setPassword(data.newPassword)
-        .build();
-      const changedUser = await this.#userRepository.changePassword(
+      const updatedUserInstance = userBuilderFactory({
+        user: user.reflect,
+        update: { field: "password", newData: data.newPassword },
+      });
+      const changedUser = await this.#userRepository.updateUser(
         updatedUserInstance,
       );
       return changedUser;
@@ -141,27 +132,21 @@ export class UserService implements IUserService {
           ) ?? []),
           newFavorite,
         ];
-        const updatedUserInstance = new UserBuilder()
-          .setId(user.reflect.id!)
-          .setEmail(user.reflect.email)
-          .setUsername(user.reflect.username)
-          .setPassword(user.reflect.password)
-          .setFavoritedPosts(updatedFavoritedPosts)
-          .build();
-        await this.#userRepository.toggleFavorite(updatedUserInstance);
+        const updatedUserInstance = userBuilderFactory({
+          user: user.reflect,
+          update: { field: "favorites", newData: updatedFavoritedPosts },
+        });
+        await this.#userRepository.updateUser(updatedUserInstance);
         return updatedUserInstance;
       } else {
         const updatedFavoritedPosts = user.reflect.favoritedPosts?.filter(
           (favorite) => favorite.postId !== postId,
         );
-        const updatedUserInstance = new UserBuilder()
-          .setId(user.reflect.id!)
-          .setEmail(user.reflect.email)
-          .setUsername(user.reflect.username)
-          .setPassword(user.reflect.password)
-          .setFavoritedPosts(updatedFavoritedPosts as Favorite[])
-          .build();
-        await this.#userRepository.toggleFavorite(updatedUserInstance);
+        const updatedUserInstance = userBuilderFactory({
+          user: user.reflect,
+          update: { field: "favorites", newData: updatedFavoritedPosts },
+        });
+        await this.#userRepository.updateUser(updatedUserInstance);
         return updatedUserInstance;
       }
     }
