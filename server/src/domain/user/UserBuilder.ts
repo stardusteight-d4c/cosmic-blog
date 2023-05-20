@@ -5,14 +5,14 @@ import { Post } from "@domain/post";
 import { Comment } from "@domain/comment";
 import { Favorite } from "@domain/favorite";
 
-export default class UserBuilder {
-  #id: string | undefined;
-  #email: string | undefined;
-  #username: string | undefined;
-  #password: string | undefined;
+export class UserBuilder {
+  #id: string;
+  #email: string;
+  #username: string;
+  #password: string;
   #avatar: string | undefined;
-  #userRole: TUserRole | undefined;
-  #socialLinks: ISocialLinks | undefined = undefined;
+  #userRole: TUserRole;
+  #socialLinks: ISocialLinks | undefined;
   #favoritedPosts: Favorite[] = [];
   #commentedPosts: Comment[] = [];
   #publishedPosts: Post[] = [];
@@ -40,8 +40,18 @@ export default class UserBuilder {
     return this;
   }
 
-  public setAvatar(avatar: string): UserBuilder {
+  public setAvatar(avatar: string | undefined): UserBuilder {
     this.#avatar = avatar;
+    return this;
+  }
+
+  public setUserRole(userRole: TUserRole): UserBuilder {
+    this.#userRole = userRole;
+    return this;
+  }
+
+  public setSocialLinks(socialLinks: ISocialLinks | undefined): UserBuilder {
+    this.#socialLinks = socialLinks;
     return this;
   }
 
@@ -75,7 +85,7 @@ export default class UserBuilder {
       email: this.#email,
       username: this.#username,
       password: this.#password,
-      avatar: this.#avatar,
+      avatar: this.#avatar ?? "AVATAR01",
       userRole: this.#userRole ?? "default-user",
       socialLinks: this.#socialLinks,
       favoritedPosts: this.#favoritedPosts.map((post) => post.reflect),

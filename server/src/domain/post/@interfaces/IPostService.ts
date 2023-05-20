@@ -1,6 +1,5 @@
-import Comment from "@/domain/comment/Comment";
-import { Post } from "..";
-import { CommentPostCommand, FavoritePostCommand } from "../PostCommands";
+import { CommentPostEvent, FavoritePostEvent, Post } from "..";
+import { Comment } from "@/domain/comment";
 import { IPostReflectObject } from "./IPostReflectObject";
 
 export interface IPostService {
@@ -14,26 +13,23 @@ export interface IPostService {
   // ao criar um post, deve-se também associar tal post ao atributo publishedPosts do usúario
   // -> deve ser publish/event/emissor
 
-  
   // getPosts
   // getPostsByPagination
 
-  
-
-  // Event Publishers (issue of commands)
-  publishFavoritePost(
+  // Event Publishers
+  emitFavoritePostEvent(
     userId: string,
     postId: string,
   ): Promise<Post | undefined>;
-  publishCommentPost(
+  emitCommentPostEvent(
     comment: Comment,
     postId: string,
   ): Promise<Comment | undefined>;
-  // Event Handlers (capture of commands)
-  handlerFavoritePost(
-    favoritePostCommand: FavoritePostCommand,
+  // Event Handlers
+  handlerFavoritePostEvent(
+    favoritePostEvent: FavoritePostEvent,
   ): Promise<Post | undefined>;
-  handlerCommentPost(
-    commentPostCommand: CommentPostCommand,
+  handlerCommentPostEvent(
+    commentPostEvent: CommentPostEvent,
   ): Promise<Comment | undefined>;
 }

@@ -4,21 +4,24 @@ import {
   IUserRepository,
   IUserService,
   UserBuilder,
-  UserPublisher,
+  UserEventPublisher,
 } from ".";
 import Validators from "@/utils/validators";
 import { Favorite } from "@domain/favorite";
-import { IPostRepository, FavoritePostCommand } from "@domain/post";
-import { CommentPostCommand } from "../post/PostCommands";
+import {
+  CommentPostEvent,
+  FavoritePostEvent,
+  IPostRepository,
+} from "@domain/post";
 import { Comment } from "../comment";
 
-export default class UserService implements IUserService {
-  #userPublisher: UserPublisher;
+export class UserService implements IUserService {
+  #userPublisher: UserEventPublisher;
   #userRepository: IUserRepository;
   #postRepository: IPostRepository;
 
   constructor(params: {
-    userPublisher: UserPublisher;
+    userPublisher: UserEventPublisher;
     userRepository: IUserRepository;
     postRepository: IPostRepository;
   }) {
@@ -116,10 +119,10 @@ export default class UserService implements IUserService {
     }
   }
 
-  public async handlerFavoritePost(
-    favoritePostCommand: FavoritePostCommand,
+  public async handlerFavoritePostEvent(
+    favoritePostEvent: FavoritePostEvent,
   ): Promise<User | undefined> {
-    const { userId, postId } = favoritePostCommand;
+    const { userId, postId } = favoritePostEvent;
     const user = await this.#userRepository.findUserById(userId);
     if (user) {
       const index = user.reflect.favoritedPosts!.findIndex(
@@ -164,10 +167,10 @@ export default class UserService implements IUserService {
     }
   }
 
-  public async handlerCommentPost(
-    commentPostCommand: CommentPostCommand,
+  public async handlerCommentPostEvent(
+    commentPostEvent: CommentPostEvent,
   ): Promise<Comment | undefined> {
-    const { comment, postId } = commentPostCommand;
+    const { comment, postId } = commentPostEvent;
     const user = await this.#userRepository.findUserById(
       comment.reflect.owner.id!,
     );

@@ -2,11 +2,11 @@ import { beforeEach, describe, expect, it } from "vitest";
 import {
   IUserReflectObject,
   User,
-  UserPublisher,
+  UserEventPublisher,
   UserService,
 } from "../index";
-import PostInMemoryRepository from "../../../application/in-memory-repositories/PostInMemoryRepository";
-import UserInMemoryRepository from "@/application/in-memory-repositories/UserInMemoryRepository";
+import { PostInMemoryRepository } from "../../../application/in-memory-repositories/PostInMemoryRepository";
+import { UserInMemoryRepository } from "@/application/in-memory-repositories/UserInMemoryRepository";
 
 let userService: UserService;
 
@@ -14,7 +14,7 @@ describe("UserService", () => {
   beforeEach(() => {
     const userInMemoryRepository = new UserInMemoryRepository();
     const postInMemoryRepository = new PostInMemoryRepository();
-    const userPublisher = new UserPublisher();
+    const userPublisher = new UserEventPublisher();
     userService = new UserService({
       userPublisher: userPublisher,
       userRepository: userInMemoryRepository,

@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { User } from "@domain/user";
 import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 
-export default class Comment {
+export class Comment {
   #id: string;
   #owner: User;
   #content: string;

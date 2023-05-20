@@ -1,6 +1,6 @@
-import ICommand from './ICommand'
+import { IEvent } from "./IEvent";
 
-export default interface IObserver {
+export interface IEventObserver {
   operations: string[];
-  notifyService(command: ICommand): any;
+  notifyService(event: IEvent): any;
 }

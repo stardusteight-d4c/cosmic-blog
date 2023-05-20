@@ -1,23 +1,23 @@
 import {
   IPostReflectObject,
   IPostRepository,
-  PostPublisher,
+  PostEventPublisher,
+  PostEventObserver,
   PostService,
 } from "@/domain/post";
-import PostObserver from "@/domain/post/PostObserver";
 import {
   IUserReflectObject,
   IUserRepository,
-  UserObserver,
-  UserPublisher,
+  UserEventObserver,
+  UserEventPublisher,
   UserService,
 } from "@/domain/user";
-import CreateSessionTokenAdapter from "./adapters/create-session-token";
-import MyJWT from "./helpers";
+import { CreateSessionTokenAdapter } from "./adapters/create-session-token";
+import { MyJWT } from "./helpers";
 import { UserUseCases } from "./use-cases/UserUseCases";
 import { PostUseCases } from "./use-cases/PostUseCases";
-import UserInMemoryRepository from "./in-memory-repositories/UserInMemoryRepository";
-import PostInMemoryRepository from "./in-memory-repositories/PostInMemoryRepository";
+import { UserInMemoryRepository } from "./in-memory-repositories/UserInMemoryRepository";
+import { PostInMemoryRepository } from "./in-memory-repositories/PostInMemoryRepository";
 
 export interface Initialization {
   services: {
@@ -36,8 +36,8 @@ export class UseCasesApplication {
   ) {}
 
   initialization() {
-    const userPublisher = new UserPublisher();
-    const postPublisher = new PostPublisher();
+    const userPublisher = new UserEventPublisher();
+    const postPublisher = new PostEventPublisher();
     const userService = new UserService({
       userPublisher: userPublisher,
       userRepository: this.userRepository,
@@ -48,8 +48,8 @@ export class UseCasesApplication {
       postRepository: this.postRepository,
       userRepository: this.userRepository,
     });
-    postPublisher.register(new UserObserver(userService));
-    postPublisher.register(new PostObserver(postService));
+    postPublisher.register(new UserEventObserver(userService));
+    postPublisher.register(new PostEventObserver(postService));
     const initialization: Initialization = {
       services: {
         userService,
@@ -113,8 +113,13 @@ async function main() {
   await app
     .getPostUsesCases()
     .toggleFavoritePost({ userId: user.reflect.id!, postId: post.reflect.id! });
- 
-  console.log(await app.getPostUsesCases().findPostById(post.reflect.id!).then(data => data?.reflect));
+
+  console.log(
+    await app
+      .getPostUsesCases()
+      .findPostById(post.reflect.id!)
+      .then((data) => data?.reflect),
+  );
 
   const updatedUser = await app
     .getUserUsesCases()

@@ -4,7 +4,7 @@ import { User } from "@domain/user";
 import { Favorite } from "@domain/favorite";
 import { Comment } from "@domain/comment";
 
-export default class PostBuilder {
+export class PostBuilder {
   #id: string;
   #title: string;
   #body: string;
@@ -46,7 +46,7 @@ export default class PostBuilder {
     return this;
   }
 
-  public setLastChange(lastChange: Date): PostBuilder {
+  public setLastChange(lastChange?: Date): PostBuilder {
     this.#lastChange = lastChange;
     return this;
   }

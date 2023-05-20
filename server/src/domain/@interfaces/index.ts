@@ -1,2 +1,2 @@
-export { default as ICommand } from "./ICommand";
-export { default as IObserver } from "./IObserver";
+export { IEvent } from "./IEvent";
+export { IEventObserver } from "./IObserver";

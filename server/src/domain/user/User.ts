@@ -3,12 +3,12 @@ import { Comment } from "@domain/comment";
 import { ISocialLinks, IUserReflectObject, TUserRole } from ".";
 import { Favorite, IFavoriteReflectObject } from "@domain/favorite";
 
-export default class User {
+export class User {
   #id: string;
   #email: string;
   #username: string;
   #password: string;
-  #avatar: string | undefined;
+  #avatar: string;
   #userRole: TUserRole;
   #socialLinks: ISocialLinks | undefined;
   #favoritedPosts: Favorite[] = [];
@@ -20,7 +20,7 @@ export default class User {
     this.#email = properties.email;
     this.#username = properties.username;
     this.#password = properties.password;
-    this.#avatar = properties.avatar;
+    this.#avatar = properties.avatar!;
     this.#userRole = properties.userRole!;
     this.#socialLinks = properties.socialLinks;
     this.#favoritedPosts = properties.favoritedPosts

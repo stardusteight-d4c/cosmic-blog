@@ -1,9 +1,9 @@
 import { User } from "@/domain/user";
 import { IPostReflectObject } from "../@interfaces";
-import Post from "../Post";
-import PostBuilder from "../PostBuilder";
 import { Favorite } from "@/domain/favorite";
 import { Comment } from "@/domain/comment";
+import { Post } from "../Post";
+import { PostBuilder } from "../PostBuilder";
 
 export function postBuilderFactory({
   post,
@@ -14,12 +14,13 @@ export function postBuilderFactory({
 }): Post {
   const updatedPostInstance = new PostBuilder()
     .setId(post.id!)
-    .setTitle(post.title)
-    .setBody(post.body)
-    .setTags(post.tags)
-    .setCoverImage(post.coverImage)
-    .setPostedIn(post.postedIn)
     .setAuthor(new User(post.author))
+    .setCoverImage(post.coverImage)
+    .setTitle(post.title)
+    .setTags(post.tags)
+    .setBody(post.body)
+    .setPostedIn(post.postedIn)
+    .setLastChange(post.lastChange)
     .setFavorites(
       update?.field === "favorites"
         ? update.newData

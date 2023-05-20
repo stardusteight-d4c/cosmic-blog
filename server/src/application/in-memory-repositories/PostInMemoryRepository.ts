@@ -1,6 +1,6 @@
 import { IPostRepository, Post } from "../../domain/post";
 
-export default class PostInMemoryRepository implements IPostRepository {
+export class PostInMemoryRepository implements IPostRepository {
   #posts: Map<string, Post> = new Map();
 
   public get posts() {

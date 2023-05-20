@@ -1,6 +1,6 @@
 import { IFavoriteReflectObject } from ".";
 
-export default class Favorite {
+export class Favorite {
   #userId: string;
   #postId: string;
 

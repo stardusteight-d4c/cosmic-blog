@@ -1,8 +1,8 @@
-export { default as User } from "./User";
-export { default as UserBuilder } from "./UserBuilder";
-export { default as UserService } from "./UserService";
-export { default as UserObserver } from "./UserObserver";
-export { default as UserPublisher } from "./UserPublisher";
+export { User } from "./User";
+export { UserBuilder } from "./UserBuilder";
+export { UserService } from "./UserService";
+export { UserEventObserver } from "./UserEventObserver";
+export { UserEventPublisher } from "./UserEventPublisher";
 export {
   IUserReflectObject,
   IUserRepository,
@@ -10,3 +10,4 @@ export {
   ISocialLinks,
   TUserRole,
 } from "./@interfaces";
+export { userBuilderFactory } from "./utils/userBuilderFactory";

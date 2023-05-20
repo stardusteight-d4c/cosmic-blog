@@ -1,19 +1,23 @@
 import {
-  UserPublisher,
   IUserReflectObject,
-  UserObserver,
+  UserEventObserver,
+  UserEventPublisher,
   UserService,
 } from "@/domain/user";
-import { IPostReflectObject, PostPublisher, PostService } from "@/domain/post";
-import PostObserver from "@/domain/post/PostObserver";
-import UserInMemoryRepository from "./in-memory-repositories/UserInMemoryRepository";
-import PostInMemoryRepository from "./in-memory-repositories/PostInMemoryRepository";
+import {
+  IPostReflectObject,
+  PostEventObserver,
+  PostEventPublisher,
+  PostService,
+} from "@/domain/post";
+import { UserInMemoryRepository } from "./in-memory-repositories/UserInMemoryRepository";
+import { PostInMemoryRepository } from "./in-memory-repositories/PostInMemoryRepository";
 import { Comment, ICommentReflectObject } from "@/domain/comment";
 
 const UserinMemoryRepository = new UserInMemoryRepository();
 const PostinMemoryRepository = new PostInMemoryRepository();
-const userPublisher = new UserPublisher();
-const postPublisher = new PostPublisher();
+const userPublisher = new UserEventPublisher();
+const postPublisher = new PostEventPublisher();
 
 const userService = new UserService({
   userPublisher: userPublisher,
@@ -27,8 +31,8 @@ const postService = new PostService({
   userRepository: UserinMemoryRepository,
 });
 
-postPublisher.register(new UserObserver(userService));
-postPublisher.register(new PostObserver(postService));
+postPublisher.register(new UserEventObserver(userService));
+postPublisher.register(new PostEventObserver(postService));
 
 const myUser: IUserReflectObject = {
   username: "johndoe8",
@@ -51,12 +55,12 @@ const asyncFunction = async () => {
 
   const postInstance = await postService.createPost(postObject);
 
-  postService.publishFavoritePost(
+  postService.emitFavoritePostEvent(
     userInstance.reflect.id!,
     postInstance.reflect.id!,
   );
 
-  const response2 = await postService.publishFavoritePost(
+  const response2 = await postService.emitFavoritePostEvent(
     userInstance2.reflect.id!,
     postInstance.reflect.id!,
   );
@@ -75,8 +79,10 @@ const asyncFunction = async () => {
   };
   const commentInstance = new Comment(commentObj);
 
-  const comment = await postService.publishCommentPost(commentInstance, updatedPostInstance.reflect.id!);
-
+  const comment = await postService.emitCommentPostEvent(
+    commentInstance,
+    updatedPostInstance.reflect.id!,
+  );
 };
 
 asyncFunction();

@@ -1,8 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { IPostReflectObject } from "../@interfaces";
-import PostBuilder from "../PostBuilder";
 import { IUserReflectObject, User, UserBuilder } from "@/domain/user";
-import Post from "../Post";
+import { Post, PostBuilder, IPostReflectObject } from "..";
 
 describe("PostBuilder", () => {
   beforeEach(() => {});

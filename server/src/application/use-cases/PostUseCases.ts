@@ -17,7 +17,7 @@ export class PostUseCases {
     userId: string;
     postId: string;
   }): Promise<Post | undefined> {
-    const favoritedPost = await this.postService.publishFavoritePostCommand(
+    const favoritedPost = await this.postService.emitFavoritePostEvent(
       request.userId,
       request.postId,
     );

@@ -1,4 +1,4 @@
-import Post from "../Post";
+import { Post } from "../Post";
 
 export interface IPostRepository {
   createPost(post: Post): Promise<Post>;

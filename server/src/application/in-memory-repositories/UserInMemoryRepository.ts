@@ -1,6 +1,6 @@
 import { User, IUserRepository } from "../../domain/user";
 
-export default class UserInMemoryRepository implements IUserRepository {
+export class UserInMemoryRepository implements IUserRepository {
   #users: Map<string, User> = new Map();
 
   public get users() {

@@ -3,14 +3,14 @@ import { User } from "@domain/user";
 import { Comment } from "@domain/comment";
 import { Favorite } from "@domain/favorite";
 
-export default class Post {
+export class Post {
   #id: string;
   #title: string;
   #body: string;
   #tags: string[];
   #coverImage: string;
   #postedIn: Date;
-  #lastChange?: Date;
+  #lastChange?: Date | undefined;
   #author: User;
   #favorites: Favorite[] = [];
   #comments: Comment[] = [];
