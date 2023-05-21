@@ -41,10 +41,11 @@ export class PostService implements IPostService {
     return response;
   }
 
-  public async emitFavoritePostEvent(
-    userId: string,
-    postId: string,
-  ): Promise<Post | undefined> {
+  public async emitFavoritePostEvent(request: {
+    userId: string;
+    postId: string;
+  }): Promise<Post | undefined> {
+    const { userId, postId } = request;
     Validators.checkPrimitiveType({ validating: userId, type: "string" });
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
     const user = await this.#userRepository.findUserById(userId);

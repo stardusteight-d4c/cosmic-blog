@@ -19,10 +19,10 @@ export interface IPostService {
 
   // Event Emitters
   emitCreatePostEvent(post: IPostReflectObject): Promise<Post>;
-  emitFavoritePostEvent(
-    userId: string,
-    postId: string,
-  ): Promise<Post | undefined>;
+  emitFavoritePostEvent(request: {
+    userId: string;
+    postId: string;
+  }): Promise<Post | undefined>;
   emitCommentPostEvent(
     comment: Comment,
     postId: string,
