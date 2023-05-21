@@ -146,7 +146,7 @@ export class UserService implements IUserService {
         return updatedUserInstance;
       }
     } catch (error) {
-      throw new Error(String(error))
+      throw new Error(String(error));
     }
   }
 
@@ -195,7 +195,7 @@ export class UserService implements IUserService {
   public async handlerCommentPostEvent(
     commentPostEvent: CommentPostEvent,
   ): Promise<Comment | undefined> {
-    const { comment, postId } = commentPostEvent;
+    const { comment } = commentPostEvent;
     const user = await this.#userRepository.findUserById(
       comment.reflect.owner.id!,
     );
@@ -206,6 +206,7 @@ export class UserService implements IUserService {
           (comment) =>
             new Comment({
               id: comment.id,
+              postId: comment.postId,
               owner: comment.owner,
               content: comment.content,
               postedAt: comment.postedAt,

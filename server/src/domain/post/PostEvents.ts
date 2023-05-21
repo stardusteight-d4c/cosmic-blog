@@ -14,5 +14,5 @@ export class FavoritePostEvent implements IEvent {
 
 export class CommentPostEvent implements IEvent {
   name = "comment_post";
-  constructor(readonly comment: Comment, readonly postId: string) {}
+  constructor(readonly comment: Comment) {}
 }

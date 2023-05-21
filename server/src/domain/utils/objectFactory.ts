@@ -6,7 +6,8 @@ import { IUserReflectObject } from "@/domain/user";
 export interface IObjectFactory {
   getUser: () => IUserReflectObject;
   getPost: () => IPostReflectObject;
-  getComment: (data?: {
+  getComment: (data: {
+    postId: string;
     owner?: IUserReflectObject;
     content?: string;
   }) => ICommentReflectObject;
@@ -33,11 +34,13 @@ export function objectFactory(): IObjectFactory {
   };
 
   const comment = (data: {
+    postId: string;
     owner?: IUserReflectObject;
     content?: string;
   }): ICommentReflectObject => {
     return {
       owner: data.owner ?? user,
+      postId: data.postId,
       content: data.content ?? "Great post! I really enjoyed reading it.",
       postedAt: new Date(),
     };
@@ -60,8 +63,16 @@ export function objectFactory(): IObjectFactory {
     getPost: () => {
       return post;
     },
-    getComment: (data?: { owner?: IUserReflectObject; content?: string }) => {
-      return comment({ owner: data?.owner, content: data?.content });
+    getComment: (data: {
+      postId: string;
+      owner?: IUserReflectObject;
+      content?: string;
+    }) => {
+      return comment({
+        postId: data.postId,
+        owner: data?.owner,
+        content: data?.content,
+      });
     },
     getFavorite: (data: { userId: string; postId: string }) => {
       return favorite({ userId: data.userId, postId: data.postId });

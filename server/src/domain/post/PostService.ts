@@ -65,13 +65,12 @@ export class PostService implements IPostService {
 
   public async emitCommentPostEvent(
     comment: Comment,
-    postId: string,
   ): Promise<Comment | undefined> {
     const user = await this.#userRepository.findUserById(
       comment.reflect.owner.id!,
     );
-    await this.#postRepository.findPostById(postId);
-    const commentPostEvent = new CommentPostEvent(comment, postId);
+    await this.#postRepository.findPostById(comment.reflect.postId);
+    const commentPostEvent = new CommentPostEvent(comment);
     const responses = await this.#postPublisher.emit(commentPostEvent);
     const response = responses.find(
       (response) => response instanceof Comment,
@@ -150,14 +149,17 @@ export class PostService implements IPostService {
   public async handlerCommentPostEvent(
     event: CommentPostEvent,
   ): Promise<Comment | undefined> {
-    const { comment, postId } = event;
-    const post = await this.#postRepository.findPostById(postId);
+    const { comment } = event;
+    const post = await this.#postRepository.findPostById(
+      comment.reflect.postId,
+    );
     if (post) {
       const updatedPostComments = [
         ...(post.reflect.comments?.map(
           (comment) =>
             new Comment({
               id: comment.id,
+              postId: comment.postId,
               owner: comment.owner,
               content: comment.content,
               postedAt: comment.postedAt,

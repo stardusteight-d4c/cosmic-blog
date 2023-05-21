@@ -4,13 +4,17 @@ import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 
 export class Comment {
   #id: string;
-  // postId
+  #postId: string;
   #owner: User;
   #content: string;
   #postedAt: Date;
 
   constructor(properties: ICommentReflectObject) {
+    if (!properties.postId) {
+      throw new Error("postId is required.");
+    }
     this.#id = properties.id || randomUUID();
+    this.#postId = properties.postId;
     this.#owner = new User(properties.owner);
     this.#content = properties.content;
     this.#postedAt = properties.postedAt;
@@ -19,6 +23,7 @@ export class Comment {
   public get reflect(): ICommentReflectObject {
     return {
       id: this.#id,
+      postId: this.#postId,
       owner: this.#owner.reflect,
       content: this.#content,
       postedAt: this.#postedAt,
@@ -37,6 +42,15 @@ export class Comment {
   }
   public set id(_value: string) {
     throw new Error("Cannot modify id property directly.");
+  }
+
+  public get postId(): string {
+    throw new Error(
+      "Cannot access postId property directly. Use the reflect object in the User instead.",
+    );
+  }
+  public set postId(_value: string) {
+    throw new Error("Cannot modify postId property directly.");
   }
 
   public get owner(): string {

@@ -105,14 +105,14 @@ describe("PostService", () => {
   });
 
   it("should be able comment on a post", async () => {
-    const commentObj = factory.getComment({ owner: userInstance.reflect });
-    const commentInstance = new Comment(commentObj);
     const postInstanceId = postInstance.reflect.id!;
     const userInstanceId = userInstance.reflect.id!;
-    const comment = await postService.emitCommentPostEvent(
-      commentInstance,
-      postInstanceId,
-    );
+    const commentObj = factory.getComment({
+      postId: postInstanceId,
+      owner: userInstance.reflect,
+    });
+    const commentInstance = new Comment(commentObj);
+    const comment = await postService.emitCommentPostEvent(commentInstance);
     const updatedPostInstanceReflect = await postService
       .findPostById(postInstanceId)
       .then((post) => post?.reflect!);
@@ -123,11 +123,12 @@ describe("PostService", () => {
     expect(updatedPostInstanceReflect.comments?.length).toStrictEqual(1);
     expect(updatedUserInstanceReflect.commentedPosts?.length).toStrictEqual(1);
     const commentObj2 = factory.getComment({
+      postId: postInstanceId,
       owner: userInstance.reflect,
       content: "This post is amazing! Great job!",
     });
     const commentInstance2 = new Comment(commentObj2);
-    await postService.emitCommentPostEvent(commentInstance2, postInstanceId);
+    await postService.emitCommentPostEvent(commentInstance2);
     const newPostInstance2 = await postService.findPostById(postInstanceId);
     const newUserInstance2 = await userService.findUserById(userInstanceId);
     expect(newPostInstance2?.reflect.comments?.length).toStrictEqual(2);
