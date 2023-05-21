@@ -6,7 +6,7 @@ import {
   UserEventPublisher,
   userBuilderFactory,
 } from ".";
-import Validators from "@/utils/validators";
+import Validators from "@/domain/utils/validators";
 import { Favorite } from "@domain/favorite";
 import {
   CommentPostEvent,

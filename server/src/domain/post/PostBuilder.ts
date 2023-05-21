@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { Post } from ".";
-import { User } from "@domain/user";
+import { IUserReflectObject, User } from "@domain/user";
 import { Favorite } from "@domain/favorite";
 import { Comment } from "@domain/comment";
 
@@ -12,7 +12,7 @@ export class PostBuilder {
   #coverImage: string;
   #postedIn: Date;
   #lastChange?: Date;
-  #author: User;
+  #author: IUserReflectObject;
   #favorites: Favorite[] = [];
   #comments: Comment[] = [];
 
@@ -51,7 +51,7 @@ export class PostBuilder {
     return this;
   }
 
-  public setAuthor(Author: User): PostBuilder {
+  public setAuthor(Author: IUserReflectObject): PostBuilder {
     this.#author = Author;
     return this;
   }
@@ -101,7 +101,7 @@ export class PostBuilder {
       coverImage: this.#coverImage,
       postedIn: this.#postedIn,
       lastChange: this.#lastChange,
-      author: this.#author.reflect,
+      author: this.#author,
       favorites: this.#favorites.map((favorite) => favorite.reflect),
       comments: this.#comments.map((comment) => comment.reflect),
     });

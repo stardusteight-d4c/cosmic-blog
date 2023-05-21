@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { ISocialLinks, User, TUserRole } from ".";
-import Validators from "@/utils/validators";
+import Validators from "@/domain/utils/validators";
 import { Post } from "@domain/post";
 import { Comment } from "@domain/comment";
 import { Favorite } from "@domain/favorite";

@@ -1,6 +1,6 @@
 import { ICommentReflectObject } from "@/domain/comment";
 import { IFavoriteReflectObject } from "@/domain/favorite";
-import { IPostReflectObject } from "../@interfaces";
+import { IPostReflectObject } from "../post/@interfaces";
 import { IUserReflectObject } from "@/domain/user";
 
 export interface IObjectFactory {

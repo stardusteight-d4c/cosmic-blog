@@ -4,6 +4,7 @@ import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 
 export class Comment {
   #id: string;
+  // postId
   #owner: User;
   #content: string;
   #postedAt: Date;

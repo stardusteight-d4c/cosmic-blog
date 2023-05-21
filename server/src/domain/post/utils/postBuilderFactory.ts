@@ -14,7 +14,7 @@ export function postBuilderFactory({
 }): Post {
   const updatedPostInstance = new PostBuilder()
     .setId(post.id!)
-    .setAuthor(new User(post.author))
+    .setAuthor(post.author)
     .setCoverImage(post.coverImage)
     .setTitle(post.title)
     .setTags(post.tags)

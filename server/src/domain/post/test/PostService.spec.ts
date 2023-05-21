@@ -8,9 +8,9 @@ import {
   UserService,
 } from "@/domain/user";
 import { IPostReflectObject } from "../@interfaces";
-import { Comment, ICommentReflectObject } from "@/domain/comment";
+import { Comment } from "@/domain/comment";
 import { Post, PostService, PostEventPublisher, PostEventObserver } from "..";
-import { IObjectFactory, objectFactory } from "../utils/objectFactory";
+import { IObjectFactory, objectFactory } from "../../utils/objectFactory";
 
 let postService: PostService;
 let userService: UserService;

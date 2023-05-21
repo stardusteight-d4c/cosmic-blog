@@ -1,190 +1,96 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { IUserReflectObject, User, UserBuilder } from "@/domain/user";
-import { Post, PostBuilder, IPostReflectObject } from "..";
+import {
+  User,
+  UserEventPublisher,
+  UserService,
+} from "@/domain/user";
+import { Post, IPostReflectObject, postBuilderFactory } from "..";
+import { IObjectFactory, objectFactory } from "@/domain/utils/objectFactory";
+import { UserInMemoryRepository } from "@/application/in-memory-repositories/UserInMemoryRepository";
+import { PostInMemoryRepository } from "@/application/in-memory-repositories/PostInMemoryRepository";
+
+let factory: IObjectFactory;
+let userInstance: User;
+let newPost: IPostReflectObject;
 
 describe("PostBuilder", () => {
-  beforeEach(() => {});
-  it("must return an instance of Post", () => {
-    const myUser: IUserReflectObject = {
-      username: "johndoe8",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
-    const userInstance = new UserBuilder()
-      .setEmail(myUser.email)
-      .setUsername(myUser.username)
-      .setPassword(myUser.password)
-      .setAvatar(myUser.avatar ? myUser.avatar : "")
-      .build();
-    const post: IPostReflectObject = {
-      title: "Título doaaa post!",
-      body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
-      tags: ["nodejs", "typescript", "ddd"],
-      coverImage:
-        "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
-      postedIn: new Date(),
+  beforeEach(async () => {
+    const userInMemoryRepository = new UserInMemoryRepository();
+    const postInMemoryRepository = new PostInMemoryRepository();
+    const userPublisher = new UserEventPublisher();
+    const userService = new UserService({
+      userPublisher: userPublisher,
+      userRepository: userInMemoryRepository,
+      postRepository: postInMemoryRepository,
+    });
+    factory = objectFactory();
+    const user = factory.getUser();
+    const post = factory.getPost();
+    userInstance = await userService.createUser(user);
+    newPost = {
+      ...post,
       author: userInstance.reflect,
     };
-    expect(
-      new PostBuilder()
-        .setId(post.id!)
-        .setTitle(post.title)
-        .setBody(post.body)
-        .setTags(post.tags)
-        .setCoverImage(post.coverImage)
-        .setPostedIn(post.postedIn)
-        .setAuthor(userInstance)
-        .build(),
-    ).toBeInstanceOf(Post);
   });
 
-  it("must start properly for non-mandatory values", () => {
-    const user: IUserReflectObject = {
-      username: "johndoe8",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
-    const userInstance = new UserBuilder()
-      .setEmail(user.email)
-      .setUsername(user.username)
-      .setPassword(user.password)
-      .setAvatar(user.avatar ? user.avatar : "")
-      .build();
-    const post: IPostReflectObject = {
-      title: "Título doaaa post!",
-      body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
-      tags: ["nodejs", "typescript", "ddd"],
-      coverImage:
-        "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
-      postedIn: new Date(),
-      author: userInstance.reflect,
-    };
-    const postIstance = new PostBuilder()
-      .setId(post.id!)
-      .setTitle(post.title)
-      .setBody(post.body)
-      .setTags(post.tags)
-      .setCoverImage(post.coverImage)
-      .setPostedIn(post.postedIn)
-      .setAuthor(new User(post.author))
-      .build();
+  it("must be able return an instance of Post", () => {
+    expect(postBuilderFactory({ post: newPost })).toBeInstanceOf(Post);
+  });
+
+  it("must be able start properly for non-mandatory values", () => {
+    const postIstance = postBuilderFactory({ post: newPost });
     expect(postIstance.reflect.favorites).toStrictEqual([]);
     expect(postIstance.reflect.comments).toStrictEqual([]);
   });
 
-  it("postIstance.reflect.author must be equal userInstance.reflect", () => {
-    const user: IUserReflectObject = {
-      username: "johndoe8",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
-    const userInstance = new UserBuilder()
-      .setEmail(user.email)
-      .setUsername(user.username)
-      .setPassword(user.password)
-      .setAvatar(user.avatar ? user.avatar : "")
-      .build();
-    const post: IPostReflectObject = {
-      title: "Título doaaa post!",
-      body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
-      tags: ["nodejs", "typescript", "ddd"],
-      coverImage:
-        "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
-      postedIn: new Date(),
-      author: userInstance.reflect,
-    };
-    const postIstance = new PostBuilder()
-      .setId(post.id!)
-      .setTitle(post.title)
-      .setBody(post.body)
-      .setTags(post.tags)
-      .setCoverImage(post.coverImage)
-      .setPostedIn(post.postedIn)
-      .setAuthor(new User(post.author))
-      .build();
+  it("must be able postIstance.reflect.author be equal userInstance.reflect", () => {
+    const postIstance = postBuilderFactory({ post: newPost });
     expect(postIstance.reflect.author).toStrictEqual(userInstance.reflect);
   });
 
-  it("title, body, tags, coverImage, postedIn, author must be required", () => {
-    const user: IUserReflectObject = {
-      username: "johndoe8",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
+  it("must be able to throw an error if title, body, tags, coverImage, postedIn or author are not declared", () => {
+    const defaultPost = postBuilderFactory({ post: newPost });
+    const invalidPostTitle = {
+      ...defaultPost.reflect,
+      title: undefined as any,
     };
-    const userInstance = new UserBuilder()
-      .setEmail(user.email)
-      .setUsername(user.username)
-      .setPassword(user.password)
-      .setAvatar(user.avatar ? user.avatar : "")
-      .build();
-    const post: IPostReflectObject = {
-      title: "Título doaaa post!",
-      body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
-      tags: ["nodejs", "typescript", "ddd"],
-      coverImage:
-        "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
-      postedIn: new Date(),
-      author: userInstance.reflect,
+    const invalidPostBody = {
+      ...defaultPost.reflect,
+      body: undefined as any,
+    };
+    const invalidPostTags = {
+      ...defaultPost.reflect,
+      tags: undefined as any,
+    };
+    const invalidPostCoverImage = {
+      ...defaultPost.reflect,
+      coverImage: undefined as any,
+    };
+    const invalidPostPostedIn = {
+      ...defaultPost.reflect,
+      postedIn: undefined as any,
+    };
+    const invalidPostAuthor = {
+      ...defaultPost.reflect,
+      author: undefined as any,
     };
     expect(() => {
-      new PostBuilder()
-        .setId(post.id!)
-        .setBody(post.body)
-        .setTags(post.tags)
-        .setCoverImage(post.coverImage)
-        .setPostedIn(post.postedIn)
-        .setAuthor(new User(post.author))
-        .build();
+      postBuilderFactory({ post: invalidPostTitle });
     }).toThrowError("title is required.");
     expect(() => {
-      new PostBuilder()
-        .setId(post.id!)
-        .setTitle(post.title)
-        .setTags(post.tags)
-        .setCoverImage(post.coverImage)
-        .setPostedIn(post.postedIn)
-        .setAuthor(new User(post.author))
-        .build();
+      postBuilderFactory({ post: invalidPostBody });
     }).toThrowError("body is required.");
     expect(() => {
-      new PostBuilder()
-        .setId(post.id!)
-        .setTitle(post.title)
-        .setBody(post.body)
-        .setCoverImage(post.coverImage)
-        .setPostedIn(post.postedIn)
-        .setAuthor(new User(post.author))
-        .build();
+      postBuilderFactory({ post: invalidPostTags });
     }).toThrowError("tags is required.");
     expect(() => {
-      new PostBuilder()
-        .setId(post.id!)
-        .setTitle(post.title)
-        .setBody(post.body)
-        .setTags(post.tags)
-        .setPostedIn(post.postedIn)
-        .setAuthor(new User(post.author))
-        .build();
+      postBuilderFactory({ post: invalidPostCoverImage });
     }).toThrowError("coverImage is required.");
     expect(() => {
-      new PostBuilder()
-        .setId(post.id!)
-        .setTitle(post.title)
-        .setBody(post.body)
-        .setTags(post.tags)
-        .setCoverImage(post.coverImage)
-        .setAuthor(new User(post.author))
-        .build();
+      postBuilderFactory({ post: invalidPostPostedIn });
     }).toThrowError("postedIn is required.");
     expect(() => {
-      new PostBuilder()
-        .setId(post.id!)
-        .setTitle(post.title)
-        .setBody(post.body)
-        .setTags(post.tags)
-        .setCoverImage(post.coverImage)
-        .setPostedIn(post.postedIn)
-        .build();
+      postBuilderFactory({ post: invalidPostAuthor });
     }).toThrowError("author is required.");
   });
 });
