@@ -48,7 +48,7 @@ describe("PostService", () => {
     postInstance = await postService.emitCreatePostEvent(newPost);
   });
 
-  it("should be able to create a post", async () => {
+  it("must be able to create a post", async () => {
     const userWhoCommented = await userService.findUserById(
       userInstance.reflect.id!,
     );
@@ -59,7 +59,7 @@ describe("PostService", () => {
     );
   });
 
-  it("should be able to update a post", async () => {
+  it("must be able to update a post", async () => {
     const updatedPostRequest: IPostReflectObject = {
       ...postInstance.reflect,
       body: "Updating body...",
@@ -70,13 +70,13 @@ describe("PostService", () => {
     expect(updatedPostInstance.reflect.body).toStrictEqual("Updating body...");
   });
 
-  it("should be able to find a post by id", async () => {
+  it("must be able to find a post by id", async () => {
     const findPost = await postService.findPostById(postInstance.reflect.id!);
     expect(findPost!.reflect.id).toStrictEqual(postInstance.reflect.id);
     expect(findPost!.reflect).toStrictEqual(postInstance.reflect);
   });
 
-  it("should be able to find a post by title", async () => {
+  it("must be able to find a post by title", async () => {
     const findPost = await postService.findPostByTitle(
       postInstance.reflect.title!,
     );
@@ -84,7 +84,7 @@ describe("PostService", () => {
     expect(findPost!.reflect).toStrictEqual(postInstance.reflect);
   });
 
-  it("should be able to favorite a post", async () => {
+  it("must be able to favorite a post", async () => {
     const postInstanceId = postInstance.reflect.id!;
     const userInstanceId = userInstance.reflect.id!;
     const favorite = factory.getFavorite({
@@ -92,7 +92,7 @@ describe("PostService", () => {
       postId: postInstanceId,
     });
     const postFavorites = await postService
-      .emitFavoritePostEvent(favorite)
+      .emitToggleFavoritePostEvent(favorite)
       .then((post) => post?.reflect.favorites);
     const userFavoritedPosts = await userService
       .findUserById(userInstance.reflect.id!)
@@ -104,7 +104,7 @@ describe("PostService", () => {
     expect(userFavoritedPosts![0].postId).toStrictEqual(postInstanceId);
   });
 
-  it("should be able comment on a post", async () => {
+  it("must be able comment on a post", async () => {
     const postInstanceId = postInstance.reflect.id!;
     const userInstanceId = userInstance.reflect.id!;
     const commentObj = factory.getComment({
@@ -138,13 +138,13 @@ describe("PostService", () => {
     );
   });
 
-  it("should be able to get all created posts", async () => {
+  it("must be able to get all created posts", async () => {
     await postService.emitCreatePostEvent(newPost);
     const posts = await postService.getPosts();
     expect(posts.length).toStrictEqual(2);
   });
 
-  it("it should be able to get posts by pagination", async () => {
+  it("must be able to get posts by pagination", async () => {
     for (let i = 0; i < 6; i++) {
       await postService.emitCreatePostEvent(newPost);
     }

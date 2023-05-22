@@ -9,11 +9,12 @@ import {
   postBuilderFactory,
 } from ".";
 import Validators from "@/domain/utils/validators";
-import { Favorite } from "@/domain/favorite";
 import { IUserRepository } from "@domain/user";
 import { Comment } from "../comment";
 import { IEventPublisher } from "../@interfaces";
 import { CreatePostEvent } from "./PostEvents";
+import { toggleFavorite } from "./helpers/toggleFavorite";
+import { handleCommentPost } from "./helpers/handleCommentPost";
 
 export class PostService implements IPostService {
   #postPublisher: IEventPublisher;
@@ -41,7 +42,7 @@ export class PostService implements IPostService {
     return response;
   }
 
-  public async emitFavoritePostEvent(request: {
+  public async emitToggleFavoritePostEvent(request: {
     userId: string;
     postId: string;
   }): Promise<Post | undefined> {
@@ -66,7 +67,7 @@ export class PostService implements IPostService {
   public async emitCommentPostEvent(
     comment: Comment,
   ): Promise<Comment | undefined> {
-    const user = await this.#userRepository.findById(comment.reflect.owner.id!);
+    await this.#userRepository.findById(comment.reflect.owner.id!);
     await this.#postRepository.findById(comment.reflect.postId);
     const commentPostEvent = new CommentPostEvent(comment);
     const responses = await this.#postPublisher.emit(commentPostEvent);
@@ -121,69 +122,22 @@ export class PostService implements IPostService {
     event: FavoritePostEvent,
   ): Promise<Post | undefined> {
     const { userId, postId } = event;
-    const post = await this.#postRepository.findById(postId);
-    if (post) {
-      const index = post.reflect.favorites!.findIndex(
-        (fav) => fav.userId === userId,
-      );
-      const isNotFavorited = index === -1;
-      if (isNotFavorited) {
-        const newFavorite = new Favorite({ userId, postId });
-        const updatedPostFavorites = [
-          ...(post.reflect.favorites?.map(
-            (favorite) =>
-              new Favorite({
-                userId: favorite.userId,
-                postId: favorite.postId,
-              }),
-          ) ?? []),
-          newFavorite,
-        ];
-        const updatedPostInstance = postBuilderFactory({
-          post: post.reflect,
-          update: { field: "favorites", newData: updatedPostFavorites },
-        });
-        await this.#postRepository.update(updatedPostInstance);
-        return updatedPostInstance;
-      } else {
-        const updatedPostFavorites = post.reflect.favorites?.filter(
-          (favorite) => favorite.postId !== postId,
-        );
-        const updatedPostInstance = postBuilderFactory({
-          post: post.reflect,
-          update: { field: "favorites", newData: updatedPostFavorites },
-        });
-        await this.#postRepository.update(updatedPostInstance);
-        return updatedPostInstance;
-      }
-    }
+    const post = toggleFavorite({
+      postRepository: this.#postRepository,
+      postId: postId,
+      userId: userId,
+    });
+    return post;
   }
 
   public async handlerCommentPostEvent(
     event: CommentPostEvent,
   ): Promise<Comment | undefined> {
     const { comment } = event;
-    const post = await this.#postRepository.findById(comment.reflect.postId);
-    if (post) {
-      const updatedPostComments = [
-        ...(post.reflect.comments?.map(
-          (comment) =>
-            new Comment({
-              id: comment.id,
-              postId: comment.postId,
-              owner: comment.owner,
-              content: comment.content,
-              postedAt: comment.postedAt,
-            }),
-        ) ?? []),
-        comment,
-      ];
-      const updatedPost = postBuilderFactory({
-        post: post.reflect,
-        update: { field: "comments", newData: updatedPostComments },
-      });
-      await this.#postRepository.update(updatedPost);
-      return comment;
-    }
+    const result = handleCommentPost({
+      postRepository: this.#postRepository,
+      comment,
+    });
+    return result;
   }
 }

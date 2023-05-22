@@ -12,15 +12,13 @@ export interface IPostService {
     skip: number;
     pageSize: number;
   }): Promise<Post[]>;
-
-  // add amount of comments attribute
-  // add amount of favorites attribute
-
   // deletar post -> obersver -> deletar comentários -> favoritos
+
+  // deletar comentario
 
   // Event Emitters
   emitCreatePostEvent(post: IPostReflectObject): Promise<Post>;
-  emitFavoritePostEvent(request: {
+  emitToggleFavoritePostEvent(request: {
     userId: string;
     postId: string;
   }): Promise<Post | undefined>;

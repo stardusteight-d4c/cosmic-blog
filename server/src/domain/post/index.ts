@@ -9,4 +9,4 @@ export {
   IPostRepository,
   IPostService,
 } from "./@interfaces";
-export { postBuilderFactory } from "./utils/postBuilderFactory";
+export { postBuilderFactory } from "./helpers/postBuilderFactory";
