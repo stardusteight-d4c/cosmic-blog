@@ -1,7 +1,7 @@
 import { Post } from "@domain/post";
 import { Comment } from "@domain/comment";
 import { ISocialLinks, IUserReflectObject, TUserRole } from ".";
-import { Favorite, IFavoriteReflectObject } from "@domain/favorite";
+import { Favorite, IFavoriteReflectObject } from "@/domain/@object-values/favorite";
 
 export class User {
   #id: string;

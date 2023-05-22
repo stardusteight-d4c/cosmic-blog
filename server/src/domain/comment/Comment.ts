@@ -1,4 +1,3 @@
-import { randomUUID } from "node:crypto";
 import { User } from "@domain/user";
 import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 
@@ -10,10 +9,7 @@ export class Comment {
   #postedAt: Date;
 
   constructor(properties: ICommentReflectObject) {
-    if (!properties.postId) {
-      throw new Error("postId is required.");
-    }
-    this.#id = properties.id || randomUUID();
+    this.#id = properties.id!;
     this.#postId = properties.postId;
     this.#owner = new User(properties.owner);
     this.#content = properties.content;

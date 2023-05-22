@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { Post } from ".";
 import { IUserReflectObject, User } from "@domain/user";
-import { Favorite } from "@domain/favorite";
+import { Favorite } from "@/domain/@object-values/favorite";
 import { Comment } from "@domain/comment";
 
 export class PostBuilder {
@@ -32,6 +32,9 @@ export class PostBuilder {
   }
 
   public setTags(tags: string[]): PostBuilder {
+    if (tags && tags.length > 4) {
+      throw new Error("the post must have a maximum of 4 tags");
+    }
     this.#tags = tags;
     return this;
   }
@@ -76,22 +79,22 @@ export class PostBuilder {
 
   public build(): Post {
     if (!this.#title) {
-      throw new Error("title is required.");
+      throw new Error("title is required");
     }
     if (!this.#body) {
-      throw new Error("body is required.");
+      throw new Error("body is required");
     }
     if (!this.#tags) {
-      throw new Error("tags is required.");
+      throw new Error("tags is required");
     }
     if (!this.#coverImage) {
-      throw new Error("coverImage is required.");
+      throw new Error("coverImage is required");
     }
     if (!this.#postedIn) {
-      throw new Error("postedIn is required.");
+      throw new Error("postedIn is required");
     }
     if (!this.#author) {
-      throw new Error("author is required.");
+      throw new Error("author is required");
     }
     return new Post({
       id: this.#id || randomUUID(),

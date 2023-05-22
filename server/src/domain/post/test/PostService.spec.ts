@@ -10,7 +10,7 @@ import {
 import { IPostReflectObject } from "../@interfaces";
 import { Comment } from "@/domain/comment";
 import { Post, PostService, PostEventPublisher, PostEventObserver } from "..";
-import { IObjectFactory, objectFactory } from "../../utils/objectFactory";
+import { IObjectFactory, objectFactory } from "@/domain/@utils/objectFactory";
 
 let postService: PostService;
 let userService: UserService;

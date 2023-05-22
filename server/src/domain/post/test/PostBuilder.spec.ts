@@ -5,7 +5,7 @@ import {
   UserService,
 } from "@/domain/user";
 import { Post, IPostReflectObject, postBuilderFactory } from "..";
-import { IObjectFactory, objectFactory } from "@/domain/utils/objectFactory";
+import { IObjectFactory, objectFactory } from "@/domain/@utils/objectFactory";
 import { UserInMemoryRepository } from "@/application/in-memory-repositories/UserInMemoryRepository";
 import { PostInMemoryRepository } from "@/application/in-memory-repositories/PostInMemoryRepository";
 
@@ -76,21 +76,21 @@ describe("PostBuilder", () => {
     };
     expect(() => {
       postBuilderFactory({ post: invalidPostTitle });
-    }).toThrowError("title is required.");
+    }).toThrowError("title is required");
     expect(() => {
       postBuilderFactory({ post: invalidPostBody });
-    }).toThrowError("body is required.");
+    }).toThrowError("body is required");
     expect(() => {
       postBuilderFactory({ post: invalidPostTags });
-    }).toThrowError("tags is required.");
+    }).toThrowError("tags is required");
     expect(() => {
       postBuilderFactory({ post: invalidPostCoverImage });
-    }).toThrowError("coverImage is required.");
+    }).toThrowError("coverImage is required");
     expect(() => {
       postBuilderFactory({ post: invalidPostPostedIn });
-    }).toThrowError("postedIn is required.");
+    }).toThrowError("postedIn is required");
     expect(() => {
       postBuilderFactory({ post: invalidPostAuthor });
-    }).toThrowError("author is required.");
+    }).toThrowError("author is required");
   });
 });

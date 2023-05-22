@@ -1,5 +1,5 @@
 import { IUserReflectObject, User, UserBuilder } from "@/domain/user";
-import { Favorite } from "@/domain/favorite";
+import { Favorite } from "@/domain/@object-values/favorite";
 import { Comment } from "@/domain/comment";
 import { Post } from "@/domain/post";
 

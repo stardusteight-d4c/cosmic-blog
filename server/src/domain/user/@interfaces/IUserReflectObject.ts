@@ -1,4 +1,4 @@
-import { IFavoriteReflectObject } from "@/domain/favorite";
+import { IFavoriteReflectObject } from "@/domain/@object-values/favorite";
 import { ICommentReflectObject } from "@/domain/comment";
 import { IPostReflectObject } from "@/domain/post";
 import { TUserRole } from "./TUserRole";

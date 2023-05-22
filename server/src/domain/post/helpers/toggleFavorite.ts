@@ -1,4 +1,4 @@
-import { Favorite } from "@/domain/favorite";
+import { Favorite } from "@/domain/@object-values/favorite";
 import { IPostRepository } from "../@interfaces";
 import { postBuilderFactory } from "./postBuilderFactory";
 

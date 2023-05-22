@@ -12,6 +12,11 @@ export interface IPostService {
     skip: number;
     pageSize: number;
   }): Promise<Post[]>;
+
+
+  // fazer reposirórios para Comentários e Favoritos
+
+
   // deletar post -> obersver -> deletar comentários -> favoritos
 
   // deletar comentario

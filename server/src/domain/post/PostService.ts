@@ -8,7 +8,7 @@ import {
   PostEventPublisher,
   postBuilderFactory,
 } from ".";
-import Validators from "@/domain/utils/validators";
+import Validators from "@/domain/@utils/validators";
 import { IUserRepository } from "@domain/user";
 import { Comment } from "../comment";
 import { IEventPublisher } from "../@interfaces";
