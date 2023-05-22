@@ -34,15 +34,15 @@ export class UserService implements IUserService {
 
   public async createUser(user: IUserReflectObject): Promise<User> {
     const newUser = userBuilderFactory({ user });
-    const userInstance = await this.#userRepository.createUser(newUser);
+    const userInstance = await this.#userRepository.create(newUser);
     return userInstance;
   }
 
   public async deleteUser(userId: string): Promise<User | undefined> {
     Validators.checkPrimitiveType({ validating: userId, type: "string" });
-    const user = await this.#userRepository.findUserById(userId);
+    const user = await this.#userRepository.findById(userId);
     if (user) {
-      const deletedUser = await this.#userRepository.deleteUser(userId);
+      const deletedUser = await this.#userRepository.delete(userId);
       return deletedUser;
     } else {
       throw new Error(`The user with ID: ${userId} was not found.`);
@@ -51,13 +51,13 @@ export class UserService implements IUserService {
 
   public async findUserById(userId: string): Promise<User | undefined> {
     Validators.checkPrimitiveType({ validating: userId, type: "string" });
-    return await this.#userRepository.findUserById(userId);
+    return await this.#userRepository.findById(userId);
   }
 
   public async findUserByEmail(userEmail: string): Promise<User | undefined> {
     Validators.checkPrimitiveType({ validating: userEmail, type: "string" });
     Validators.validateEmail(userEmail);
-    return await this.#userRepository.findUserByEmail(userEmail);
+    return await this.#userRepository.findByEmail(userEmail);
   }
 
   public async changeEmail(data: {
@@ -67,7 +67,7 @@ export class UserService implements IUserService {
   }): Promise<User | undefined> {
     Validators.checkPrimitiveType({ validating: data.userId, type: "string" });
     Validators.validateEmail(data.newEmail);
-    const user = await this.#userRepository.findUserById(data.userId);
+    const user = await this.#userRepository.findById(data.userId);
     if (user) {
       Validators.compareCurrentPassword({
         inputPassword: data.confirmationPassword,
@@ -77,7 +77,7 @@ export class UserService implements IUserService {
         user: user.reflect,
         update: { field: "email", newData: data.newEmail },
       });
-      const changedUser = await this.#userRepository.updateUser(
+      const changedUser = await this.#userRepository.update(
         updatedUserInstance,
       );
       return changedUser;
@@ -93,7 +93,7 @@ export class UserService implements IUserService {
   }): Promise<User | undefined> {
     Validators.checkPrimitiveType({ validating: data.userId, type: "string" });
     Validators.validatePassword(data.newPassword);
-    const user = await this.#userRepository.findUserById(data.userId);
+    const user = await this.#userRepository.findById(data.userId);
     if (user) {
       Validators.compareCurrentPassword({
         inputPassword: data.confirmationPassword,
@@ -103,7 +103,7 @@ export class UserService implements IUserService {
         user: user.reflect,
         update: { field: "password", newData: data.newPassword },
       });
-      const changedUser = await this.#userRepository.updateUser(
+      const changedUser = await this.#userRepository.update(
         updatedUserInstance,
       );
       return changedUser;
@@ -118,7 +118,7 @@ export class UserService implements IUserService {
     try {
       const { post } = event;
       const authorId = post.reflect.author.id;
-      const author = await this.#userRepository.findUserById(authorId!);
+      const author = await this.#userRepository.findById(authorId!);
       if (author) {
         const updatedPublishedPosts = [
           ...(author.reflect.publishedPosts?.map(
@@ -142,7 +142,7 @@ export class UserService implements IUserService {
           user: author.reflect,
           update: { field: "posts", newData: updatedPublishedPosts },
         });
-        await this.#userRepository.updateUser(updatedUserInstance);
+        await this.#userRepository.update(updatedUserInstance);
         return updatedUserInstance;
       }
     } catch (error) {
@@ -154,7 +154,7 @@ export class UserService implements IUserService {
     favoritePostEvent: FavoritePostEvent,
   ): Promise<User | undefined> {
     const { userId, postId } = favoritePostEvent;
-    const user = await this.#userRepository.findUserById(userId);
+    const user = await this.#userRepository.findById(userId);
     if (user) {
       const index = user.reflect.favoritedPosts!.findIndex(
         (fav) => fav.postId === postId,
@@ -176,7 +176,7 @@ export class UserService implements IUserService {
           user: user.reflect,
           update: { field: "favorites", newData: updatedFavoritedPosts },
         });
-        await this.#userRepository.updateUser(updatedUserInstance);
+        await this.#userRepository.update(updatedUserInstance);
         return updatedUserInstance;
       } else {
         const updatedFavoritedPosts = user.reflect.favoritedPosts?.filter(
@@ -186,7 +186,7 @@ export class UserService implements IUserService {
           user: user.reflect,
           update: { field: "favorites", newData: updatedFavoritedPosts },
         });
-        await this.#userRepository.updateUser(updatedUserInstance);
+        await this.#userRepository.update(updatedUserInstance);
         return updatedUserInstance;
       }
     }
@@ -196,9 +196,7 @@ export class UserService implements IUserService {
     commentPostEvent: CommentPostEvent,
   ): Promise<Comment | undefined> {
     const { comment } = commentPostEvent;
-    const user = await this.#userRepository.findUserById(
-      comment.reflect.owner.id!,
-    );
+    const user = await this.#userRepository.findById(comment.reflect.owner.id!);
 
     if (user) {
       const updatedCommentedPosts = [
@@ -218,7 +216,7 @@ export class UserService implements IUserService {
         user: user.reflect,
         update: { field: "comments", newData: updatedCommentedPosts },
       });
-      await this.#userRepository.updateUser(updatedUser);
+      await this.#userRepository.update(updatedUser);
       return comment;
     }
   }

@@ -137,4 +137,12 @@ describe("PostService", () => {
       commentObj2.content,
     );
   });
+
+  it("should be able to get all created posts", async () => {
+    await postService.emitCreatePostEvent(newPost);
+    const posts = await postService.getPosts();
+    expect(posts.length).toStrictEqual(2);
+  });
+
+  // it("should be able to get all created posts", async () => {});
 });

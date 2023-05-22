@@ -7,20 +7,13 @@ export interface IPostService {
   updatePost(post: IPostReflectObject): Promise<Post>;
   findPostById(postId: string): Promise<Post | undefined>;
   findPostByTitle(postTitle: string): Promise<Post | undefined>;
-    
-  // ao criar um post, deve-se também associar tal post ao atributo publishedPosts do usúario
-  // -> deve ser publish/event/emissor
-  
-  // getPosts
-  // getPostsByPagination
+  getPosts(): Promise<Post[]>;
+  getPostsByPagination(request: { skip: string }): Promise<Post[]>;
+
   // add amount of comments attribute
   // add amount of favorites attribute
 
-  
-
   // deletar post -> obersver -> deletar comentários -> favoritos
-  
-
 
   // Event Emitters
   emitCreatePostEvent(post: IPostReflectObject): Promise<Post>;

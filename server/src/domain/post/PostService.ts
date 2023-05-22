@@ -29,9 +29,12 @@ export class PostService implements IPostService {
     this.#postRepository = implementations.postRepository;
     this.#userRepository = implementations.userRepository;
   }
+  getPostsByPagination(request: { skip: string; }): Promise<Post[]> {
+    throw new Error("Method not implemented.");
+  }
 
   public async emitCreatePostEvent(post: IPostReflectObject): Promise<Post> {
-    await this.#userRepository.findUserById(post.author.id!);
+    await this.#userRepository.findById(post.author.id!);
     const newPost = postBuilderFactory({ post });
     const createPostEvent = new CreatePostEvent(newPost);
     const responses = await this.#postPublisher.emit(createPostEvent);
@@ -48,8 +51,8 @@ export class PostService implements IPostService {
     const { userId, postId } = request;
     Validators.checkPrimitiveType({ validating: userId, type: "string" });
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
-    const user = await this.#userRepository.findUserById(userId);
-    const post = await this.#postRepository.findPostById(postId);
+    const user = await this.#userRepository.findById(userId);
+    const post = await this.#postRepository.findById(postId);
     if (!user) {
       throw new Error(`The user with ID: ${userId} was not found.`);
     } else if (!post) {
@@ -66,10 +69,10 @@ export class PostService implements IPostService {
   public async emitCommentPostEvent(
     comment: Comment,
   ): Promise<Comment | undefined> {
-    const user = await this.#userRepository.findUserById(
+    const user = await this.#userRepository.findById(
       comment.reflect.owner.id!,
     );
-    await this.#postRepository.findPostById(comment.reflect.postId);
+    await this.#postRepository.findById(comment.reflect.postId);
     const commentPostEvent = new CommentPostEvent(comment);
     const responses = await this.#postPublisher.emit(commentPostEvent);
     const response = responses.find(
@@ -80,27 +83,30 @@ export class PostService implements IPostService {
 
   public async updatePost(post: IPostReflectObject): Promise<Post> {
     const updatedPost = postBuilderFactory({ post });
-    const updatedPostInstance = await this.#postRepository.updatePost(
-      updatedPost,
-    );
+    const updatedPostInstance = await this.#postRepository.update(updatedPost);
     return updatedPostInstance;
   }
 
   public async findPostById(postId: string): Promise<Post | undefined> {
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
-    return await this.#postRepository.findPostById(postId);
+    return await this.#postRepository.findById(postId);
   }
 
   public async findPostByTitle(postTitle: string): Promise<Post | undefined> {
     Validators.checkPrimitiveType({ validating: postTitle, type: "string" });
-    return await this.#postRepository.findPostByTitle(postTitle);
+    return await this.#postRepository.findByTitle(postTitle);
+  }
+
+  public async getPosts(): Promise<Post[]> {
+    const posts = await this.#postRepository.get();
+    return posts;
   }
 
   public async handlerCreatePostEvent(
     event: CreatePostEvent,
   ): Promise<Post | undefined> {
     const { post } = event;
-    const postInstance = await this.#postRepository.createPost(post);
+    const postInstance = await this.#postRepository.create(post);
     return postInstance;
   }
 
@@ -108,7 +114,7 @@ export class PostService implements IPostService {
     event: FavoritePostEvent,
   ): Promise<Post | undefined> {
     const { userId, postId } = event;
-    const post = await this.#postRepository.findPostById(postId);
+    const post = await this.#postRepository.findById(postId);
     if (post) {
       const index = post.reflect.favorites!.findIndex(
         (fav) => fav.userId === userId,
@@ -130,7 +136,7 @@ export class PostService implements IPostService {
           post: post.reflect,
           update: { field: "favorites", newData: updatedPostFavorites },
         });
-        await this.#postRepository.updatePost(updatedPostInstance);
+        await this.#postRepository.update(updatedPostInstance);
         return updatedPostInstance;
       } else {
         const updatedPostFavorites = post.reflect.favorites?.filter(
@@ -140,7 +146,7 @@ export class PostService implements IPostService {
           post: post.reflect,
           update: { field: "favorites", newData: updatedPostFavorites },
         });
-        await this.#postRepository.updatePost(updatedPostInstance);
+        await this.#postRepository.update(updatedPostInstance);
         return updatedPostInstance;
       }
     }
@@ -150,9 +156,7 @@ export class PostService implements IPostService {
     event: CommentPostEvent,
   ): Promise<Comment | undefined> {
     const { comment } = event;
-    const post = await this.#postRepository.findPostById(
-      comment.reflect.postId,
-    );
+    const post = await this.#postRepository.findById(comment.reflect.postId);
     if (post) {
       const updatedPostComments = [
         ...(post.reflect.comments?.map(
@@ -171,7 +175,7 @@ export class PostService implements IPostService {
         post: post.reflect,
         update: { field: "comments", newData: updatedPostComments },
       });
-      await this.#postRepository.updatePost(updatedPost);
+      await this.#postRepository.update(updatedPost);
       return comment;
     }
   }

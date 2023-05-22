@@ -10,8 +10,8 @@ export class PostInMemoryRepository implements IPostRepository {
     throw new Error("Cannot modify posts property directly.");
   }
 
-  private async replacePost(updatedPost: Post): Promise<Post> {
-    const existingPost = await this.findPostById(updatedPost.reflect.id!);
+  private async replace(updatedPost: Post): Promise<Post> {
+    const existingPost = await this.findById(updatedPost.reflect.id!);
     if (!existingPost) {
       throw new Error(`No post found with id: ${updatedPost.reflect.id}`);
     }
@@ -20,32 +20,37 @@ export class PostInMemoryRepository implements IPostRepository {
     return updatedPost;
   }
 
-  public async createPost(post: Post): Promise<Post> {
+  public async create(post: Post): Promise<Post> {
     this.#posts.set(post.reflect.id!, post);
     return post;
   }
 
-  public async updatePost(updatedPost: Post): Promise<Post> {
-    const post = await this.replacePost(updatedPost);
+  public async update(updatedPost: Post): Promise<Post> {
+    const post = await this.replace(updatedPost);
     return post;
   }
 
-  public async deletePost(postId: string): Promise<Post> {
-    const post = await this.findPostById(postId);
+  public async delete(postId: string): Promise<Post> {
+    const post = await this.findById(postId);
     this.#posts.delete(postId);
     return post!;
   }
 
-  public async findPostById(postId: string): Promise<Post | undefined> {
+  public async findById(postId: string): Promise<Post | undefined> {
     return this.#posts.get(postId);
   }
 
-  public async findPostByTitle(postTitle: string): Promise<Post | undefined> {
+  public async findByTitle(postTitle: string): Promise<Post | undefined> {
     for (const post of this.#posts.values()) {
       if (post.reflect.title.includes(postTitle)) {
         return post;
       }
     }
     return undefined;
+  }
+
+  public async get(): Promise<Post[]> {
+    const posts: Post[] = Array.from(this.#posts.values());
+    return posts;
   }
 }

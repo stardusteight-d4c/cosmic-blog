@@ -10,8 +10,8 @@ export class UserInMemoryRepository implements IUserRepository {
     throw new Error("Cannot modify users property directly.");
   }
 
-  private async replaceUser(updatedUser: User): Promise<User> {
-    const existingUser = await this.findUserById(updatedUser.reflect.id!);
+  private async replace(updatedUser: User): Promise<User> {
+    const existingUser = await this.findById(updatedUser.reflect.id!);
     if (!existingUser) {
       throw new Error(`No user found with id: ${updatedUser.reflect.id}`);
     }
@@ -20,18 +20,18 @@ export class UserInMemoryRepository implements IUserRepository {
     return updatedUser;
   }
 
-  public async createUser(user: User): Promise<User> {
+  public async create(user: User): Promise<User> {
     this.#users.set(user.reflect.id!, user);
     return user;
   }
 
-  public async deleteUser(userId: string): Promise<User> {
-    const user = await this.findUserById(userId);
+  public async delete(userId: string): Promise<User> {
+    const user = await this.findById(userId);
     this.#users.delete(userId);
     return user!;
   }
 
-  public async findUserById(userId: string): Promise<User | undefined> {
+  public async findById(userId: string): Promise<User | undefined> {
     const user = this.#users.get(userId);
     if (!user) {
       throw new Error(`No user found with id: ${userId}`);
@@ -39,14 +39,14 @@ export class UserInMemoryRepository implements IUserRepository {
     return user;
   }
 
-  public async findUserByEmail(email: string): Promise<User | undefined> {
+  public async findByEmail(email: string): Promise<User | undefined> {
     return Array.from(this.#users.values()).find(
       (user) => user.reflect.email === email,
     );
   }
 
-  public async updateUser(updatedUser: User): Promise<User> {
-    const user = await this.replaceUser(updatedUser);
+  public async update(updatedUser: User): Promise<User> {
+    const user = await this.replace(updatedUser);
     return user;
   }
 }
