@@ -7,4 +7,5 @@ export interface IPostRepository {
   findById(postId: string): Promise<Post | undefined>;
   findByTitle(postTitle: string): Promise<Post | undefined>;
   get(): Promise<Post[]>;
+  getByPagination(request: { skip: number; pageSize: number }): Promise<Post[]>;
 }

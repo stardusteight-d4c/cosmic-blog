@@ -8,7 +8,10 @@ export interface IPostService {
   findPostById(postId: string): Promise<Post | undefined>;
   findPostByTitle(postTitle: string): Promise<Post | undefined>;
   getPosts(): Promise<Post[]>;
-  getPostsByPagination(request: { skip: string }): Promise<Post[]>;
+  getPostsByPagination(request: {
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[]>;
 
   // add amount of comments attribute
   // add amount of favorites attribute

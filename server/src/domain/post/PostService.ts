@@ -29,9 +29,6 @@ export class PostService implements IPostService {
     this.#postRepository = implementations.postRepository;
     this.#userRepository = implementations.userRepository;
   }
-  getPostsByPagination(request: { skip: string; }): Promise<Post[]> {
-    throw new Error("Method not implemented.");
-  }
 
   public async emitCreatePostEvent(post: IPostReflectObject): Promise<Post> {
     await this.#userRepository.findById(post.author.id!);
@@ -69,9 +66,7 @@ export class PostService implements IPostService {
   public async emitCommentPostEvent(
     comment: Comment,
   ): Promise<Comment | undefined> {
-    const user = await this.#userRepository.findById(
-      comment.reflect.owner.id!,
-    );
+    const user = await this.#userRepository.findById(comment.reflect.owner.id!);
     await this.#postRepository.findById(comment.reflect.postId);
     const commentPostEvent = new CommentPostEvent(comment);
     const responses = await this.#postPublisher.emit(commentPostEvent);
@@ -99,6 +94,18 @@ export class PostService implements IPostService {
 
   public async getPosts(): Promise<Post[]> {
     const posts = await this.#postRepository.get();
+    return posts;
+  }
+
+  public async getPostsByPagination(request: {
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[]> {
+    const { skip, pageSize } = request;
+    const posts = await this.#postRepository.getByPagination({
+      skip,
+      pageSize,
+    });
     return posts;
   }
 

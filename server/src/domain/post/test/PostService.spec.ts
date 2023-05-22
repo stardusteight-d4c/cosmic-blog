@@ -144,5 +144,22 @@ describe("PostService", () => {
     expect(posts.length).toStrictEqual(2);
   });
 
-  // it("should be able to get all created posts", async () => {});
+  it("it should be able to get posts by pagination", async () => {
+    for (let i = 0; i < 6; i++) {
+      await postService.emitCreatePostEvent(newPost);
+    }
+    const skip = 3;
+    const pageSize = 3;
+    const allPosts = await postService.getPosts();
+    const filteredPosts = allPosts.slice(skip, skip + pageSize);
+    const posts = await postService.getPostsByPagination({
+      skip,
+      pageSize,
+    });
+    const postsIds = posts.map((post) => post.reflect.id);
+    const filteredPostsIds = filteredPosts.map((post) => post.reflect.id);
+    expect(posts).toStrictEqual(filteredPosts);
+    expect(postsIds).toStrictEqual(filteredPostsIds);
+    expect(postsIds[1]).toStrictEqual(filteredPostsIds[1]);
+  });
 });
