@@ -14,7 +14,7 @@ export class PostBuilder {
   #lastChange?: Date;
   #author: IUserReflectObject;
   #favorites: Favorite[] = [];
-  #comments: Comment[] = [];
+  #commentAmount: number;
 
   public setId(id: string) {
     this.#id = id;
@@ -68,12 +68,12 @@ export class PostBuilder {
     return this;
   }
 
-  public setComments(comments: Comment[]): PostBuilder {
-    if (comments === undefined) {
-      this.#comments = [];
+  public setCommentAmount(amount: number): PostBuilder {
+    if (amount === undefined) {
+      this.#commentAmount = 0;
       return this;
     }
-    this.#comments = comments;
+    this.#commentAmount = amount;
     return this;
   }
 
@@ -106,7 +106,7 @@ export class PostBuilder {
       lastChange: this.#lastChange,
       author: this.#author,
       favorites: this.#favorites.map((favorite) => favorite.reflect),
-      comments: this.#comments.map((comment) => comment.reflect),
+      commentAmount: this.#commentAmount,
     });
   }
 }

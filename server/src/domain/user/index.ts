@@ -10,4 +10,4 @@ export {
   ISocialLinks,
   TUserRole,
 } from "./@interfaces";
-export { userBuilderFactory } from "./helpers/userBuilderFactory";
+export { userBuilderFactory } from "./helpers";

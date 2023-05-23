@@ -2,8 +2,12 @@ import { IEvent, IEventObserver } from "@domain/@interfaces";
 import { CommentService } from "./CommentService";
 
 export class CommentEventObserver implements IEventObserver {
-  watching: string[] = ["favorite_post", "comment_post", "create_post"];
+  watching: string[] = ["comment_post"];
   constructor(readonly commentService: CommentService) {}
 
-  async notifyService(event: IEvent) {}
+  async notifyService(event: IEvent) {
+    if (event.name === 'comment_post') {
+      
+    }
+  }
 }

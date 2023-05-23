@@ -40,7 +40,7 @@ describe("PostBuilder", () => {
   it("must be able start properly for non-mandatory values", () => {
     const postIstance = postBuilderFactory({ post: newPost });
     expect(postIstance.reflect.favorites).toStrictEqual([]);
-    expect(postIstance.reflect.comments).toStrictEqual([]);
+    expect(postIstance.reflect.commentAmount).toStrictEqual(0);
   });
 
   it("must be able postIstance.reflect.author be equal userInstance.reflect", () => {

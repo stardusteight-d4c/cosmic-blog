@@ -3,18 +3,16 @@ import {
   IPostReflectObject,
   IPostRepository,
   IPostService,
-  CommentPostEvent,
   FavoritePostEvent,
   PostEventPublisher,
   postBuilderFactory,
 } from ".";
 import Validators from "@/domain/@utils/validators";
 import { IUserRepository } from "@domain/user";
-import { Comment } from "../comment";
+import { Comment, CommentPostEvent } from "@domain/comment";
 import { IEventPublisher } from "../@interfaces";
 import { CreatePostEvent } from "./PostEvents";
-import { toggleFavorite } from "./helpers/toggleFavorite";
-import { handleCommentPost } from "./helpers/handleCommentPost";
+import { toggleFavorite, handleCommentAmountPost } from "./helpers";
 
 export class PostService implements IPostService {
   #postPublisher: IEventPublisher;
@@ -61,19 +59,6 @@ export class PostService implements IPostService {
     const response = responses.find(
       (response) => response instanceof Post,
     ) as Post;
-    return response;
-  }
-
-  public async emitCommentPostEvent(
-    comment: Comment,
-  ): Promise<Comment | undefined> {
-    await this.#userRepository.findById(comment.reflect.owner.id!);
-    await this.#postRepository.findById(comment.reflect.postId);
-    const commentPostEvent = new CommentPostEvent(comment);
-    const responses = await this.#postPublisher.emit(commentPostEvent);
-    const response = responses.find(
-      (response) => response instanceof Comment,
-    ) as Comment;
     return response;
   }
 
@@ -134,7 +119,7 @@ export class PostService implements IPostService {
     event: CommentPostEvent,
   ): Promise<Comment | undefined> {
     const { comment } = event;
-    const result = handleCommentPost({
+    const result = handleCommentAmountPost({
       postRepository: this.#postRepository,
       comment,
     });

@@ -1,7 +1,6 @@
-import { CommentPostEvent, FavoritePostEvent, Post } from "..";
-import { Comment } from "@/domain/comment";
+import { Post, FavoritePostEvent, CreatePostEvent } from "..";
+import { Comment, CommentPostEvent } from "@/domain/comment";
 import { IPostReflectObject } from "./IPostReflectObject";
-import { CreatePostEvent } from "../PostEvents";
 
 export interface IPostService {
   updatePost(post: IPostReflectObject): Promise<Post>;
@@ -13,9 +12,7 @@ export interface IPostService {
     pageSize: number;
   }): Promise<Post[]>;
 
-
   // fazer reposirórios para Comentários e Favoritos
-
 
   // deletar post -> obersver -> deletar comentários -> favoritos
 
@@ -27,7 +24,6 @@ export interface IPostService {
     userId: string;
     postId: string;
   }): Promise<Post | undefined>;
-  emitCommentPostEvent(comment: Comment): Promise<Comment | undefined>;
 
   // Event Handlers
   handlerFavoritePostEvent(event: FavoritePostEvent): Promise<Post | undefined>;

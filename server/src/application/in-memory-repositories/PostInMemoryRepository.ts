@@ -37,7 +37,11 @@ export class PostInMemoryRepository implements IPostRepository {
   }
 
   public async findById(postId: string): Promise<Post | undefined> {
-    return this.#posts.get(postId);
+    const post = this.#posts.get(postId);
+    if (!post) {
+      throw new Error(`No post found with id: ${postId}`);
+    }
+    return post;
   }
 
   public async findByTitle(postTitle: string): Promise<Post | undefined> {

@@ -9,12 +9,11 @@ import {
 import Validators from "@/domain/@utils/validators";
 import { Favorite } from "@/domain/@object-values/favorite";
 import {
-  CommentPostEvent,
   FavoritePostEvent,
   IPostRepository,
   Post,
 } from "@domain/post";
-import { Comment } from "../comment";
+import { Comment, CommentPostEvent } from "../comment";
 import { CreatePostEvent } from "../post/PostEvents";
 
 export class UserService implements IUserService {
@@ -132,7 +131,7 @@ export class UserService implements IUserService {
                 tags: post.tags,
                 postedIn: post.postedIn,
                 lastChange: post.lastChange,
-                comments: post.comments,
+                commentAmount: post.commentAmount,
                 favorites: post.favorites,
               }),
           ) ?? []),

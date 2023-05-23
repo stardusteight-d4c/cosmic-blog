@@ -1,6 +1,5 @@
 import { IPostReflectObject } from ".";
 import { User } from "@domain/user";
-import { Comment } from "@domain/comment";
 import { Favorite } from "@/domain/@object-values/favorite";
 
 export class Post {
@@ -13,7 +12,7 @@ export class Post {
   #lastChange?: Date | undefined;
   #author: User;
   #favorites: Favorite[] = [];
-  #comments: Comment[] = [];
+  #commentAmount: number;
 
   constructor(properties: IPostReflectObject) {
     this.#id = properties.id!;
@@ -27,9 +26,7 @@ export class Post {
     this.#favorites = properties.favorites
       ? properties.favorites.map((favorite) => new Favorite(favorite))
       : [];
-    this.#comments = properties.comments
-      ? properties.comments.map((comment) => new Comment(comment))
-      : [];
+    this.#commentAmount = properties.commentAmount ?? 0
   }
 
   public get reflect(): IPostReflectObject {
@@ -43,7 +40,7 @@ export class Post {
       lastChange: this.#lastChange,
       author: this.#author.reflect,
       favorites: this.#favorites.map((favorite) => favorite.reflect),
-      comments: this.#comments.map((comment) => comment.reflect),
+      commentAmount: this.#commentAmount,
     };
   }
 
@@ -134,12 +131,12 @@ export class Post {
     throw new Error("Cannot modify favorites property directly.");
   }
 
-  public get comments(): Comment[] {
+  public get commentAmount(): number {
     throw new Error(
-      "Cannot access comments property directly. Use the reflect object in the Post instead.",
+      "Cannot access commentAmount property directly. Use the reflect object in the Post instead.",
     );
   }
-  public set comments(_value: Comment[]) {
-    throw new Error("Cannot modify comments property directly.");
+  public set commentAmount(_value: number) {
+    throw new Error("Cannot modify commentAmount property directly.");
   }
 }

@@ -1,7 +1,6 @@
 import { User } from "@/domain/user";
 import { IPostReflectObject } from "../@interfaces";
 import { Favorite } from "@/domain/@object-values/favorite";
-import { Comment } from "@/domain/comment";
 import { Post } from "../Post";
 import { PostBuilder } from "../PostBuilder";
 
@@ -26,10 +25,8 @@ export function postBuilderFactory({
         ? update.newData
         : post.favorites?.map((fav) => new Favorite(fav)),
     )
-    .setComments(
-      update?.field === "comments"
-        ? update.newData
-        : post.comments?.map((comment) => new Comment(comment)),
+    .setCommentAmount(
+      update?.field === "comments" ? update.newData : post.commentAmount,
     )
     .build();
   return updatedPostInstance;
