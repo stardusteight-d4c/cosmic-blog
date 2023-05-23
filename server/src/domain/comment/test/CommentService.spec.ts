@@ -69,7 +69,6 @@ describe("CommentService", () => {
 
   it("must be able comment on a post", async () => {
     const postInstanceId = postInstance.reflect.id!;
-    const userInstanceId = userInstance.reflect.id!;
     const commentObj = factory.getComment({
       postId: postInstanceId,
       owner: userInstance.reflect,
@@ -78,12 +77,8 @@ describe("CommentService", () => {
     const updatedPostInstanceReflect = await postService
       .findPostById(postInstanceId)
       .then((post) => post?.reflect!);
-    const updatedUserInstanceReflect = await userService
-      .findUserById(userInstanceId)
-      .then((user) => user?.reflect!);
     expect(comment).toBeInstanceOf(Comment);
     expect(updatedPostInstanceReflect.commentAmount).toStrictEqual(1);
-    expect(updatedUserInstanceReflect.commentedPosts?.length).toStrictEqual(1);
     const commentObj2 = factory.getComment({
       postId: postInstanceId,
       owner: userInstance.reflect,
@@ -91,14 +86,6 @@ describe("CommentService", () => {
     });
     await commentService.emitCreateCommentEvent(commentObj2);
     const newPostInstance2 = await postService.findPostById(postInstanceId);
-    const newUserInstance2 = await userService.findUserById(userInstanceId);
     expect(newPostInstance2?.reflect.commentAmount).toStrictEqual(2);
-    expect(newUserInstance2?.reflect.commentedPosts?.length).toStrictEqual(2);
-    expect(newUserInstance2?.reflect.commentedPosts![1].content).toStrictEqual(
-      commentObj2.content,
-    );
-
-    console.log('newPostInstance2', newPostInstance2?.reflect);
-    
   });
 });

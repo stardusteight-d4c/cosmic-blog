@@ -1,6 +1,7 @@
-import { CommentPostEvent, FavoritePostEvent, PostService } from ".";
+import { FavoritePostEvent, PostService } from ".";
 import { IEvent, IEventObserver } from "@domain/@interfaces";
 import { CreatePostEvent } from "./PostEvents";
+import { CommentPostEvent } from "../comment";
 
 export class PostEventObserver implements IEventObserver {
   watching: string[] = ["favorite_post", "comment_post", "create_post"];

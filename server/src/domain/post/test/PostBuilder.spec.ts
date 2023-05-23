@@ -39,7 +39,7 @@ describe("PostBuilder", () => {
 
   it("must be able start properly for non-mandatory values", () => {
     const postIstance = postBuilderFactory({ post: newPost });
-    expect(postIstance.reflect.favorites).toStrictEqual([]);
+    expect(postIstance.reflect.favoritedBy).toStrictEqual([]);
     expect(postIstance.reflect.commentAmount).toStrictEqual(0);
   });
 

@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { Post } from ".";
 import { IUserReflectObject, User } from "@domain/user";
-import { Favorite } from "@/domain/@object-values/favorite";
+import { Favorite } from "@/domain/@value-objects/favorite";
 import { Comment } from "@domain/comment";
 
 export class PostBuilder {
@@ -13,7 +13,7 @@ export class PostBuilder {
   #postedIn: Date;
   #lastChange?: Date;
   #author: IUserReflectObject;
-  #favorites: Favorite[] = [];
+  #favoritedBy: string[];
   #commentAmount: number;
 
   public setId(id: string) {
@@ -59,12 +59,12 @@ export class PostBuilder {
     return this;
   }
 
-  public setFavorites(favorites: Favorite[]): PostBuilder {
-    if (favorites === undefined) {
-      this.#favorites = [];
+  public setFavoritedBy(favoritedBy: string[]): PostBuilder {
+    if (favoritedBy === undefined) {
+      this.#favoritedBy = [];
       return this;
     }
-    this.#favorites = favorites;
+    this.#favoritedBy = favoritedBy;
     return this;
   }
 
@@ -105,7 +105,7 @@ export class PostBuilder {
       postedIn: this.#postedIn,
       lastChange: this.#lastChange,
       author: this.#author,
-      favorites: this.#favorites.map((favorite) => favorite.reflect),
+      favoritedBy: this.#favoritedBy,
       commentAmount: this.#commentAmount,
     });
   }

@@ -1,4 +1,3 @@
-import { Favorite } from "@/domain/@object-values/favorite";
 import { IPostRepository } from "../@interfaces";
 import { postBuilderFactory } from "./postBuilderFactory";
 
@@ -10,35 +9,23 @@ export async function toggleFavorite(params: {
   const { postRepository, postId, userId } = params;
   const post = await postRepository.findById(postId);
   if (post) {
-    const index = post.reflect.favorites!.findIndex(
-      (fav) => fav.userId === userId,
-    );
+    const index = post.reflect.favoritedBy!.findIndex((fav) => fav === userId);
     const isNotFavorited = index === -1;
     if (isNotFavorited) {
-      const newFavorite = new Favorite({ userId, postId });
-      const updatedPostFavorites = [
-        ...(post.reflect.favorites?.map(
-          (favorite) =>
-            new Favorite({
-              userId: favorite.userId,
-              postId: favorite.postId,
-            }),
-        ) ?? []),
-        newFavorite,
-      ];
+      post.reflect.favoritedBy?.push(userId);
       const updatedPostInstance = postBuilderFactory({
         post: post.reflect,
-        update: { field: "favorites", newData: updatedPostFavorites },
+        update: { field: "favorites", newData: post.reflect.favoritedBy },
       });
       await postRepository.update(updatedPostInstance);
       return updatedPostInstance;
     } else {
-      const updatedPostFavorites = post.reflect.favorites?.filter(
-        (favorite) => favorite.postId !== postId,
+      const updatedPostfavoritedBy = post.reflect.favoritedBy?.filter(
+        (fav) => fav !== userId,
       );
       const updatedPostInstance = postBuilderFactory({
         post: post.reflect,
-        update: { field: "favorites", newData: updatedPostFavorites },
+        update: { field: "favorites", newData: updatedPostfavoritedBy },
       });
       await postRepository.update(updatedPostInstance);
       return updatedPostInstance;

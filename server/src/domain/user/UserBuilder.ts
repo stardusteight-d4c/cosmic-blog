@@ -1,9 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { ISocialLinks, User, TUserRole } from ".";
 import Validators from "@/domain/@utils/validators";
-import { Post } from "@domain/post";
-import { Comment } from "@domain/comment";
-import { Favorite } from "@/domain/@object-values/favorite";
 
 export class UserBuilder {
   #id: string;
@@ -13,9 +10,7 @@ export class UserBuilder {
   #avatar: string | undefined;
   #userRole: TUserRole;
   #socialLinks: ISocialLinks | undefined;
-  #favoritedPosts: Favorite[] = [];
-  #commentedPosts: Comment[] = [];
-  #publishedPosts: Post[] = [];
+  #favorites: string[] = [];
 
   public setId(id: string) {
     this.#id = id;
@@ -55,30 +50,8 @@ export class UserBuilder {
     return this;
   }
 
-  public setFavoritedPosts(favoritedPosts: Favorite[]): UserBuilder {
-    if (favoritedPosts === undefined) {
-      this.#favoritedPosts = [];
-      return this;
-    }
-    this.#favoritedPosts = favoritedPosts;
-    return this;
-  }
-
-  public setCommentedPosts(commentedPosts: Comment[]): UserBuilder {
-    if (commentedPosts === undefined) {
-      this.#commentedPosts = [];
-      return this;
-    }
-    this.#commentedPosts = commentedPosts;
-    return this;
-  }
-
-  public setPublishedPosts(publishedPosts: Post[]): UserBuilder {
-    if (publishedPosts === undefined) {
-      this.#publishedPosts = [];
-      return this;
-    }
-    this.#publishedPosts = publishedPosts;
+  public setFavorites(favorites: string[]): UserBuilder {
+    this.#favorites = favorites;
     return this;
   }
 
@@ -100,9 +73,7 @@ export class UserBuilder {
       avatar: this.#avatar ?? "AVATAR01",
       userRole: this.#userRole ?? "default-user",
       socialLinks: this.#socialLinks,
-      favoritedPosts: this.#favoritedPosts.map((post) => post.reflect),
-      commentedPosts: this.#commentedPosts.map((comment) => comment.reflect),
-      publishedPosts: this.#publishedPosts.map((post) => post.reflect),
+      favorites: this.#favorites ?? []
     });
   }
 }

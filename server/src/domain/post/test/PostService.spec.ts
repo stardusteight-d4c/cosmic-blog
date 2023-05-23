@@ -52,10 +52,6 @@ describe("PostService", () => {
       userInstance.reflect.id!,
     );
     expect(postInstance).toBeInstanceOf(Post);
-    expect(userWhoCommented?.reflect.publishedPosts?.length).toStrictEqual(1);
-    expect(userWhoCommented?.reflect.publishedPosts![0].title).toStrictEqual(
-      newPost.title,
-    );
   });
 
   it("must be able to update a post", async () => {
@@ -92,50 +88,15 @@ describe("PostService", () => {
     });
     const postFavorites = await postService
       .emitToggleFavoritePostEvent(favorite)
-      .then((post) => post?.reflect.favorites);
-    const userFavoritedPosts = await userService
-      .findUserById(userInstance.reflect.id!)
-      .then((user) => user?.reflect.favoritedPosts);
+      .then((post) => post?.reflect.favoritedBy);
+    const updatedUserFavorites = await userService
+      .findUserById(userInstanceId)
+      .then((user) => user?.reflect.favorites);
     expect(postFavorites?.length).toBeGreaterThan(0);
-    expect(userFavoritedPosts?.length).toBeGreaterThan(0);
-    expect(postFavorites![0].postId).toStrictEqual(postInstanceId);
-    expect(postFavorites![0].userId).toStrictEqual(userInstanceId);
-    expect(userFavoritedPosts![0].postId).toStrictEqual(postInstanceId);
+    expect(postFavorites![0]).toStrictEqual(userInstanceId);
+    expect(updatedUserFavorites![0]).toStrictEqual(postInstanceId);
+    expect(postFavorites![0]).toStrictEqual(userInstanceId);
   });
-
-  // it("must be able comment on a post", async () => {
-  //   const postInstanceId = postInstance.reflect.id!;
-  //   const userInstanceId = userInstance.reflect.id!;
-  //   const commentObj = factory.getComment({
-  //     postId: postInstanceId,
-  //     owner: userInstance.reflect,
-  //   });
-  //   const commentInstance = new Comment(commentObj);
-  //   const comment = await postService.emitCommentPostEvent(commentInstance);
-  //   const updatedPostInstanceReflect = await postService
-  //     .findPostById(postInstanceId)
-  //     .then((post) => post?.reflect!);
-  //   const updatedUserInstanceReflect = await userService
-  //     .findUserById(userInstanceId)
-  //     .then((user) => user?.reflect!);
-  //   expect(comment).toBeInstanceOf(Comment);
-  //   expect(updatedPostInstanceReflect.comments?.length).toStrictEqual(1);
-  //   expect(updatedUserInstanceReflect.commentedPosts?.length).toStrictEqual(1);
-  //   const commentObj2 = factory.getComment({
-  //     postId: postInstanceId,
-  //     owner: userInstance.reflect,
-  //     content: "This post is amazing! Great job!",
-  //   });
-  //   const commentInstance2 = new Comment(commentObj2);
-  //   await postService.emitCommentPostEvent(commentInstance2);
-  //   const newPostInstance2 = await postService.findPostById(postInstanceId);
-  //   const newUserInstance2 = await userService.findUserById(userInstanceId);
-  //   expect(newPostInstance2?.reflect.comments?.length).toStrictEqual(2);
-  //   expect(newUserInstance2?.reflect.commentedPosts?.length).toStrictEqual(2);
-  //   expect(newUserInstance2?.reflect.commentedPosts![1].content).toStrictEqual(
-  //     commentObj2.content,
-  //   );
-  // });
 
   it("must be able to get all created posts", async () => {
     await postService.emitCreatePostEvent(newPost);

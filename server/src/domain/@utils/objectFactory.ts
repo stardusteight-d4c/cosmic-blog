@@ -1,5 +1,5 @@
 import { ICommentReflectObject } from "@/domain/comment";
-import { IFavoriteReflectObject } from "@/domain/@object-values/favorite";
+import { IFavoriteReflectObject } from "@/domain/@value-objects/favorite";
 import { IPostReflectObject } from "../post/@interfaces";
 import { IUserReflectObject } from "@/domain/user";
 

@@ -1,7 +1,4 @@
 import { IUserReflectObject, User, UserBuilder } from "@/domain/user";
-import { Favorite } from "@/domain/@object-values/favorite";
-import { Comment } from "@/domain/comment";
-import { Post } from "@/domain/post";
 
 export function userBuilderFactory({
   user,
@@ -9,7 +6,7 @@ export function userBuilderFactory({
 }: {
   user: IUserReflectObject;
   update?: {
-    field: "email" | "password" | "favorites" | "comments" | "posts";
+    field: "email" | "password" | "favorites";
     newData: any;
   };
 }): User {
@@ -21,20 +18,8 @@ export function userBuilderFactory({
     .setAvatar(user.avatar ?? undefined)
     .setUserRole(user.userRole ?? "default-user")
     .setSocialLinks(user.socialLinks)
-    .setFavoritedPosts(
-      update?.field === "favorites"
-        ? update.newData!
-        : user.favoritedPosts?.map((fav) => new Favorite(fav)),
-    )
-    .setCommentedPosts(
-      update?.field === "comments"
-        ? update.newData
-        : user.commentedPosts?.map((comment) => new Comment(comment)),
-    )
-    .setPublishedPosts(
-      update?.field === "posts"
-        ? update.newData
-        : user.publishedPosts?.map((post) => new Post(post)),
+    .setFavorites(
+      update?.field === "favorites" ? update?.newData : user.favorites,
     )
     .build();
 

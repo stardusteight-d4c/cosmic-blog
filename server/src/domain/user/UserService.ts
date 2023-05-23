@@ -5,16 +5,10 @@ import {
   IUserService,
   UserEventPublisher,
   userBuilderFactory,
+  toggleFavorite,
 } from ".";
 import Validators from "@/domain/@utils/validators";
-import { Favorite } from "@/domain/@object-values/favorite";
-import {
-  FavoritePostEvent,
-  IPostRepository,
-  Post,
-} from "@domain/post";
-import { Comment, CommentPostEvent } from "../comment";
-import { CreatePostEvent } from "../post/PostEvents";
+import { FavoritePostEvent, IPostRepository } from "@domain/post";
 
 export class UserService implements IUserService {
   #userPublisher: UserEventPublisher;
@@ -111,112 +105,15 @@ export class UserService implements IUserService {
     }
   }
 
-  public async handlerCreatePostEvent(
-    event: CreatePostEvent,
-  ): Promise<User | undefined> {
-    try {
-      const { post } = event;
-      const authorId = post.reflect.author.id;
-      const author = await this.#userRepository.findById(authorId!);
-      if (author) {
-        const updatedPublishedPosts = [
-          ...(author.reflect.publishedPosts?.map(
-            (post) =>
-              new Post({
-                id: post.id,
-                author: post.author,
-                title: post.title,
-                body: post.body,
-                coverImage: post.coverImage,
-                tags: post.tags,
-                postedIn: post.postedIn,
-                lastChange: post.lastChange,
-                commentAmount: post.commentAmount,
-                favorites: post.favorites,
-              }),
-          ) ?? []),
-          post,
-        ];
-        const updatedUserInstance = userBuilderFactory({
-          user: author.reflect,
-          update: { field: "posts", newData: updatedPublishedPosts },
-        });
-        await this.#userRepository.update(updatedUserInstance);
-        return updatedUserInstance;
-      }
-    } catch (error) {
-      throw new Error(String(error));
-    }
-  }
-
   public async handlerFavoritePostEvent(
-    favoritePostEvent: FavoritePostEvent,
+    event: FavoritePostEvent,
   ): Promise<User | undefined> {
-    const { userId, postId } = favoritePostEvent;
-    const user = await this.#userRepository.findById(userId);
-    if (user) {
-      const index = user.reflect.favoritedPosts!.findIndex(
-        (fav) => fav.postId === postId,
-      );
-      const isNotFavorited = index === -1;
-      if (isNotFavorited) {
-        const newFavorite = new Favorite({ userId, postId });
-        const updatedFavoritedPosts = [
-          ...(user.reflect.favoritedPosts?.map(
-            (favorite) =>
-              new Favorite({
-                userId: favorite.userId,
-                postId: favorite.postId,
-              }),
-          ) ?? []),
-          newFavorite,
-        ];
-        const updatedUserInstance = userBuilderFactory({
-          user: user.reflect,
-          update: { field: "favorites", newData: updatedFavoritedPosts },
-        });
-        await this.#userRepository.update(updatedUserInstance);
-        return updatedUserInstance;
-      } else {
-        const updatedFavoritedPosts = user.reflect.favoritedPosts?.filter(
-          (favorite) => favorite.postId !== postId,
-        );
-        const updatedUserInstance = userBuilderFactory({
-          user: user.reflect,
-          update: { field: "favorites", newData: updatedFavoritedPosts },
-        });
-        await this.#userRepository.update(updatedUserInstance);
-        return updatedUserInstance;
-      }
-    }
-  }
-
-  public async handlerCommentPostEvent(
-    commentPostEvent: CommentPostEvent,
-  ): Promise<Comment | undefined> {
-    const { comment } = commentPostEvent;
-    const user = await this.#userRepository.findById(comment.reflect.owner.id!);
-
-    if (user) {
-      const updatedCommentedPosts = [
-        ...(user.reflect.commentedPosts?.map(
-          (comment) =>
-            new Comment({
-              id: comment.id,
-              postId: comment.postId,
-              owner: comment.owner,
-              content: comment.content,
-              postedAt: comment.postedAt,
-            }),
-        ) ?? []),
-        comment,
-      ];
-      const updatedUser = userBuilderFactory({
-        user: user.reflect,
-        update: { field: "comments", newData: updatedCommentedPosts },
-      });
-      await this.#userRepository.update(updatedUser);
-      return comment;
-    }
+    const { userId, postId } = event;
+    const user = toggleFavorite({
+      userRepository: this.#userRepository,
+      postId: postId,
+      userId: userId,
+    });
+    return user;
   }
 }

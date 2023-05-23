@@ -1,4 +1,3 @@
-import { IFavoriteReflectObject } from "@/domain/@object-values/favorite";
 import { IUserReflectObject } from "@/domain/user";
 
 export interface IPostReflectObject {
@@ -10,6 +9,6 @@ export interface IPostReflectObject {
   postedIn: Date;
   lastChange?: Date;
   author: IUserReflectObject;
-  favorites?: IFavoriteReflectObject[];
+  favoritedBy?: string[];
   commentAmount?: number;
 }
