@@ -20,6 +20,7 @@ import { CommentInMemoryRepository } from "@/application/in-memory-repositories/
 import { CommentEventPublisher } from "../CommentEventPublisher";
 import { Comment } from "../Comment";
 import { CommentEventObserver } from "../CommentEventObserver";
+import { commentBuilderFactory } from "../helpers";
 
 let commentService: CommentService;
 let postService: PostService;
@@ -115,6 +116,27 @@ describe("CommentService", () => {
     expect(getedComment?.reflect.id).toStrictEqual(comment.reflect.id);
   });
 
+  it("it should be possible to update a comment", async () => {
+    const postInstanceId = postInstance.reflect.id!;
+    const commentObj = factory.getComment({
+      postId: postInstanceId,
+      owner: userInstance.reflect,
+    });
+    const comment = await commentService.emitCreateCommentEvent(commentObj);
+    const updatedComment = commentBuilderFactory({
+      comment: comment.reflect,
+      update: { field: "content", newData: "Updating comment..." },
+    });
+    await commentService.updateComment(updatedComment.reflect);
+    const updatedComentInstance = await commentService.findCommentById(
+      comment.reflect.id!,
+    );
+    expect(comment.reflect.id).toStrictEqual(updatedComentInstance?.reflect.id);
+    expect(updatedComentInstance?.reflect.content).toStrictEqual(
+      updatedComment?.reflect.content,
+    );
+  });
+
   it("must be able to acquire comments from a specific post and with pagination", async () => {
     const postInstanceId = postInstance.reflect.id!;
     for (let i = 0; i < 6; i++) {
@@ -151,7 +173,6 @@ describe("CommentService", () => {
   });
 
   it("must be able to acquire comments from a specific user and with pagination", async () => {
-    const userInstanceId = userInstance.reflect.id!;
     for (let i = 0; i < 6; i++) {
       const commentObj = factory.getComment({
         postId: postInstance.reflect.id!,
