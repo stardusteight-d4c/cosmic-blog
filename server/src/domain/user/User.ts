@@ -8,7 +8,8 @@ export class User {
   #avatar: string;
   #userRole: TUserRole;
   #socialLinks: ISocialLinks | undefined;
-  #favorites: string[]
+  #favorites: string[];
+  #commentedPosts: number;
 
   constructor(properties: IUserReflectObject) {
     this.#id = properties.id!;

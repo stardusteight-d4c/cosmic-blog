@@ -6,19 +6,20 @@ import {
   UserEventObserver,
   UserEventPublisher,
   UserService,
-} from "@/domain/user";
-import { IObjectFactory, objectFactory } from "@/domain/@utils/objectFactory";
+} from "@domain/user";
+import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
 import {
   IPostReflectObject,
   Post,
   PostEventObserver,
   PostEventPublisher,
   PostService,
-} from "@/domain/post";
+} from "@domain/post";
 import { CommentService } from "../CommentService";
 import { CommentInMemoryRepository } from "@/application/in-memory-repositories/CommentInMemoryRespository";
 import { CommentEventPublisher } from "../CommentEventPublisher";
 import { Comment } from "../Comment";
+import { CommentEventObserver } from "../CommentEventObserver";
 
 let commentService: CommentService;
 let postService: PostService;
@@ -56,6 +57,8 @@ describe("CommentService", () => {
     postPublisher.register(new UserEventObserver(userService));
     commentPublisher.register(new PostEventObserver(postService));
     commentPublisher.register(new UserEventObserver(userService));
+    commentPublisher.register(new CommentEventObserver(commentService));
+
     factory = objectFactory();
     const user = factory.getUser();
     const post = factory.getPost();
@@ -74,6 +77,13 @@ describe("CommentService", () => {
       owner: userInstance.reflect,
     });
     const comment = await commentService.emitCreateCommentEvent(commentObj);
+
+    const updatedCommentInstanceReflect = await commentService
+      .findCommentById(comment.reflect.id!)
+      .then((comment) => comment?.reflect);
+    expect(updatedCommentInstanceReflect?.content).toStrictEqual(
+      commentObj.content,
+    );
     const updatedPostInstanceReflect = await postService
       .findPostById(postInstanceId)
       .then((post) => post?.reflect!);
@@ -87,5 +97,53 @@ describe("CommentService", () => {
     await commentService.emitCreateCommentEvent(commentObj2);
     const newPostInstance2 = await postService.findPostById(postInstanceId);
     expect(newPostInstance2?.reflect.commentAmount).toStrictEqual(2);
+  });
+
+  it("must be able find a comment by ID", async () => {
+    const postInstanceId = postInstance.reflect.id!;
+    const commentObj = factory.getComment({
+      postId: postInstanceId,
+      owner: userInstance.reflect,
+    });
+    const comment = await commentService.emitCreateCommentEvent(commentObj);
+    const getedComment = await commentService.findCommentById(
+      comment.reflect.id!,
+    );
+    expect(getedComment?.reflect.id).toStrictEqual(comment.reflect.id);
+  });
+
+  it("must be able to acquire comments from a specific post and with pagination", async () => {
+    const postInstanceId = postInstance.reflect.id!;
+    for (let i = 0; i < 6; i++) {
+      const commentObj = factory.getComment({
+        postId: postInstanceId,
+        owner: userInstance.reflect,
+      });
+      await commentService.emitCreateCommentEvent(commentObj);
+    }
+    const secondaryPostInstance = await postService.emitCreatePostEvent(
+      newPost,
+    );
+    const commentObj = factory.getComment({
+      postId: secondaryPostInstance.reflect.id!,
+      owner: userInstance.reflect,
+    });
+    await commentService.emitCreateCommentEvent(commentObj);
+    const updatedPostInstance = await postService.findPostById(postInstanceId);
+    const allComments = await commentService.getComments();
+    expect(allComments?.length).toStrictEqual(7);
+    expect(updatedPostInstance?.reflect.commentAmount).toStrictEqual(6);
+    const skip = 3;
+    const pageSize = 3;
+    const paginatedComments =
+      await commentService.getCommentsByPostIdWithPagination({
+        postId: postInstanceId,
+        skip,
+        pageSize,
+      });
+    expect(paginatedComments.length).toStrictEqual(3);
+    expect(
+      paginatedComments.map((comment) => comment.reflect.postId),
+    ).toStrictEqual([postInstanceId, postInstanceId, postInstanceId]);
   });
 });

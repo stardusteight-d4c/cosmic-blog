@@ -5,11 +5,17 @@ import {
 } from "@/domain/comment";
 
 export interface ICommentService {
-  deleteComment(commentId: string): Promise<Comment | undefined>;
-  findCommentById(userId: string): Promise<Comment | undefined>;
-  // getCommentsByPostId(userId: string): Promise<Comment | undefined>;
-  // getCommentsByUserId(userId: string): Promise<Comment | undefined>;
-  // getCommentsByPostIdWithPagination(userId: string): Promise<Comment | undefined>;
+  findCommentById(commentId: string): Promise<Comment | undefined>;
+  updateComment(
+    updatedComment: ICommentReflectObject,
+  ): Promise<Comment | undefined>;
+  getComments(): Promise<Comment[] | undefined>;
+  getCommentsByPostIdWithPagination(request: {
+    postId: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Comment[]>;
+  // getCommentsByPostIdWithPagination(postId: string): Promise<Comment | undefined>;
   // getCommentsByUserIdWithPagination(userId: string): Promise<Comment | undefined>;
 
   // emitDeleteCommentEvent
