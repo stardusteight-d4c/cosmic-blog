@@ -77,7 +77,6 @@ describe("CommentService", () => {
       owner: userInstance.reflect,
     });
     const comment = await commentService.emitCreateCommentEvent(commentObj);
-
     const updatedCommentInstanceReflect = await commentService
       .findCommentById(comment.reflect.id!)
       .then((comment) => comment?.reflect);
@@ -97,6 +96,10 @@ describe("CommentService", () => {
     await commentService.emitCreateCommentEvent(commentObj2);
     const newPostInstance2 = await postService.findPostById(postInstanceId);
     expect(newPostInstance2?.reflect.commentAmount).toStrictEqual(2);
+    const updatedUserInstance = await userService.findUserById(
+      userInstance.reflect.id!,
+    );
+    expect(updatedUserInstance?.reflect.commentedPosts).toStrictEqual(2);
   });
 
   it("must be able find a comment by ID", async () => {
@@ -176,4 +179,7 @@ describe("CommentService", () => {
       paginatedComments.map((comment) => comment.reflect.owner.id),
     ).toStrictEqual([secondaryUserInstance.reflect.id]);
   });
+
+  // atualizarComment
+  // deletarComment
 });

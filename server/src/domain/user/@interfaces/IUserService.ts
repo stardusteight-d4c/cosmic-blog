@@ -1,6 +1,7 @@
 import { FavoritePostEvent, Post } from "@/domain/post";
 import { User } from "..";
 import { IUserReflectObject } from "./IUserReflectObject";
+import { Comment, CommentPostEvent } from "@/domain/comment";
 
 export interface IUserService {
   createUser(user: IUserReflectObject): Promise<User>;
@@ -20,4 +21,7 @@ export interface IUserService {
   
   // Event Handlers
   handlerFavoritePostEvent(event: FavoritePostEvent): Promise<User | undefined>;
+  handlerCommentPostEvent(
+    event: CommentPostEvent,
+  ): Promise<Comment | undefined>;
 }

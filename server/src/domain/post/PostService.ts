@@ -107,7 +107,7 @@ export class PostService implements IPostService {
     event: FavoritePostEvent,
   ): Promise<Post | undefined> {
     const { userId, postId } = event;
-    const post = toggleFavorite({
+    const post = await toggleFavorite({
       postRepository: this.#postRepository,
       postId: postId,
       userId: userId,
@@ -119,7 +119,7 @@ export class PostService implements IPostService {
     event: CommentPostEvent,
   ): Promise<Comment | undefined> {
     const { comment } = event;
-    const result = handleCommentAmountPost({
+    const result = await handleCommentAmountPost({
       postRepository: this.#postRepository,
       comment,
     });

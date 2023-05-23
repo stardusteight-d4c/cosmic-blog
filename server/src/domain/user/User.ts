@@ -20,6 +20,7 @@ export class User {
     this.#userRole = properties.userRole!;
     this.#socialLinks = properties.socialLinks;
     this.#favorites = properties.favorites;
+    this.#commentedPosts = properties.commentedPosts;
   }
 
   public get reflect(): IUserReflectObject {
@@ -32,6 +33,7 @@ export class User {
       userRole: this.#userRole,
       socialLinks: this.#socialLinks,
       favorites: this.#favorites,
+      commentedPosts: this.#commentedPosts,
     };
   }
   public set reflect(_values: IUserReflectObject) {
@@ -112,6 +114,17 @@ export class User {
   public set favorites(_value: string[]) {
     throw new Error(
       "Cannot modify favorites property directly. Use the UserService instead.",
+    );
+  }
+
+  public get commentedPosts(): number {
+    throw new Error(
+      "Cannot access commentedPosts property directly. Use the reflect object in the User instead.",
+    );
+  }
+  public set commentedPosts(_value: number) {
+    throw new Error(
+      "Cannot modify commentedPosts property directly. Use the UserService instead.",
     );
   }
 }

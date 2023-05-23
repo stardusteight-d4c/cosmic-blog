@@ -10,4 +10,5 @@ export interface IUserReflectObject {
   userRole?: TUserRole;
   socialLinks?: ISocialLinks | undefined;
   favorites: string[]
+  commentedPosts: number
 }

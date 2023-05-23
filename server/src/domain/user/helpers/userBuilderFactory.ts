@@ -6,7 +6,7 @@ export function userBuilderFactory({
 }: {
   user: IUserReflectObject;
   update?: {
-    field: "email" | "password" | "favorites";
+    field: "email" | "password" | "favorites" | "comments";
     newData: any;
   };
 }): User {
@@ -20,6 +20,9 @@ export function userBuilderFactory({
     .setSocialLinks(user.socialLinks)
     .setFavorites(
       update?.field === "favorites" ? update?.newData : user.favorites,
+    )
+    .setCommentedPosts(
+      update?.field === "comments" ? update?.newData : user.commentedPosts,
     )
     .build();
 

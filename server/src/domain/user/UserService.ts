@@ -9,6 +9,8 @@ import {
 } from ".";
 import Validators from "@/domain/@utils/validators";
 import { FavoritePostEvent, IPostRepository } from "@domain/post";
+import { Comment, CommentPostEvent } from "../comment";
+import { handleCommentedPosts } from "./helpers/handleCommentedPosts";
 
 export class UserService implements IUserService {
   #userPublisher: UserEventPublisher;
@@ -109,11 +111,22 @@ export class UserService implements IUserService {
     event: FavoritePostEvent,
   ): Promise<User | undefined> {
     const { userId, postId } = event;
-    const user = toggleFavorite({
+    const user = await toggleFavorite({
       userRepository: this.#userRepository,
       postId: postId,
       userId: userId,
     });
     return user;
+  }
+
+  public async handlerCommentPostEvent(
+    event: CommentPostEvent,
+  ): Promise<Comment | undefined> {
+    const { comment } = event;
+    const result = await handleCommentedPosts({
+     userRepository: this.#userRepository,
+      comment,
+    });
+    return result;
   }
 }
