@@ -75,6 +75,20 @@ export class CommentService implements ICommentService {
     return comments;
   }
 
+  public async getCommentsByUserIdWithPagination(request: {
+    userId: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Comment[]> {
+    const { userId, skip, pageSize } = request;
+    const comments = await this.#commentRespository.getByUserIdWithPagination({
+      userId,
+      skip,
+      pageSize,
+    });
+    return comments;
+  }
+
   public async handlerCommentPostEvent(
     event: CommentPostEvent,
   ): Promise<Comment | undefined> {

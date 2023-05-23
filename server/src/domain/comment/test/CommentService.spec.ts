@@ -146,4 +146,34 @@ describe("CommentService", () => {
       paginatedComments.map((comment) => comment.reflect.postId),
     ).toStrictEqual([postInstanceId, postInstanceId, postInstanceId]);
   });
+
+  it("must be able to acquire comments from a specific user and with pagination", async () => {
+    const userInstanceId = userInstance.reflect.id!;
+    for (let i = 0; i < 6; i++) {
+      const commentObj = factory.getComment({
+        postId: postInstance.reflect.id!,
+        owner: userInstance.reflect,
+      });
+      await commentService.emitCreateCommentEvent(commentObj);
+    }
+    const user = factory.getUser();
+    const secondaryUserInstance = await userService.createUser(user);
+    const commentObj2 = factory.getComment({
+      postId: postInstance.reflect.id!,
+      owner: secondaryUserInstance.reflect,
+    });
+    await commentService.emitCreateCommentEvent(commentObj2);
+    const skip = 0;
+    const pageSize = 3;
+    const paginatedComments =
+      await commentService.getCommentsByUserIdWithPagination({
+        userId: secondaryUserInstance.reflect.id!,
+        skip,
+        pageSize,
+      });
+    expect(paginatedComments.length).toStrictEqual(1);
+    expect(
+      paginatedComments.map((comment) => comment.reflect.owner.id),
+    ).toStrictEqual([secondaryUserInstance.reflect.id]);
+  });
 });

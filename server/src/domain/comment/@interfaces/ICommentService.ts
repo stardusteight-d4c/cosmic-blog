@@ -15,8 +15,11 @@ export interface ICommentService {
     skip: number;
     pageSize: number;
   }): Promise<Comment[]>;
-  // getCommentsByPostIdWithPagination(postId: string): Promise<Comment | undefined>;
-  // getCommentsByUserIdWithPagination(userId: string): Promise<Comment | undefined>;
+  getCommentsByUserIdWithPagination(request: {
+    userId: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Comment[]>;
 
   // emitDeleteCommentEvent
 

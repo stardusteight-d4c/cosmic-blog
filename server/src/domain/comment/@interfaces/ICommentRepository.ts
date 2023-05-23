@@ -11,4 +11,9 @@ export interface ICommentRepository {
     skip: number;
     pageSize: number;
   }): Promise<Comment[]>;
+  getByUserIdWithPagination(request: {
+    userId: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Comment[]>;
 }

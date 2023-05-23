@@ -63,4 +63,18 @@ export class CommentInMemoryRepository implements ICommentRepository {
     const paginatedComments = commentsByPostId.slice(skip, skip + pageSize);
     return paginatedComments;
   }
+
+  public async getByUserIdWithPagination(request: {
+    userId: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Comment[]> {
+    const { userId, skip, pageSize } = request;
+    const comments = Array.from(this.#comments.values());
+    const commentsByUserId = comments.filter(
+      (comment) => comment.reflect.owner.id === userId,
+    );
+    const paginatedComments = commentsByUserId.slice(skip, skip + pageSize);
+    return paginatedComments;
+  }
 }
