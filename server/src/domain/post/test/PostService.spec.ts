@@ -48,9 +48,7 @@ describe("PostService", () => {
   });
 
   it("must be able to create a post", async () => {
-    const userWhoCommented = await userService.findUserById(
-      userInstance.reflect.id!,
-    );
+    await userService.findUserById(userInstance.reflect.id!);
     expect(postInstance).toBeInstanceOf(Post);
   });
 

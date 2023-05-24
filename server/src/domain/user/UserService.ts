@@ -6,6 +6,7 @@ import {
   UserEventPublisher,
   userBuilderFactory,
   toggleFavorite,
+  ISocialLinks,
 } from ".";
 import Validators from "@/domain/@utils/validators";
 import { FavoritePostEvent, IPostRepository } from "@domain/post";
@@ -105,6 +106,20 @@ export class UserService implements IUserService {
     } else {
       throw new Error(`The user with ID: ${data.userId} was not found.`);
     }
+  }
+
+  public async changeSocialLinks(request: {
+    userId: string;
+    socialLinks: ISocialLinks;
+  }): Promise<User | undefined> {
+    const { userId, socialLinks } = request;
+    const user = await this.#userRepository.findById(userId);
+    const updatedUser = userBuilderFactory({
+      user: user!.reflect,
+      update: { field: "socialLinks", newData: socialLinks },
+    });
+    await this.#userRepository.update(updatedUser);
+    return updatedUser;
   }
 
   public async handlerFavoritePostEvent(

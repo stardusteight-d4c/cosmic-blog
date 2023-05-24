@@ -11,6 +11,7 @@ export interface IPostService {
     skip: number;
     pageSize: number;
   }): Promise<Post[]>;
+  
   // deletar post -> obersver -> deletar comentários -> favoritos
 
   // Event Emitters
@@ -19,7 +20,6 @@ export interface IPostService {
     userId: string;
     postId: string;
   }): Promise<Post | undefined>;
-
   // Event Handlers
   handlerFavoritePostEvent(event: FavoritePostEvent): Promise<Post | undefined>;
   handlerCreateCommentEvent(

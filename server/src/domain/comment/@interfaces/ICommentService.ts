@@ -21,9 +21,6 @@ export interface ICommentService {
     skip: number;
     pageSize: number;
   }): Promise<Comment[]>;
-
-  // TESTAR emitDeleteCommentEvent
-  
   // Event Emitters
   emitCreateCommentEvent(comment: ICommentReflectObject): Promise<Comment>;
   emitDeleteCommentEvent(comment: Comment): Promise<void>;

@@ -6,7 +6,7 @@ export function userBuilderFactory({
 }: {
   user: IUserReflectObject;
   update?: {
-    field: "email" | "password" | "favorites" | "comments";
+    field: "email" | "password" | "favorites" | "comments" | "socialLinks";
     newData: any;
   };
 }): User {
@@ -17,7 +17,9 @@ export function userBuilderFactory({
     .setPassword(update?.field === "password" ? update.newData : user.password)
     .setAvatar(user.avatar ?? undefined)
     .setUserRole(user.userRole ?? "default-user")
-    .setSocialLinks(user.socialLinks)
+    .setSocialLinks(
+      update?.field === "socialLinks" ? update.newData : user.socialLinks,
+    )
     .setFavorites(
       update?.field === "favorites" ? update?.newData : user.favorites,
     )
@@ -25,6 +27,5 @@ export function userBuilderFactory({
       update?.field === "comments" ? update?.newData : user.commentedPosts,
     )
     .build();
-
   return updatedUserInstance;
 }
