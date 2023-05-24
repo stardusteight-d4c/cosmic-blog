@@ -6,7 +6,7 @@ import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 import { ICommentService } from "./@interfaces/ICommentService";
 import { Comment } from "./Comment";
 import { CommentEventPublisher } from "./CommentEventPublisher";
-import { CommentPostEvent } from "./CommentEvents";
+import { CreateCommentEvent, DeleteCommentEvent } from "./CommentEvents";
 import { commentBuilderFactory } from "./helpers";
 
 export class CommentService implements ICommentService {
@@ -33,12 +33,17 @@ export class CommentService implements ICommentService {
     await this.#userRepository.findById(comment.owner.id!);
     await this.#postRepository.findById(comment.postId);
     const commentInstance = commentBuilderFactory({ comment });
-    const commentPostEvent = new CommentPostEvent(commentInstance);
-    const responses = await this.#commentPublisher.emit(commentPostEvent);
+    const createCommentEvent = new CreateCommentEvent(commentInstance);
+    const responses = await this.#commentPublisher.emit(createCommentEvent);
     const response = responses.find(
       (response) => response instanceof Comment,
     ) as Comment;
     return response;
+  }
+
+  public async emitDeleteCommentEvent(comment: Comment): Promise<void> {
+    const deleteCommentEvent = new DeleteCommentEvent(comment);
+    await this.#commentPublisher.emit(deleteCommentEvent);
   }
 
   public async findCommentById(
@@ -89,11 +94,18 @@ export class CommentService implements ICommentService {
     return comments;
   }
 
-  public async handlerCommentPostEvent(
-    event: CommentPostEvent,
+  public async handlerCreateCommentEvent(
+    event: CreateCommentEvent,
   ): Promise<Comment | undefined> {
     const { comment } = event;
     const commentInstance = await this.#commentRespository.create(comment);
     return commentInstance;
+  }
+
+  public async handlerDeleteCommentEvent(
+    event: DeleteCommentEvent,
+  ): Promise<void> {
+    const { comment } = event;
+    await this.#commentRespository.delete(comment.reflect.id!);
   }
 }

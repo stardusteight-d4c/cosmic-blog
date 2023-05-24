@@ -9,7 +9,7 @@ import {
 } from ".";
 import Validators from "@/domain/@utils/validators";
 import { FavoritePostEvent, IPostRepository } from "@domain/post";
-import { Comment, CommentPostEvent } from "../comment";
+import { Comment, CreateCommentEvent, DeleteCommentEvent } from "../comment";
 import { handleCommentedPosts } from "./helpers/handleCommentedPosts";
 
 export class UserService implements IUserService {
@@ -119,14 +119,26 @@ export class UserService implements IUserService {
     return user;
   }
 
-  public async handlerCommentPostEvent(
-    event: CommentPostEvent,
+  public async handlerCreateCommentEvent(
+    event: CreateCommentEvent,
   ): Promise<Comment | undefined> {
     const { comment } = event;
     const result = await handleCommentedPosts({
-     userRepository: this.#userRepository,
+      userRepository: this.#userRepository,
       comment,
+      action: "sum",
     });
     return result;
+  }
+
+  public async handlerDeleteCommentEvent(
+    event: DeleteCommentEvent,
+  ): Promise<void> {
+    const { comment } = event;
+    handleCommentedPosts({
+      userRepository: this.#userRepository,
+      comment,
+      action: "sub",
+    });
   }
 }

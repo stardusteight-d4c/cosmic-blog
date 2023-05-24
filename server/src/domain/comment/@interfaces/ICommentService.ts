@@ -1,6 +1,7 @@
 import {
   Comment,
-  CommentPostEvent,
+  CreateCommentEvent,
+  DeleteCommentEvent,
   ICommentReflectObject,
 } from "@/domain/comment";
 
@@ -21,13 +22,14 @@ export interface ICommentService {
     pageSize: number;
   }): Promise<Comment[]>;
 
-  // emitDeleteCommentEvent
-
+  // TESTAR emitDeleteCommentEvent
+  
   // Event Emitters
   emitCreateCommentEvent(comment: ICommentReflectObject): Promise<Comment>;
-
+  emitDeleteCommentEvent(comment: Comment): Promise<void>;
   // Event Handlers
-  handlerCommentPostEvent(
-    event: CommentPostEvent,
+  handlerCreateCommentEvent(
+    event: CreateCommentEvent,
   ): Promise<Comment | undefined>;
+  handlerDeleteCommentEvent(event: DeleteCommentEvent): Promise<void>;
 }

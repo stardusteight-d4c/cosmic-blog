@@ -9,7 +9,11 @@ import {
 } from ".";
 import Validators from "@/domain/@utils/validators";
 import { IUserRepository } from "@domain/user";
-import { Comment, CommentPostEvent } from "@domain/comment";
+import {
+  Comment,
+  CreateCommentEvent,
+  DeleteCommentEvent,
+} from "@domain/comment";
 import { IEventPublisher } from "../@interfaces";
 import { CreatePostEvent } from "./PostEvents";
 import { toggleFavorite, handleCommentAmountPost } from "./helpers";
@@ -47,13 +51,6 @@ export class PostService implements IPostService {
     const { userId, postId } = request;
     Validators.checkPrimitiveType({ validating: userId, type: "string" });
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
-    const user = await this.#userRepository.findById(userId);
-    const post = await this.#postRepository.findById(postId);
-    if (!user) {
-      throw new Error(`The user with ID: ${userId} was not found.`);
-    } else if (!post) {
-      throw new Error(`The post with ID: ${postId} was not found.`);
-    }
     const favoritePostEvent = new FavoritePostEvent(userId, postId);
     const responses = await this.#postPublisher.emit(favoritePostEvent);
     const response = responses.find(
@@ -115,14 +112,26 @@ export class PostService implements IPostService {
     return post;
   }
 
-  public async handlerCommentPostEvent(
-    event: CommentPostEvent,
+  public async handlerCreateCommentEvent(
+    event: CreateCommentEvent,
   ): Promise<Comment | undefined> {
     const { comment } = event;
     const result = await handleCommentAmountPost({
       postRepository: this.#postRepository,
       comment,
+      action: "sum",
     });
     return result;
+  }
+
+  public async handlerDeleteCommentEvent(
+    event: DeleteCommentEvent,
+  ): Promise<void> {
+    const { comment } = event;
+    await handleCommentAmountPost({
+      postRepository: this.#postRepository,
+      comment,
+      action: "sub",
+    });
   }
 }

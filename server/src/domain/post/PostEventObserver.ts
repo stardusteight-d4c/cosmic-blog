@@ -1,10 +1,15 @@
 import { FavoritePostEvent, PostService } from ".";
 import { IEvent, IEventObserver } from "@domain/@interfaces";
 import { CreatePostEvent } from "./PostEvents";
-import { CommentPostEvent } from "../comment";
+import { CreateCommentEvent, DeleteCommentEvent } from "../comment";
 
 export class PostEventObserver implements IEventObserver {
-  watching: string[] = ["favorite_post", "comment_post", "create_post"];
+  watching: string[] = [
+    "create_post",
+    "favorite_post",
+    "create_comment",
+    "delete_comment",
+  ];
   constructor(readonly postService: PostService) {}
 
   async notifyService(event: IEvent) {
@@ -22,11 +27,17 @@ export class PostEventObserver implements IEventObserver {
       return response;
     }
 
-    if (event.name === "comment_post") {
-      const response = await this.postService.handlerCommentPostEvent(
-        event as CommentPostEvent,
+    if (event.name === "create_comment") {
+      const response = await this.postService.handlerCreateCommentEvent(
+        event as CreateCommentEvent,
       );
       return response;
+    }
+
+    if (event.name === "delete_comment") {
+      await this.postService.handlerDeleteCommentEvent(
+        event as DeleteCommentEvent,
+      );
     }
   }
 }

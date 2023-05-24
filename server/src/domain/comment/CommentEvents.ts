@@ -1,7 +1,12 @@
 import { IEvent } from "@domain/@interfaces";
 import { Comment } from "./Comment";
 
-export class CommentPostEvent implements IEvent {
-  name = "comment_post";
+export class CreateCommentEvent implements IEvent {
+  name = "create_comment";
+  constructor(readonly comment: Comment) {}
+}
+
+export class DeleteCommentEvent implements IEvent {
+  name = "delete_comment";
   constructor(readonly comment: Comment) {}
 }

@@ -1,10 +1,10 @@
 import { UserService } from ".";
 import { IEvent, IEventObserver } from "../@interfaces";
-import { CommentPostEvent } from "../comment";
+import { CreateCommentEvent, DeleteCommentEvent } from "../comment";
 import { FavoritePostEvent } from "../post";
 
 export class UserEventObserver implements IEventObserver {
-  watching: string[] = ["favorite_post", "comment_post"];
+  watching: string[] = ["favorite_post", "create_comment", "delete_comment"];
   constructor(readonly userService: UserService) {}
 
   async notifyService(event: IEvent) {
@@ -15,11 +15,17 @@ export class UserEventObserver implements IEventObserver {
       return response;
     }
 
-    if (event.name === "comment_post") {
-      const response = await this.userService.handlerCommentPostEvent(
-        event as CommentPostEvent,
+    if (event.name === "create_comment") {
+      const response = await this.userService.handlerCreateCommentEvent(
+        event as CreateCommentEvent,
       );
       return response;
+    }
+
+    if (event.name === "delete_comment") {
+      await this.userService.handlerDeleteCommentEvent(
+        event as DeleteCommentEvent,
+      );
     }
   }
 }

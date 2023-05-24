@@ -95,11 +95,11 @@ describe("CommentService", () => {
       content: "This post is amazing! Great job!",
     });
     await commentService.emitCreateCommentEvent(commentObj2);
-    const newPostInstance2 = await postService.findPostById(postInstanceId);
-    expect(newPostInstance2?.reflect.commentAmount).toStrictEqual(2);
+    const updatedPostInstance = await postService.findPostById(postInstanceId);
     const updatedUserInstance = await userService.findUserById(
       userInstance.reflect.id!,
     );
+    expect(updatedPostInstance?.reflect.commentAmount).toStrictEqual(2);
     expect(updatedUserInstance?.reflect.commentedPosts).toStrictEqual(2);
   });
 
@@ -201,6 +201,34 @@ describe("CommentService", () => {
     ).toStrictEqual([secondaryUserInstance.reflect.id]);
   });
 
-  // atualizarComment
-  // deletarComment
+  it("must be able delete a comment", async () => {
+    const commentObj = factory.getComment({
+      postId: postInstance.reflect.id!,
+      owner: userInstance.reflect,
+    });
+    const commentInstance = await commentService.emitCreateCommentEvent(
+      commentObj,
+    );
+    const currentPostInstance = await postService.findPostById(
+      commentInstance.reflect.postId,
+    );
+    const currentUserInstance = await userService.findUserById(
+      commentInstance.reflect.owner.id!,
+    );
+    const comments = await commentService.getComments();
+    expect(currentPostInstance?.reflect.commentAmount).toStrictEqual(1);
+    expect(currentUserInstance?.reflect.commentedPosts).toStrictEqual(1);
+    expect(comments?.length).toStrictEqual(1);
+    await commentService.emitDeleteCommentEvent(commentInstance);
+    const updatedPostInstance = await postService.findPostById(
+      commentInstance.reflect.postId,
+    );
+    const updatedUserInstance = await userService.findUserById(
+      commentInstance.reflect.owner.id!,
+    );
+    const updatedComments = await commentService.getComments();
+    expect(updatedPostInstance?.reflect.commentAmount).toStrictEqual(0);
+    expect(updatedUserInstance?.reflect.commentedPosts).toStrictEqual(0);
+    expect(updatedComments?.length).toStrictEqual(0);
+  });
 });
