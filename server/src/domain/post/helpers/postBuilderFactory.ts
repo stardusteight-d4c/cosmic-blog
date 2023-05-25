@@ -20,8 +20,8 @@ export function postBuilderFactory({
     .setBody(post.body)
     .setPostedIn(post.postedIn)
     .setLastChange(post.lastChange)
-    .setFavoritedBy(
-      update?.field === "favorites" ? update.newData : post.favoritedBy,
+    .setFavoriteAmount(
+      update?.field === "favorites" ? update.newData : post.favoriteAmount,
     )
     .setCommentAmount(
       update?.field === "comments" ? update.newData : post.commentAmount,

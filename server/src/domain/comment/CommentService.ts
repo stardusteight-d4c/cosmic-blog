@@ -5,7 +5,6 @@ import { ICommentRepository } from "./@interfaces";
 import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 import { ICommentService } from "./@interfaces/ICommentService";
 import { Comment } from "./Comment";
-import { CommentEventPublisher } from "./CommentEventPublisher";
 import { CreateCommentEvent, DeleteCommentEvent } from "./CommentEvents";
 import { commentBuilderFactory } from "./helpers";
 
@@ -16,7 +15,7 @@ export class CommentService implements ICommentService {
   #userRepository: IUserRepository;
 
   constructor(implementations: {
-    commentPublisher: CommentEventPublisher;
+    commentPublisher: IEventPublisher;
     commentRepository: ICommentRepository;
     userRepository: IUserRepository;
     postRepository: IPostRepository;
@@ -32,16 +31,15 @@ export class CommentService implements ICommentService {
   ): Promise<Comment> {
     await this.#userRepository.findById(comment.owner.id!);
     await this.#postRepository.findById(comment.postId);
-    const commentInstance = commentBuilderFactory({ comment });
+    const newComment = commentBuilderFactory({ comment });
+    const commentInstance = await this.#commentRespository.create(newComment);
     const createCommentEvent = new CreateCommentEvent(commentInstance);
-    const responses = await this.#commentPublisher.emit(createCommentEvent);
-    const response = responses.find(
-      (response) => response instanceof Comment,
-    ) as Comment;
-    return response;
+    await this.#commentPublisher.emit(createCommentEvent);
+    return commentInstance;
   }
 
   public async emitDeleteCommentEvent(comment: Comment): Promise<void> {
+    await this.#commentRespository.delete(comment.reflect.id!);
     const deleteCommentEvent = new DeleteCommentEvent(comment);
     await this.#commentPublisher.emit(deleteCommentEvent);
   }
@@ -92,20 +90,5 @@ export class CommentService implements ICommentService {
       pageSize,
     });
     return comments;
-  }
-
-  public async handlerCreateCommentEvent(
-    event: CreateCommentEvent,
-  ): Promise<Comment | undefined> {
-    const { comment } = event;
-    const commentInstance = await this.#commentRespository.create(comment);
-    return commentInstance;
-  }
-
-  public async handlerDeleteCommentEvent(
-    event: DeleteCommentEvent,
-  ): Promise<void> {
-    const { comment } = event;
-    await this.#commentRespository.delete(comment.reflect.id!);
   }
 }

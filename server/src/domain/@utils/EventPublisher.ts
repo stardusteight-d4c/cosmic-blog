@@ -1,6 +1,6 @@
 import { IEvent, IEventObserver, IEventPublisher } from "@domain/@interfaces";
 
-export class UserEventPublisher implements IEventPublisher {
+export class EventPublisher implements IEventPublisher {
   servicesObservers: IEventObserver[];
   constructor() {
     this.servicesObservers = [];

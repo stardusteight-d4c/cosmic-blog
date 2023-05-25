@@ -10,7 +10,7 @@ export class UserBuilder {
   #avatar: string | undefined;
   #userRole: TUserRole;
   #socialLinks: ISocialLinks | undefined;
-  #favorites: string[] = [];
+  #favorites: number;
   #commentedPosts: number;
 
   public setId(id: string) {
@@ -51,7 +51,7 @@ export class UserBuilder {
     return this;
   }
 
-  public setFavorites(favorites: string[]): UserBuilder {
+  public setFavorites(favorites: number): UserBuilder {
     this.#favorites = favorites;
     return this;
   }

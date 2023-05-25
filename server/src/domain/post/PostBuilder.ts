@@ -13,7 +13,7 @@ export class PostBuilder {
   #postedIn: Date;
   #lastChange?: Date;
   #author: IUserReflectObject;
-  #favoritedBy: string[];
+  #favoriteAmount: number;
   #commentAmount: number;
 
   public setId(id: string) {
@@ -59,12 +59,12 @@ export class PostBuilder {
     return this;
   }
 
-  public setFavoritedBy(favoritedBy: string[]): PostBuilder {
-    if (favoritedBy === undefined) {
-      this.#favoritedBy = [];
+  public setFavoriteAmount(favoriteAmount: number): PostBuilder {
+    if (favoriteAmount === undefined) {
+      this.#favoriteAmount = 0;
       return this;
     }
-    this.#favoritedBy = favoritedBy;
+    this.#favoriteAmount = favoriteAmount;
     return this;
   }
 
@@ -105,7 +105,7 @@ export class PostBuilder {
       postedIn: this.#postedIn,
       lastChange: this.#lastChange,
       author: this.#author,
-      favoritedBy: this.#favoritedBy,
+      favoriteAmount: this.#favoriteAmount,
       commentAmount: this.#commentAmount,
     });
   }

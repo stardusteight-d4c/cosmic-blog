@@ -11,7 +11,7 @@ export class Post {
   #postedIn: Date;
   #lastChange?: Date | undefined;
   #author: User;
-  #favoritedBy: string[] = [];
+  #favoriteAmount: number; 
   #commentAmount: number;
 
   constructor(properties: IPostReflectObject) {
@@ -23,8 +23,8 @@ export class Post {
     this.#postedIn = properties.postedIn;
     this.#lastChange = properties.lastChange;
     this.#author = new User(properties.author);
-    this.#favoritedBy = properties.favoritedBy!
-    this.#commentAmount = properties.commentAmount ?? 0
+    this.#favoriteAmount = properties.favoriteAmount!;
+    this.#commentAmount = properties.commentAmount ?? 0;
   }
 
   public get reflect(): IPostReflectObject {
@@ -37,7 +37,7 @@ export class Post {
       postedIn: this.#postedIn,
       lastChange: this.#lastChange,
       author: this.#author.reflect,
-      favoritedBy: this.#favoritedBy,
+      favoriteAmount: this.#favoriteAmount,
       commentAmount: this.#commentAmount,
     };
   }
@@ -120,13 +120,13 @@ export class Post {
     throw new Error("Cannot modify author property directly.");
   }
 
-  public get favoritedBy(): Favorite[] {
+  public get favoriteAmount(): Favorite[] {
     throw new Error(
-      "Cannot access favoritedBy property directly. Use the reflect object in the Post instead.",
+      "Cannot access favoriteAmount property directly. Use the reflect object in the Post instead.",
     );
   }
-  public set favoritedBy(_value: Favorite[]) {
-    throw new Error("Cannot modify favoritedBy property directly.");
+  public set favoriteAmount(_value: Favorite[]) {
+    throw new Error("Cannot modify favoriteAmount property directly.");
   }
 
   public get commentAmount(): number {

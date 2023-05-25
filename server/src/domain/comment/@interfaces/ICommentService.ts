@@ -1,11 +1,10 @@
 import {
   Comment,
-  CreateCommentEvent,
-  DeleteCommentEvent,
   ICommentReflectObject,
 } from "@/domain/comment";
 
 export interface ICommentService {
+  emitCreateCommentEvent(comment: ICommentReflectObject): Promise<Comment>;
   findCommentById(commentId: string): Promise<Comment | undefined>;
   updateComment(
     updatedComment: ICommentReflectObject,
@@ -21,12 +20,5 @@ export interface ICommentService {
     skip: number;
     pageSize: number;
   }): Promise<Comment[]>;
-  // Event Emitters
-  emitCreateCommentEvent(comment: ICommentReflectObject): Promise<Comment>;
   emitDeleteCommentEvent(comment: Comment): Promise<void>;
-  // Event Handlers
-  handlerCreateCommentEvent(
-    event: CreateCommentEvent,
-  ): Promise<Comment | undefined>;
-  handlerDeleteCommentEvent(event: DeleteCommentEvent): Promise<void>;
 }

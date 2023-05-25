@@ -8,7 +8,7 @@ export class User {
   #avatar: string;
   #userRole: TUserRole;
   #socialLinks: ISocialLinks | undefined;
-  #favorites: string[];
+  #favorites: number;
   #commentedPosts: number;
 
   constructor(properties: IUserReflectObject) {
@@ -106,12 +106,12 @@ export class User {
     );
   }
 
-  public get favorites(): string[] {
+  public get favorites(): number {
     throw new Error(
       "Cannot access favorites property directly. Use the reflect object in the User instead.",
     );
   }
-  public set favorites(_value: string[]) {
+  public set favorites(_value: number) {
     throw new Error(
       "Cannot modify favorites property directly. Use the UserService instead.",
     );

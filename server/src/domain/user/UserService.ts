@@ -3,7 +3,6 @@ import {
   IUserReflectObject,
   IUserRepository,
   IUserService,
-  UserEventPublisher,
   userBuilderFactory,
   toggleFavorite,
   ISocialLinks,
@@ -12,14 +11,15 @@ import Validators from "@/domain/@utils/validators";
 import { FavoritePostEvent, IPostRepository } from "@domain/post";
 import { Comment, CreateCommentEvent, DeleteCommentEvent } from "../comment";
 import { handleCommentedPosts } from "./helpers/handleCommentedPosts";
+import { IEventPublisher } from "../@interfaces";
 
 export class UserService implements IUserService {
-  #userPublisher: UserEventPublisher;
+  #userPublisher: IEventPublisher;
   #userRepository: IUserRepository;
   #postRepository: IPostRepository;
 
   constructor(params: {
-    userPublisher: UserEventPublisher;
+    userPublisher: IEventPublisher;
     userRepository: IUserRepository;
     postRepository: IPostRepository;
   }) {

@@ -1,26 +1,22 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { UserInMemoryRepository } from "@/application/in-memory-repositories/UserInMemoryRepository";
-import { PostInMemoryRepository } from "@/application/in-memory-repositories/PostInMemoryRepository";
-import {
-  User,
-  UserEventObserver,
-  UserEventPublisher,
-  UserService,
-} from "@domain/user";
+import { User, UserEventObserver, UserService } from "@domain/user";
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
 import {
   IPostReflectObject,
   Post,
   PostEventObserver,
-  PostEventPublisher,
   PostService,
 } from "@domain/post";
 import { CommentService } from "../CommentService";
-import { CommentInMemoryRepository } from "@/application/in-memory-repositories/CommentInMemoryRespository";
-import { CommentEventPublisher } from "../CommentEventPublisher";
 import { Comment } from "../Comment";
 import { CommentEventObserver } from "../CommentEventObserver";
 import { commentBuilderFactory } from "../helpers";
+import { EventPublisher } from "@domain/@utils/EventPublisher";
+import {
+  CommentInMemoryRepository,
+  PostInMemoryRepository,
+  UserInMemoryRepository,
+} from "@domain/@in-memory-repositories";
 
 let commentService: CommentService;
 let postService: PostService;
@@ -35,30 +31,26 @@ describe("CommentService", () => {
     const userInMemoryRepository = new UserInMemoryRepository();
     const postInMemoryRepository = new PostInMemoryRepository();
     const commentInMemoryRepository = new CommentInMemoryRepository();
-    const commentPublisher = new CommentEventPublisher();
-    const postPublisher = new PostEventPublisher();
-    const userPublisher = new UserEventPublisher();
+    const eventPublisher = new EventPublisher();
     commentService = new CommentService({
-      commentPublisher,
+      commentPublisher: eventPublisher,
       commentRepository: commentInMemoryRepository,
       postRepository: postInMemoryRepository,
       userRepository: userInMemoryRepository,
     });
     postService = new PostService({
-      postPublisher,
+      postPublisher: eventPublisher,
       postRepository: postInMemoryRepository,
       userRepository: userInMemoryRepository,
     });
     userService = new UserService({
-      userPublisher,
+      userPublisher: eventPublisher,
       userRepository: userInMemoryRepository,
       postRepository: postInMemoryRepository,
     });
-    postPublisher.register(new PostEventObserver(postService));
-    postPublisher.register(new UserEventObserver(userService));
-    commentPublisher.register(new PostEventObserver(postService));
-    commentPublisher.register(new UserEventObserver(userService));
-    commentPublisher.register(new CommentEventObserver(commentService));
+    eventPublisher.register(new PostEventObserver(postService));
+    eventPublisher.register(new UserEventObserver(userService));
+    eventPublisher.register(new CommentEventObserver(commentService));
 
     factory = objectFactory();
     const user = factory.getUser();
@@ -68,7 +60,7 @@ describe("CommentService", () => {
       ...post,
       author: userInstance.reflect,
     };
-    postInstance = await postService.emitCreatePostEvent(newPost);
+    postInstance = await postService.createPost(newPost);
   });
 
   it("must be able comment on a post", async () => {
@@ -146,7 +138,7 @@ describe("CommentService", () => {
       });
       await commentService.emitCreateCommentEvent(commentObj);
     }
-    const secondaryPostInstance = await postService.emitCreatePostEvent(
+    const secondaryPostInstance = await postService.createPost(
       newPost,
     );
     const commentObj = factory.getComment({

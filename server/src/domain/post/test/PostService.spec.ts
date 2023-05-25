@@ -1,15 +1,13 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { UserInMemoryRepository } from "@/application/in-memory-repositories/UserInMemoryRepository";
-import { PostInMemoryRepository } from "@/application/in-memory-repositories/PostInMemoryRepository";
-import {
-  User,
-  UserEventObserver,
-  UserEventPublisher,
-  UserService,
-} from "@/domain/user";
+import { User, UserEventObserver, UserService } from "@domain/user";
 import { IPostReflectObject } from "../@interfaces";
-import { Post, PostService, PostEventPublisher, PostEventObserver } from "..";
-import { IObjectFactory, objectFactory } from "@/domain/@utils/objectFactory";
+import { Post, PostService, PostEventObserver } from "..";
+import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
+import { EventPublisher } from "@domain/@utils/EventPublisher";
+import {
+  PostInMemoryRepository,
+  UserInMemoryRepository,
+} from "@domain/@in-memory-repositories";
 
 let postService: PostService;
 let userService: UserService;
@@ -22,20 +20,19 @@ describe("PostService", () => {
   beforeEach(async () => {
     const userInMemoryRepository = new UserInMemoryRepository();
     const postInMemoryRepository = new PostInMemoryRepository();
-    const postPublisher = new PostEventPublisher();
-    const userPublisher = new UserEventPublisher();
+    const eventPublisher = new EventPublisher();
     postService = new PostService({
-      postPublisher,
+      postPublisher: eventPublisher,
       postRepository: postInMemoryRepository,
       userRepository: userInMemoryRepository,
     });
     userService = new UserService({
-      userPublisher,
+      userPublisher: eventPublisher,
       userRepository: userInMemoryRepository,
       postRepository: postInMemoryRepository,
     });
-    postPublisher.register(new PostEventObserver(postService));
-    postPublisher.register(new UserEventObserver(userService));
+    eventPublisher.register(new PostEventObserver(postService));
+    eventPublisher.register(new UserEventObserver(userService));
     factory = objectFactory();
     const user = factory.getUser();
     const post = factory.getPost();
@@ -44,7 +41,7 @@ describe("PostService", () => {
       ...post,
       author: userInstance.reflect,
     };
-    postInstance = await postService.emitCreatePostEvent(newPost);
+    postInstance = await postService.createPost(newPost);
   });
 
   it("must be able to create a post", async () => {
@@ -84,27 +81,25 @@ describe("PostService", () => {
       userId: userInstanceId,
       postId: postInstanceId,
     });
-    const postFavorites = await postService
+    const favoriteAmount = await postService
       .emitToggleFavoritePostEvent(favorite)
-      .then((post) => post?.reflect.favoritedBy);
+      .then((post) => post?.reflect.favoriteAmount);
     const updatedUserFavorites = await userService
       .findUserById(userInstanceId)
       .then((user) => user?.reflect.favorites);
-    expect(postFavorites?.length).toBeGreaterThan(0);
-    expect(postFavorites![0]).toStrictEqual(userInstanceId);
-    expect(updatedUserFavorites![0]).toStrictEqual(postInstanceId);
-    expect(postFavorites![0]).toStrictEqual(userInstanceId);
+    expect(favoriteAmount).toBeGreaterThan(0);
+    expect(updatedUserFavorites).toBeGreaterThan(0);
   });
 
   it("must be able to get all created posts", async () => {
-    await postService.emitCreatePostEvent(newPost);
+    await postService.createPost(newPost);
     const posts = await postService.getPosts();
     expect(posts.length).toStrictEqual(2);
   });
 
   it("must be able to get posts by pagination", async () => {
     for (let i = 0; i < 6; i++) {
-      await postService.emitCreatePostEvent(newPost);
+      await postService.createPost(newPost);
     }
     const skip = 3;
     const pageSize = 3;

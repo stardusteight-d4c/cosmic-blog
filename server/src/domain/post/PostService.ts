@@ -4,7 +4,6 @@ import {
   IPostRepository,
   IPostService,
   FavoritePostEvent,
-  PostEventPublisher,
   postBuilderFactory,
 } from ".";
 import Validators from "@/domain/@utils/validators";
@@ -15,7 +14,6 @@ import {
   DeleteCommentEvent,
 } from "@domain/comment";
 import { IEventPublisher } from "../@interfaces";
-import { CreatePostEvent } from "./PostEvents";
 import { toggleFavorite, handleCommentAmountPost } from "./helpers";
 
 export class PostService implements IPostService {
@@ -24,7 +22,7 @@ export class PostService implements IPostService {
   #userRepository: IUserRepository;
 
   constructor(implementations: {
-    postPublisher: PostEventPublisher;
+    postPublisher: IEventPublisher;
     userRepository: IUserRepository;
     postRepository: IPostRepository;
   }) {
@@ -33,15 +31,11 @@ export class PostService implements IPostService {
     this.#userRepository = implementations.userRepository;
   }
 
-  public async emitCreatePostEvent(post: IPostReflectObject): Promise<Post> {
+  public async createPost(post: IPostReflectObject): Promise<Post> {
     await this.#userRepository.findById(post.author.id!);
     const newPost = postBuilderFactory({ post });
-    const createPostEvent = new CreatePostEvent(newPost);
-    const responses = await this.#postPublisher.emit(createPostEvent);
-    const response = responses.find(
-      (response) => response instanceof Post,
-    ) as Post;
-    return response;
+    const postInstance = await this.#postRepository.create(newPost);
+    return postInstance;
   }
 
   public async emitToggleFavoritePostEvent(request: {
@@ -90,14 +84,6 @@ export class PostService implements IPostService {
       pageSize,
     });
     return posts;
-  }
-
-  public async handlerCreatePostEvent(
-    event: CreatePostEvent,
-  ): Promise<Post | undefined> {
-    const { post } = event;
-    const postInstance = await this.#postRepository.create(post);
-    return postInstance;
   }
 
   public async handlerFavoritePostEvent(

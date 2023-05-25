@@ -1,13 +1,12 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   User,
-  UserEventPublisher,
   UserService,
 } from "@/domain/user";
 import { Post, IPostReflectObject, postBuilderFactory } from "..";
 import { IObjectFactory, objectFactory } from "@/domain/@utils/objectFactory";
-import { UserInMemoryRepository } from "@/application/in-memory-repositories/UserInMemoryRepository";
-import { PostInMemoryRepository } from "@/application/in-memory-repositories/PostInMemoryRepository";
+import { EventPublisher } from "@/domain/@utils/EventPublisher";
+import { PostInMemoryRepository, UserInMemoryRepository } from "@/domain/@in-memory-repositories";
 
 let factory: IObjectFactory;
 let userInstance: User;
@@ -17,9 +16,9 @@ describe("PostBuilder", () => {
   beforeEach(async () => {
     const userInMemoryRepository = new UserInMemoryRepository();
     const postInMemoryRepository = new PostInMemoryRepository();
-    const userPublisher = new UserEventPublisher();
+    const eventPublisher = new EventPublisher();
     const userService = new UserService({
-      userPublisher: userPublisher,
+      userPublisher: eventPublisher,
       userRepository: userInMemoryRepository,
       postRepository: postInMemoryRepository,
     });

@@ -9,6 +9,6 @@ export interface IUserReflectObject {
   avatar?: string;
   userRole?: TUserRole;
   socialLinks?: ISocialLinks | undefined;
-  favorites: string[]
+  favorites: number
   commentedPosts: number
 }

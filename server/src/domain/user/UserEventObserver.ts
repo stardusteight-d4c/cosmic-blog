@@ -1,11 +1,11 @@
-import { UserService } from ".";
+import { IUserService } from ".";
 import { IEvent, IEventObserver } from "../@interfaces";
 import { CreateCommentEvent, DeleteCommentEvent } from "../comment";
 import { FavoritePostEvent } from "../post";
 
 export class UserEventObserver implements IEventObserver {
   watching: string[] = ["favorite_post", "create_comment", "delete_comment"];
-  constructor(readonly userService: UserService) {}
+  constructor(readonly userService: IUserService) {}
 
   async notifyService(event: IEvent) {
     if (event.name === "favorite_post") {
