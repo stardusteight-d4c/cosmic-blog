@@ -1,11 +1,21 @@
-import { IFavoriteRepository } from "../@value-objects/favorite/@interfaces/IFavoriteRepository";
-import { Favorite } from "@domain/@value-objects/favorite";
+import { IFavoriteRepository } from "../favorite/@interfaces/IFavoriteRepository";
+import { Favorite } from "@/domain/favorite";
 
 export class FavoriteInMemoryRepository implements IFavoriteRepository {
+  private static instance: FavoriteInMemoryRepository;
   #favorites: Map<string, Favorite> = new Map();
 
   private generateKey(favorite: Favorite): string {
     return `${favorite.postId}-${favorite.userId}`;
+  }
+
+  private constructor() {}
+
+  public static getInstance(): FavoriteInMemoryRepository {
+    if (!FavoriteInMemoryRepository.instance) {
+      FavoriteInMemoryRepository.instance = new FavoriteInMemoryRepository();
+    }
+    return FavoriteInMemoryRepository.instance;
   }
 
   private async replace(updatedFavorite: Favorite): Promise<Favorite> {
@@ -57,6 +67,20 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
       throw new Error("Favorite not exists");
     }
     return favorite;
+  }
+
+  public async deleteAll(): Promise<void> {
+    this.#favorites.clear();
+  }
+
+  public async findAllByPostId(postId: string): Promise<Favorite[]> {
+    const favorites: Favorite[] = [];
+    for (const favorite of this.#favorites.values()) {
+      if (favorite.postId === postId) {
+        favorites.push(favorite);
+      }
+    }
+    return favorites;
   }
 
   public get favorites() {

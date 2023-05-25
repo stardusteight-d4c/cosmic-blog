@@ -3,54 +3,32 @@ import {
   IPostReflectObject,
   IPostRepository,
   IPostService,
-  FavoritePostEvent,
   postBuilderFactory,
 } from ".";
 import Validators from "@/domain/@utils/validators";
-import { IUserRepository } from "@domain/user";
-import {
-  Comment,
-  CreateCommentEvent,
-  DeleteCommentEvent,
-} from "@domain/comment";
 import { IEventPublisher } from "../@interfaces";
-import { toggleFavorite, handleCommentAmountPost } from "./helpers";
+import { IFavoriteRepository, IFavoriteService } from "../favorite";
+import { ICommentService } from "../comment";
 
 export class PostService implements IPostService {
-  #postPublisher: IEventPublisher;
   #postRepository: IPostRepository;
-  #userRepository: IUserRepository;
+  #favoriteRepository: IFavoriteRepository;
+  #publisher: IEventPublisher;
 
   constructor(implementations: {
-    postPublisher: IEventPublisher;
-    userRepository: IUserRepository;
     postRepository: IPostRepository;
+    favoriteRepository: IFavoriteRepository;
+    publisher: IEventPublisher;
   }) {
-    this.#postPublisher = implementations.postPublisher;
     this.#postRepository = implementations.postRepository;
-    this.#userRepository = implementations.userRepository;
+    this.#favoriteRepository = implementations.favoriteRepository;
+    this.#publisher = implementations.publisher;
   }
 
   public async createPost(post: IPostReflectObject): Promise<Post> {
-    await this.#userRepository.findById(post.author.id!);
     const newPost = postBuilderFactory({ post });
     const postInstance = await this.#postRepository.create(newPost);
     return postInstance;
-  }
-
-  public async emitToggleFavoritePostEvent(request: {
-    userId: string;
-    postId: string;
-  }): Promise<Post | undefined> {
-    const { userId, postId } = request;
-    Validators.checkPrimitiveType({ validating: userId, type: "string" });
-    Validators.checkPrimitiveType({ validating: postId, type: "string" });
-    const favoritePostEvent = new FavoritePostEvent(userId, postId);
-    const responses = await this.#postPublisher.emit(favoritePostEvent);
-    const response = responses.find(
-      (response) => response instanceof Post,
-    ) as Post;
-    return response;
   }
 
   public async updatePost(post: IPostReflectObject): Promise<Post> {
@@ -61,7 +39,15 @@ export class PostService implements IPostService {
 
   public async findPostById(postId: string): Promise<Post | undefined> {
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
-    return await this.#postRepository.findById(postId);
+    const post = await this.#postRepository.findById(postId);
+    const updatedPostReflect: IPostReflectObject = {
+      ...post?.reflect!,
+      favoriteAmount: await this.getFavoriteAmount(postId),
+    };
+    const updatedPostInstance = postBuilderFactory({
+      post: updatedPostReflect,
+    });
+    return updatedPostInstance;
   }
 
   public async findPostByTitle(postTitle: string): Promise<Post | undefined> {
@@ -86,38 +72,50 @@ export class PostService implements IPostService {
     return posts;
   }
 
-  public async handlerFavoritePostEvent(
-    event: FavoritePostEvent,
-  ): Promise<Post | undefined> {
-    const { userId, postId } = event;
-    const post = await toggleFavorite({
-      postRepository: this.#postRepository,
-      postId: postId,
-      userId: userId,
-    });
-    return post;
+  public async getFavoriteAmount(postId: string): Promise<number> {
+    return (await this.#favoriteRepository.findAllByPostId(postId)).length;
   }
 
-  public async handlerCreateCommentEvent(
-    event: CreateCommentEvent,
-  ): Promise<Comment | undefined> {
-    const { comment } = event;
-    const result = await handleCommentAmountPost({
-      postRepository: this.#postRepository,
-      comment,
-      action: "sum",
-    });
-    return result;
+  public async getCommentAmount(request: {
+    postId: string;
+    commentService: ICommentService;
+  }): Promise<number> {
+    const { postId, commentService } = request;
+    return await commentService.getCommentAmountFromPost(postId);
   }
 
-  public async handlerDeleteCommentEvent(
-    event: DeleteCommentEvent,
-  ): Promise<void> {
-    const { comment } = event;
-    await handleCommentAmountPost({
-      postRepository: this.#postRepository,
-      comment,
-      action: "sub",
-    });
-  }
+  // public async handlerToggleFavoritePostEvent(
+  //   event: ToggleFavoritePostEvent,
+  // ): Promise<Favorite | undefined> {
+  //   const { favorite, operation } = event;
+  //   const favoriteInstance = await handleFavoriteAmount({
+  //     postRepository: this.#postRepository,
+  //     favorite,
+  //     operation,
+  //   });
+  //   return favoriteInstance;
+  // }
+
+  // public async handlerCreateCommentEvent(
+  //   event: CreateCommentEvent,
+  // ): Promise<Comment | undefined> {
+  //   const { comment } = event;
+  //   const result = await handleCommentAmountPost({
+  //     postRepository: this.#postRepository,
+  //     comment,
+  //     action: "sum",
+  //   });
+  //   return result;
+  // }
+
+  // public async handlerDeleteCommentEvent(
+  //   event: DeleteCommentEvent,
+  // ): Promise<void> {
+  //   const { comment } = event;
+  //   await handleCommentAmountPost({
+  //     postRepository: this.#postRepository,
+  //     comment,
+  //     action: "sub",
+  //   });
+  // }
 }

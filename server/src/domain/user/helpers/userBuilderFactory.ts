@@ -4,12 +4,14 @@ export function userBuilderFactory({
   user,
   update,
 }: {
+  // userService
   user: IUserReflectObject;
   update?: {
     field: "email" | "password" | "favorites" | "comments" | "socialLinks";
     newData: any;
   };
 }): User {
+  // deve depender apenas do serviço de sua entidade
   const updatedUserInstance = new UserBuilder()
     .setId(user.id!)
     .setEmail(update?.field === "email" ? update.newData : user.email)

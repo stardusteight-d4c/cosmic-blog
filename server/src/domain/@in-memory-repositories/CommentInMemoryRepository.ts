@@ -77,4 +77,14 @@ export class CommentInMemoryRepository implements ICommentRepository {
     const paginatedComments = commentsByUserId.slice(skip, skip + pageSize);
     return paginatedComments;
   }
+
+  public async findAllByPostId(postId: string): Promise<Comment[]> {
+    const comments: Comment[] = [];
+    for (const comment of this.#comments.values()) {
+      if (comment.postId === postId) {
+        comments.push(comment);
+      }
+    }
+    return comments;
+  }
 }

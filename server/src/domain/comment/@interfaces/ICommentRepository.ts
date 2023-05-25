@@ -16,4 +16,5 @@ export interface ICommentRepository {
     skip: number;
     pageSize: number;
   }): Promise<Comment[]>;
+  findAllByPostId(postId: string): Promise<Comment[]>
 }

@@ -1,3 +1,3 @@
 export { postBuilderFactory } from "./postBuilderFactory";
-export { toggleFavorite } from "./toggleFavorite";
+export { handleFavoriteAmount } from "./handleFavoriteAmount";
 export { handleCommentAmountPost } from "./handleCommentAmountPost";

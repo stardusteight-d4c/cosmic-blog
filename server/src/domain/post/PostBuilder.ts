@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { Post } from ".";
 import { IUserReflectObject, User } from "@domain/user";
-import { Favorite } from "@/domain/@value-objects/favorite";
+import { Favorite } from "@/domain/favorite";
 import { Comment } from "@domain/comment";
 
 export class PostBuilder {

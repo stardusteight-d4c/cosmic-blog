@@ -8,7 +8,7 @@ import {
   ISocialLinks,
 } from ".";
 import Validators from "@/domain/@utils/validators";
-import { FavoritePostEvent, IPostRepository } from "@domain/post";
+import {  IPostRepository } from "@domain/post";
 import { Comment, CreateCommentEvent, DeleteCommentEvent } from "../comment";
 import { handleCommentedPosts } from "./helpers/handleCommentedPosts";
 import { IEventPublisher } from "../@interfaces";
@@ -122,38 +122,27 @@ export class UserService implements IUserService {
     return updatedUser;
   }
 
-  public async handlerFavoritePostEvent(
-    event: FavoritePostEvent,
-  ): Promise<User | undefined> {
-    const { userId, postId } = event;
-    const user = await toggleFavorite({
-      userRepository: this.#userRepository,
-      postId: postId,
-      userId: userId,
-    });
-    return user;
-  }
 
-  public async handlerCreateCommentEvent(
-    event: CreateCommentEvent,
-  ): Promise<Comment | undefined> {
-    const { comment } = event;
-    const result = await handleCommentedPosts({
-      userRepository: this.#userRepository,
-      comment,
-      action: "sum",
-    });
-    return result;
-  }
+  // public async handlerCreateCommentEvent(
+  //   event: CreateCommentEvent,
+  // ): Promise<Comment | undefined> {
+  //   const { comment } = event;
+  //   const result = await handleCommentedPosts({
+  //     userRepository: this.#userRepository,
+  //     comment,
+  //     action: "sum",
+  //   });
+  //   return result;
+  // }
 
-  public async handlerDeleteCommentEvent(
-    event: DeleteCommentEvent,
-  ): Promise<void> {
-    const { comment } = event;
-    handleCommentedPosts({
-      userRepository: this.#userRepository,
-      comment,
-      action: "sub",
-    });
-  }
+  // public async handlerDeleteCommentEvent(
+  //   event: DeleteCommentEvent,
+  // ): Promise<void> {
+  //   const { comment } = event;
+  //   handleCommentedPosts({
+  //     userRepository: this.#userRepository,
+  //     comment,
+  //     action: "sub",
+  //   });
+  // }
 }

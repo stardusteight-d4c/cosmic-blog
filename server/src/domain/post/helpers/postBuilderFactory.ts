@@ -1,6 +1,5 @@
 import { User } from "@/domain/user";
 import { IPostReflectObject } from "../@interfaces";
-import { Favorite } from "@/domain/@value-objects/favorite";
 import { Post } from "../Post";
 import { PostBuilder } from "../PostBuilder";
 

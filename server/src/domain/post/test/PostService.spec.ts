@@ -1,35 +1,44 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { User, UserEventObserver, UserService } from "@domain/user";
-import { IPostReflectObject } from "../@interfaces";
+import { IPostReflectObject, IPostRepository } from "../@interfaces";
 import { Post, PostService, PostEventObserver } from "..";
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
 import { EventPublisher } from "@domain/@utils/EventPublisher";
 import {
+  FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
 } from "@domain/@in-memory-repositories";
+import { FavoriteService, IFavoriteRepository } from "@/domain/favorite";
 
 let postService: PostService;
 let userService: UserService;
+let favoriteService: FavoriteService;
 let newPost: IPostReflectObject;
 let userInstance: User;
 let postInstance: Post;
 let factory: IObjectFactory;
+let postInMemoryRepository: IPostRepository;
+let favoriteInMemoryRepository: IFavoriteRepository;
 
 describe("PostService", () => {
   beforeEach(async () => {
     const userInMemoryRepository = new UserInMemoryRepository();
-    const postInMemoryRepository = new PostInMemoryRepository();
+    postInMemoryRepository = PostInMemoryRepository.getInstance();
+    favoriteInMemoryRepository = FavoriteInMemoryRepository.getInstance();
     const eventPublisher = new EventPublisher();
     postService = new PostService({
-      postPublisher: eventPublisher,
+      publisher: eventPublisher,
       postRepository: postInMemoryRepository,
-      userRepository: userInMemoryRepository,
+      favoriteRepository: favoriteInMemoryRepository,
     });
     userService = new UserService({
       userPublisher: eventPublisher,
       userRepository: userInMemoryRepository,
       postRepository: postInMemoryRepository,
+    });
+    favoriteService = new FavoriteService({
+      favoriteRepository: favoriteInMemoryRepository,
     });
     eventPublisher.register(new PostEventObserver(postService));
     eventPublisher.register(new UserEventObserver(userService));
@@ -42,6 +51,10 @@ describe("PostService", () => {
       author: userInstance.reflect,
     };
     postInstance = await postService.createPost(newPost);
+  });
+  afterEach(async () => {
+    await postInMemoryRepository.deleteAll();
+    await favoriteInMemoryRepository.deleteAll();
   });
 
   it("must be able to create a post", async () => {
@@ -81,14 +94,13 @@ describe("PostService", () => {
       userId: userInstanceId,
       postId: postInstanceId,
     });
-    const favoriteAmount = await postService
-      .emitToggleFavoritePostEvent(favorite)
+    await favoriteService.toggleFavoritePost(favorite);
+    const updatedPostFavoriteAmount = await postService
+      .findPostById(postInstanceId)
       .then((post) => post?.reflect.favoriteAmount);
-    const updatedUserFavorites = await userService
-      .findUserById(userInstanceId)
-      .then((user) => user?.reflect.favorites);
-    expect(favoriteAmount).toBeGreaterThan(0);
-    expect(updatedUserFavorites).toBeGreaterThan(0);
+
+    expect(updatedPostFavoriteAmount).toStrictEqual(1);
+    // favorites user tbm deve estar atualizado
   });
 
   it("must be able to get all created posts", async () => {

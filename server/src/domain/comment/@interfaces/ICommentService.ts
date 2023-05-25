@@ -21,4 +21,5 @@ export interface ICommentService {
     pageSize: number;
   }): Promise<Comment[]>;
   emitDeleteCommentEvent(comment: Comment): Promise<void>;
+  getCommentAmountFromPost(postId: string): Promise<number>
 }

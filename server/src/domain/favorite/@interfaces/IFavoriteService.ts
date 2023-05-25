@@ -1,8 +1,9 @@
 import { Favorite } from "..";
 
 export interface IFavoriteService {
-  emitToggleFavoritePostEvent(request: {
+  toggleFavoritePost(request: {
     postId: string;
     userId: string;
   }): Promise<Favorite | undefined>;
+  getFavoriteAmountFromPost(postId: string): Promise<number>
 }

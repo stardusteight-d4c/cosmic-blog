@@ -91,4 +91,14 @@ export class CommentService implements ICommentService {
     });
     return comments;
   }
+
+  public async getCommentAmountFromPost(postId: string): Promise<number> {
+    const comments = await this.#commentRespository.findAllByPostId(postId);
+    if (comments) {
+      const commentAmount = comments.length;
+      return commentAmount;
+    } else {
+      return 0;
+    }
+  }
 }

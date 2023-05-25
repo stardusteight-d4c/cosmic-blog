@@ -1,12 +1,6 @@
-import { FavoritePostEvent, Post } from "@/domain/post";
+import {  Post } from "@/domain/post";
 import { ISocialLinks, User } from "..";
 import { IUserReflectObject } from "./IUserReflectObject";
-import {
-  Comment,
-  CreateCommentEvent,
-  DeleteCommentEvent,
-} from "@/domain/comment";
-import { ToggleFavoritePostEvent } from "@/domain/@value-objects/favorite/ToggleFavoritePostEvent";
 
 export interface IUserService {
   createUser(user: IUserReflectObject): Promise<User>;
@@ -28,11 +22,11 @@ export interface IUserService {
     socialLinks: ISocialLinks;
   }): Promise<User | undefined>; 
   // Event Handlers
-  handlerToggleFavoritePostEvent(
-    event: ToggleFavoritePostEvent,
-  ): Promise<Post | undefined>;
-  handlerCreateCommentEvent(
-    event: CreateCommentEvent,
-  ): Promise<Comment | undefined>;
-  handlerDeleteCommentEvent(event: DeleteCommentEvent): Promise<void>;
+  // handlerToggleFavoritePostEvent(
+  //   event: ToggleFavoritePostEvent,
+  // ): Promise<Post | undefined>;
+  // handlerCreateCommentEvent(
+  //   event: CreateCommentEvent,
+  // ): Promise<Comment | undefined>;
+  // handlerDeleteCommentEvent(event: DeleteCommentEvent): Promise<void>;
 }

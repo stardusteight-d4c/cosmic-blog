@@ -1,13 +1,16 @@
 import { IPostRepository, Post } from "../../domain/post";
 
 export class PostInMemoryRepository implements IPostRepository {
+  private static instance: PostInMemoryRepository;
   #posts: Map<string, Post> = new Map();
 
-  public get posts() {
-    throw new Error("Cannot access posts property directly.");
-  }
-  public set posts(_value: string) {
-    throw new Error("Cannot modify posts property directly.");
+  private constructor() {}
+
+  public static getInstance(): PostInMemoryRepository  {
+    if (!PostInMemoryRepository.instance) {
+      PostInMemoryRepository.instance = new PostInMemoryRepository();
+    }
+    return PostInMemoryRepository.instance;
   }
 
   private async replace(updatedPost: Post): Promise<Post> {
@@ -34,6 +37,10 @@ export class PostInMemoryRepository implements IPostRepository {
     const post = await this.findById(postId);
     this.#posts.delete(postId);
     return post!;
+  }
+
+  public async deleteAll(): Promise<void> {
+    this.#posts.clear();
   }
 
   public async findById(postId: string): Promise<Post | undefined> {
@@ -67,5 +74,12 @@ export class PostInMemoryRepository implements IPostRepository {
     const startIndex = Math.max(0, skip);
     const paginatedPosts = allPosts.slice(startIndex, startIndex + pageSize);
     return paginatedPosts;
+  }
+
+  public get posts() {
+    throw new Error("Cannot access posts property directly.");
+  }
+  public set posts(_value: string) {
+    throw new Error("Cannot modify posts property directly.");
   }
 }
