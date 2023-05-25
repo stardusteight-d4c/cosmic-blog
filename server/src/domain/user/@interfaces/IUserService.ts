@@ -21,12 +21,9 @@ export interface IUserService {
     userId: string;
     socialLinks: ISocialLinks;
   }): Promise<User | undefined>; 
-  // Event Handlers
-  // handlerToggleFavoritePostEvent(
-  //   event: ToggleFavoritePostEvent,
-  // ): Promise<Post | undefined>;
-  // handlerCreateCommentEvent(
-  //   event: CreateCommentEvent,
-  // ): Promise<Comment | undefined>;
-  // handlerDeleteCommentEvent(event: DeleteCommentEvent): Promise<void>;
+  getFavorites(userId: string): Promise<number>;
+  // getCommentAmount(request: {
+  //   postId: string;
+  //   commentService: ICommentService;
+  // }): Promise<number>;
 }

@@ -8,4 +8,5 @@ export interface IFavoriteRepository {
   delete(favorite: Favorite): Promise<Favorite>;
   deleteAll(): Promise<void>
   findAllByPostId(postId: string): Promise<Favorite[]>
+  findAllByUserId(userId: string): Promise<Favorite[]>
 }

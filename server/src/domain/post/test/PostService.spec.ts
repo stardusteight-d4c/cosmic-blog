@@ -33,9 +33,8 @@ describe("PostService", () => {
       favoriteRepository: favoriteInMemoryRepository,
     });
     userService = new UserService({
-      userPublisher: eventPublisher,
       userRepository: userInMemoryRepository,
-      postRepository: postInMemoryRepository,
+      favoriteRepository: favoriteInMemoryRepository,
     });
     favoriteService = new FavoriteService({
       favoriteRepository: favoriteInMemoryRepository,
@@ -98,9 +97,11 @@ describe("PostService", () => {
     const updatedPostFavoriteAmount = await postService
       .findPostById(postInstanceId)
       .then((post) => post?.reflect.favoriteAmount);
-
+    const updatedUserFavorites = await userService
+      .findUserById(userInstanceId)
+      .then((user) => user?.reflect.favorites);
     expect(updatedPostFavoriteAmount).toStrictEqual(1);
-    // favorites user tbm deve estar atualizado
+    expect(updatedUserFavorites).toStrictEqual(1);
   });
 
   it("must be able to get all created posts", async () => {

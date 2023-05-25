@@ -83,6 +83,16 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
     return favorites;
   }
 
+  public async findAllByUserId(userId: string): Promise<Favorite[]> {
+    const favorites: Favorite[] = [];
+    for (const favorite of this.#favorites.values()) {
+      if (favorite.userId === userId) {
+        favorites.push(favorite);
+      }
+    }
+    return favorites;
+  }
+
   public get favorites() {
     throw new Error("Cannot access favorites property directly.");
   }

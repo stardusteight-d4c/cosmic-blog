@@ -4,28 +4,21 @@ import {
   IUserRepository,
   IUserService,
   userBuilderFactory,
-  toggleFavorite,
   ISocialLinks,
 } from ".";
 import Validators from "@/domain/@utils/validators";
-import {  IPostRepository } from "@domain/post";
-import { Comment, CreateCommentEvent, DeleteCommentEvent } from "../comment";
-import { handleCommentedPosts } from "./helpers/handleCommentedPosts";
-import { IEventPublisher } from "../@interfaces";
+import { IFavoriteRepository } from "../favorite";
 
 export class UserService implements IUserService {
-  #userPublisher: IEventPublisher;
   #userRepository: IUserRepository;
-  #postRepository: IPostRepository;
+  #favoriteRepository: IFavoriteRepository;
 
-  constructor(params: {
-    userPublisher: IEventPublisher;
+  constructor(implementations: {
     userRepository: IUserRepository;
-    postRepository: IPostRepository;
+    favoriteRepository: IFavoriteRepository;
   }) {
-    this.#userPublisher = params.userPublisher;
-    this.#userRepository = params.userRepository;
-    this.#postRepository = params.postRepository;
+    this.#userRepository = implementations.userRepository;
+    this.#favoriteRepository = implementations.favoriteRepository;
   }
 
   public async createUser(user: IUserReflectObject): Promise<User> {
@@ -47,7 +40,15 @@ export class UserService implements IUserService {
 
   public async findUserById(userId: string): Promise<User | undefined> {
     Validators.checkPrimitiveType({ validating: userId, type: "string" });
-    return await this.#userRepository.findById(userId);
+    const user = await this.#userRepository.findById(userId);
+    const updatedUserReflect: IUserReflectObject = {
+      ...user?.reflect!,
+      favorites: await this.getFavorites(userId),
+    };
+    const updatedUserInstance = userBuilderFactory({
+      user: updatedUserReflect,
+    });
+    return updatedUserInstance;
   }
 
   public async findUserByEmail(userEmail: string): Promise<User | undefined> {
@@ -122,6 +123,9 @@ export class UserService implements IUserService {
     return updatedUser;
   }
 
+  public async getFavorites(userId: string): Promise<number> {
+    return (await this.#favoriteRepository.findAllByUserId(userId)).length;
+  }
 
   // public async handlerCreateCommentEvent(
   //   event: CreateCommentEvent,
