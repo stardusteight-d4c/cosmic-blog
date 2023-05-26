@@ -34,7 +34,7 @@ export class CommentInMemoryRepository implements ICommentRepository {
     return comment;
   }
 
-  public async get(): Promise<Comment[]> {
+  public async getAll(): Promise<Comment[]> {
     const comments: Comment[] = Array.from(this.#comments.values());
     return comments;
   }
@@ -47,6 +47,14 @@ export class CommentInMemoryRepository implements ICommentRepository {
 
   public async deleteAll(): Promise<void> {
     this.#comments.clear();
+  }
+
+  public async deleteAllByPostId(postId: string): Promise<void> {
+    for (const [commentId, comment] of this.#comments.entries()) {
+      if (comment.reflect.postId === postId) {
+        this.#comments.delete(commentId);
+      }
+    }
   }
 
   public async findById(commentId: string): Promise<Comment | undefined> {

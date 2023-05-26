@@ -1,10 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import {
-  IUserRepository,
-  User,
-  UserEventObserver,
-  UserService,
-} from "@domain/user";
+import { IUserRepository, User, UserService } from "@domain/user";
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
 import {
   IPostReflectObject,
@@ -15,7 +10,6 @@ import {
 import { CommentService } from "../CommentService";
 import { Comment } from "../Comment";
 import { commentBuilderFactory } from "../helpers";
-import { EventPublisher } from "@domain/@utils/EventPublisher";
 import {
   CommentInMemoryRepository,
   PostInMemoryRepository,
@@ -150,7 +144,7 @@ describe("CommentService", () => {
     const postCommentAmount = await commentService.getPostCommentAmount(
       postInstanceId,
     );
-    const allComments = await commentService.getComments();
+    const allComments = await commentService.getAllComments();
     expect(allComments?.length).toStrictEqual(7);
     expect(postCommentAmount).toStrictEqual(6);
     const skip = 3;
@@ -208,7 +202,7 @@ describe("CommentService", () => {
     const userCommentAmount = await commentService.getUserCommentAmount(
       commentInstance.reflect.owner.id!,
     );
-    const comments = await commentService.getComments();
+    const comments = await commentService.getAllComments();
     expect(postCommentAmount).toStrictEqual(1);
     expect(userCommentAmount).toStrictEqual(1);
     expect(comments?.length).toStrictEqual(1);
@@ -219,9 +213,35 @@ describe("CommentService", () => {
     const updatedUserCommentAmount = await commentService.getUserCommentAmount(
       commentInstance.reflect.owner.id!,
     );
-    const updatedComments = await commentService.getComments();
+    const updatedComments = await commentService.getAllComments();
     expect(updatedPostCommentAmount).toStrictEqual(0);
     expect(updatedUserCommentAmount).toStrictEqual(0);
     expect(updatedComments?.length).toStrictEqual(0);
+  });
+
+  it("must be able delete all comments by postId", async () => {
+    const firstCommentObj = factory.getComment({
+      postId: postInstance.reflect.id!,
+      owner: userInstance.reflect,
+    });
+    await commentService.createComment(firstCommentObj);
+    await commentService.createComment(firstCommentObj);
+    const secondCommentObj = factory.getComment({
+      postId: "another-post-id",
+      owner: userInstance.reflect,
+    });
+    await commentService.createComment(secondCommentObj);
+    const comments = await commentService.getAllComments();
+    expect(comments?.length).toStrictEqual(3);
+    const commentsFromFirtsComments =
+      await commentService.getCommentsByPostIdWithPagination({
+        postId: postInstance.reflect.id!,
+        skip: 0,
+        pageSize: 100,
+      });
+    expect(commentsFromFirtsComments?.length).toStrictEqual(2);
+    await commentService.deleteCommentsByPostId(postInstance.reflect.id!)
+    const updatedComments = await commentService.getAllComments();
+    expect(updatedComments!.length).toStrictEqual(1);
   });
 });

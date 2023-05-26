@@ -34,6 +34,10 @@ export class PostService implements IPostService {
     return updatedPostInstance;
   }
 
+  public async deletePost(postId: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
   public async findPostById(postId: string): Promise<Post | undefined> {
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
     const post = await this.#postRepository.findById(postId);

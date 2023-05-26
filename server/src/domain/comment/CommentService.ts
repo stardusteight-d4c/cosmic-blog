@@ -21,6 +21,10 @@ export class CommentService implements ICommentService {
     await this.#commentRepository.delete(comment.reflect.id!);
   }
 
+  public async deleteCommentsByPostId(postId: string): Promise<void> {
+    await this.#commentRepository.deleteAllByPostId(postId);
+  }
+
   public async findCommentById(
     commentId: string,
   ): Promise<Comment | undefined> {
@@ -36,8 +40,8 @@ export class CommentService implements ICommentService {
     return commentInstance;
   }
 
-  public async getComments(): Promise<Comment[] | undefined> {
-    const comments = await this.#commentRepository.get();
+  public async getAllComments(): Promise<Comment[] | undefined> {
+    const comments = await this.#commentRepository.getAll();
     return comments;
   }
 
