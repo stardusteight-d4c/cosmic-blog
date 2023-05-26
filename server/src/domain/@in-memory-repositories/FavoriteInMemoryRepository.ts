@@ -5,10 +5,6 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
   private static instance: FavoriteInMemoryRepository;
   #favorites: Map<string, Favorite> = new Map();
 
-  private generateKey(favorite: Favorite): string {
-    return `${favorite.postId}-${favorite.userId}`;
-  }
-
   private constructor() {}
 
   public static getInstance(): FavoriteInMemoryRepository {
@@ -16,6 +12,10 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
       FavoriteInMemoryRepository.instance = new FavoriteInMemoryRepository();
     }
     return FavoriteInMemoryRepository.instance;
+  }
+
+  private generateKey(favorite: Favorite): string {
+    return `${favorite.postId}-${favorite.userId}`;
   }
 
   private async replace(updatedFavorite: Favorite): Promise<Favorite> {

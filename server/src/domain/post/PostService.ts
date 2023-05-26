@@ -7,21 +7,18 @@ import {
 } from ".";
 import Validators from "@/domain/@utils/validators";
 import { IEventPublisher } from "../@interfaces";
-import { IFavoriteRepository, IFavoriteService } from "../favorite";
-import { ICommentService } from "../comment";
+import { IFavoriteRepository } from "../favorite";
+import { ICommentRepository } from "../comment";
 
 export class PostService implements IPostService {
   #postRepository: IPostRepository;
-  #favoriteRepository: IFavoriteRepository;
   #publisher: IEventPublisher;
 
   constructor(implementations: {
     postRepository: IPostRepository;
-    favoriteRepository: IFavoriteRepository;
     publisher: IEventPublisher;
   }) {
     this.#postRepository = implementations.postRepository;
-    this.#favoriteRepository = implementations.favoriteRepository;
     this.#publisher = implementations.publisher;
   }
 
@@ -40,19 +37,13 @@ export class PostService implements IPostService {
   public async findPostById(postId: string): Promise<Post | undefined> {
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
     const post = await this.#postRepository.findById(postId);
-    const updatedPostReflect: IPostReflectObject = {
-      ...post?.reflect!,
-      favoriteAmount: await this.getFavoriteAmount(postId),
-    };
-    const updatedPostInstance = postBuilderFactory({
-      post: updatedPostReflect,
-    });
-    return updatedPostInstance;
+    return post;
   }
 
   public async findPostByTitle(postTitle: string): Promise<Post | undefined> {
     Validators.checkPrimitiveType({ validating: postTitle, type: "string" });
-    return await this.#postRepository.findByTitle(postTitle);
+    const post = await this.#postRepository.findByTitle(postTitle);
+    return post;
   }
 
   public async getPosts(): Promise<Post[]> {
@@ -70,18 +61,6 @@ export class PostService implements IPostService {
       pageSize,
     });
     return posts;
-  }
-
-  public async getFavoriteAmount(postId: string): Promise<number> {
-    return (await this.#favoriteRepository.findAllByPostId(postId)).length;
-  }
-
-  public async getCommentAmount(request: {
-    postId: string;
-    commentService: ICommentService;
-  }): Promise<number> {
-    const { postId, commentService } = request;
-    return await commentService.getCommentAmountFromPost(postId);
   }
 
   // public async handlerToggleFavoritePostEvent(

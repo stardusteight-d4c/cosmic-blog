@@ -1,8 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { Post } from ".";
-import { IUserReflectObject, User } from "@domain/user";
-import { Favorite } from "@/domain/favorite";
-import { Comment } from "@domain/comment";
+import { IUserReflectObject } from "@domain/user";
 
 export class PostBuilder {
   #id: string;
@@ -13,8 +11,6 @@ export class PostBuilder {
   #postedIn: Date;
   #lastChange?: Date;
   #author: IUserReflectObject;
-  #favoriteAmount: number;
-  #commentAmount: number;
 
   public setId(id: string) {
     this.#id = id;
@@ -59,24 +55,6 @@ export class PostBuilder {
     return this;
   }
 
-  public setFavoriteAmount(favoriteAmount: number): PostBuilder {
-    if (favoriteAmount === undefined) {
-      this.#favoriteAmount = 0;
-      return this;
-    }
-    this.#favoriteAmount = favoriteAmount;
-    return this;
-  }
-
-  public setCommentAmount(amount: number): PostBuilder {
-    if (amount === undefined) {
-      this.#commentAmount = 0;
-      return this;
-    }
-    this.#commentAmount = amount;
-    return this;
-  }
-
   public build(): Post {
     if (!this.#title) {
       throw new Error("title is required");
@@ -105,8 +83,6 @@ export class PostBuilder {
       postedIn: this.#postedIn,
       lastChange: this.#lastChange,
       author: this.#author,
-      favoriteAmount: this.#favoriteAmount,
-      commentAmount: this.#commentAmount,
     });
   }
 }

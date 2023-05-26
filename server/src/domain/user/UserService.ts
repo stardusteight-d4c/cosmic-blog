@@ -41,14 +41,7 @@ export class UserService implements IUserService {
   public async findUserById(userId: string): Promise<User | undefined> {
     Validators.checkPrimitiveType({ validating: userId, type: "string" });
     const user = await this.#userRepository.findById(userId);
-    const updatedUserReflect: IUserReflectObject = {
-      ...user?.reflect!,
-      favorites: await this.getFavorites(userId),
-    };
-    const updatedUserInstance = userBuilderFactory({
-      user: updatedUserReflect,
-    });
-    return updatedUserInstance;
+    return user;
   }
 
   public async findUserByEmail(userEmail: string): Promise<User | undefined> {
@@ -121,10 +114,6 @@ export class UserService implements IUserService {
     });
     await this.#userRepository.update(updatedUser);
     return updatedUser;
-  }
-
-  public async getFavorites(userId: string): Promise<number> {
-    return (await this.#favoriteRepository.findAllByUserId(userId)).length;
   }
 
   // public async handlerCreateCommentEvent(

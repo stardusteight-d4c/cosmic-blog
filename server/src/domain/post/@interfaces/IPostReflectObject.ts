@@ -9,6 +9,4 @@ export interface IPostReflectObject {
   postedIn: Date;
   lastChange?: Date;
   author: IUserReflectObject;
-  favoriteAmount: number;
-  commentAmount?: number;
 }

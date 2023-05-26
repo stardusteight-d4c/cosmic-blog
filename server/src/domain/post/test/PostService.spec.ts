@@ -1,36 +1,59 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { User, UserEventObserver, UserService } from "@domain/user";
-import { IPostReflectObject, IPostRepository } from "../@interfaces";
+import {
+  IUserRepository,
+  IUserService,
+  User,
+  UserEventObserver,
+  UserService,
+} from "@domain/user";
+import {
+  IPostReflectObject,
+  IPostRepository,
+  IPostService,
+} from "../@interfaces";
 import { Post, PostService, PostEventObserver } from "..";
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
 import { EventPublisher } from "@domain/@utils/EventPublisher";
 import {
+  CommentInMemoryRepository,
   FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
 } from "@domain/@in-memory-repositories";
-import { FavoriteService, IFavoriteRepository } from "@/domain/favorite";
+import {
+  FavoriteService,
+  IFavoriteRepository,
+  IFavoriteService,
+} from "@/domain/favorite";
+import {
+  CommentService,
+  ICommentRepository,
+  ICommentService,
+} from "@/domain/comment";
 
-let postService: PostService;
-let userService: UserService;
-let favoriteService: FavoriteService;
+let postService: IPostService;
+let userService: IUserService;
+let favoriteService: IFavoriteService;
+let commentService: ICommentService;
 let newPost: IPostReflectObject;
 let userInstance: User;
 let postInstance: Post;
 let factory: IObjectFactory;
 let postInMemoryRepository: IPostRepository;
 let favoriteInMemoryRepository: IFavoriteRepository;
+let userInMemoryRepository: IUserRepository;
+let commentInMemoryRepository: ICommentRepository;
 
 describe("PostService", () => {
   beforeEach(async () => {
-    const userInMemoryRepository = new UserInMemoryRepository();
+    userInMemoryRepository = UserInMemoryRepository.getInstance();
     postInMemoryRepository = PostInMemoryRepository.getInstance();
     favoriteInMemoryRepository = FavoriteInMemoryRepository.getInstance();
+    commentInMemoryRepository = CommentInMemoryRepository.getInstance();
     const eventPublisher = new EventPublisher();
     postService = new PostService({
-      publisher: eventPublisher,
       postRepository: postInMemoryRepository,
-      favoriteRepository: favoriteInMemoryRepository,
+      publisher: eventPublisher,
     });
     userService = new UserService({
       userRepository: userInMemoryRepository,
@@ -38,6 +61,12 @@ describe("PostService", () => {
     });
     favoriteService = new FavoriteService({
       favoriteRepository: favoriteInMemoryRepository,
+    });
+    commentService = new CommentService({
+      commentPublisher: eventPublisher,
+      commentRepository: commentInMemoryRepository,
+      postRepository: postInMemoryRepository,
+      userRepository: userInMemoryRepository,
     });
     eventPublisher.register(new PostEventObserver(postService));
     eventPublisher.register(new UserEventObserver(userService));
@@ -54,6 +83,7 @@ describe("PostService", () => {
   afterEach(async () => {
     await postInMemoryRepository.deleteAll();
     await favoriteInMemoryRepository.deleteAll();
+    await userInMemoryRepository.deleteAll();
   });
 
   it("must be able to create a post", async () => {
@@ -94,14 +124,22 @@ describe("PostService", () => {
       postId: postInstanceId,
     });
     await favoriteService.toggleFavoritePost(favorite);
-    const updatedPostFavoriteAmount = await postService
-      .findPostById(postInstanceId)
-      .then((post) => post?.reflect.favoriteAmount);
-    const updatedUserFavorites = await userService
-      .findUserById(userInstanceId)
-      .then((user) => user?.reflect.favorites);
-    expect(updatedPostFavoriteAmount).toStrictEqual(1);
-    expect(updatedUserFavorites).toStrictEqual(1);
+    const postFavoriteAmount = await favoriteService.getPostFavoriteAmount(
+      postInstanceId,
+    );
+    const userFavorites = await favoriteService.getUserFavorites(
+      userInstanceId,
+    );
+    expect(postFavoriteAmount).toStrictEqual(1);
+    expect(userFavorites).toStrictEqual(1);
+    await favoriteService.toggleFavoritePost(favorite);
+    const updatedPostFavoriteAmount =
+      await favoriteService.getPostFavoriteAmount(postInstanceId);
+    const updatedUserFavorites = await favoriteService.getUserFavorites(
+      userInstanceId,
+    );
+    expect(updatedPostFavoriteAmount).toStrictEqual(0);
+    expect(updatedUserFavorites).toStrictEqual(0);
   });
 
   it("must be able to get all created posts", async () => {

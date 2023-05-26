@@ -10,7 +10,7 @@ import { commentBuilderFactory } from "./helpers";
 
 export class CommentService implements ICommentService {
   #commentPublisher: IEventPublisher;
-  #commentRespository: ICommentRepository;
+  #commentRepository: ICommentRepository;
   #postRepository: IPostRepository;
   #userRepository: IUserRepository;
 
@@ -21,7 +21,7 @@ export class CommentService implements ICommentService {
     postRepository: IPostRepository;
   }) {
     this.#commentPublisher = implementations.commentPublisher;
-    this.#commentRespository = implementations.commentRepository;
+    this.#commentRepository = implementations.commentRepository;
     this.#postRepository = implementations.postRepository;
     this.#userRepository = implementations.userRepository;
   }
@@ -32,14 +32,14 @@ export class CommentService implements ICommentService {
     await this.#userRepository.findById(comment.owner.id!);
     await this.#postRepository.findById(comment.postId);
     const newComment = commentBuilderFactory({ comment });
-    const commentInstance = await this.#commentRespository.create(newComment);
+    const commentInstance = await this.#commentRepository.create(newComment);
     const createCommentEvent = new CreateCommentEvent(commentInstance);
     await this.#commentPublisher.emit(createCommentEvent);
     return commentInstance;
   }
 
   public async emitDeleteCommentEvent(comment: Comment): Promise<void> {
-    await this.#commentRespository.delete(comment.reflect.id!);
+    await this.#commentRepository.delete(comment.reflect.id!);
     const deleteCommentEvent = new DeleteCommentEvent(comment);
     await this.#commentPublisher.emit(deleteCommentEvent);
   }
@@ -47,7 +47,7 @@ export class CommentService implements ICommentService {
   public async findCommentById(
     commentId: string,
   ): Promise<Comment | undefined> {
-    const comment = await this.#commentRespository.findById(commentId);
+    const comment = await this.#commentRepository.findById(commentId);
     return comment;
   }
 
@@ -55,12 +55,12 @@ export class CommentService implements ICommentService {
     updatedComment: ICommentReflectObject,
   ): Promise<Comment | undefined> {
     const commentInstance = commentBuilderFactory({ comment: updatedComment });
-    await this.#commentRespository.update(commentInstance);
+    await this.#commentRepository.update(commentInstance);
     return commentInstance;
   }
 
   public async getComments(): Promise<Comment[] | undefined> {
-    const comments = await this.#commentRespository.get();
+    const comments = await this.#commentRepository.get();
     return comments;
   }
 
@@ -70,7 +70,7 @@ export class CommentService implements ICommentService {
     pageSize: number;
   }): Promise<Comment[]> {
     const { postId, skip, pageSize } = request;
-    const comments = await this.#commentRespository.getByPostIdWithPagination({
+    const comments = await this.#commentRepository.getByPostIdWithPagination({
       postId,
       skip,
       pageSize,
@@ -84,7 +84,7 @@ export class CommentService implements ICommentService {
     pageSize: number;
   }): Promise<Comment[]> {
     const { userId, skip, pageSize } = request;
-    const comments = await this.#commentRespository.getByUserIdWithPagination({
+    const comments = await this.#commentRepository.getByUserIdWithPagination({
       userId,
       skip,
       pageSize,
@@ -92,13 +92,7 @@ export class CommentService implements ICommentService {
     return comments;
   }
 
-  public async getCommentAmountFromPost(postId: string): Promise<number> {
-    const comments = await this.#commentRespository.findAllByPostId(postId);
-    if (comments) {
-      const commentAmount = comments.length;
-      return commentAmount;
-    } else {
-      return 0;
-    }
+  public async getPostCommentAmount(postId: string): Promise<number> {
+    return (await this.#commentRepository.findAllByPostId(postId)).length;
   }
 }

@@ -28,13 +28,11 @@ export class FavoriteService implements IFavoriteService {
     return newFavorite;
   }
 
-  public async getFavoriteAmountFromPost(postId: string): Promise<number> {
-    const favorites = await this.#favoriteRepository.findAllByPostId(postId);
-    if (favorites) {
-      const favoriteAmount = favorites.length;
-      return favoriteAmount;
-    } else {
-      return 0;
-    }
+  public async getPostFavoriteAmount(postId: string): Promise<number> {
+    return (await this.#favoriteRepository.findAllByPostId(postId)).length;
+  }
+
+  public async getUserFavorites(userId: string): Promise<number> {
+    return (await this.#favoriteRepository.findAllByUserId(userId)).length;
   }
 }

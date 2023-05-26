@@ -21,7 +21,6 @@ export interface IUserService {
     userId: string;
     socialLinks: ISocialLinks;
   }): Promise<User | undefined>; 
-  getFavorites(userId: string): Promise<number>;
   // getCommentAmount(request: {
   //   postId: string;
   //   commentService: ICommentService;

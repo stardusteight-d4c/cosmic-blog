@@ -2,13 +2,16 @@ import { ICommentRepository } from "@/domain/comment/@interfaces/ICommentReposit
 import { Comment } from "@/domain/comment";
 
 export class CommentInMemoryRepository implements ICommentRepository {
+  private static instance: CommentInMemoryRepository;
   #comments: Map<string, Comment> = new Map();
 
-  public get comments() {
-    throw new Error("Cannot access comments property directly.");
-  }
-  public set comments(_value: string) {
-    throw new Error("Cannot modify comments property directly.");
+  private constructor() {}
+
+  public static getInstance(): CommentInMemoryRepository {
+    if (!CommentInMemoryRepository.instance) {
+      CommentInMemoryRepository.instance = new CommentInMemoryRepository();
+    }
+    return CommentInMemoryRepository.instance;
   }
 
   private async replace(updatedComment: Comment): Promise<Comment> {
@@ -40,6 +43,10 @@ export class CommentInMemoryRepository implements ICommentRepository {
     const comment = await this.findById(commentId);
     this.#comments.delete(commentId);
     return comment!;
+  }
+
+  public async deleteAll(): Promise<void> {
+    this.#comments.clear();
   }
 
   public async findById(commentId: string): Promise<Comment | undefined> {
@@ -86,5 +93,12 @@ export class CommentInMemoryRepository implements ICommentRepository {
       }
     }
     return comments;
+  }
+
+  public get comments() {
+    throw new Error("Cannot access comments property directly.");
+  }
+  public set comments(_value: string) {
+    throw new Error("Cannot modify comments property directly.");
   }
 }

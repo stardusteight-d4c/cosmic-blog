@@ -7,8 +7,4 @@ export {
   IPostRepository,
   IPostService,
 } from "./@interfaces";
-export {
-  postBuilderFactory,
-  toggleFavorite,
-  handleCommentAmountPost,
-} from "./helpers";
+export { postBuilderFactory, handleCommentAmountPost } from "./helpers";

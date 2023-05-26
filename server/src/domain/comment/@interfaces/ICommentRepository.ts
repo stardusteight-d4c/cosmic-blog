@@ -5,6 +5,7 @@ export interface ICommentRepository {
   update(updatedComment: Comment): Promise<Comment>;
   get(): Promise<Comment[]>;
   delete(commentId: string): Promise<Comment>;
+  deleteAll(): Promise<void>;
   findById(commentId: string): Promise<Comment | undefined>;
   getByPostIdWithPagination(request: {
     postId: string;
@@ -16,5 +17,5 @@ export interface ICommentRepository {
     skip: number;
     pageSize: number;
   }): Promise<Comment[]>;
-  findAllByPostId(postId: string): Promise<Comment[]>
+  findAllByPostId(postId: string): Promise<Comment[]>;
 }

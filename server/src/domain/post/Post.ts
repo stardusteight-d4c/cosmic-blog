@@ -11,8 +11,6 @@ export class Post {
   #postedIn: Date;
   #lastChange?: Date | undefined;
   #author: User;
-  #favoriteAmount: number; 
-  #commentAmount: number;
 
   constructor(properties: IPostReflectObject) {
     this.#id = properties.id!;
@@ -23,8 +21,6 @@ export class Post {
     this.#postedIn = properties.postedIn;
     this.#lastChange = properties.lastChange;
     this.#author = new User(properties.author);
-    this.#favoriteAmount = properties.favoriteAmount!;
-    this.#commentAmount = properties.commentAmount ?? 0;
   }
 
   public get reflect(): IPostReflectObject {
@@ -37,8 +33,6 @@ export class Post {
       postedIn: this.#postedIn,
       lastChange: this.#lastChange,
       author: this.#author.reflect,
-      favoriteAmount: this.#favoriteAmount,
-      commentAmount: this.#commentAmount,
     };
   }
 

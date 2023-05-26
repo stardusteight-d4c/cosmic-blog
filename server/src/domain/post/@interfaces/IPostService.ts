@@ -1,7 +1,5 @@
 import { Post } from "..";
-import {
-  ICommentService,
-} from "@/domain/comment";
+import { ICommentService } from "@/domain/comment";
 import { IPostReflectObject } from "./IPostReflectObject";
 
 export interface IPostService {
@@ -14,9 +12,4 @@ export interface IPostService {
     skip: number;
     pageSize: number;
   }): Promise<Post[]>;
-  getFavoriteAmount(postId: string): Promise<number>;
-  getCommentAmount(request: {
-    postId: string;
-    commentService: ICommentService;
-  }): Promise<number>;
 }

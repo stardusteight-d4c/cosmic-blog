@@ -1,13 +1,16 @@
 import { User, IUserRepository } from "../../domain/user";
 
 export class UserInMemoryRepository implements IUserRepository {
+  private static instance: UserInMemoryRepository;
   #users: Map<string, User> = new Map();
 
-  public get users() {
-    throw new Error("Cannot access users property directly.");
-  }
-  public set users(_value: string) {
-    throw new Error("Cannot modify users property directly.");
+  private constructor() {}
+
+  public static getInstance(): UserInMemoryRepository {
+    if (!UserInMemoryRepository.instance) {
+      UserInMemoryRepository.instance = new UserInMemoryRepository();
+    }
+    return UserInMemoryRepository.instance;
   }
 
   private async replace(updatedUser: User): Promise<User> {
@@ -31,6 +34,10 @@ export class UserInMemoryRepository implements IUserRepository {
     return user!;
   }
 
+  public async deleteAll(): Promise<void> {
+    this.#users.clear();
+  }
+
   public async findById(userId: string): Promise<User | undefined> {
     const user = this.#users.get(userId);
     if (!user) {
@@ -48,5 +55,12 @@ export class UserInMemoryRepository implements IUserRepository {
   public async update(updatedUser: User): Promise<User> {
     const user = await this.replace(updatedUser);
     return user;
+  }
+
+  public get users() {
+    throw new Error("Cannot access users property directly.");
+  }
+  public set users(_value: string) {
+    throw new Error("Cannot modify users property directly.");
   }
 }

@@ -1,12 +1,11 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import {
-  User,
-  UserService,
-} from "@/domain/user";
+import { User, UserService } from "@/domain/user";
 import { Post, IPostReflectObject, postBuilderFactory } from "..";
 import { IObjectFactory, objectFactory } from "@/domain/@utils/objectFactory";
-import { EventPublisher } from "@/domain/@utils/EventPublisher";
-import { PostInMemoryRepository, UserInMemoryRepository } from "@/domain/@in-memory-repositories";
+import {
+  FavoriteInMemoryRepository,
+  UserInMemoryRepository,
+} from "@/domain/@in-memory-repositories";
 
 let factory: IObjectFactory;
 let userInstance: User;
@@ -14,13 +13,11 @@ let newPost: IPostReflectObject;
 
 describe("PostBuilder", () => {
   beforeEach(async () => {
-    const userInMemoryRepository = new UserInMemoryRepository();
-    const postInMemoryRepository = new PostInMemoryRepository();
-    const eventPublisher = new EventPublisher();
+    const userInMemoryRepository = UserInMemoryRepository.getInstance();
+    const favoriteInMemoryRepository = FavoriteInMemoryRepository.getInstance();
     const userService = new UserService({
-      userPublisher: eventPublisher,
       userRepository: userInMemoryRepository,
-      postRepository: postInMemoryRepository,
+      favoriteRepository: favoriteInMemoryRepository,
     });
     factory = objectFactory();
     const user = factory.getUser();
