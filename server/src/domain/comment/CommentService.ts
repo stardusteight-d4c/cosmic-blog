@@ -1,47 +1,24 @@
-import { IEventPublisher } from "../@interfaces";
-import { IPostRepository } from "../post";
-import { IUserRepository } from "../user";
 import { ICommentRepository } from "./@interfaces";
 import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 import { ICommentService } from "./@interfaces/ICommentService";
 import { Comment } from "./Comment";
-import { CreateCommentEvent, DeleteCommentEvent } from "./CommentEvents";
 import { commentBuilderFactory } from "./helpers";
 
 export class CommentService implements ICommentService {
-  #commentPublisher: IEventPublisher;
   #commentRepository: ICommentRepository;
-  #postRepository: IPostRepository;
-  #userRepository: IUserRepository;
 
-  constructor(implementations: {
-    commentPublisher: IEventPublisher;
-    commentRepository: ICommentRepository;
-    userRepository: IUserRepository;
-    postRepository: IPostRepository;
-  }) {
-    this.#commentPublisher = implementations.commentPublisher;
+  constructor(implementations: { commentRepository: ICommentRepository }) {
     this.#commentRepository = implementations.commentRepository;
-    this.#postRepository = implementations.postRepository;
-    this.#userRepository = implementations.userRepository;
   }
 
-  public async emitCreateCommentEvent(
-    comment: ICommentReflectObject,
-  ): Promise<Comment> {
-    await this.#userRepository.findById(comment.owner.id!);
-    await this.#postRepository.findById(comment.postId);
+  public async createComment(comment: ICommentReflectObject): Promise<Comment> {
     const newComment = commentBuilderFactory({ comment });
     const commentInstance = await this.#commentRepository.create(newComment);
-    const createCommentEvent = new CreateCommentEvent(commentInstance);
-    await this.#commentPublisher.emit(createCommentEvent);
     return commentInstance;
   }
 
-  public async emitDeleteCommentEvent(comment: Comment): Promise<void> {
+  public async deleteComment(comment: Comment): Promise<void> {
     await this.#commentRepository.delete(comment.reflect.id!);
-    const deleteCommentEvent = new DeleteCommentEvent(comment);
-    await this.#commentPublisher.emit(deleteCommentEvent);
   }
 
   public async findCommentById(
@@ -94,5 +71,9 @@ export class CommentService implements ICommentService {
 
   public async getPostCommentAmount(postId: string): Promise<number> {
     return (await this.#commentRepository.findAllByPostId(postId)).length;
+  }
+
+  public async getUserCommentAmount(userId: string): Promise<number> {
+    return (await this.#commentRepository.findAllByUserId(userId)).length;
   }
 }

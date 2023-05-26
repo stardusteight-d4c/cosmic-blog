@@ -4,7 +4,8 @@ import {
 } from "@/domain/comment";
 
 export interface ICommentService {
-  emitCreateCommentEvent(comment: ICommentReflectObject): Promise<Comment>;
+  createComment(comment: ICommentReflectObject): Promise<Comment>;
+  deleteComment(comment: Comment): Promise<void>;
   findCommentById(commentId: string): Promise<Comment | undefined>;
   updateComment(
     updatedComment: ICommentReflectObject,
@@ -20,6 +21,6 @@ export interface ICommentService {
     skip: number;
     pageSize: number;
   }): Promise<Comment[]>;
-  emitDeleteCommentEvent(comment: Comment): Promise<void>;
   getPostCommentAmount(postId: string): Promise<number>
+  getUserCommentAmount(userId: string): Promise<number>
 }

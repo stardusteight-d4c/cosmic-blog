@@ -11,11 +11,10 @@ import {
   IPostRepository,
   IPostService,
 } from "../@interfaces";
-import { Post, PostService, PostEventObserver } from "..";
+import { Post, PostService } from "..";
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
 import { EventPublisher } from "@domain/@utils/EventPublisher";
 import {
-  CommentInMemoryRepository,
   FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
@@ -25,31 +24,20 @@ import {
   IFavoriteRepository,
   IFavoriteService,
 } from "@/domain/favorite";
-import {
-  CommentService,
-  ICommentRepository,
-  ICommentService,
-} from "@/domain/comment";
 
 let postService: IPostService;
 let userService: IUserService;
-let favoriteService: IFavoriteService;
-let commentService: ICommentService;
 let newPost: IPostReflectObject;
 let userInstance: User;
 let postInstance: Post;
 let factory: IObjectFactory;
 let postInMemoryRepository: IPostRepository;
-let favoriteInMemoryRepository: IFavoriteRepository;
 let userInMemoryRepository: IUserRepository;
-let commentInMemoryRepository: ICommentRepository;
 
 describe("PostService", () => {
   beforeEach(async () => {
     userInMemoryRepository = UserInMemoryRepository.getInstance();
     postInMemoryRepository = PostInMemoryRepository.getInstance();
-    favoriteInMemoryRepository = FavoriteInMemoryRepository.getInstance();
-    commentInMemoryRepository = CommentInMemoryRepository.getInstance();
     const eventPublisher = new EventPublisher();
     postService = new PostService({
       postRepository: postInMemoryRepository,
@@ -57,18 +45,7 @@ describe("PostService", () => {
     });
     userService = new UserService({
       userRepository: userInMemoryRepository,
-      favoriteRepository: favoriteInMemoryRepository,
     });
-    favoriteService = new FavoriteService({
-      favoriteRepository: favoriteInMemoryRepository,
-    });
-    commentService = new CommentService({
-      commentPublisher: eventPublisher,
-      commentRepository: commentInMemoryRepository,
-      postRepository: postInMemoryRepository,
-      userRepository: userInMemoryRepository,
-    });
-    eventPublisher.register(new PostEventObserver(postService));
     eventPublisher.register(new UserEventObserver(userService));
     factory = objectFactory();
     const user = factory.getUser();
@@ -82,7 +59,6 @@ describe("PostService", () => {
   });
   afterEach(async () => {
     await postInMemoryRepository.deleteAll();
-    await favoriteInMemoryRepository.deleteAll();
     await userInMemoryRepository.deleteAll();
   });
 
@@ -114,32 +90,6 @@ describe("PostService", () => {
     );
     expect(findPost!.reflect.id).toStrictEqual(postInstance.reflect.id);
     expect(findPost!.reflect).toStrictEqual(postInstance.reflect);
-  });
-
-  it("must be able to favorite a post", async () => {
-    const postInstanceId = postInstance.reflect.id!;
-    const userInstanceId = userInstance.reflect.id!;
-    const favorite = factory.getFavorite({
-      userId: userInstanceId,
-      postId: postInstanceId,
-    });
-    await favoriteService.toggleFavoritePost(favorite);
-    const postFavoriteAmount = await favoriteService.getPostFavoriteAmount(
-      postInstanceId,
-    );
-    const userFavorites = await favoriteService.getUserFavorites(
-      userInstanceId,
-    );
-    expect(postFavoriteAmount).toStrictEqual(1);
-    expect(userFavorites).toStrictEqual(1);
-    await favoriteService.toggleFavoritePost(favorite);
-    const updatedPostFavoriteAmount =
-      await favoriteService.getPostFavoriteAmount(postInstanceId);
-    const updatedUserFavorites = await favoriteService.getUserFavorites(
-      userInstanceId,
-    );
-    expect(updatedPostFavoriteAmount).toStrictEqual(0);
-    expect(updatedUserFavorites).toStrictEqual(0);
   });
 
   it("must be able to get all created posts", async () => {

@@ -18,4 +18,5 @@ export interface ICommentRepository {
     pageSize: number;
   }): Promise<Comment[]>;
   findAllByPostId(postId: string): Promise<Comment[]>;
+  findAllByUserId(userId: string): Promise<Comment[]>;
 }

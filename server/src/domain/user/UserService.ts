@@ -7,18 +7,12 @@ import {
   ISocialLinks,
 } from ".";
 import Validators from "@/domain/@utils/validators";
-import { IFavoriteRepository } from "../favorite";
 
 export class UserService implements IUserService {
   #userRepository: IUserRepository;
-  #favoriteRepository: IFavoriteRepository;
 
-  constructor(implementations: {
-    userRepository: IUserRepository;
-    favoriteRepository: IFavoriteRepository;
-  }) {
+  constructor(implementations: { userRepository: IUserRepository }) {
     this.#userRepository = implementations.userRepository;
-    this.#favoriteRepository = implementations.favoriteRepository;
   }
 
   public async createUser(user: IUserReflectObject): Promise<User> {
@@ -115,27 +109,4 @@ export class UserService implements IUserService {
     await this.#userRepository.update(updatedUser);
     return updatedUser;
   }
-
-  // public async handlerCreateCommentEvent(
-  //   event: CreateCommentEvent,
-  // ): Promise<Comment | undefined> {
-  //   const { comment } = event;
-  //   const result = await handleCommentedPosts({
-  //     userRepository: this.#userRepository,
-  //     comment,
-  //     action: "sum",
-  //   });
-  //   return result;
-  // }
-
-  // public async handlerDeleteCommentEvent(
-  //   event: DeleteCommentEvent,
-  // ): Promise<void> {
-  //   const { comment } = event;
-  //   handleCommentedPosts({
-  //     userRepository: this.#userRepository,
-  //     comment,
-  //     action: "sub",
-  //   });
-  // }
 }

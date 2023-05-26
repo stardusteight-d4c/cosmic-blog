@@ -1,4 +1,3 @@
-import { IEventPublisher } from "@/domain/@interfaces";
 import { Favorite, IFavoriteRepository, IFavoriteService } from ".";
 import Validators from "@/domain/@utils/validators";
 
@@ -32,7 +31,7 @@ export class FavoriteService implements IFavoriteService {
     return (await this.#favoriteRepository.findAllByPostId(postId)).length;
   }
 
-  public async getUserFavorites(userId: string): Promise<number> {
+  public async getUserFavoriteAmount(userId: string): Promise<number> {
     return (await this.#favoriteRepository.findAllByUserId(userId)).length;
   }
 }

@@ -1,15 +1,19 @@
-import { beforeEach, describe, expect, it } from "vitest";
-import { User, UserEventObserver, UserService } from "@domain/user";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+  IUserRepository,
+  User,
+  UserEventObserver,
+  UserService,
+} from "@domain/user";
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
 import {
   IPostReflectObject,
+  IPostRepository,
   Post,
-  PostEventObserver,
   PostService,
 } from "@domain/post";
 import { CommentService } from "../CommentService";
 import { Comment } from "../Comment";
-import { CommentEventObserver } from "../CommentEventObserver";
 import { commentBuilderFactory } from "../helpers";
 import { EventPublisher } from "@domain/@utils/EventPublisher";
 import {
@@ -17,6 +21,7 @@ import {
   PostInMemoryRepository,
   UserInMemoryRepository,
 } from "@domain/@in-memory-repositories";
+import { ICommentRepository } from "../@interfaces";
 
 let commentService: CommentService;
 let postService: PostService;
@@ -25,33 +30,24 @@ let newPost: IPostReflectObject;
 let userInstance: User;
 let postInstance: Post;
 let factory: IObjectFactory;
+let userInMemoryRepository: IUserRepository;
+let postInMemoryRepository: IPostRepository;
+let commentInMemoryRepository: ICommentRepository;
 
 describe("CommentService", () => {
   beforeEach(async () => {
-    const userInMemoryRepository = new UserInMemoryRepository();
-    const postInMemoryRepository = new PostInMemoryRepository();
-    const commentInMemoryRepository = new CommentInMemoryRepository();
-    const eventPublisher = new EventPublisher();
+    userInMemoryRepository = UserInMemoryRepository.getInstance();
+    postInMemoryRepository = PostInMemoryRepository.getInstance();
+    commentInMemoryRepository = CommentInMemoryRepository.getInstance();
     commentService = new CommentService({
-      commentPublisher: eventPublisher,
       commentRepository: commentInMemoryRepository,
-      postRepository: postInMemoryRepository,
-      userRepository: userInMemoryRepository,
     });
     postService = new PostService({
-      postPublisher: eventPublisher,
       postRepository: postInMemoryRepository,
-      userRepository: userInMemoryRepository,
     });
     userService = new UserService({
-      userPublisher: eventPublisher,
       userRepository: userInMemoryRepository,
-      postRepository: postInMemoryRepository,
     });
-    eventPublisher.register(new PostEventObserver(postService));
-    eventPublisher.register(new UserEventObserver(userService));
-    eventPublisher.register(new CommentEventObserver(commentService));
-
     factory = objectFactory();
     const user = factory.getUser();
     const post = factory.getPost();
@@ -62,6 +58,11 @@ describe("CommentService", () => {
     };
     postInstance = await postService.createPost(newPost);
   });
+  afterEach(async () => {
+    await postInMemoryRepository.deleteAll();
+    await userInMemoryRepository.deleteAll();
+    await commentInMemoryRepository.deleteAll();
+  });
 
   it("must be able comment on a post", async () => {
     const postInstanceId = postInstance.reflect.id!;
@@ -69,30 +70,32 @@ describe("CommentService", () => {
       postId: postInstanceId,
       owner: userInstance.reflect,
     });
-    const comment = await commentService.emitCreateCommentEvent(commentObj);
+    const comment = await commentService.createComment(commentObj);
     const updatedCommentInstanceReflect = await commentService
       .findCommentById(comment.reflect.id!)
       .then((comment) => comment?.reflect);
     expect(updatedCommentInstanceReflect?.content).toStrictEqual(
       commentObj.content,
     );
-    const updatedPostInstanceReflect = await postService
-      .findPostById(postInstanceId)
-      .then((post) => post?.reflect!);
+    const postCommentAmount = await commentService.getPostCommentAmount(
+      postInstanceId,
+    );
     expect(comment).toBeInstanceOf(Comment);
-    expect(updatedPostInstanceReflect.commentAmount).toStrictEqual(1);
+    expect(postCommentAmount).toStrictEqual(1);
     const commentObj2 = factory.getComment({
       postId: postInstanceId,
       owner: userInstance.reflect,
       content: "This post is amazing! Great job!",
     });
-    await commentService.emitCreateCommentEvent(commentObj2);
-    const updatedPostInstance = await postService.findPostById(postInstanceId);
-    const updatedUserInstance = await userService.findUserById(
+    await commentService.createComment(commentObj2);
+    const updatedPostCommentAmount = await commentService.getPostCommentAmount(
+      postInstanceId,
+    );
+    const updatedUserCommentAmount = await commentService.getUserCommentAmount(
       userInstance.reflect.id!,
     );
-    expect(updatedPostInstance?.reflect.commentAmount).toStrictEqual(2);
-    expect(updatedUserInstance?.reflect.commentedPosts).toStrictEqual(2);
+    expect(updatedPostCommentAmount).toStrictEqual(2);
+    expect(updatedUserCommentAmount).toStrictEqual(2);
   });
 
   it("must be able find a comment by ID", async () => {
@@ -101,7 +104,7 @@ describe("CommentService", () => {
       postId: postInstanceId,
       owner: userInstance.reflect,
     });
-    const comment = await commentService.emitCreateCommentEvent(commentObj);
+    const comment = await commentService.createComment(commentObj);
     const getedComment = await commentService.findCommentById(
       comment.reflect.id!,
     );
@@ -114,7 +117,7 @@ describe("CommentService", () => {
       postId: postInstanceId,
       owner: userInstance.reflect,
     });
-    const comment = await commentService.emitCreateCommentEvent(commentObj);
+    const comment = await commentService.createComment(commentObj);
     const updatedComment = commentBuilderFactory({
       comment: comment.reflect,
       update: { field: "content", newData: "Updating comment..." },
@@ -136,20 +139,20 @@ describe("CommentService", () => {
         postId: postInstanceId,
         owner: userInstance.reflect,
       });
-      await commentService.emitCreateCommentEvent(commentObj);
+      await commentService.createComment(commentObj);
     }
-    const secondaryPostInstance = await postService.createPost(
-      newPost,
-    );
+    const secondaryPostInstance = await postService.createPost(newPost);
     const commentObj = factory.getComment({
       postId: secondaryPostInstance.reflect.id!,
       owner: userInstance.reflect,
     });
-    await commentService.emitCreateCommentEvent(commentObj);
-    const updatedPostInstance = await postService.findPostById(postInstanceId);
+    await commentService.createComment(commentObj);
+    const postCommentAmount = await commentService.getPostCommentAmount(
+      postInstanceId,
+    );
     const allComments = await commentService.getComments();
     expect(allComments?.length).toStrictEqual(7);
-    expect(updatedPostInstance?.reflect.commentAmount).toStrictEqual(6);
+    expect(postCommentAmount).toStrictEqual(6);
     const skip = 3;
     const pageSize = 3;
     const paginatedComments =
@@ -170,7 +173,7 @@ describe("CommentService", () => {
         postId: postInstance.reflect.id!,
         owner: userInstance.reflect,
       });
-      await commentService.emitCreateCommentEvent(commentObj);
+      await commentService.createComment(commentObj);
     }
     const user = factory.getUser();
     const secondaryUserInstance = await userService.createUser(user);
@@ -178,7 +181,7 @@ describe("CommentService", () => {
       postId: postInstance.reflect.id!,
       owner: secondaryUserInstance.reflect,
     });
-    await commentService.emitCreateCommentEvent(commentObj2);
+    await commentService.createComment(commentObj2);
     const skip = 0;
     const pageSize = 3;
     const paginatedComments =
@@ -198,29 +201,27 @@ describe("CommentService", () => {
       postId: postInstance.reflect.id!,
       owner: userInstance.reflect,
     });
-    const commentInstance = await commentService.emitCreateCommentEvent(
-      commentObj,
-    );
-    const currentPostInstance = await postService.findPostById(
+    const commentInstance = await commentService.createComment(commentObj);
+    const postCommentAmount = await commentService.getPostCommentAmount(
       commentInstance.reflect.postId,
     );
-    const currentUserInstance = await userService.findUserById(
+    const userCommentAmount = await commentService.getUserCommentAmount(
       commentInstance.reflect.owner.id!,
     );
     const comments = await commentService.getComments();
-    expect(currentPostInstance?.reflect.commentAmount).toStrictEqual(1);
-    expect(currentUserInstance?.reflect.commentedPosts).toStrictEqual(1);
+    expect(postCommentAmount).toStrictEqual(1);
+    expect(userCommentAmount).toStrictEqual(1);
     expect(comments?.length).toStrictEqual(1);
-    await commentService.emitDeleteCommentEvent(commentInstance);
-    const updatedPostInstance = await postService.findPostById(
+    await commentService.deleteComment(commentInstance);
+    const updatedPostCommentAmount = await commentService.getPostCommentAmount(
       commentInstance.reflect.postId,
     );
-    const updatedUserInstance = await userService.findUserById(
+    const updatedUserCommentAmount = await commentService.getUserCommentAmount(
       commentInstance.reflect.owner.id!,
     );
     const updatedComments = await commentService.getComments();
-    expect(updatedPostInstance?.reflect.commentAmount).toStrictEqual(0);
-    expect(updatedUserInstance?.reflect.commentedPosts).toStrictEqual(0);
+    expect(updatedPostCommentAmount).toStrictEqual(0);
+    expect(updatedUserCommentAmount).toStrictEqual(0);
     expect(updatedComments?.length).toStrictEqual(0);
   });
 });

@@ -9,4 +9,4 @@ export {
   ISocialLinks,
   TUserRole,
 } from "./@interfaces";
-export { userBuilderFactory, toggleFavorite } from "./helpers";
+export { userBuilderFactory } from "./helpers";

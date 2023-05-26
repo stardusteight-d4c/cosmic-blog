@@ -88,7 +88,17 @@ export class CommentInMemoryRepository implements ICommentRepository {
   public async findAllByPostId(postId: string): Promise<Comment[]> {
     const comments: Comment[] = [];
     for (const comment of this.#comments.values()) {
-      if (comment.postId === postId) {
+      if (comment.reflect.postId === postId) {
+        comments.push(comment);
+      }
+    }
+    return comments;
+  }
+
+  public async findAllByUserId(userId: string): Promise<Comment[]> {
+    const comments: Comment[] = [];
+    for (const comment of this.#comments.values()) {
+      if (comment.reflect.owner.id === userId) {
         comments.push(comment);
       }
     }

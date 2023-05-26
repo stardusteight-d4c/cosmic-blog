@@ -10,8 +10,6 @@ export class UserBuilder {
   #avatar: string | undefined;
   #userRole: TUserRole;
   #socialLinks: ISocialLinks | undefined;
-  #favorites: number;
-  #commentedPosts: number;
 
   public setId(id: string) {
     this.#id = id;
@@ -51,20 +49,6 @@ export class UserBuilder {
     return this;
   }
 
-  public setFavorites(favorites: number): UserBuilder {
-    this.#favorites = favorites;
-    return this;
-  }
-
-  public setCommentedPosts(commentedPosts: number): UserBuilder {
-    if (commentedPosts === undefined) {
-      this.#commentedPosts = 0;
-      return this;
-    }
-    this.#commentedPosts = commentedPosts;
-    return this;
-  }
-
   public build(): User {
     if (!this.#email) {
       throw new Error("Email is required.");
@@ -83,8 +67,6 @@ export class UserBuilder {
       avatar: this.#avatar ?? "AVATAR01",
       userRole: this.#userRole ?? "default-user",
       socialLinks: this.#socialLinks,
-      favorites: this.#favorites ?? [],
-      commentedPosts: this.#commentedPosts,
     });
   }
 }

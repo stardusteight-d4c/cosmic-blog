@@ -2,10 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { User, UserService } from "@/domain/user";
 import { Post, IPostReflectObject, postBuilderFactory } from "..";
 import { IObjectFactory, objectFactory } from "@/domain/@utils/objectFactory";
-import {
-  FavoriteInMemoryRepository,
-  UserInMemoryRepository,
-} from "@/domain/@in-memory-repositories";
+import { UserInMemoryRepository } from "@/domain/@in-memory-repositories";
 
 let factory: IObjectFactory;
 let userInstance: User;
@@ -14,10 +11,8 @@ let newPost: IPostReflectObject;
 describe("PostBuilder", () => {
   beforeEach(async () => {
     const userInMemoryRepository = UserInMemoryRepository.getInstance();
-    const favoriteInMemoryRepository = FavoriteInMemoryRepository.getInstance();
     const userService = new UserService({
       userRepository: userInMemoryRepository,
-      favoriteRepository: favoriteInMemoryRepository,
     });
     factory = objectFactory();
     const user = factory.getUser();
@@ -31,12 +26,6 @@ describe("PostBuilder", () => {
 
   it("must be able return an instance of Post", () => {
     expect(postBuilderFactory({ post: newPost })).toBeInstanceOf(Post);
-  });
-
-  it("must be able start properly for non-mandatory values", () => {
-    const postIstance = postBuilderFactory({ post: newPost });
-    expect(postIstance.reflect.favoriteAmount).toStrictEqual(0);
-    expect(postIstance.reflect.commentAmount).toStrictEqual(0);
   });
 
   it("must be able postIstance.reflect.author be equal userInstance.reflect", () => {

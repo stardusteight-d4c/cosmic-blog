@@ -6,5 +6,5 @@ export interface IFavoriteService {
     userId: string;
   }): Promise<Favorite | undefined>;
   getPostFavoriteAmount(postId: string): Promise<number>;
-  getUserFavorites(userId: string): Promise<number>;
+  getUserFavoriteAmount(userId: string): Promise<number>;
 }

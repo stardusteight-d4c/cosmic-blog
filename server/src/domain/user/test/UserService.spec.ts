@@ -1,30 +1,34 @@
-import { beforeEach, describe, expect, it } from "vitest";
-import { ISocialLinks, IUserReflectObject, User, UserService } from "../index";
-import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
-import { EventPublisher } from "@domain/@utils/EventPublisher";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  PostInMemoryRepository,
+  ISocialLinks,
+  IUserReflectObject,
+  IUserRepository,
+  User,
+  UserService,
+} from "../index";
+import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
+import {
   UserInMemoryRepository,
 } from "@domain/@in-memory-repositories";
 
-let userService: UserService;
 let userInstance: User;
+let userService: UserService;
+let userInMemoryRepository: IUserRepository;
 let user: IUserReflectObject;
 let factory: IObjectFactory;
 
 describe("UserService", () => {
   beforeEach(async () => {
-    const userInMemoryRepository = new UserInMemoryRepository();
-    const postInMemoryRepository = new PostInMemoryRepository();
-    const userPublisher = new EventPublisher();
+    userInMemoryRepository = UserInMemoryRepository.getInstance();
     userService = new UserService({
-      userPublisher,
       userRepository: userInMemoryRepository,
-      postRepository: postInMemoryRepository,
     });
     factory = objectFactory();
     user = factory.getUser();
     userInstance = await userService.createUser(user);
+  });
+  afterEach(async () => {
+    await userInMemoryRepository.deleteAll();
   });
 
   it("must be able to create a user", async () => {
