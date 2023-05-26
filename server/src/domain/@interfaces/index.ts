@@ -1,3 +1,3 @@
-export { IEvent } from "./IEvent";
-export { IEventObserver } from "./IEventObserver";
-export { IEventPublisher } from "./IEventPublisher";
+export { ICommand } from "./ICommand";
+export { IPublisher } from "./IPublisher";
+export { IObserver } from "./IObserver";

@@ -6,15 +6,15 @@ import {
   postBuilderFactory,
 } from ".";
 import Validators from "@/domain/@utils/validators";
-import { IEventPublisher } from "../@interfaces";
+import { IPublisher } from "../@interfaces";
 
 export class PostService implements IPostService {
   #postRepository: IPostRepository;
-  #publisher?: IEventPublisher;
+  #publisher?: IPublisher;
 
   constructor(implementations: {
     postRepository: IPostRepository;
-    publisher?: IEventPublisher;
+    publisher?: IPublisher;
   }) {
     this.#postRepository = implementations.postRepository;
     if (implementations.publisher) {

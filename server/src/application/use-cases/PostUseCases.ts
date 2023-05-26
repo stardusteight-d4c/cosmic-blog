@@ -3,24 +3,34 @@ import { IPostReflectObject, Post, PostService } from "@/domain/post";
 export class PostUseCases {
   constructor(private postService: PostService) {}
 
-  async createPost(request: IPostReflectObject): Promise<Post> {
-    const post = await this.postService.createPost(request);
-    return post;
+  async create(post: IPostReflectObject): Promise<Post> {
+    return await this.postService.createPost(post);
   }
 
-  async findPostById(request: string): Promise<Post | undefined> {
-    const post = await this.postService.findPostById(request);
-    return post;
+  async update(updatedPost: IPostReflectObject): Promise<Post | undefined> {
+    return await this.postService.updatePost(updatedPost);
   }
 
-  async toggleFavoritePost(request: {
-    userId: string;
-    postId: string;
-  }): Promise<Post | undefined> {
-    const favoritedPost = await this.postService.emitFavoritePostEvent(
-      request.userId,
-      request.postId,
-    );
-    return favoritedPost;
+  async getById(postId: string): Promise<Post | undefined> {
+    return await this.postService.findPostById(postId);
+  }
+
+  async getByTitle(title: string): Promise<Post | undefined> {
+    return await this.postService.findPostByTitle(title);
+  }
+
+  async getWithPagination(request: {
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[]> {
+    const { skip, pageSize } = request;
+    return await this.postService.getPostsByPagination({
+      skip,
+      pageSize,
+    });
+  }
+
+  async getAll(): Promise<Post[]> {
+    return await this.postService.getPosts();
   }
 }

@@ -13,17 +13,11 @@ import {
 } from "../@interfaces";
 import { Post, PostService } from "..";
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
-import { EventPublisher } from "@domain/@utils/EventPublisher";
 import {
-  FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
 } from "@domain/@in-memory-repositories";
-import {
-  FavoriteService,
-  IFavoriteRepository,
-  IFavoriteService,
-} from "@/domain/favorite";
+import { Publisher } from "@/domain/@utils/Publisher";
 
 let postService: IPostService;
 let userService: IUserService;
@@ -38,7 +32,7 @@ describe("PostService", () => {
   beforeEach(async () => {
     userInMemoryRepository = UserInMemoryRepository.getInstance();
     postInMemoryRepository = PostInMemoryRepository.getInstance();
-    const eventPublisher = new EventPublisher();
+    const eventPublisher = new Publisher();
     postService = new PostService({
       postRepository: postInMemoryRepository,
       publisher: eventPublisher,

@@ -1,23 +1,22 @@
 import {
   IPostReflectObject,
   IPostRepository,
-  PostEventPublisher,
-  PostEventObserver,
   PostService,
 } from "@/domain/post";
 import {
   IUserReflectObject,
   IUserRepository,
-  UserEventObserver,
-  UserEventPublisher,
   UserService,
 } from "@/domain/user";
 import { CreateSessionTokenAdapter } from "./adapters/create-session-token";
 import { MyJWT } from "./helpers";
 import { UserUseCases } from "./use-cases/UserUseCases";
 import { PostUseCases } from "./use-cases/PostUseCases";
-import { UserInMemoryRepository } from "./in-memory-repositories/UserInMemoryRepository";
-import { PostInMemoryRepository } from "./in-memory-repositories/PostInMemoryRepository";
+import {
+  PostInMemoryRepository,
+  UserInMemoryRepository,
+} from "@/domain/@in-memory-repositories";
+import { objectFactory } from "@/domain/@utils/objectFactory";
 
 export interface Initialization {
   services: {
@@ -36,20 +35,12 @@ export class UseCasesApplication {
   ) {}
 
   initialization() {
-    const userPublisher = new UserEventPublisher();
-    const postPublisher = new PostEventPublisher();
     const userService = new UserService({
-      userPublisher: userPublisher,
       userRepository: this.userRepository,
-      postRepository: this.postRepository,
     });
     const postService = new PostService({
-      postPublisher: postPublisher,
       postRepository: this.postRepository,
-      userRepository: this.userRepository,
     });
-    postPublisher.register(new UserEventObserver(userService));
-    postPublisher.register(new PostEventObserver(postService));
     const initialization: Initialization = {
       services: {
         userService,
@@ -70,8 +61,9 @@ export class UseCasesApplication {
 }
 
 async function main() {
-  const userInMemoryRepository = new UserInMemoryRepository();
-  const postInMemoryRepository = new PostInMemoryRepository();
+  const userInMemoryRepository = UserInMemoryRepository.getInstance();
+  const postInMemoryRepository = PostInMemoryRepository.getInstance();
+  const factory = objectFactory();
 
   const app = new UseCasesApplication(
     userInMemoryRepository,
@@ -80,52 +72,27 @@ async function main() {
 
   // Initialize Application
   app.initialization();
+  const userUseCases = app.getUserUsesCases();
+  const postUseCases = app.getPostUsesCases();
 
-  // Create User
-  const myUser: IUserReflectObject = {
-    username: "johndoe8",
-    email: "johndoe@example.com",
-    password: "pa$$word1",
-  };
-
+  const user = factory.getUser();
+  const post = factory.getPost();
   const jwt = new MyJWT();
   const createSessionTokenAdapter = new CreateSessionTokenAdapter(jwt);
-  const { user, sessionToken } = await app
-    .getUserUsesCases()
-    .registerUser(myUser, createSessionTokenAdapter);
-  console.log("user", user.reflect);
-  console.log("sessionToken", sessionToken);
-
-  // Create Post
-  const postObject: IPostReflectObject = {
-    title: "Título doaaa post!",
-    body: "Hoje vamos falar sobre lorem impsum akakss. Então foi isto que aprendi",
-    tags: ["nodejs", "typescript", "ddd"],
-    coverImage:
-      "https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/55eb7be5f5855bc87be018ec14239c5a",
-    postedIn: new Date(),
-    author: user.reflect,
+  const { user: userInstance, sessionToken } = await userUseCases.register({
+    user,
+    createSessionTokenAdapter,
+  });
+  const newPost = {
+    ...post,
+    author: userInstance.reflect,
   };
+  const postInstance = await postUseCases.create(newPost);
 
-  const post = await app.getPostUsesCases().createPost(postObject);
-  // console.log("post", post.reflect);
-
-  await app
-    .getPostUsesCases()
-    .toggleFavoritePost({ userId: user.reflect.id!, postId: post.reflect.id! });
-
-  console.log(
-    await app
-      .getPostUsesCases()
-      .findPostById(post.reflect.id!)
-      .then((data) => data?.reflect),
-  );
-
-  const updatedUser = await app
-    .getUserUsesCases()
-    .findUser({ option: "id", by: user.reflect.id! });
-
-  console.log("updatedUser", updatedUser?.reflect);
+  console.log("user", userInstance.reflect);
+  console.log("sessionToken", sessionToken);
+  console.log(postInstance.reflect);
+  console.log(userInstance.reflect);
 }
 
 main();

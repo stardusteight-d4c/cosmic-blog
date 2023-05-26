@@ -1,24 +1,25 @@
 import { IUserReflectObject, User, UserService } from "@/domain/user";
-import CreateSessionTokenAdapter from "../adapters/create-session-token";
+import { CreateSessionTokenAdapter } from "../adapters/create-session-token";
 
 type RegisterUserResult = { user: User; sessionToken: string };
 
 export class UserUseCases {
   constructor(private userService: UserService) {}
 
-  async registerUser(
-    request: IUserReflectObject,
-    createSessionTokenAdapter: CreateSessionTokenAdapter,
-  ): Promise<RegisterUserResult> {
-    const user = await this.userService.createUser(request);
+  async register(request: {
+    user: IUserReflectObject;
+    createSessionTokenAdapter: CreateSessionTokenAdapter;
+  }): Promise<RegisterUserResult> {
+    const { user, createSessionTokenAdapter } = request;
+    const userInstance = await this.userService.createUser(user);
     const sessionToken = createSessionTokenAdapter.createSessionToken({
-      user_id: user.reflect.id!,
-      email: user.reflect.email,
+      user_id: userInstance.reflect.id!,
+      email: userInstance.reflect.email,
     });
-    return { user, sessionToken };
+    return { user: userInstance, sessionToken };
   }
 
-  async findUser(request: {
+  async find(request: {
     option: "email" | "id";
     by: string;
   }): Promise<User | undefined> {
