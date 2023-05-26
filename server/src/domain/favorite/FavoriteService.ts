@@ -27,11 +27,19 @@ export class FavoriteService implements IFavoriteService {
     return newFavorite;
   }
 
+  public async deleteAllFavoritesByPostId(postId: string): Promise<void> {
+    await this.#favoriteRepository.deleteAllByPostId(postId);
+  }
+
   public async getPostFavoriteAmount(postId: string): Promise<number> {
     return (await this.#favoriteRepository.findAllByPostId(postId)).length;
   }
 
   public async getUserFavoriteAmount(userId: string): Promise<number> {
     return (await this.#favoriteRepository.findAllByUserId(userId)).length;
+  }
+
+  public async getAllFavoritesByPostId(postId: string): Promise<Favorite[]> {
+    return await this.#favoriteRepository.findAllByPostId(postId);
   }
 }

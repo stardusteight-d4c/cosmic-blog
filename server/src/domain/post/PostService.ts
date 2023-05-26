@@ -7,6 +7,7 @@ import {
 } from ".";
 import Validators from "@/domain/@utils/validators";
 import { IPublisher } from "../@interfaces";
+import DeletePostCommand from "./PostCommands";
 
 export class PostService implements IPostService {
   #postRepository: IPostRepository;
@@ -35,23 +36,27 @@ export class PostService implements IPostService {
   }
 
   public async deletePost(postId: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    await this.#postRepository.delete(postId);
+    if (this.#publisher) {
+      const deletePostCommand = new DeletePostCommand(postId);
+      await this.#publisher.emit(deletePostCommand);
+    }
   }
 
-  public async findPostById(postId: string): Promise<Post | undefined> {
+  public async getPostById(postId: string): Promise<Post | undefined> {
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
     const post = await this.#postRepository.findById(postId);
     return post;
   }
 
-  public async findPostByTitle(postTitle: string): Promise<Post | undefined> {
+  public async getPostByTitle(postTitle: string): Promise<Post | undefined> {
     Validators.checkPrimitiveType({ validating: postTitle, type: "string" });
     const post = await this.#postRepository.findByTitle(postTitle);
     return post;
   }
 
   public async getPosts(): Promise<Post[]> {
-    const posts = await this.#postRepository.get();
+    const posts = await this.#postRepository.findAll();
     return posts;
   }
 
@@ -60,7 +65,7 @@ export class PostService implements IPostService {
     pageSize: number;
   }): Promise<Post[]> {
     const { skip, pageSize } = request;
-    const posts = await this.#postRepository.getByPagination({
+    const posts = await this.#postRepository.findWithPagination({
       skip,
       pageSize,
     });

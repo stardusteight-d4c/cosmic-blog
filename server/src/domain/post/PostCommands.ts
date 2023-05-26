@@ -1,3 +1,6 @@
-// ao criar um post emitir um evento e adicionar +1 em publishedPost do author daquele post
-// ao deletar um post emitir um evento e adicionar -1 em publishedPost do author daquele post
-// só para exemplificar o padrão observer mesmo
+import { ICommand } from "../@interfaces";
+
+export default class DeletePostCommand implements ICommand {
+  operation = "delete_post";
+  constructor(readonly postId: string) {}
+}

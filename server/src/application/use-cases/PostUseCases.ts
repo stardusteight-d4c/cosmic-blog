@@ -12,11 +12,11 @@ export class PostUseCases {
   }
 
   async getById(postId: string): Promise<Post | undefined> {
-    return await this.postService.findPostById(postId);
+    return await this.postService.getPostById(postId);
   }
 
   async getByTitle(title: string): Promise<Post | undefined> {
-    return await this.postService.findPostByTitle(title);
+    return await this.postService.getPostByTitle(title);
   }
 
   async getWithPagination(request: {

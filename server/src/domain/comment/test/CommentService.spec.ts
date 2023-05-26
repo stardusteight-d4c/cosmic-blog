@@ -66,7 +66,7 @@ describe("CommentService", () => {
     });
     const comment = await commentService.createComment(commentObj);
     const updatedCommentInstanceReflect = await commentService
-      .findCommentById(comment.reflect.id!)
+      .getCommentById(comment.reflect.id!)
       .then((comment) => comment?.reflect);
     expect(updatedCommentInstanceReflect?.content).toStrictEqual(
       commentObj.content,
@@ -99,7 +99,7 @@ describe("CommentService", () => {
       owner: userInstance.reflect,
     });
     const comment = await commentService.createComment(commentObj);
-    const getedComment = await commentService.findCommentById(
+    const getedComment = await commentService.getCommentById(
       comment.reflect.id!,
     );
     expect(getedComment?.reflect.id).toStrictEqual(comment.reflect.id);
@@ -117,7 +117,7 @@ describe("CommentService", () => {
       update: { field: "content", newData: "Updating comment..." },
     });
     await commentService.updateComment(updatedComment.reflect);
-    const updatedComentInstance = await commentService.findCommentById(
+    const updatedComentInstance = await commentService.getCommentById(
       comment.reflect.id!,
     );
     expect(comment.reflect.id).toStrictEqual(updatedComentInstance?.reflect.id);
@@ -240,7 +240,7 @@ describe("CommentService", () => {
         pageSize: 100,
       });
     expect(commentsFromFirtsComments?.length).toStrictEqual(2);
-    await commentService.deleteCommentsByPostId(postInstance.reflect.id!)
+    await commentService.deleteAllCommentsByPostId(postInstance.reflect.id!);
     const updatedComments = await commentService.getAllComments();
     expect(updatedComments!.length).toStrictEqual(1);
   });

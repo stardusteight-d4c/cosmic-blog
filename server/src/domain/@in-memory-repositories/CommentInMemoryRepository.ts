@@ -34,7 +34,7 @@ export class CommentInMemoryRepository implements ICommentRepository {
     return comment;
   }
 
-  public async getAll(): Promise<Comment[]> {
+  public async findAll(): Promise<Comment[]> {
     const comments: Comment[] = Array.from(this.#comments.values());
     return comments;
   }
@@ -65,7 +65,7 @@ export class CommentInMemoryRepository implements ICommentRepository {
     return comment;
   }
 
-  public async getByPostIdWithPagination(request: {
+  public async findByPostIdWithPagination(request: {
     postId: string;
     skip: number;
     pageSize: number;
@@ -79,7 +79,7 @@ export class CommentInMemoryRepository implements ICommentRepository {
     return paginatedComments;
   }
 
-  public async getByUserIdWithPagination(request: {
+  public async findByUserIdWithPagination(request: {
     userId: string;
     skip: number;
     pageSize: number;

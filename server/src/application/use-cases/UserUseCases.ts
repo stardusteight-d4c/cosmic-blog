@@ -24,10 +24,10 @@ export class UserUseCases {
     by: string;
   }): Promise<User | undefined> {
     if (request.option === "email") {
-      const user = await this.userService.findUserByEmail(request.by);
+      const user = await this.userService.getUserByEmail(request.by);
       return user;
     } else if (request.option === "id") {
-      const user = await this.userService.findUserById(request.by);
+      const user = await this.userService.getUserById(request.by);
       return user;
     } else {
       throw new Error("Invalid params!");

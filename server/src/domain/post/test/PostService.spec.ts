@@ -1,11 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import {
-  IUserRepository,
-  IUserService,
-  User,
-  UserEventObserver,
-  UserService,
-} from "@domain/user";
+import { IUserRepository, IUserService, User, UserService } from "@domain/user";
 import {
   IPostReflectObject,
   IPostRepository,
@@ -14,13 +8,27 @@ import {
 import { Post, PostService } from "..";
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
 import {
+  CommentInMemoryRepository,
+  FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
 } from "@domain/@in-memory-repositories";
 import { Publisher } from "@/domain/@utils/Publisher";
+import {
+  FavoriteObserver,
+  FavoriteService,
+  IFavoriteService,
+} from "@/domain/favorite";
+import {
+  CommentObserver,
+  CommentService,
+  ICommentService,
+} from "@/domain/comment";
 
 let postService: IPostService;
 let userService: IUserService;
+let favoriteService: IFavoriteService;
+let commentService: ICommentService;
 let newPost: IPostReflectObject;
 let userInstance: User;
 let postInstance: Post;
@@ -32,15 +40,20 @@ describe("PostService", () => {
   beforeEach(async () => {
     userInMemoryRepository = UserInMemoryRepository.getInstance();
     postInMemoryRepository = PostInMemoryRepository.getInstance();
-    const eventPublisher = new Publisher();
+    const favoriteRepository = FavoriteInMemoryRepository.getInstance();
+    const commentRepository = CommentInMemoryRepository.getInstance();
+    const commandPublisher = new Publisher();
+    favoriteService = new FavoriteService({ favoriteRepository });
+    commentService = new CommentService({ commentRepository });
+    commandPublisher.register(new FavoriteObserver(favoriteService));
+    commandPublisher.register(new CommentObserver(commentService));
     postService = new PostService({
       postRepository: postInMemoryRepository,
-      publisher: eventPublisher,
+      publisher: commandPublisher,
     });
     userService = new UserService({
       userRepository: userInMemoryRepository,
     });
-    eventPublisher.register(new UserEventObserver(userService));
     factory = objectFactory();
     const user = factory.getUser();
     const post = factory.getPost();
@@ -57,7 +70,7 @@ describe("PostService", () => {
   });
 
   it("must be able to create a post", async () => {
-    await userService.findUserById(userInstance.reflect.id!);
+    await userService.getUserById(userInstance.reflect.id!);
     expect(postInstance).toBeInstanceOf(Post);
   });
 
@@ -73,13 +86,13 @@ describe("PostService", () => {
   });
 
   it("must be able to find a post by id", async () => {
-    const findPost = await postService.findPostById(postInstance.reflect.id!);
+    const findPost = await postService.getPostById(postInstance.reflect.id!);
     expect(findPost!.reflect.id).toStrictEqual(postInstance.reflect.id);
     expect(findPost!.reflect).toStrictEqual(postInstance.reflect);
   });
 
   it("must be able to find a post by title", async () => {
-    const findPost = await postService.findPostByTitle(
+    const findPost = await postService.getPostByTitle(
       postInstance.reflect.title!,
     );
     expect(findPost!.reflect.id).toStrictEqual(postInstance.reflect.id);
@@ -109,5 +122,57 @@ describe("PostService", () => {
     expect(posts).toStrictEqual(filteredPosts);
     expect(postsIds).toStrictEqual(filteredPostsIds);
     expect(postsIds[1]).toStrictEqual(filteredPostsIds[1]);
+  });
+
+  // delete post with FavoriteObserver and CommentObserver
+  it("must be able delete a post", async () => {
+    const postInstanceId = postInstance.reflect.id!;
+    const userInstanceId = userInstance.reflect.id!;
+    const allPosts = await postService.getPosts();
+    const favorite = factory.getFavorite({
+      userId: userInstanceId,
+      postId: postInstanceId,
+    });
+    await favoriteService.toggleFavoritePost(favorite);
+    const postFavoriteAmount = await favoriteService.getPostFavoriteAmount(
+      postInstanceId,
+    );
+    const userFavorites = await favoriteService.getUserFavoriteAmount(
+      userInstanceId,
+    );
+    const commentObj = factory.getComment({
+      postId: postInstanceId,
+      owner: userInstance.reflect,
+    });
+    await commentService.createComment(commentObj);
+    const postCommentAmount = await commentService.getPostCommentAmount(
+      postInstanceId,
+    );
+    const userCommentAmount = await commentService.getUserCommentAmount(
+      userInstance.reflect.id!,
+    );
+    expect(allPosts.length).toStrictEqual(1);
+    expect(postFavoriteAmount).toStrictEqual(1);
+    expect(userFavorites).toStrictEqual(1);
+    expect(postCommentAmount).toStrictEqual(1);
+    expect(userCommentAmount).toStrictEqual(1);
+    await postService.deletePost(postInstance.reflect.id!);
+    const updatedPosts = await postService.getPosts();
+    const updatedPostFavoriteAmount =
+      await favoriteService.getPostFavoriteAmount(postInstanceId);
+    const updatedUserFavorites = await favoriteService.getUserFavoriteAmount(
+      userInstanceId,
+    );
+    const updatedPostCommentAmount = await commentService.getPostCommentAmount(
+      postInstanceId,
+    );
+    const updatedUserCommentAmount = await commentService.getUserCommentAmount(
+      userInstance.reflect.id!,
+    );
+    expect(updatedPosts.length).toStrictEqual(0);
+    expect(updatedPostFavoriteAmount).toStrictEqual(0);
+    expect(updatedUserFavorites).toStrictEqual(0);
+    expect(updatedPostCommentAmount).toStrictEqual(0);
+    expect(updatedUserCommentAmount).toStrictEqual(0);
   });
 });

@@ -60,12 +60,12 @@ export class PostInMemoryRepository implements IPostRepository {
     return undefined;
   }
 
-  public async get(): Promise<Post[]> {
+  public async findAll(): Promise<Post[]> {
     const posts: Post[] = Array.from(this.#posts.values());
     return posts;
   }
 
-  public async getByPagination(request: {
+  public async findWithPagination(request: {
     skip: number;
     pageSize: number;
   }): Promise<Post[]> {

@@ -32,13 +32,13 @@ export class UserService implements IUserService {
     }
   }
 
-  public async findUserById(userId: string): Promise<User | undefined> {
+  public async getUserById(userId: string): Promise<User | undefined> {
     Validators.checkPrimitiveType({ validating: userId, type: "string" });
     const user = await this.#userRepository.findById(userId);
     return user;
   }
 
-  public async findUserByEmail(userEmail: string): Promise<User | undefined> {
+  public async getUserByEmail(userEmail: string): Promise<User | undefined> {
     Validators.checkPrimitiveType({ validating: userEmail, type: "string" });
     Validators.validateEmail(userEmail);
     return await this.#userRepository.findByEmail(userEmail);

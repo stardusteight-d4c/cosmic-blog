@@ -85,4 +85,32 @@ describe("PostService", () => {
     expect(updatedPostFavoriteAmount).toStrictEqual(0);
     expect(updatedUserFavorites).toStrictEqual(0);
   });
+
+  it("must be able delete all favorites by postId", async () => {
+    const postInstanceId = postInstance.reflect.id!;
+    const userInstanceId = userInstance.reflect.id!;
+    const firstFavorite = factory.getFavorite({
+      userId: userInstanceId,
+      postId: postInstanceId,
+    });
+    const secondFavorite = factory.getFavorite({
+      userId: "another-user",
+      postId: postInstanceId,
+    });
+    const thirdFavorite = factory.getFavorite({
+      userId: userInstanceId,
+      postId: "another-post",
+    });
+    await favoriteService.toggleFavoritePost(firstFavorite);
+    await favoriteService.toggleFavoritePost(secondFavorite);
+    await favoriteService.toggleFavoritePost(thirdFavorite);
+    const favoritesFromPost = await favoriteService.getAllFavoritesByPostId(
+      postInstanceId,
+    );
+    expect(favoritesFromPost.length).toStrictEqual(2);
+    await favoriteService.deleteAllFavoritesByPostId(postInstanceId);
+    const updatedFavoritesFromPost =
+      await favoriteService.getAllFavoritesByPostId(postInstanceId);
+    expect(updatedFavoritesFromPost.length).toStrictEqual(0);
+  });
 });

@@ -21,11 +21,11 @@ export class CommentService implements ICommentService {
     await this.#commentRepository.delete(comment.reflect.id!);
   }
 
-  public async deleteCommentsByPostId(postId: string): Promise<void> {
+  public async deleteAllCommentsByPostId(postId: string): Promise<void> {
     await this.#commentRepository.deleteAllByPostId(postId);
   }
 
-  public async findCommentById(
+  public async getCommentById(
     commentId: string,
   ): Promise<Comment | undefined> {
     const comment = await this.#commentRepository.findById(commentId);
@@ -41,7 +41,7 @@ export class CommentService implements ICommentService {
   }
 
   public async getAllComments(): Promise<Comment[] | undefined> {
-    const comments = await this.#commentRepository.getAll();
+    const comments = await this.#commentRepository.findAll();
     return comments;
   }
 
@@ -51,7 +51,7 @@ export class CommentService implements ICommentService {
     pageSize: number;
   }): Promise<Comment[]> {
     const { postId, skip, pageSize } = request;
-    const comments = await this.#commentRepository.getByPostIdWithPagination({
+    const comments = await this.#commentRepository.findByPostIdWithPagination({
       postId,
       skip,
       pageSize,
@@ -65,7 +65,7 @@ export class CommentService implements ICommentService {
     pageSize: number;
   }): Promise<Comment[]> {
     const { userId, skip, pageSize } = request;
-    const comments = await this.#commentRepository.getByUserIdWithPagination({
+    const comments = await this.#commentRepository.findByUserIdWithPagination({
       userId,
       skip,
       pageSize,

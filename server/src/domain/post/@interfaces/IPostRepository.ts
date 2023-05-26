@@ -7,6 +7,6 @@ export interface IPostRepository {
   deleteAll(): Promise<void>
   findById(postId: string): Promise<Post | undefined>;
   findByTitle(postTitle: string): Promise<Post | undefined>;
-  get(): Promise<Post[]>;
-  getByPagination(request: { skip: number; pageSize: number }): Promise<Post[]>;
+  findAll(): Promise<Post[]>;
+  findWithPagination(request: { skip: number; pageSize: number }): Promise<Post[]>;
 }

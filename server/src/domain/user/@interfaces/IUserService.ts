@@ -1,12 +1,11 @@
-import {  Post } from "@/domain/post";
 import { ISocialLinks, User } from "..";
 import { IUserReflectObject } from "./IUserReflectObject";
 
 export interface IUserService {
   createUser(user: IUserReflectObject): Promise<User>;
   deleteUser(userId: string): Promise<User | undefined>;
-  findUserById(userId: string): Promise<User | undefined>;
-  findUserByEmail(email: string): Promise<User | undefined>;
+  getUserById(userId: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   changeEmail(data: {
     userId: string;
     confirmationPassword: string;
@@ -20,5 +19,5 @@ export interface IUserService {
   changeSocialLinks(request: {
     userId: string;
     socialLinks: ISocialLinks;
-  }): Promise<User | undefined>; 
+  }): Promise<User | undefined>;
 }

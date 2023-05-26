@@ -54,7 +54,7 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
     return favorite;
   }
 
-  public async get(): Promise<Favorite[]> {
+  public async findAll(): Promise<Favorite[]> {
     const favorites: Favorite[] = Array.from(this.#favorites.values());
     return favorites;
   }
@@ -71,6 +71,14 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
 
   public async deleteAll(): Promise<void> {
     this.#favorites.clear();
+  }
+
+  public async deleteAllByPostId(postId: string): Promise<void> {
+    for (const [key, favorite] of this.#favorites.entries()) {
+      if (favorite.reflect.postId === postId) {
+        this.#favorites.delete(key);
+      }
+    }
   }
 
   public async findAllByPostId(postId: string): Promise<Favorite[]> {

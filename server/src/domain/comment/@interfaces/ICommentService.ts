@@ -3,8 +3,8 @@ import { Comment, ICommentReflectObject } from "@/domain/comment";
 export interface ICommentService {
   createComment(comment: ICommentReflectObject): Promise<Comment>;
   deleteComment(comment: Comment): Promise<void>;
-  deleteCommentsByPostId(postId: string): Promise<void>;
-  findCommentById(commentId: string): Promise<Comment | undefined>;
+  deleteAllCommentsByPostId(postId: string): Promise<void>;
+  getCommentById(commentId: string): Promise<Comment | undefined>;
   updateComment(
     updatedComment: ICommentReflectObject,
   ): Promise<Comment | undefined>;
