@@ -1,98 +1,100 @@
+import { IPostRepository, IPostService, PostService } from "@domain/post";
+import { IUserRepository, IUserService, UserService } from "@domain/user";
 import {
-  IPostReflectObject,
-  IPostRepository,
-  PostService,
-} from "@/domain/post";
+  CommentObserver,
+  CommentService,
+  ICommentRepository,
+  ICommentService,
+} from "@domain/comment";
 import {
-  IUserReflectObject,
-  IUserRepository,
-  UserService,
-} from "@/domain/user";
-import { CreateSessionTokenAdapter } from "./adapters/create-session-token";
-import { MyJWT } from "./helpers";
+  FavoriteObserver,
+  FavoriteService,
+  IFavoriteRepository,
+  IFavoriteService,
+} from "@domain/favorite";
+import { Publisher } from "@domain/@utils/Publisher";
 import { UserUseCases } from "./use-cases/UserUseCases";
 import { PostUseCases } from "./use-cases/PostUseCases";
-import {
-  PostInMemoryRepository,
-  UserInMemoryRepository,
-} from "@/domain/@in-memory-repositories";
-import { objectFactory } from "@/domain/@utils/objectFactory";
+import { CommentUseCases } from "./use-cases/CommentUseCases";
+import { FavoriteUseCases } from "./use-cases/FavoriteUseCases";
 
 export interface Initialization {
   services: {
-    userService: UserService;
-    postService: PostService;
+    userService: IUserService;
+    postService: IPostService;
+    commentService: ICommentService;
+    favoriteService: IFavoriteService;
   };
 }
 
 export class UseCasesApplication {
+  #postRepository: IPostRepository;
+  #userRepository: IUserRepository;
+  #commentRepository: ICommentRepository;
+  #favoriteRepository: IFavoriteRepository;
   #userUseCases: UserUseCases;
   #postUseCases: PostUseCases;
+  #commentUseCases: CommentUseCases;
+  #favoriteUseCases: FavoriteUseCases;
 
-  constructor(
-    private userRepository: IUserRepository,
-    private postRepository: IPostRepository,
-  ) {}
+  constructor(repositories: {
+    postRepository: IPostRepository;
+    userRepository: IUserRepository;
+    commentRepository: ICommentRepository;
+    favoriteRepository: IFavoriteRepository;
+  }) {
+    this.#postRepository = repositories.postRepository;
+    this.#userRepository = repositories.userRepository;
+    this.#commentRepository = repositories.commentRepository;
+    this.#favoriteRepository = repositories.favoriteRepository;
+  }
 
   initialization() {
-    const userService = new UserService({
-      userRepository: this.userRepository,
-    });
+    const publisher = new Publisher();
     const postService = new PostService({
-      postRepository: this.postRepository,
+      postRepository: this.#postRepository,
+      publisher,
     });
-    const initialization: Initialization = {
+    const userService = new UserService({
+      userRepository: this.#userRepository,
+    });
+    const commentService = new CommentService({
+      commentRepository: this.#commentRepository,
+    });
+    const favoriteService = new FavoriteService({
+      favoriteRepository: this.#favoriteRepository,
+    });
+    publisher.register(new CommentObserver(commentService));
+    publisher.register(new FavoriteObserver(favoriteService));
+    const init: Initialization = {
       services: {
         userService,
         postService,
+        commentService,
+        favoriteService,
       },
     };
-    this.#userUseCases = new UserUseCases(initialization.services.userService);
-    this.#postUseCases = new PostUseCases(initialization.services.postService);
+    this.#postUseCases = new PostUseCases(init.services.postService);
+    this.#userUseCases = new UserUseCases(init.services.userService);
+    this.#commentUseCases = new CommentUseCases(init.services.commentService);
+    this.#favoriteUseCases = new FavoriteUseCases(
+      init.services.favoriteService,
+    );
+  }
+
+  public getPostUsesCases(): PostUseCases {
+    return this.#postUseCases;
   }
 
   public getUserUsesCases(): UserUseCases {
     return this.#userUseCases;
   }
 
-  public getPostUsesCases(): PostUseCases {
-    return this.#postUseCases;
+  public getCommentUsesCases(): CommentUseCases {
+    return this.#commentUseCases;
+  }
+
+  public getFavoriteUsesCases(): FavoriteUseCases {
+    return this.#favoriteUseCases;
   }
 }
-
-async function main() {
-  const userInMemoryRepository = UserInMemoryRepository.getInstance();
-  const postInMemoryRepository = PostInMemoryRepository.getInstance();
-  const factory = objectFactory();
-
-  const app = new UseCasesApplication(
-    userInMemoryRepository,
-    postInMemoryRepository,
-  );
-
-  // Initialize Application
-  app.initialization();
-  const userUseCases = app.getUserUsesCases();
-  const postUseCases = app.getPostUsesCases();
-
-  const user = factory.getUser();
-  const post = factory.getPost();
-  const jwt = new MyJWT();
-  const createSessionTokenAdapter = new CreateSessionTokenAdapter(jwt);
-  const { user: userInstance, sessionToken } = await userUseCases.register({
-    user,
-    createSessionTokenAdapter,
-  });
-  const newPost = {
-    ...post,
-    author: userInstance.reflect,
-  };
-  const postInstance = await postUseCases.create(newPost);
-
-  console.log("user", userInstance.reflect);
-  console.log("sessionToken", sessionToken);
-  console.log(postInstance.reflect);
-  console.log(userInstance.reflect);
-}
-
-main();

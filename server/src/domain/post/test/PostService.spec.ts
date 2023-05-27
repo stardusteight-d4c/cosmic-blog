@@ -42,14 +42,14 @@ describe("PostService", () => {
     postInMemoryRepository = PostInMemoryRepository.getInstance();
     const favoriteRepository = FavoriteInMemoryRepository.getInstance();
     const commentRepository = CommentInMemoryRepository.getInstance();
-    const commandPublisher = new Publisher();
+    const publisher = new Publisher();
     favoriteService = new FavoriteService({ favoriteRepository });
     commentService = new CommentService({ commentRepository });
-    commandPublisher.register(new FavoriteObserver(favoriteService));
-    commandPublisher.register(new CommentObserver(commentService));
+    publisher.register(new FavoriteObserver(favoriteService));
+    publisher.register(new CommentObserver(commentService));
     postService = new PostService({
       postRepository: postInMemoryRepository,
-      publisher: commandPublisher,
+      publisher: publisher,
     });
     userService = new UserService({
       userRepository: userInMemoryRepository,

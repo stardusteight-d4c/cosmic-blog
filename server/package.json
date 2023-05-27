@@ -9,7 +9,7 @@
     "start": "node dist/infra/server.js",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "init": "nodemon --watch '**/*.ts' --exec 'ts-node' src/application/index.ts"
+    "example": "nodemon --watch '**/*.ts' --exec 'ts-node' src/application/example.ts"
   },
   "keywords": [],
   "author": "stardusteight-d4c (https://github.com/stardusteight-d4c)",

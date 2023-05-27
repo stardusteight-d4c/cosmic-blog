@@ -1,10 +1,14 @@
-import { IUserReflectObject, User, UserService } from "@/domain/user";
+import {
+  IUserReflectObject,
+  IUserService,
+  User,
+} from "@/domain/user";
 import { CreateSessionTokenAdapter } from "../adapters/create-session-token";
 
 type RegisterUserResult = { user: User; sessionToken: string };
 
 export class UserUseCases {
-  constructor(private userService: UserService) {}
+  constructor(private userService: IUserService) {}
 
   async register(request: {
     user: IUserReflectObject;
@@ -33,4 +37,6 @@ export class UserUseCases {
       throw new Error("Invalid params!");
     }
   }
+
+  
 }
