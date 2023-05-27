@@ -9,4 +9,5 @@ export interface IFavoriteService {
   getPostFavoriteAmount(postId: string): Promise<number>;
   getUserFavoriteAmount(userId: string): Promise<number>;
   deleteAllFavoritesByPostId(postId: string): Promise<void>;
+  deleteAllFavoritesByUserId(userId: string): Promise<void>;
 }

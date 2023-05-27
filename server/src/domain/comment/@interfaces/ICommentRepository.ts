@@ -6,6 +6,7 @@ export interface ICommentRepository {
   delete(commentId: string): Promise<Comment>;
   deleteAll(): Promise<void>;
   deleteAllByPostId(postId: string): Promise<void>;
+  deleteAllByUserId(userId: string): Promise<void>;
   findAll(): Promise<Comment[]>;
   findById(commentId: string): Promise<Comment | undefined>;
   findAllByPostId(postId: string): Promise<Comment[]>;

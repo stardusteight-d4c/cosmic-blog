@@ -7,12 +7,21 @@ import {
   ISocialLinks,
 } from ".";
 import Validators from "@/domain/@utils/validators";
+import { IPublisher } from "../@interfaces";
+import DeleteUserCommand from "./UserCommands";
 
 export class UserService implements IUserService {
   #userRepository: IUserRepository;
+  #publisher?: IPublisher;
 
-  constructor(implementations: { userRepository: IUserRepository }) {
+  constructor(implementations: {
+    userRepository: IUserRepository;
+    publisher?: IPublisher;
+  }) {
     this.#userRepository = implementations.userRepository;
+    if (implementations.publisher) {
+      this.#publisher = implementations.publisher;
+    }
   }
 
   public async createUser(user: IUserReflectObject): Promise<User> {
@@ -26,6 +35,10 @@ export class UserService implements IUserService {
     const user = await this.#userRepository.findById(userId);
     if (user) {
       const deletedUser = await this.#userRepository.delete(userId);
+      if (this.#publisher) {
+        const deleteUserCommand = new DeleteUserCommand(userId);
+        await this.#publisher.emit(deleteUserCommand);
+      }
       return deletedUser;
     } else {
       throw new Error(`The user with ID: ${userId} was not found.`);

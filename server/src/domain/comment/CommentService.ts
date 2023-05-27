@@ -19,15 +19,18 @@ export class CommentService implements ICommentService {
 
   public async deleteComment(comment: Comment): Promise<void> {
     await this.#commentRepository.delete(comment.reflect.id!);
+    return;
   }
 
   public async deleteAllCommentsByPostId(postId: string): Promise<void> {
-    await this.#commentRepository.deleteAllByPostId(postId);
+    return await this.#commentRepository.deleteAllByPostId(postId);
   }
 
-  public async getCommentById(
-    commentId: string,
-  ): Promise<Comment | undefined> {
+  public async deleteAllCommentsByUserId(userId: string): Promise<void> {
+    return await this.#commentRepository.deleteAllByUserId(userId);
+  }
+
+  public async getCommentById(commentId: string): Promise<Comment | undefined> {
     const comment = await this.#commentRepository.findById(commentId);
     return comment;
   }

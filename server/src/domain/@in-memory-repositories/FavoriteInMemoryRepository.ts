@@ -81,6 +81,14 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
     }
   }
 
+  public async deleteAllByUserId(userId: string): Promise<void> {
+    for (const [key, favorite] of this.#favorites.entries()) {
+      if (favorite.reflect.userId === userId) {
+        this.#favorites.delete(key);
+      }
+    }
+  }
+
   public async findAllByPostId(postId: string): Promise<Favorite[]> {
     const favorites: Favorite[] = [];
     for (const favorite of this.#favorites.values()) {

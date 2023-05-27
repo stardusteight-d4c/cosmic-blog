@@ -57,6 +57,14 @@ export class CommentInMemoryRepository implements ICommentRepository {
     }
   }
 
+  public async deleteAllByUserId(userId: string): Promise<void> {
+    for (const [commentId, comment] of this.#comments.entries()) {
+      if (comment.reflect.owner.id === userId) {
+        this.#comments.delete(commentId);
+      }
+    }
+  }
+
   public async findById(commentId: string): Promise<Comment | undefined> {
     const comment = this.#comments.get(commentId);
     if (!comment) {

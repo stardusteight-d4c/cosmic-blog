@@ -10,4 +10,5 @@ export interface IFavoriteRepository {
   delete(favorite: Favorite): Promise<Favorite>;
   deleteAll(): Promise<void>
   deleteAllByPostId(postId: string): Promise<void>;
+  deleteAllByUserId(userId: string): Promise<void>;
 }
