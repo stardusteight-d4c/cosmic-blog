@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { User, UserService } from "@/domain/user";
+import { User, UserService } from "@domain/src/user";
 import { Post, IPostReflectObject, postBuilderFactory } from "..";
 import { IObjectFactory, objectFactory } from "@/domain/@utils/objectFactory";
 import { UserInMemoryRepository } from "@/domain/@in-memory-repositories";

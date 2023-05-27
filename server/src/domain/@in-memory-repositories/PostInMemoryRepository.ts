@@ -1,4 +1,4 @@
-import { IPostRepository, Post } from "../../domain/post";
+import { IPostRepository, Post } from "@domain/src/post";
 
 export class PostInMemoryRepository implements IPostRepository {
   private static instance: PostInMemoryRepository;

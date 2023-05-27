@@ -1,4 +1,4 @@
-import { IUserReflectObject } from "@/domain/user";
+import { IUserReflectObject } from "@domain/src/user";
 
 export interface IPostReflectObject {
   id?: string;

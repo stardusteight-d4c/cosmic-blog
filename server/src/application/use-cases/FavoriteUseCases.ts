@@ -1,4 +1,4 @@
-import { IFavoriteService } from "@/domain/favorite";
+import { IFavoriteService } from "@domain/src/favorite";
 
 export class FavoriteUseCases {
   constructor(private favoriteService: IFavoriteService) {}

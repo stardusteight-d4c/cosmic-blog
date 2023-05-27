@@ -3,7 +3,7 @@ import {
   IUserReflectObject,
   IUserService,
   User,
-} from "@/domain/user";
+} from "@domain/src/user";
 import { CreateSessionTokenAdapter } from "../adapters/create-session-token";
 
 type RegisterUserResult = { user: User; sessionToken: string };

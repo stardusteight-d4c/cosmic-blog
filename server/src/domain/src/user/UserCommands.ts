@@ -1,4 +1,4 @@
-import { ICommand } from "../@interfaces";
+import { ICommand } from "@domain/@interfaces";
 
 export default class DeleteUserCommand implements ICommand {
   operation = "delete_user";

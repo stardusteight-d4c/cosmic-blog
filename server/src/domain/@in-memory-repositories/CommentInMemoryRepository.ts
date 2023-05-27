@@ -1,5 +1,5 @@
-import { ICommentRepository } from "@/domain/comment/@interfaces/ICommentRepository";
-import { Comment } from "@/domain/comment";
+import { ICommentRepository } from "@domain/src/comment/@interfaces/ICommentRepository";
+import { Comment } from "@domain/src/comment";
 
 export class CommentInMemoryRepository implements ICommentRepository {
   private static instance: CommentInMemoryRepository;

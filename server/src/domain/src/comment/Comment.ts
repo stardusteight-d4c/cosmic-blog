@@ -1,4 +1,4 @@
-import { User } from "@domain/user";
+import { User } from "@domain/src/user";
 import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 
 export class Comment {

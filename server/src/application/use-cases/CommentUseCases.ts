@@ -2,7 +2,7 @@ import {
   Comment,
   ICommentReflectObject,
   ICommentService,
-} from "@/domain/comment";
+} from "@domain/src/comment";
 
 export class CommentUseCases {
   constructor(private commentService: ICommentService) {}

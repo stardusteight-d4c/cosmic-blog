@@ -1,4 +1,4 @@
-import { Comment, ICommentReflectObject } from "@/domain/comment";
+import { Comment, ICommentReflectObject } from "@domain/src/comment";
 
 export interface ICommentService {
   createComment(comment: ICommentReflectObject): Promise<Comment>;

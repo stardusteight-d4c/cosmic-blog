@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { IUserReflectObject } from "@domain/user";
+import { IUserReflectObject } from "@domain/src/user";
 import { Comment } from ".";
 
 export class CommentBuilder {

@@ -1,5 +1,4 @@
 import { Post } from "..";
-import { ICommentService } from "@/domain/comment";
 import { IPostReflectObject } from "./IPostReflectObject";
 
 export interface IPostService {

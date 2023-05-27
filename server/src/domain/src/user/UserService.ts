@@ -7,7 +7,7 @@ import {
   ISocialLinks,
 } from ".";
 import Validators from "@/domain/@utils/validators";
-import { IPublisher } from "../@interfaces";
+import { IPublisher } from "@domain/@interfaces";
 import DeleteUserCommand from "./UserCommands";
 
 export class UserService implements IUserService {

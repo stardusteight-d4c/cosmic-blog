@@ -1,6 +1,6 @@
 import { IPostReflectObject } from ".";
-import { User } from "@domain/user";
-import { Favorite } from "@/domain/favorite";
+import { User } from "@domain/src/user";
+import { Favorite } from "@domain/src/favorite";
 
 export class Post {
   #id: string;

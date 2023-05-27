@@ -1,17 +1,17 @@
-import { IPostRepository, IPostService, PostService } from "@domain/post";
-import { IUserRepository, IUserService, UserService } from "@domain/user";
+import { IPostRepository, IPostService, PostService } from "@domain/src/post";
+import { IUserRepository, IUserService, UserService } from "@domain/src/user";
 import {
   CommentObserver,
   CommentService,
   ICommentRepository,
   ICommentService,
-} from "@domain/comment";
+} from "@domain/src/comment";
 import {
   FavoriteObserver,
   FavoriteService,
   IFavoriteRepository,
   IFavoriteService,
-} from "@domain/favorite";
+} from "@domain/src/favorite";
 import { Publisher } from "@domain/@utils/Publisher";
 import { UserUseCases } from "./use-cases/UserUseCases";
 import { PostUseCases } from "./use-cases/PostUseCases";

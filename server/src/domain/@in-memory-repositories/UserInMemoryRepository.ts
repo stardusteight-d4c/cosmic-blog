@@ -1,4 +1,4 @@
-import { User, IUserRepository } from "../../domain/user";
+import { User, IUserRepository } from "@domain/src/user";
 
 export class UserInMemoryRepository implements IUserRepository {
   private static instance: UserInMemoryRepository;

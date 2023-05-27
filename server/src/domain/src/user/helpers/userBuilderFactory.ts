@@ -1,4 +1,4 @@
-import { IUserReflectObject, User, UserBuilder } from "@/domain/user";
+import { IUserReflectObject, User, UserBuilder } from "@domain/src/user";
 
 export function userBuilderFactory({
   user,

@@ -5,8 +5,8 @@ import {
   IPostService,
   postBuilderFactory,
 } from ".";
-import Validators from "@/domain/@utils/validators";
-import { IPublisher } from "../@interfaces";
+import Validators from "@domain/@utils/validators";
+import { IPublisher } from "@domain/@interfaces";
 import DeletePostCommand from "./PostCommands";
 
 export class PostService implements IPostService {

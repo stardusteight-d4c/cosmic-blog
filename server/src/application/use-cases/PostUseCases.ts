@@ -1,4 +1,4 @@
-import { IPostReflectObject, IPostService, Post } from "@/domain/post";
+import { IPostReflectObject, IPostService, Post } from "@domain/src/post";
 
 export class PostUseCases {
   constructor(private postService: IPostService) {}

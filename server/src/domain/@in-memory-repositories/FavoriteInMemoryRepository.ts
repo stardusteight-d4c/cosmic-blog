@@ -1,5 +1,4 @@
-import { IFavoriteRepository } from "../favorite/@interfaces/IFavoriteRepository";
-import { Favorite } from "@/domain/favorite";
+import { Favorite, IFavoriteRepository } from "@domain/src/favorite";
 
 export class FavoriteInMemoryRepository implements IFavoriteRepository {
   private static instance: FavoriteInMemoryRepository;

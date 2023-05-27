@@ -1,5 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { IUserRepository, IUserService, User, UserService } from "@domain/user";
+import {
+  IUserRepository,
+  IUserService,
+  User,
+  UserService,
+} from "@domain/src/user";
 import {
   IPostReflectObject,
   IPostRepository,
@@ -18,12 +23,12 @@ import {
   FavoriteObserver,
   FavoriteService,
   IFavoriteService,
-} from "@/domain/favorite";
+} from "@domain/src/favorite";
 import {
   CommentObserver,
   CommentService,
   ICommentService,
-} from "@/domain/comment";
+} from "@domain/src/comment";
 
 let postService: IPostService;
 let userService: IUserService;
