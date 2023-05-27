@@ -41,11 +41,11 @@ export class CommentUseCases {
     }
   }
 
-  async getPostCommentAmount(postId: string) {
+  async getPostAmount(postId: string) {
     return await this.commentService.getPostCommentAmount(postId);
   }
 
-  async getUserCommentAmount(userId: string) {
+  async getUserAmount(userId: string) {
     return await this.commentService.getUserCommentAmount(userId);
   }
 }
