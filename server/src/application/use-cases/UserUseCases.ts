@@ -24,7 +24,7 @@ export class UserUseCases {
     return { user: userInstance, sessionToken };
   }
 
-  async getUserBy(request: {
+  async getBy(request: {
     option: "email" | "id";
     info: string;
   }): Promise<User | undefined> {
@@ -39,16 +39,10 @@ export class UserUseCases {
     }
   }
 
-  async changeSocialLinks({
-    userId,
-    socialLinks,
-  }: {
+  async changeSocialLinks(request: {
     userId: string;
     socialLinks: ISocialLinks;
   }) {
-    await this.userService.changeSocialLinks({
-      userId,
-      socialLinks,
-    });
+    await this.userService.changeSocialLinks(request);
   }
 }
