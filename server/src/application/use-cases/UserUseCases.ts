@@ -1,4 +1,5 @@
 import {
+  ISocialLinks,
   IUserReflectObject,
   IUserService,
   User,
@@ -23,20 +24,31 @@ export class UserUseCases {
     return { user: userInstance, sessionToken };
   }
 
-  async find(request: {
+  async getUserBy(request: {
     option: "email" | "id";
-    by: string;
+    info: string;
   }): Promise<User | undefined> {
     if (request.option === "email") {
-      const user = await this.userService.getUserByEmail(request.by);
+      const user = await this.userService.getUserByEmail(request.info);
       return user;
     } else if (request.option === "id") {
-      const user = await this.userService.getUserById(request.by);
+      const user = await this.userService.getUserById(request.info);
       return user;
     } else {
       throw new Error("Invalid params!");
     }
   }
 
-  
+  async changeSocialLinks({
+    userId,
+    socialLinks,
+  }: {
+    userId: string;
+    socialLinks: ISocialLinks;
+  }) {
+    await this.userService.changeSocialLinks({
+      userId,
+      socialLinks,
+    });
+  }
 }
