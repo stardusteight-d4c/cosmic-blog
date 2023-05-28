@@ -38,10 +38,10 @@ export class ApplicationUseCases {
   #favoriteUseCases: FavoriteUseCases;
 
   constructor(repositories: {
-    postRepository?: IPostRepository;
-    userRepository?: IUserRepository;
-    commentRepository?: ICommentRepository;
-    favoriteRepository?: IFavoriteRepository;
+    postRepository: IPostRepository;
+    userRepository: IUserRepository;
+    commentRepository: ICommentRepository;
+    favoriteRepository: IFavoriteRepository;
   }) {
     this.#postRepository = repositories.postRepository;
     this.#userRepository = repositories.userRepository;
