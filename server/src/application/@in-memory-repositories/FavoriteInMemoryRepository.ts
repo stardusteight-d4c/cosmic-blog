@@ -1,5 +1,7 @@
 import { Favorite, IFavoriteRepository } from "@domain/src/favorite";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class FavoriteInMemoryRepository implements IFavoriteRepository {
   private static instance: FavoriteInMemoryRepository;
   #favorites: Map<string, Favorite> = new Map();

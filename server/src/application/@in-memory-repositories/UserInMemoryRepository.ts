@@ -1,5 +1,7 @@
 import { User, IUserRepository } from "@domain/src/user";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class UserInMemoryRepository implements IUserRepository {
   private static instance: UserInMemoryRepository;
   #users: Map<string, User> = new Map();

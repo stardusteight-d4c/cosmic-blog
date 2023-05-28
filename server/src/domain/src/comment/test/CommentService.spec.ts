@@ -14,7 +14,7 @@ import {
   CommentInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
-} from "@domain/@in-memory-repositories";
+} from "@app/@in-memory-repositories";
 import { ICommentRepository } from "../@interfaces";
 
 let commentService: CommentService;

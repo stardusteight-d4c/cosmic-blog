@@ -17,7 +17,7 @@ import {
   FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
-} from "@domain/@in-memory-repositories";
+} from "@app/@in-memory-repositories";
 import { Publisher } from "@/domain/@utils/Publisher";
 import {
   FavoriteObserver,

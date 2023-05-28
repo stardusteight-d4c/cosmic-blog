@@ -5,8 +5,8 @@ import {
   FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
-} from "@/domain/@in-memory-repositories";
-import { objectFactory } from "@/domain/@utils/objectFactory";
+} from "@app/@in-memory-repositories";
+import { objectFactory } from "@domain/@utils/objectFactory";
 import { UseCasesApplication } from ".";
 
 async function main() {

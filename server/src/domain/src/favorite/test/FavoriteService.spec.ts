@@ -10,7 +10,7 @@ import {
   FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
-} from "@domain/@in-memory-repositories";
+} from "@app/@in-memory-repositories";
 import {
   FavoriteService,
   IFavoriteRepository,

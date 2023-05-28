@@ -17,6 +17,7 @@ import { UserUseCases } from "./use-cases/UserUseCases";
 import { PostUseCases } from "./use-cases/PostUseCases";
 import { CommentUseCases } from "./use-cases/CommentUseCases";
 import { FavoriteUseCases } from "./use-cases/FavoriteUseCases";
+import { Injectable } from "@nestjs/common";
 
 export interface Initialization {
   services: {
@@ -27,6 +28,7 @@ export interface Initialization {
   };
 }
 
+@Injectable()
 export class UseCasesApplication {
   #postRepository: IPostRepository;
   #userRepository: IUserRepository;

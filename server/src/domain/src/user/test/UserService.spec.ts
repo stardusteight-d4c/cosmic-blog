@@ -9,7 +9,7 @@ import {
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
 import {
   UserInMemoryRepository,
-} from "@domain/@in-memory-repositories";
+} from "@app/@in-memory-repositories";
 
 let userInstance: User;
 let userService: UserService;
