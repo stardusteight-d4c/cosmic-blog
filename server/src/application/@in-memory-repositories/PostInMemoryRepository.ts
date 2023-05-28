@@ -1,14 +1,12 @@
 import { IPostRepository, Post } from "@domain/src/post";
-import { Injectable } from "@nestjs/common";
 
-@Injectable()
 export class PostInMemoryRepository implements IPostRepository {
   private static instance: PostInMemoryRepository;
   #posts: Map<string, Post> = new Map();
 
   private constructor() {}
 
-  public static getInstance(): PostInMemoryRepository  {
+  public static getInstance(): PostInMemoryRepository {
     if (!PostInMemoryRepository.instance) {
       PostInMemoryRepository.instance = new PostInMemoryRepository();
     }

@@ -17,7 +17,6 @@ import { UserUseCases } from "./use-cases/UserUseCases";
 import { PostUseCases } from "./use-cases/PostUseCases";
 import { CommentUseCases } from "./use-cases/CommentUseCases";
 import { FavoriteUseCases } from "./use-cases/FavoriteUseCases";
-import { Injectable } from "@nestjs/common";
 
 export interface Initialization {
   services: {
@@ -28,8 +27,7 @@ export interface Initialization {
   };
 }
 
-@Injectable()
-export class UseCasesApplication {
+export class ApplicationUseCases {
   #postRepository: IPostRepository;
   #userRepository: IUserRepository;
   #commentRepository: ICommentRepository;
@@ -40,18 +38,20 @@ export class UseCasesApplication {
   #favoriteUseCases: FavoriteUseCases;
 
   constructor(repositories: {
-    postRepository: IPostRepository;
-    userRepository: IUserRepository;
-    commentRepository: ICommentRepository;
-    favoriteRepository: IFavoriteRepository;
+    postRepository?: IPostRepository;
+    userRepository?: IUserRepository;
+    commentRepository?: ICommentRepository;
+    favoriteRepository?: IFavoriteRepository;
   }) {
     this.#postRepository = repositories.postRepository;
     this.#userRepository = repositories.userRepository;
     this.#commentRepository = repositories.commentRepository;
     this.#favoriteRepository = repositories.favoriteRepository;
+
+    this.initialization()
   }
 
-  initialization() {
+  private initialization() {
     const publisher = new Publisher();
     const postService = new PostService({
       postRepository: this.#postRepository,

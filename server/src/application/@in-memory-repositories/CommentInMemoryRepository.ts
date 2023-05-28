@@ -1,8 +1,6 @@
 import { ICommentRepository } from "@domain/src/comment/@interfaces/ICommentRepository";
 import { Comment } from "@domain/src/comment";
-import { Injectable } from "@nestjs/common";
 
-@Injectable()
 export class CommentInMemoryRepository implements ICommentRepository {
   private static instance: CommentInMemoryRepository;
   #comments: Map<string, Comment> = new Map();

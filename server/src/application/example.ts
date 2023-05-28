@@ -7,7 +7,7 @@ import {
   UserInMemoryRepository,
 } from "@app/@in-memory-repositories";
 import { objectFactory } from "@domain/@utils/objectFactory";
-import { UseCasesApplication } from ".";
+import { ApplicationUseCases } from "./ApplicationUseCases";
 
 async function main() {
   const postInMemoryRepository = PostInMemoryRepository.getInstance();
@@ -16,7 +16,7 @@ async function main() {
   const favoriteInMemoryRepository = FavoriteInMemoryRepository.getInstance();
   const factory = objectFactory();
 
-  const app = new UseCasesApplication({
+  const app = new ApplicationUseCases({
     userRepository: userInMemoryRepository,
     postRepository: postInMemoryRepository,
     commentRepository: commentInMemoryRepository,
@@ -24,7 +24,6 @@ async function main() {
   });
 
   // Initialize Application
-  app.initialization();
   const userUseCases = app.getUserUsesCases();
   const postUseCases = app.getPostUsesCases();
 
