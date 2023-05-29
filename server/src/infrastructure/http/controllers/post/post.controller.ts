@@ -8,10 +8,10 @@ import {
   Put,
   Query,
 } from "@nestjs/common";
-import { IPostReflectObject } from "@/domain/src/post";
+import { IPostReflectObject } from "@domain/src/post";
 import { PostUseCases } from "@app/use-cases/PostUseCases";
-import { appInMemory } from "@/infrastructure";
-import { errorHandler } from "../../@utils/errorHandler";
+import { appInMemory } from "@infra/index";
+import { errorHandler } from "@infra/http/@utils/errorHandler";
 
 @Controller("post")
 export class PostController {
@@ -103,7 +103,7 @@ export class PostController {
   async delete(@Param("postId") postId: string): Promise<void> {
     try {
       await this.#postUseCases.delete(postId);
-     } catch (error: any) {
+    } catch (error: any) {
       errorHandler(error);
     }
   }

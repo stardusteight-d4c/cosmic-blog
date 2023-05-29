@@ -25,7 +25,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@domain/*": ["src/domain/*"],
-      "@app/*": ["src/application/*"]
+      "@app/*": ["src/application/*"],
+      "@infra/*": ["src/infrastructure/*"]
     }
   },
   "ts-node": {
