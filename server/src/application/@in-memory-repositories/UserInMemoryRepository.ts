@@ -52,6 +52,12 @@ export class UserInMemoryRepository implements IUserRepository {
     );
   }
 
+  public async findByUsername(username: string): Promise<User | undefined> {
+    return Array.from(this.#users.values()).find(
+      (user) => user.reflect.username === username,
+    );
+  }
+
   public async update(updatedUser: User): Promise<User> {
     const user = await this.replace(updatedUser);
     return user;

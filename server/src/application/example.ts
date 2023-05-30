@@ -1,4 +1,4 @@
-import { CreateSessionTokenAdapter } from "./adapters/create-session-token";
+import { CreateSessionTokenAdapter } from "./adapters/CreateSessionToken";
 import { MyJWT } from "./helpers";
 import {
   CommentInMemoryRepository,

@@ -1,3 +1,5 @@
+import { IPostRepository } from "../post";
+import { IUserRepository } from "../user";
 import { ICommentRepository } from "./@interfaces";
 import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 import { ICommentService } from "./@interfaces/ICommentService";
@@ -6,12 +8,22 @@ import { commentBuilderFactory } from "./helpers";
 
 export class CommentService implements ICommentService {
   #commentRepository: ICommentRepository;
+  #postRepository: IPostRepository;
+  #userRepository: IUserRepository;
 
-  constructor(implementations: { commentRepository: ICommentRepository }) {
+  constructor(implementations: {
+    commentRepository: ICommentRepository;
+    userRepository: IUserRepository;
+    postRepository: IPostRepository;
+  }) {
     this.#commentRepository = implementations.commentRepository;
+    this.#postRepository = implementations.postRepository;
+    this.#userRepository = implementations.userRepository;
   }
 
   public async createComment(comment: ICommentReflectObject): Promise<Comment> {
+    await this.#userRepository.findById(comment.owner.id);
+    await this.#postRepository.findById(comment.postId);
     const newComment = commentBuilderFactory({ comment });
     const commentInstance = await this.#commentRepository.create(newComment);
     return commentInstance;

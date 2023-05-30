@@ -48,13 +48,14 @@ export class ApplicationUseCases {
     this.#commentRepository = repositories.commentRepository;
     this.#favoriteRepository = repositories.favoriteRepository;
 
-    this.initialization()
+    this.initialization();
   }
 
   private initialization() {
     const publisher = new Publisher();
     const postService = new PostService({
       postRepository: this.#postRepository,
+      userRepository: this.#userRepository,
       publisher,
     });
     const userService = new UserService({
@@ -62,9 +63,13 @@ export class ApplicationUseCases {
     });
     const commentService = new CommentService({
       commentRepository: this.#commentRepository,
+      postRepository: this.#postRepository,
+      userRepository: this.#userRepository,
     });
     const favoriteService = new FavoriteService({
       favoriteRepository: this.#favoriteRepository,
+      postRepository: this.#postRepository,
+      userRepository: this.#userRepository,
     });
     publisher.register(new CommentObserver(commentService));
     publisher.register(new FavoriteObserver(favoriteService));

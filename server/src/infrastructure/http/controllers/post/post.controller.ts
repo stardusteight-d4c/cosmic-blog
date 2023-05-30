@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   Inject,
   Param,
   Post,
@@ -15,6 +16,9 @@ import { appInMemory } from "@infra/index";
 import { errorHandler } from "@infra/http/@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
+import { VerifySessionTokenAdapter } from "@/application/adapters/VerifySessionToken";
+import jwt from "jsonwebtoken";
+import { IUserTokenInfo } from "@/application/adapters/@interfaces";
 
 @Controller("post")
 export class PostController {
@@ -33,11 +37,21 @@ export class PostController {
     this.#commentController = commentController;
   }
 
-  @Post("create")
+  @Post("")
   async publishPost(
     @Body() post: IPostReflectObject,
+    @Headers("authorization") authorization: string,
   ): Promise<IPostReflectObject> {
     try {
+      const verifySessionTokenAdapter = new VerifySessionTokenAdapter(jwt);
+      const decoded =
+        verifySessionTokenAdapter.verifySessionToken(authorization);
+      const userInfo: IUserTokenInfo = JSON.parse(decoded);
+      if (userInfo.type === "reader") {
+        throw new Error(
+          "(reader) type users are not authorized to publish posts",
+        );
+      }
       return await this.#postUseCases
         .create(post)
         .then((post) => post?.reflect);
@@ -47,9 +61,7 @@ export class PostController {
   }
 
   @Get("search")
-  async search(
-    @Query() query: { where: "id" | "title"; equals: string },
-  ): Promise<
+  async search(@Query() query: { by: "id" | "title"; value: string }): Promise<
     | {
         post: IPostReflectObject;
         favoriteAmount: number;
@@ -58,9 +70,9 @@ export class PostController {
     | IPostReflectObject
   > {
     try {
-      const { where, equals } = query;
-      if (where === "id") {
-        return await this.#postUseCases.getById(equals).then(async (post) => {
+      const { by, value } = query;
+      if (by === "id") {
+        return await this.#postUseCases.getById(value).then(async (post) => {
           return {
             post: post?.reflect,
             favoriteAmount: await this.#favoriteController.amount({
@@ -73,9 +85,9 @@ export class PostController {
             }),
           };
         });
-      } else if (where === "title") {
+      } else if (by === "title") {
         return await this.#postUseCases
-          .getByTitle(equals)
+          .getByTitle(value)
           .then((post) => post?.reflect);
       }
     } catch (error: any) {

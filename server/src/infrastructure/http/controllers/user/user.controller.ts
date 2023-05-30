@@ -9,12 +9,12 @@ import {
 } from "@nestjs/common";
 import { appInMemory } from "@infra/index";
 import { UserUseCases } from "@app/use-cases/UserUseCases";
-import { IUserReflectObject, User } from "@domain/src/user";
-import { CreateSessionTokenAdapter } from "@app/adapters/create-session-token";
-import jwt from "jsonwebtoken";
+import { IUserReflectObject } from "@domain/src/user";
 import { errorHandler } from "../../@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
+import { CreateSessionTokenAdapter } from "@/application/adapters/CreateSessionToken";
+import jwt from "jsonwebtoken";
 
 @Controller("user")
 export class UserController {
@@ -54,48 +54,65 @@ export class UserController {
 
   @Get("search")
   async getUserBy(
-    @Query() query: { where: "id" | "email"; equals: string },
+    @Query() query: { by: "id" | "email"; value: string },
   ): Promise<{
     user: IUserReflectObject;
     favoriteAmount: number;
     commentAmount: number;
   }> {
     try {
-      const { where, equals } = query;
-      if (where === "id") {
-        return await this.#userUseCases
-          .getBy({ option: "id", equals })
-          .then(async (user) => {
-            return {
-              user: user?.reflect,
-              favoriteAmount: await this.#favoriteController.amount({
-                of: "user",
-                id: user.reflect.id,
-              }),
-              commentAmount: await this.#commentController.amount({
-                of: "user",
-                id: user.reflect.id,
-              }),
-            };
-          });
-      } else if (where === "email") {
-        return await this.#userUseCases
-          .getBy({ option: "email", equals })
-          .then(async (user) => {
-            return {
-              user: user?.reflect,
-              favoriteAmount: await this.#favoriteController.amount({
-                of: "user",
-                id: user.reflect.id,
-              }),
-              commentAmount: await this.#commentController.amount({
-                of: "user",
-                id: user.reflect.id,
-              }),
-            };
-          });
+      if (query.by === "id") {
+        return await this.#userUseCases.getBy(query).then(async (user) => {
+          return {
+            user: user?.reflect,
+            favoriteAmount: await this.#favoriteController.amount({
+              of: "user",
+              id: user.reflect.id,
+            }),
+            commentAmount: await this.#commentController.amount({
+              of: "user",
+              id: user.reflect.id,
+            }),
+          };
+        });
+      } else if (query.by === "email") {
+        return await this.#userUseCases.getBy(query).then(async (user) => {
+          return {
+            user: user?.reflect,
+            favoriteAmount: await this.#favoriteController.amount({
+              of: "user",
+              id: user.reflect.id,
+            }),
+            commentAmount: await this.#commentController.amount({
+              of: "user",
+              id: user.reflect.id,
+            }),
+          };
+        });
       }
     } catch (error: any) {
+      errorHandler(error);
+    }
+  }
+
+  @Get("signin")
+  async signin(@Query() query: { email: string; password: string }) {
+    try {
+      const { email, password } = query;
+      const createSessionTokenAdapter = new CreateSessionTokenAdapter(jwt);
+      return await this.#userUseCases
+        .signin({
+          email,
+          password,
+          createSessionTokenAdapter,
+        })
+        .then(({ user, sessionToken }) => {
+          return {
+            user: user.reflect,
+            sessionToken,
+          };
+        });
+    } catch (error) {
       errorHandler(error);
     }
   }

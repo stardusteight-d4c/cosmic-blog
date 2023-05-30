@@ -1,11 +1,21 @@
 import { Favorite, IFavoriteRepository, IFavoriteService } from ".";
 import Validators from "@/domain/@utils/validators";
+import { IUserRepository } from "../user";
+import { IPostRepository } from "../post";
 
 export class FavoriteService implements IFavoriteService {
   #favoriteRepository: IFavoriteRepository;
+  #postRepository: IPostRepository;
+  #userRepository: IUserRepository;
 
-  constructor(implementations: { favoriteRepository: IFavoriteRepository }) {
+  constructor(implementations: {
+    favoriteRepository: IFavoriteRepository;
+    postRepository: IPostRepository;
+    userRepository: IUserRepository;
+  }) {
     this.#favoriteRepository = implementations.favoriteRepository;
+    this.#postRepository = implementations.postRepository;
+    this.#userRepository = implementations.userRepository;
   }
 
   public async toggleFavoritePost(request: {
@@ -15,6 +25,8 @@ export class FavoriteService implements IFavoriteService {
     const { postId, userId } = request;
     Validators.checkPrimitiveType({ validating: userId, type: "string" });
     Validators.checkPrimitiveType({ validating: postId, type: "string" });
+    await this.#postRepository.findById(postId);
+    await this.#userRepository.findById(userId);
     const newFavorite = new Favorite({ postId, userId });
     const favorite = await this.#favoriteRepository.findFavoriteByKey(
       `${newFavorite.postId}-${newFavorite.userId}`,

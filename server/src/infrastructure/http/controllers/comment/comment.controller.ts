@@ -1,10 +1,10 @@
 import { CommentUseCases } from "@/application/use-cases/CommentUseCases";
 import { ICommentReflectObject } from "@/domain/src/comment";
 import { appInMemory } from "@/infrastructure";
-import { Body, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { errorHandler } from "../../@utils/errorHandler";
-import { IUserReflectObject } from "@/domain/src/user";
 
+@Controller("comment")
 export class CommentController {
   #commentUseCases: CommentUseCases;
 
@@ -46,7 +46,7 @@ export class CommentController {
     @Query()
     query: {
       by: "userId" | "postId";
-      equals: string;
+      value: string;
       skip: number;
       pageSize: number;
     },

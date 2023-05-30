@@ -1,7 +1,7 @@
 ### POST
-
-POST http://localhost:3000/post/create
+POST http://localhost:3000/post
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTk3ZjBkNTktNjM3ZS00M2VlLTg3MDUtYzQ4YmZkOGY0YjQxIiwiZW1haWwiOiJqb2huc3Nkb2VAZW1haWwuY29tIiwidHlwZSI6ImF1dGhvciIsImlhdCI6MTY4NTQ3NDE2OSwiZXhwIjoxNjg2MDc4OTY5fQ.l4nSQYIzqruNN3LEX4PQ9IxyksHjQ29avtWHHpzEYFc
 
 {
  "title": "Sample Post",
@@ -10,45 +10,68 @@ Content-Type: application/json
  "coverImage": "https://example.com/cover-image.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "a09a2591-4cb8-4196-9e59-4101333bff62",
+    "id": "197f0d59-637e-43ee-8705-c48bfd8f4b41",
+    "email": "johndoe@email.com",
+    "username": "johndoe",
+    "password": "pa$$word1",
+    "avatar": "AVATAR01",
+    "userRole": "author"
+  }
+}
+###
+GET http://localhost:3000/post
+###
+GET http://localhost:3000/post/pagination?skip=2&pageSize=2
+###
+GET http://localhost:3000/post/search?by=id&value=874da23e-db86-45d4-ac9c-ca53c668ee68
+###
+GET http://localhost:3000/post/search?by=title&value=sample
+
+### USER
+POST http://localhost:3000/user/register
+Content-Type: application/json
+
+{
+  "email": "johnssdoe@email.com",
+  "username": "jsohndoe",
+  "password": "pa$$word1",
+  "avatar": "AVATAR01",
+  "userRole": "author"
+}
+###
+GET http://localhost:3000/user/signin?email=johndoe@email.com&password=pa$$word1
+###
+GET http://localhost:3000/user/search?by=id&value=a09a2591-4cb8-4196-9e59-4101333bff62
+###
+GET http://localhost:3000/user/search?by=email&value=johndoe@email.com
+
+### FAVORITE
+PUT http://localhost:3000/favorite/toggle
+Content-Type: application/json
+
+{ 
+  "postId": "874da23e-db86-45d4-ac9c-ca53c668ee68",
+  "userId": "a09a2591-4cb8-4196-9e59-4101333bff62" 
+}
+
+### COMMENT
+POST http://localhost:3000/comment
+Content-Type: application/json
+
+{
+  "postId": "874da23e-db86-45d4-ac9c-ca53c668ee68",
+  "owner": {
+    "id": "cf4da33e-0938-4f21-8065-5f4baa2e6d29",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "password": "pa$$word1",
     "avatar": "AVATAR01",
     "userRole": "reader"
-  }
+  },
+  "content": "Great post! I really enjoyed reading it.",
+  "postedAt": "2023-05-30T14:31:44.545Z"
 }
-
 ###
-GET http://localhost:3000/post
-
+GET http://localhost:3000/pagination?by=postId&value=c5d68477-129e-4cc0-8f36-e8ddc9874519&skip=2&pageSize=2
 ###
-GET http://localhost:3000/post/pagination?skip=2&pageSize=2
-
-###
-http://localhost:3000/post/search?where=id&equals=c5d68477-129e-4cc0-8f36-e8ddc9874519
-
-### USER
-
-POST  http://localhost:3000/user/register
-Content-Type: application/json
-
-{
-  "email": "johndoe@email.com",
-  "username": "johndoe",
-  "password": "pa$$word1",
-  "avatar": "AVATAR01",
-  "userRole": "reader"
-}
-
-### FAVORITE
-
-PUT http://localhost:3000/favorite
-Content-Type: application/json
-
-{ 
-  "postId": "c5d68477-129e-4cc0-8f36-e8ddc9874519",
-  "userId": "a09a2591-4cb8-4196-9e59-4101333bff62" 
-}
-
-### COMMENT
+GET http://localhost:3000/pagination?by=userId&value=a09a2591-4cb8-4196-9e59-4101333bff62&skip=2&pageSize=2

@@ -27,7 +27,7 @@ export class FavoriteController {
     }
   }
 
-  @Put()
+  @Put('toggle')
   async toggle(
     @Body() favorite: { postId: string; userId: string },
   ): Promise<void> {

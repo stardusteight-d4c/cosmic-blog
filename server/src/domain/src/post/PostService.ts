@@ -8,22 +8,27 @@ import {
 import Validators from "@domain/@utils/validators";
 import { IPublisher } from "@domain/@interfaces";
 import DeletePostCommand from "./PostCommands";
+import { IUserRepository } from "../user";
 
 export class PostService implements IPostService {
   #postRepository: IPostRepository;
+  #userRepository: IUserRepository;
   #publisher?: IPublisher;
 
   constructor(implementations: {
     postRepository: IPostRepository;
+    userRepository: IUserRepository;
     publisher?: IPublisher;
   }) {
     this.#postRepository = implementations.postRepository;
+    this.#userRepository = implementations.userRepository;
     if (implementations.publisher) {
       this.#publisher = implementations.publisher;
     }
   }
 
   public async createPost(post: IPostReflectObject): Promise<Post> {
+    await this.#userRepository.findById(post.author.id);
     const newPost = postBuilderFactory({ post });
     const postInstance = await this.#postRepository.create(newPost);
     return postInstance;

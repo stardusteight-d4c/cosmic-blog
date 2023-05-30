@@ -1,9 +1,5 @@
-import {
-  IUserReflectObject,
-  IUserService,
-  User,
-} from "@domain/src/user";
-import { CreateSessionTokenAdapter } from "../adapters/create-session-token";
+import { IUserReflectObject, IUserService, User } from "@domain/src/user";
+import { CreateSessionTokenAdapter } from "../adapters/CreateSessionToken";
 
 type RegisterUserResult = { user: User; sessionToken: string };
 
@@ -19,26 +15,52 @@ export class UserUseCases {
     const sessionToken = createSessionTokenAdapter.createSessionToken({
       user_id: userInstance.reflect.id!,
       email: userInstance.reflect.email,
+      type: userInstance.reflect.userRole,
     });
     return { user: userInstance, sessionToken };
   }
 
   async getBy(request: {
-    option: "email" | "id";
-    equals: string;
+    by: "email" | "id";
+    value: string;
   }): Promise<User | undefined> {
-    if (request.option === "email") {
-      const user = await this.userService.getUserByEmail(request.equals);
+    if (request.by === "email") {
+      const user = await this.userService.getUserByEmail(request.value);
       return user;
-    } else if (request.option === "id") {
-      const user = await this.userService.getUserById(request.equals);
+    } else if (request.by === "id") {
+      const user = await this.userService.getUserById(request.value);
       return user;
-    } else {
-      throw new Error("Invalid params!");
     }
+    throw new Error("Invalid params");
   }
 
   async update(updatedUser: IUserReflectObject): Promise<User | undefined> {
     return await this.userService.updateUser(updatedUser);
+  }
+
+  async signin(request: {
+    email: string;
+    password: string;
+    createSessionTokenAdapter: CreateSessionTokenAdapter;
+  }): Promise<RegisterUserResult> {
+    const { email, password, createSessionTokenAdapter } = request;
+    const user = await this.userService.getUserByEmail(email);
+
+    if (!user) {
+      throw new Error("Email does not exist");
+    }
+    const isValidPassword = password === user.reflect.password;
+    if (!isValidPassword) {
+      throw new Error("Invalid password");
+    }
+    const sessionToken = createSessionTokenAdapter.createSessionToken({
+      user_id: user.reflect.id!,
+      email: user.reflect.email,
+      type: user.reflect.userRole,
+    });
+    return {
+      user: user,
+      sessionToken,
+    };
   }
 }

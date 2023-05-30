@@ -1,3 +1,5 @@
+import { TUserRole } from "@/domain/src/user";
+
 export interface IJwt {
   sign(
     payload: string | object | Buffer,
@@ -9,4 +11,16 @@ export interface IJwt {
 
 export interface ICreateSessionToken {
   createSessionToken(data: { user_id: string; email: string }): string;
+}
+
+export interface IVerifySessionToken {
+  verifySessionToken(token: string): string;
+}
+
+export interface IUserTokenInfo {
+  user_id: string;
+  email: string;
+  type: TUserRole;
+  iat: number;
+  exp: number;
 }

@@ -4,7 +4,6 @@ import {
   IUserRepository,
   IUserService,
   userBuilderFactory,
-  ISocialLinks,
 } from ".";
 import Validators from "@/domain/@utils/validators";
 import { IPublisher } from "@domain/@interfaces";
@@ -26,6 +25,18 @@ export class UserService implements IUserService {
 
   public async createUser(user: IUserReflectObject): Promise<User> {
     const newUser = userBuilderFactory({ user });
+    const emailAlreadyExists = await this.#userRepository.findByEmail(
+      user.email,
+    );
+    const usernameAlreadyExists = await this.#userRepository.findByUsername(
+      user.username,
+    );
+    if (emailAlreadyExists) {
+      throw new Error("Email already exists");
+    }
+    if (usernameAlreadyExists) {
+      throw new Error("Username already exists");
+    }
     const userInstance = await this.#userRepository.create(newUser);
     return userInstance;
   }
@@ -40,9 +51,8 @@ export class UserService implements IUserService {
         await this.#publisher.emit(deleteUserCommand);
       }
       return deletedUser;
-    } else {
-      throw new Error(`The user with ID: ${userId} was not found.`);
     }
+    throw new Error(`The user with ID: ${userId} was not found.`);
   }
 
   public async getUserById(userId: string): Promise<User | undefined> {
@@ -78,9 +88,8 @@ export class UserService implements IUserService {
         updatedUserInstance,
       );
       return changedUser;
-    } else {
-      throw new Error(`The user with ID: ${data.userId} was not found.`);
     }
+    throw new Error(`The user with ID: ${data.userId} was not found.`);
   }
 
   public async changePassword(data: {
@@ -104,9 +113,8 @@ export class UserService implements IUserService {
         updatedUserInstance,
       );
       return changedUser;
-    } else {
-      throw new Error(`The user with ID: ${data.userId} was not found.`);
     }
+    throw new Error(`The user with ID: ${data.userId} was not found.`);
   }
 
   public async updateUser(user: IUserReflectObject): Promise<User> {

@@ -21,20 +21,20 @@ export class CommentUseCases {
 
   async getWithPagination(request: {
     by: "userId" | "postId";
-    equals: string;
+    value: string;
     skip: number;
     pageSize: number;
   }) {
-    const { by, equals, skip, pageSize } = request;
+    const { by, value, skip, pageSize } = request;
     if (by === "postId") {
       return await this.commentService.getCommentsByPostIdWithPagination({
-        postId: equals,
+        postId: value,
         skip,
         pageSize,
       });
     } else if (by === "userId") {
       return await this.commentService.getCommentsByUserIdWithPagination({
-        userId: equals,
+        userId: value,
         skip,
         pageSize,
       });
