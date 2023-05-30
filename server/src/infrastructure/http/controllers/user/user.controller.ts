@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { appInMemory } from "@infra/index";
 import { UserUseCases } from "@app/use-cases/UserUseCases";
 import { IUserReflectObject, User } from "@domain/src/user";
@@ -20,14 +20,34 @@ export class UserController {
   ): Promise<{ user: IUserReflectObject; sessionToken: string }> {
     try {
       const createSessionTokenAdapter = new CreateSessionTokenAdapter(jwt);
-      const response = await this.#userUseCases.register({
-        user,
-        createSessionTokenAdapter,
-      });
-      return {
-        user: response.user.reflect,
-        sessionToken: response.sessionToken,
-      };
+      return await this.#userUseCases
+        .register({
+          user,
+          createSessionTokenAdapter,
+        })
+        .then(({ user, sessionToken }) => {
+          return { user: user.reflect, sessionToken };
+        });
+    } catch (error: any) {
+      errorHandler(error);
+    }
+  }
+
+  @Get("search")
+  async getUserBy(
+    @Query() request: { by: "id" | "email"; field: string },
+  ): Promise<IUserReflectObject> {
+    try {
+      const { by, field } = request;
+      if (by === "id") {
+        return await this.#userUseCases
+          .getBy({ option: "id", info: field })
+          .then((user) => user?.reflect);
+      } else if (by === "email") {
+        return await this.#userUseCases
+          .getBy({ option: "email", info: field })
+          .then((user) => user?.reflect);
+      }
     } catch (error: any) {
       errorHandler(error);
     }

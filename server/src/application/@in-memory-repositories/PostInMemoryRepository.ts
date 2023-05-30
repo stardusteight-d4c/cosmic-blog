@@ -53,7 +53,7 @@ export class PostInMemoryRepository implements IPostRepository {
 
   public async findByTitle(postTitle: string): Promise<Post | undefined> {
     for (const post of this.#posts.values()) {
-      if (post.reflect.title.includes(postTitle)) {
+      if (post.reflect.title.toLocaleLowerCase().includes(postTitle.toLocaleLowerCase())) {
         return post;
       }
     }

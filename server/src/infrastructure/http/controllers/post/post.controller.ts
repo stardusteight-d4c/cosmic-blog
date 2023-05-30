@@ -26,33 +26,28 @@ export class PostController {
     @Body() post: IPostReflectObject,
   ): Promise<IPostReflectObject> {
     try {
-      const response = await this.#postUseCases.create(post);
-      return response.reflect;
+      return await this.#postUseCases
+        .create(post)
+        .then((post) => post?.reflect);
     } catch (error: any) {
       errorHandler(error);
     }
   }
 
-  @Get("byId/:postId")
-  async findById(@Param("postId") postId: string): Promise<IPostReflectObject> {
-    try {
-      const response = await this.#postUseCases.getById(postId);
-      if (response) {
-        return response.reflect;
-      }
-    } catch (error: any) {
-      errorHandler(error);
-    }
-  }
-
-  @Get("byTitle/:title")
-  async findByTitle(
-    @Param("title") title: string,
+  @Get("search")
+  async search(
+    @Query() request: { by: "id" | "title"; field: string },
   ): Promise<IPostReflectObject> {
     try {
-      const response = await this.#postUseCases.getByTitle(title);
-      if (response) {
-        return response.reflect;
+      const { by, field } = request;
+      if (by === "id") {
+        return await this.#postUseCases
+          .getById(field)
+          .then((post) => post?.reflect);
+      } else if (by === "title") {
+        return await this.#postUseCases
+          .getByTitle(field)
+          .then((post) => post?.reflect);
       }
     } catch (error: any) {
       errorHandler(error);
@@ -64,10 +59,9 @@ export class PostController {
     @Body() updatedPost: IPostReflectObject,
   ): Promise<IPostReflectObject> {
     try {
-      const response = await this.#postUseCases.update(updatedPost);
-      if (response) {
-        return response.reflect;
-      }
+      return await this.#postUseCases
+        .update(updatedPost)
+        .then((post) => post?.reflect);
     } catch (error: any) {
       errorHandler(error);
     }
@@ -78,10 +72,9 @@ export class PostController {
     @Query() request: { skip: number; pageSize: number },
   ): Promise<IPostReflectObject[]> {
     try {
-      const response = await this.#postUseCases.getWithPagination(request);
-      if (response) {
-        return response.map((post) => post.reflect);
-      }
+      return await this.#postUseCases
+        .getWithPagination(request)
+        .then((posts) => posts?.map((post) => post?.reflect));
     } catch (error: any) {
       errorHandler(error);
     }
@@ -90,10 +83,9 @@ export class PostController {
   @Get("")
   async all(): Promise<IPostReflectObject[]> {
     try {
-      const response = await this.#postUseCases.getAll();
-      if (response) {
-        return response.map((post) => post.reflect);
-      }
+      return await this.#postUseCases
+        .getAll()
+        .then((posts) => posts?.map((post) => post?.reflect));
     } catch (error: any) {
       errorHandler(error);
     }
