@@ -206,7 +206,7 @@ describe("CommentService", () => {
     expect(postCommentAmount).toStrictEqual(1);
     expect(userCommentAmount).toStrictEqual(1);
     expect(comments?.length).toStrictEqual(1);
-    await commentService.deleteComment(commentInstance);
+    await commentService.deleteComment(commentInstance.reflect.id);
     const updatedPostCommentAmount = await commentService.getPostCommentAmount(
       commentInstance.reflect.postId,
     );

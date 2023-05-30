@@ -64,8 +64,8 @@ describe("UserService", () => {
       email: "email@example.com",
       github: "https://github.com/stardusteight-d4c",
     };
-    const updatedUser = await userService.changeSocialLinks({
-      userId: userInstance.reflect.id!,
+    const updatedUser = await userService.updateUser({
+      ...userInstance.reflect,
       socialLinks: newSocialLinks,
     });
     expect(updatedUser!.reflect.socialLinks).toBe(newSocialLinks);

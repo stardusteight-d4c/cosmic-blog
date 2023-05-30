@@ -1,17 +1,36 @@
-import { Body, Controller, Get, Post, Put, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Post,
+  Put,
+  Query,
+} from "@nestjs/common";
 import { appInMemory } from "@infra/index";
 import { UserUseCases } from "@app/use-cases/UserUseCases";
 import { IUserReflectObject, User } from "@domain/src/user";
 import { CreateSessionTokenAdapter } from "@app/adapters/create-session-token";
 import jwt from "jsonwebtoken";
 import { errorHandler } from "../../@utils/errorHandler";
+import { FavoriteController } from "../favorite/favorite.controller";
+import { CommentController } from "../comment/comment.controller";
 
 @Controller("user")
 export class UserController {
   #userUseCases: UserUseCases;
+  #favoriteController: FavoriteController;
+  #commentController: CommentController;
 
-  constructor() {
+  constructor(
+    @Inject(FavoriteController)
+    favoriteController: FavoriteController,
+    @Inject(CommentController)
+    commentController: CommentController,
+  ) {
     this.#userUseCases = appInMemory.getUserUsesCases();
+    this.#favoriteController = favoriteController;
+    this.#commentController = commentController;
   }
 
   @Post("register")
@@ -36,17 +55,45 @@ export class UserController {
   @Get("search")
   async getUserBy(
     @Query() query: { where: "id" | "email"; equals: string },
-  ): Promise<IUserReflectObject> {
+  ): Promise<{
+    user: IUserReflectObject;
+    favoriteAmount: number;
+    commentAmount: number;
+  }> {
     try {
       const { where, equals } = query;
       if (where === "id") {
         return await this.#userUseCases
           .getBy({ option: "id", equals })
-          .then((user) => user?.reflect);
+          .then(async (user) => {
+            return {
+              user: user?.reflect,
+              favoriteAmount: await this.#favoriteController.amount({
+                of: "user",
+                id: user.reflect.id,
+              }),
+              commentAmount: await this.#commentController.amount({
+                of: "user",
+                id: user.reflect.id,
+              }),
+            };
+          });
       } else if (where === "email") {
         return await this.#userUseCases
           .getBy({ option: "email", equals })
-          .then((user) => user?.reflect);
+          .then(async (user) => {
+            return {
+              user: user?.reflect,
+              favoriteAmount: await this.#favoriteController.amount({
+                of: "user",
+                id: user.reflect.id,
+              }),
+              commentAmount: await this.#commentController.amount({
+                of: "user",
+                id: user.reflect.id,
+              }),
+            };
+          });
       }
     } catch (error: any) {
       errorHandler(error);

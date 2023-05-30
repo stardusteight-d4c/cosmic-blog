@@ -17,8 +17,8 @@ export class CommentService implements ICommentService {
     return commentInstance;
   }
 
-  public async deleteComment(comment: Comment): Promise<void> {
-    await this.#commentRepository.delete(comment.reflect.id!);
+  public async deleteComment(commentId: string): Promise<void> {
+    await this.#commentRepository.delete(commentId);
     return;
   }
 

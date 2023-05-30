@@ -14,18 +14,23 @@ import { PostUseCases } from "@app/use-cases/PostUseCases";
 import { appInMemory } from "@infra/index";
 import { errorHandler } from "@infra/http/@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
+import { CommentController } from "../comment/comment.controller";
 
 @Controller("post")
 export class PostController {
   #postUseCases: PostUseCases;
   #favoriteController: FavoriteController;
+  #commentController: CommentController;
 
   constructor(
     @Inject(FavoriteController)
     favoriteController: FavoriteController,
+    @Inject(CommentController)
+    commentController: CommentController,
   ) {
     this.#postUseCases = appInMemory.getPostUsesCases();
     this.#favoriteController = favoriteController;
+    this.#commentController = commentController;
   }
 
   @Post("create")
@@ -45,7 +50,12 @@ export class PostController {
   async search(
     @Query() query: { where: "id" | "title"; equals: string },
   ): Promise<
-    { post: IPostReflectObject; favoriteAmount: number } | IPostReflectObject
+    | {
+        post: IPostReflectObject;
+        favoriteAmount: number;
+        commentAmount: number;
+      }
+    | IPostReflectObject
   > {
     try {
       const { where, equals } = query;
@@ -57,6 +67,10 @@ export class PostController {
               of: "post",
               id: post.reflect.id,
             }),
+            commentAmount: await this.#commentController.amount({
+              of: "post",
+              id: post.reflect.id,
+            }),
           };
         });
       } else if (where === "title") {
@@ -64,19 +78,6 @@ export class PostController {
           .getByTitle(equals)
           .then((post) => post?.reflect);
       }
-    } catch (error: any) {
-      errorHandler(error);
-    }
-  }
-
-  @Put("update")
-  async edit(
-    @Body() updatedPost: IPostReflectObject,
-  ): Promise<IPostReflectObject> {
-    try {
-      return await this.#postUseCases
-        .update(updatedPost)
-        .then((post) => post?.reflect);
     } catch (error: any) {
       errorHandler(error);
     }
@@ -101,6 +102,19 @@ export class PostController {
       return await this.#postUseCases
         .getAll()
         .then((posts) => posts?.map((post) => post?.reflect));
+    } catch (error: any) {
+      errorHandler(error);
+    }
+  }
+
+  @Put("update")
+  async edit(
+    @Body() updatedPost: IPostReflectObject,
+  ): Promise<IPostReflectObject> {
+    try {
+      return await this.#postUseCases
+        .update(updatedPost)
+        .then((post) => post?.reflect);
     } catch (error: any) {
       errorHandler(error);
     }

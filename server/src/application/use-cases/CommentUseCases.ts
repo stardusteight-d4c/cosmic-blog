@@ -11,8 +11,8 @@ export class CommentUseCases {
     return await this.commentService.createComment(comment);
   }
 
-  async delete(comment: Comment) {
-    return await this.commentService.deleteComment(comment);
+  async delete(commentId: string) {
+    return await this.commentService.deleteComment(commentId);
   }
 
   async edit(updatedComment: ICommentReflectObject) {
@@ -21,20 +21,20 @@ export class CommentUseCases {
 
   async getWithPagination(request: {
     by: "userId" | "postId";
-    info: string;
+    equals: string;
     skip: number;
     pageSize: number;
   }) {
-    const { by, info, skip, pageSize } = request;
+    const { by, equals, skip, pageSize } = request;
     if (by === "postId") {
       return await this.commentService.getCommentsByPostIdWithPagination({
-        postId: info,
+        postId: equals,
         skip,
         pageSize,
       });
     } else if (by === "userId") {
       return await this.commentService.getCommentsByUserIdWithPagination({
-        userId: info,
+        userId: equals,
         skip,
         pageSize,
       });

@@ -2,7 +2,7 @@ import { Comment, ICommentReflectObject } from "@domain/src/comment";
 
 export interface ICommentService {
   createComment(comment: ICommentReflectObject): Promise<Comment>;
-  deleteComment(comment: Comment): Promise<void>;
+  deleteComment(commentId: string): Promise<void>;
   deleteAllCommentsByPostId(postId: string): Promise<void>;
   deleteAllCommentsByUserId(userId: string): Promise<void>;
   getCommentById(commentId: string): Promise<Comment | undefined>;

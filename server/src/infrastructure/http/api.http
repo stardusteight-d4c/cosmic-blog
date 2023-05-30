@@ -1,0 +1,54 @@
+### POST
+
+POST http://localhost:3000/post/create
+Content-Type: application/json
+
+{
+ "title": "Sample Post",
+ "body": "This is the content of the post.",
+ "tags": ["tag1", "tag2", "tag3"],
+ "coverImage": "https://example.com/cover-image.jpg",
+ "postedIn": "2023-05-30T14:31:44.545Z",
+ "author": {
+    "id": "a09a2591-4cb8-4196-9e59-4101333bff62",
+    "email": "johndoe@email.com",
+    "username": "johndoe",
+    "password": "pa$$word1",
+    "avatar": "AVATAR01",
+    "userRole": "reader"
+  }
+}
+
+###
+GET http://localhost:3000/post
+
+###
+GET http://localhost:3000/post/pagination?skip=2&pageSize=2
+
+###
+http://localhost:3000/post/search?where=id&equals=c5d68477-129e-4cc0-8f36-e8ddc9874519
+
+### USER
+
+POST  http://localhost:3000/user/register
+Content-Type: application/json
+
+{
+  "email": "johndoe@email.com",
+  "username": "johndoe",
+  "password": "pa$$word1",
+  "avatar": "AVATAR01",
+  "userRole": "reader"
+}
+
+### FAVORITE
+
+PUT http://localhost:3000/favorite
+Content-Type: application/json
+
+{ 
+  "postId": "c5d68477-129e-4cc0-8f36-e8ddc9874519",
+  "userId": "a09a2591-4cb8-4196-9e59-4101333bff62" 
+}
+
+### COMMENT
