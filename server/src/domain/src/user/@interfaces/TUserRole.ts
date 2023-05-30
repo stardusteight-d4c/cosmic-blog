@@ -1,1 +1,1 @@
-export type TUserRole = "author-blog" | "default-user";
+export type TUserRole = "reader" | "author";

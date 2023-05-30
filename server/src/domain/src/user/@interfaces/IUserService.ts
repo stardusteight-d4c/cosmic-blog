@@ -16,8 +16,5 @@ export interface IUserService {
     confirmationPassword: string;
     newPassword: string;
   }): Promise<User | undefined>;
-  changeSocialLinks(request: {
-    userId: string;
-    socialLinks: ISocialLinks;
-  }): Promise<User | undefined>;
+  updateUser(user: IUserReflectObject): Promise<User>;
 }

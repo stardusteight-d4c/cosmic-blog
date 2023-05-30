@@ -109,17 +109,9 @@ export class UserService implements IUserService {
     }
   }
 
-  public async changeSocialLinks(request: {
-    userId: string;
-    socialLinks: ISocialLinks;
-  }): Promise<User | undefined> {
-    const { userId, socialLinks } = request;
-    const user = await this.#userRepository.findById(userId);
-    const updatedUser = userBuilderFactory({
-      user: user!.reflect,
-      update: { field: "socialLinks", newData: socialLinks },
-    });
-    await this.#userRepository.update(updatedUser);
-    return updatedUser;
+  public async updateUser(user: IUserReflectObject): Promise<User> {
+    const updatedUser = userBuilderFactory({ user });
+    const updatedUserInstance = await this.#userRepository.update(updatedUser);
+    return updatedUserInstance;
   }
 }

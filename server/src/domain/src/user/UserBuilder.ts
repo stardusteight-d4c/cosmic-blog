@@ -65,7 +65,7 @@ export class UserBuilder {
       username: this.#username,
       password: this.#password,
       avatar: this.#avatar ?? "AVATAR01",
-      userRole: this.#userRole ?? "default-user",
+      userRole: this.#userRole ?? "reader",
       socialLinks: this.#socialLinks,
     });
   }

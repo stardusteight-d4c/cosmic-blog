@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Query } from "@nestjs/common";
 import { appInMemory } from "@infra/index";
 import { UserUseCases } from "@app/use-cases/UserUseCases";
 import { IUserReflectObject, User } from "@domain/src/user";
@@ -35,19 +35,32 @@ export class UserController {
 
   @Get("search")
   async getUserBy(
-    @Query() request: { by: "id" | "email"; field: string },
+    @Query() query: { where: "id" | "email"; equals: string },
   ): Promise<IUserReflectObject> {
     try {
-      const { by, field } = request;
-      if (by === "id") {
+      const { where, equals } = query;
+      if (where === "id") {
         return await this.#userUseCases
-          .getBy({ option: "id", info: field })
+          .getBy({ option: "id", equals })
           .then((user) => user?.reflect);
-      } else if (by === "email") {
+      } else if (where === "email") {
         return await this.#userUseCases
-          .getBy({ option: "email", info: field })
+          .getBy({ option: "email", equals })
           .then((user) => user?.reflect);
       }
+    } catch (error: any) {
+      errorHandler(error);
+    }
+  }
+
+  @Put("update")
+  async edit(
+    @Body() updatedUser: IUserReflectObject,
+  ): Promise<IUserReflectObject> {
+    try {
+      return await this.#userUseCases
+        .update(updatedUser)
+        .then((user) => user?.reflect);
     } catch (error: any) {
       errorHandler(error);
     }

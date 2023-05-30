@@ -4,7 +4,6 @@ export function userBuilderFactory({
   user,
   update,
 }: {
-  // userService
   user: IUserReflectObject;
   update?: {
     field: "email" | "password" | "favorites" | "comments" | "socialLinks";
@@ -17,7 +16,7 @@ export function userBuilderFactory({
     .setUsername(user.username)
     .setPassword(update?.field === "password" ? update.newData : user.password)
     .setAvatar(user.avatar ?? undefined)
-    .setUserRole(user.userRole ?? "default-user")
+    .setUserRole(user.userRole ?? "reader")
     .setSocialLinks(
       update?.field === "socialLinks" ? update.newData : user.socialLinks,
     )

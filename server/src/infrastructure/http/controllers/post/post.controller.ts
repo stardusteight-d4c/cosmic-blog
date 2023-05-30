@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Post,
   Put,
@@ -12,13 +13,19 @@ import { IPostReflectObject } from "@domain/src/post";
 import { PostUseCases } from "@app/use-cases/PostUseCases";
 import { appInMemory } from "@infra/index";
 import { errorHandler } from "@infra/http/@utils/errorHandler";
+import { FavoriteController } from "../favorite/favorite.controller";
 
 @Controller("post")
 export class PostController {
   #postUseCases: PostUseCases;
+  #favoriteController: FavoriteController;
 
-  constructor() {
+  constructor(
+    @Inject(FavoriteController)
+    favoriteController: FavoriteController,
+  ) {
     this.#postUseCases = appInMemory.getPostUsesCases();
+    this.#favoriteController = favoriteController;
   }
 
   @Post("create")
@@ -36,17 +43,25 @@ export class PostController {
 
   @Get("search")
   async search(
-    @Query() request: { by: "id" | "title"; field: string },
-  ): Promise<IPostReflectObject> {
+    @Query() query: { where: "id" | "title"; equals: string },
+  ): Promise<
+    { post: IPostReflectObject; favoriteAmount: number } | IPostReflectObject
+  > {
     try {
-      const { by, field } = request;
-      if (by === "id") {
+      const { where, equals } = query;
+      if (where === "id") {
+        return await this.#postUseCases.getById(equals).then(async (post) => {
+          return {
+            post: post?.reflect,
+            favoriteAmount: await this.#favoriteController.amount({
+              of: "post",
+              id: post.reflect.id,
+            }),
+          };
+        });
+      } else if (where === "title") {
         return await this.#postUseCases
-          .getById(field)
-          .then((post) => post?.reflect);
-      } else if (by === "title") {
-        return await this.#postUseCases
-          .getByTitle(field)
+          .getByTitle(equals)
           .then((post) => post?.reflect);
       }
     } catch (error: any) {
@@ -69,11 +84,11 @@ export class PostController {
 
   @Get("pagination")
   async getWithPagination(
-    @Query() request: { skip: number; pageSize: number },
+    @Query() query: { skip: number; pageSize: number },
   ): Promise<IPostReflectObject[]> {
     try {
       return await this.#postUseCases
-        .getWithPagination(request)
+        .getWithPagination(query)
         .then((posts) => posts?.map((post) => post?.reflect));
     } catch (error: any) {
       errorHandler(error);

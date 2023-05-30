@@ -1,5 +1,4 @@
 import {
-  ISocialLinks,
   IUserReflectObject,
   IUserService,
   User,
@@ -26,23 +25,20 @@ export class UserUseCases {
 
   async getBy(request: {
     option: "email" | "id";
-    info: string;
+    equals: string;
   }): Promise<User | undefined> {
     if (request.option === "email") {
-      const user = await this.userService.getUserByEmail(request.info);
+      const user = await this.userService.getUserByEmail(request.equals);
       return user;
     } else if (request.option === "id") {
-      const user = await this.userService.getUserById(request.info);
+      const user = await this.userService.getUserById(request.equals);
       return user;
     } else {
       throw new Error("Invalid params!");
     }
   }
 
-  async changeSocialLinks(request: {
-    userId: string;
-    socialLinks: ISocialLinks;
-  }) {
-    await this.userService.changeSocialLinks(request);
+  async update(updatedUser: IUserReflectObject): Promise<User | undefined> {
+    return await this.userService.updateUser(updatedUser);
   }
 }
