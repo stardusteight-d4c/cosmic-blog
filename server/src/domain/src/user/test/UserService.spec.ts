@@ -7,9 +7,7 @@ import {
   UserService,
 } from "../index";
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
-import {
-  UserInMemoryRepository,
-} from "@app/@in-memory-repositories";
+import { UserInMemoryRepository } from "@app/@in-memory-repositories";
 
 let userInstance: User;
 let userService: UserService;
@@ -32,12 +30,10 @@ describe("UserService", () => {
   });
 
   it("must be able to create a user", async () => {
-    const userInstance = await userService.createUser(user);
     expect(userInstance).toBeInstanceOf(User);
   });
 
   it("must be not able to access the attributes directly", async () => {
-    const userInstance = await userService.createUser(user);
     expect(() => userInstance.id).toThrowError(
       "Cannot access id property directly. Use the reflect object in the User instead.",
     );
@@ -53,7 +49,6 @@ describe("UserService", () => {
   });
 
   it("must be able to access the attributes via the <reflect> object", async () => {
-    const userInstance = await userService.createUser(user);
     expect(userInstance.reflect.username).toBe(user.username);
     expect(userInstance.reflect.email).toBe(user.email);
     expect(userInstance.reflect.password).toBe(user.password);

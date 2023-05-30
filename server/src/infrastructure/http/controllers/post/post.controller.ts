@@ -46,8 +46,7 @@ export class PostController {
       const verifySessionTokenAdapter = new VerifySessionTokenAdapter(jwt);
       const decoded =
         verifySessionTokenAdapter.verifySessionToken(authorization);
-      const userInfo: IUserTokenInfo = JSON.parse(decoded);
-      if (userInfo.type === "reader") {
+      if (decoded.type === "reader") {
         throw new Error(
           "(reader) type users are not authorized to publish posts",
         );
@@ -122,8 +121,17 @@ export class PostController {
   @Put("update")
   async edit(
     @Body() updatedPost: IPostReflectObject,
+    @Headers("authorization") authorization: string,
   ): Promise<IPostReflectObject> {
     try {
+      const verifySessionTokenAdapter = new VerifySessionTokenAdapter(jwt);
+      const decoded =
+        verifySessionTokenAdapter.verifySessionToken(authorization);
+      if (decoded.type === "reader") {
+        throw new Error(
+          "(reader) type users are not authorized to publish posts",
+        );
+      }
       return await this.#postUseCases
         .update(updatedPost)
         .then((post) => post?.reflect);

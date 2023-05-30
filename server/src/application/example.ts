@@ -1,5 +1,4 @@
 import { CreateSessionTokenAdapter } from "./adapters/CreateSessionToken";
-import { MyJWT } from "./helpers";
 import {
   CommentInMemoryRepository,
   FavoriteInMemoryRepository,
@@ -8,6 +7,8 @@ import {
 } from "@app/@in-memory-repositories";
 import { objectFactory } from "@domain/@utils/objectFactory";
 import { ApplicationUseCases } from "./ApplicationUseCases";
+import { MockJWT } from "./@utils/MockJWT";
+import { VerifySessionTokenAdapter } from "./adapters/VerifySessionToken";
 
 async function main() {
   const postInMemoryRepository = PostInMemoryRepository.getInstance();
@@ -29,8 +30,9 @@ async function main() {
 
   const user = factory.getUser();
   const post = factory.getPost();
-  const jwt = new MyJWT();
+  const jwt = new MockJWT();
   const createSessionTokenAdapter = new CreateSessionTokenAdapter(jwt);
+  const verifySessionTokenAdapter = new VerifySessionTokenAdapter(jwt);
   const { user: userInstance, sessionToken } = await userUseCases.register({
     user,
     createSessionTokenAdapter,
@@ -43,6 +45,7 @@ async function main() {
 
   console.log("user", userInstance.reflect);
   console.log("sessionToken", sessionToken);
+  console.log('decodedToken', verifySessionTokenAdapter.verifySessionToken(sessionToken))
   console.log(postInstance.reflect);
   console.log(userInstance.reflect);
 }

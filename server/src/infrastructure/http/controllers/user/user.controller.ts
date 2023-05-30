@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   Inject,
   Post,
   Put,
@@ -15,6 +16,8 @@ import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
 import { CreateSessionTokenAdapter } from "@/application/adapters/CreateSessionToken";
 import jwt from "jsonwebtoken";
+import { VerifySessionTokenAdapter } from "@/application/adapters/VerifySessionToken";
+import { IUserTokenInfo } from "@/application/adapters/@interfaces";
 
 @Controller("user")
 export class UserController {
@@ -120,8 +123,17 @@ export class UserController {
   @Put("update")
   async edit(
     @Body() updatedUser: IUserReflectObject,
+    @Headers("authorization") authorization: string,
   ): Promise<IUserReflectObject> {
     try {
+      const verifySessionTokenAdapter = new VerifySessionTokenAdapter(jwt);
+      const decoded =
+        verifySessionTokenAdapter.verifySessionToken(authorization);
+      if (decoded.user_id === updatedUser.id) {
+        throw new Error(
+          "the session user is different from the user being updated",
+        );
+      }
       return await this.#userUseCases
         .update(updatedUser)
         .then((user) => user?.reflect);

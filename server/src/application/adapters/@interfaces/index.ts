@@ -14,13 +14,13 @@ export interface ICreateSessionToken {
 }
 
 export interface IVerifySessionToken {
-  verifySessionToken(token: string): string;
+  verifySessionToken(token: string): IUserTokenInfo;
 }
 
 export interface IUserTokenInfo {
   user_id: string;
   email: string;
   type: TUserRole;
-  iat: number;
-  exp: number;
+  iat?: number;
+  exp?: number;
 }

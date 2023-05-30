@@ -22,11 +22,13 @@ import { Publisher } from "@/domain/@utils/Publisher";
 import {
   FavoriteObserver,
   FavoriteService,
+  IFavoriteRepository,
   IFavoriteService,
 } from "@domain/src/favorite";
 import {
   CommentObserver,
   CommentService,
+  ICommentRepository,
   ICommentService,
 } from "@domain/src/comment";
 
@@ -38,26 +40,37 @@ let newPost: IPostReflectObject;
 let userInstance: User;
 let postInstance: Post;
 let factory: IObjectFactory;
-let postInMemoryRepository: IPostRepository;
-let userInMemoryRepository: IUserRepository;
+let postRepository: IPostRepository;
+let userRepository: IUserRepository;
+let favoriteRepository: IFavoriteRepository;
+let commentRepository: ICommentRepository;
 
 describe("PostService", () => {
   beforeEach(async () => {
-    userInMemoryRepository = UserInMemoryRepository.getInstance();
-    postInMemoryRepository = PostInMemoryRepository.getInstance();
-    const favoriteRepository = FavoriteInMemoryRepository.getInstance();
-    const commentRepository = CommentInMemoryRepository.getInstance();
+    userRepository = UserInMemoryRepository.getInstance();
+    postRepository = PostInMemoryRepository.getInstance();
+    favoriteRepository = FavoriteInMemoryRepository.getInstance();
+    commentRepository = CommentInMemoryRepository.getInstance();
     const publisher = new Publisher();
-    favoriteService = new FavoriteService({ favoriteRepository });
-    commentService = new CommentService({ commentRepository });
+    favoriteService = new FavoriteService({
+      favoriteRepository,
+      userRepository,
+      postRepository,
+    });
+    commentService = new CommentService({
+      commentRepository,
+      postRepository,
+      userRepository,
+    });
     publisher.register(new FavoriteObserver(favoriteService));
     publisher.register(new CommentObserver(commentService));
     postService = new PostService({
-      postRepository: postInMemoryRepository,
+      postRepository,
+      userRepository,
       publisher: publisher,
     });
     userService = new UserService({
-      userRepository: userInMemoryRepository,
+      userRepository,
     });
     factory = objectFactory();
     const user = factory.getUser();
@@ -70,8 +83,10 @@ describe("PostService", () => {
     postInstance = await postService.createPost(newPost);
   });
   afterEach(async () => {
-    await postInMemoryRepository.deleteAll();
-    await userInMemoryRepository.deleteAll();
+    await postRepository.deleteAll();
+    await userRepository.deleteAll();
+    await commentRepository.deleteAll();
+    await favoriteRepository.deleteAll();
   });
 
   it("must be able to create a post", async () => {

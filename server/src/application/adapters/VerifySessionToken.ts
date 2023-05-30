@@ -1,12 +1,12 @@
-import { IJwt, IVerifySessionToken } from "./@interfaces";
+import { IJwt, IUserTokenInfo, IVerifySessionToken } from "./@interfaces";
 
 export class VerifySessionTokenAdapter implements IVerifySessionToken {
   constructor(private jwt: IJwt) {}
 
-  verifySessionToken(token: string): string {
+  verifySessionToken(token: string): IUserTokenInfo {
     const decoded = this.jwt.verify(token, process.env.JWT_SECRET!);
     if (decoded) {
-      return JSON.stringify(decoded);
+      return decoded as IUserTokenInfo;
     }
   }
 }

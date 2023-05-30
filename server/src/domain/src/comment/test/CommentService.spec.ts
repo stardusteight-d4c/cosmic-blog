@@ -24,23 +24,26 @@ let newPost: IPostReflectObject;
 let userInstance: User;
 let postInstance: Post;
 let factory: IObjectFactory;
-let userInMemoryRepository: IUserRepository;
-let postInMemoryRepository: IPostRepository;
-let commentInMemoryRepository: ICommentRepository;
+let userRepository: IUserRepository;
+let postRepository: IPostRepository;
+let commentRepository: ICommentRepository;
 
 describe("CommentService", () => {
   beforeEach(async () => {
-    userInMemoryRepository = UserInMemoryRepository.getInstance();
-    postInMemoryRepository = PostInMemoryRepository.getInstance();
-    commentInMemoryRepository = CommentInMemoryRepository.getInstance();
+    userRepository = UserInMemoryRepository.getInstance();
+    postRepository = PostInMemoryRepository.getInstance();
+    commentRepository = CommentInMemoryRepository.getInstance();
     commentService = new CommentService({
-      commentRepository: commentInMemoryRepository,
+      commentRepository,
+      postRepository,
+      userRepository,
     });
     postService = new PostService({
-      postRepository: postInMemoryRepository,
+      postRepository,
+      userRepository,
     });
     userService = new UserService({
-      userRepository: userInMemoryRepository,
+      userRepository,
     });
     factory = objectFactory();
     const user = factory.getUser();
@@ -53,9 +56,9 @@ describe("CommentService", () => {
     postInstance = await postService.createPost(newPost);
   });
   afterEach(async () => {
-    await postInMemoryRepository.deleteAll();
-    await userInMemoryRepository.deleteAll();
-    await commentInMemoryRepository.deleteAll();
+    await postRepository.deleteAll();
+    await userRepository.deleteAll();
+    await commentRepository.deleteAll();
   });
 
   it("must be able comment on a post", async () => {
@@ -126,7 +129,7 @@ describe("CommentService", () => {
     );
   });
 
-  it("must be able to acquire comments from a specific post and with pagination", async () => {
+  it("must be able to acquire comments with pagination from a specific post", async () => {
     const postInstanceId = postInstance.reflect.id!;
     for (let i = 0; i < 6; i++) {
       const commentObj = factory.getComment({
@@ -161,7 +164,7 @@ describe("CommentService", () => {
     ).toStrictEqual([postInstanceId, postInstanceId, postInstanceId]);
   });
 
-  it("must be able to acquire comments from a specific user and with pagination", async () => {
+  it("must be able to acquire comments with pagination from a specific user", async () => {
     for (let i = 0; i < 6; i++) {
       const commentObj = factory.getComment({
         postId: postInstance.reflect.id!,
@@ -170,7 +173,12 @@ describe("CommentService", () => {
       await commentService.createComment(commentObj);
     }
     const user = factory.getUser();
-    const secondaryUserInstance = await userService.createUser(user);
+    const newUser = {
+      ...user,
+      email: "anotheremail@email.com",
+      username: "anotherusername",
+    };
+    const secondaryUserInstance = await userService.createUser(newUser);
     const commentObj2 = factory.getComment({
       postId: postInstance.reflect.id!,
       owner: secondaryUserInstance.reflect,
@@ -226,8 +234,14 @@ describe("CommentService", () => {
     });
     await commentService.createComment(firstCommentObj);
     await commentService.createComment(firstCommentObj);
+    const post = factory.getPost();
+    const newPost = {
+      ...post,
+      author: userInstance.reflect,
+    };
+    const newPostInstance = await postService.createPost(newPost);
     const secondCommentObj = factory.getComment({
-      postId: "another-post-id",
+      postId: newPostInstance.reflect.id,
       owner: userInstance.reflect,
     });
     await commentService.createComment(secondCommentObj);

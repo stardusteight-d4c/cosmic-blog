@@ -1,4 +1,5 @@
-import { ICreateSessionToken, IJwt } from "./@interfaces";
+import { TUserRole } from "@/domain/src/user";
+import { ICreateSessionToken, IJwt, IUserTokenInfo } from "./@interfaces";
 
 export class CreateSessionTokenAdapter implements ICreateSessionToken {
   constructor(private jwt: IJwt) {}
@@ -6,9 +7,9 @@ export class CreateSessionTokenAdapter implements ICreateSessionToken {
   createSessionToken(data: {
     user_id: string;
     email: string;
-    type: string;
+    type: TUserRole;
   }): string {
-    const payload: Object = {
+    const payload: IUserTokenInfo = {
       user_id: data.user_id,
       email: data.email,
       type: data.type,

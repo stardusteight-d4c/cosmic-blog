@@ -31,23 +31,26 @@ let newPost: IPostReflectObject;
 let userInstance: User;
 let postInstance: Post;
 let factory: IObjectFactory;
-let postInMemoryRepository: IPostRepository;
-let favoriteInMemoryRepository: IFavoriteRepository;
-let userInMemoryRepository: IUserRepository;
+let postRepository: IPostRepository;
+let favoriteRepository: IFavoriteRepository;
+let userRepository: IUserRepository;
 
-describe("PostService", () => {
+describe("FavoriteService", () => {
   beforeEach(async () => {
-    userInMemoryRepository = UserInMemoryRepository.getInstance();
-    postInMemoryRepository = PostInMemoryRepository.getInstance();
-    favoriteInMemoryRepository = FavoriteInMemoryRepository.getInstance();
+    userRepository = UserInMemoryRepository.getInstance();
+    postRepository = PostInMemoryRepository.getInstance();
+    favoriteRepository = FavoriteInMemoryRepository.getInstance();
     postService = new PostService({
-      postRepository: postInMemoryRepository,
+      postRepository,
+      userRepository,
     });
     userService = new UserService({
-      userRepository: userInMemoryRepository,
+      userRepository,
     });
     favoriteService = new FavoriteService({
-      favoriteRepository: favoriteInMemoryRepository,
+      favoriteRepository,
+      postRepository,
+      userRepository,
     });
     factory = objectFactory();
     const user = factory.getUser();
@@ -60,9 +63,9 @@ describe("PostService", () => {
     postInstance = await postService.createPost(newPost);
   });
   afterEach(async () => {
-    await postInMemoryRepository.deleteAll();
-    await favoriteInMemoryRepository.deleteAll();
-    await userInMemoryRepository.deleteAll();
+    await postRepository.deleteAll();
+    await favoriteRepository.deleteAll();
+    await userRepository.deleteAll();
   });
 
   it("must be able to favorite a post", async () => {
@@ -94,17 +97,29 @@ describe("PostService", () => {
   it("must be able delete all favorites by postId", async () => {
     const postInstanceId = postInstance.reflect.id!;
     const userInstanceId = userInstance.reflect.id!;
+    const user = factory.getUser();
+    const post = factory.getPost();
+    const secondUserInstance = await userService.createUser({
+      ...user,
+      email: "newemail@email.com",
+      username: "newusername",
+    });
+    const newPost = {
+      ...post,
+      author: secondUserInstance.reflect,
+    };
+    const thirdPostInstance = await postService.createPost(newPost);
     const firstFavorite = factory.getFavorite({
       userId: userInstanceId,
       postId: postInstanceId,
     });
     const secondFavorite = factory.getFavorite({
-      userId: "another-user",
+      userId: secondUserInstance.reflect.id,
       postId: postInstanceId,
     });
     const thirdFavorite = factory.getFavorite({
       userId: userInstanceId,
-      postId: "another-post",
+      postId: thirdPostInstance.reflect.id,
     });
     await favoriteService.toggleFavoritePost(firstFavorite);
     await favoriteService.toggleFavoritePost(secondFavorite);

@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it } from "vitest";
-import { User, UserService } from "@domain/src/user";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { IUserRepository, User, UserService } from "@domain/src/user";
 import { Post, IPostReflectObject, postBuilderFactory } from "..";
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
 import { UserInMemoryRepository } from "@app/@in-memory-repositories";
@@ -7,12 +7,13 @@ import { UserInMemoryRepository } from "@app/@in-memory-repositories";
 let factory: IObjectFactory;
 let userInstance: User;
 let newPost: IPostReflectObject;
+let userRepository: IUserRepository;
 
 describe("PostBuilder", () => {
   beforeEach(async () => {
-    const userInMemoryRepository = UserInMemoryRepository.getInstance();
+    userRepository = UserInMemoryRepository.getInstance();
     const userService = new UserService({
-      userRepository: userInMemoryRepository,
+      userRepository: userRepository,
     });
     factory = objectFactory();
     const user = factory.getUser();
@@ -22,6 +23,9 @@ describe("PostBuilder", () => {
       ...post,
       author: userInstance.reflect,
     };
+  });
+  afterEach(async () => {
+    await userRepository.deleteAll();
   });
 
   it("must be able return an instance of Post", () => {
