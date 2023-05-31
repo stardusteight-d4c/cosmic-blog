@@ -5,16 +5,18 @@ import { chooseAvatars } from '@/utils/data'
 import avatarPlaceholder from '@/assets/avatar-placeholder.svg'
 import { ArrowUUPLeft } from '@/components/@globals/atoms/icons'
 import { chooseAvatarFormStyles as css } from './styles'
+import ConfirmEmail from '../ConfirmEmail.vue'
 
 const emit = defineEmits(['backStep'])
 
 const proceedToChooseAvatar = ref(false)
+const proceedToConfirmEmail = ref(false)
 const selectedAvatar = ref<null | string>(null)
 
-function closedChooseAvatarObserver(): void {
+function closedChooseAvatar(): void {
   proceedToChooseAvatar.value = false
 }
-function selectedChooseAvatarPopUpObserver(payload: { id: string }): void {
+function selectedChooseAvatarPopUp(payload: { id: string }): void {
   selectedAvatar.value = payload.id
 }
 function getUrlById(id: string): string | undefined {
@@ -31,37 +33,44 @@ const avatarUrl = computed((): string | undefined => {
 </script>
 
 <template>
-  <h2 :class="css.title">Choose your avatar!</h2>
-  <div :class="css.avatarWrapper">
-    <div :class="css.avatarContainer">
-      <img
-        v-if="selectedAvatar === null"
-        @click="proceedToChooseAvatar = true"
-        :src="avatarPlaceholder"
-        :class="css.placeholderAvatarImage"
-      />
-      <ChooseAvatarPopUp
-        @selectedChooseAvatarPopUp="selectedChooseAvatarPopUpObserver"
-        @closedChooseAvatarPopUp="closedChooseAvatarObserver"
-        v-if="proceedToChooseAvatar"
-      />
-      <div
-        @click="proceedToChooseAvatar = true"
-        v-if="selectedAvatar"
-        :class="css.selectedAvatarContainer"
-      >
-        <img :src="avatarUrl!" :class="css.avatarImage" />
-        <div :class="css.boxAnimate" />
-        <div :class="css.backgroundOverlay" />
+  <ConfirmEmail v-if="proceedToConfirmEmail === true" />
+  <main v-if="proceedToConfirmEmail === false">
+    <h2 :class="css.title">Choose your avatar!</h2>
+    <div :class="css.avatarWrapper">
+      <div :class="css.avatarContainer">
+        <img
+          v-if="selectedAvatar === null"
+          @click="proceedToChooseAvatar = true"
+          :src="avatarPlaceholder"
+          :class="css.placeholderAvatarImage"
+        />
+        <ChooseAvatarPopUp
+          @selectedChooseAvatarPopUp="selectedChooseAvatarPopUp"
+          @closedChooseAvatarPopUp="closedChooseAvatar"
+          v-if="proceedToChooseAvatar"
+        />
+        <div
+          @click="proceedToChooseAvatar = true"
+          v-if="selectedAvatar"
+          :class="css.selectedAvatarContainer"
+        >
+          <img :src="avatarUrl!" :class="css.avatarImage" />
+          <div :class="css.boxAnimate" />
+          <div :class="css.backgroundOverlay" />
+        </div>
       </div>
     </div>
-  </div>
-  <div :class="css.buttonsContainer">
-    <button @click="handleBackStep" :class="css.backStepBtn">
-      <ArrowUUPLeft width="20" height="20" /> Back
-    </button>
-    <button :disabled="selectedAvatar === null" :class="css.createBtn">
-      Create
-    </button>
-  </div>
+    <div :class="css.buttonsContainer">
+      <button @click="handleBackStep" :class="css.backStepBtn">
+        <ArrowUUPLeft width="20" height="20" /> Back
+      </button>
+      <button
+        @click="proceedToConfirmEmail = true"
+        :disabled="selectedAvatar === null"
+        :class="css.createBtn"
+      >
+        Create
+      </button>
+    </div>
+  </main>
 </template>

@@ -12,7 +12,7 @@ const username = Array.isArray(route.params.username)
   : route.params.username ?? ''
 const editSocialLinks = ref(false)
 
-function closedEditSocialLinksPopUpObserver() {
+function closedEditSocialLinksPopUp() {
   editSocialLinks.value = false
 }
 </script>
@@ -31,7 +31,7 @@ function closedEditSocialLinksPopUpObserver() {
       />
       <EditProfileSocialLinksPopUp
         v-if="editSocialLinks"
-        @closedEditProfileSocialLinksPopUp="closedEditSocialLinksPopUpObserver"
+        @closedEditProfileSocialLinksPopUp="closedEditSocialLinksPopUp"
       />
     </div>
   </div>

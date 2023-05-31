@@ -6,10 +6,10 @@ import SignIn from '@/components/login/SignIn.vue'
 
 const typeOfLogin = ref<'SignIn' | 'SignUp'>('SignIn')
 
-function changeToSignInObserver(payload: 'SignIn') {
+function changeToSignIn(payload: 'SignIn') {
   typeOfLogin.value = payload
 }
-function changeToSignUpObserver(payload: 'SignIn') {
+function changeToSignUp(payload: 'SignIn') {
   typeOfLogin.value = payload
 }
 </script>
@@ -18,11 +18,11 @@ function changeToSignUpObserver(payload: 'SignIn') {
   <BaseLayoutSlot>
     <template #main>
       <SignIn
-        @changeToSignUp="changeToSignUpObserver"
+        @changeToSignUp="changeToSignUp"
         v-if="typeOfLogin === 'SignIn'"
       />
       <SignUp
-        @changeToSignIn="changeToSignInObserver"
+        @changeToSignIn="changeToSignIn"
         v-if="typeOfLogin === 'SignUp'"
       />
     </template>

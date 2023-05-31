@@ -30,11 +30,11 @@ function handleSelected(type: string): void {
   handleMarkdown(textareaElement, type)
 }
 
-function closedSavePopUpObserver(): void {
+function closedSavePopUp(): void {
   proceedToSave.value = false
 }
 
-function closedImportSavePopUpObserver(): void {
+function closedImportSavePopUp(): void {
   proceedToImport.value = false
 }
 
@@ -67,10 +67,10 @@ const iconsSecondSection = [
 </script>
 
 <template>
-  <SavePopUp v-if="proceedToSave" @closedSavePopUp="closedSavePopUpObserver" />
+  <SavePopUp v-if="proceedToSave" @closedSavePopUp="closedSavePopUp" />
   <ImportSavePopUp
     v-if="proceedToImport"
-    @closedImportSavePopUp="closedImportSavePopUpObserver"
+    @closedImportSavePopUp="closedImportSavePopUp"
   />
   <div :class="css.flexCenter">
     <div v-for="item in iconsFirstSection">

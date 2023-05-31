@@ -50,7 +50,7 @@ function showCommentTextarea(): void {
   commentEditableElement.value!.style.minHeight = `${commentDivHeight}px`
 }
 
-function closedDeletePopUpObserver(): void {
+function closedDeletePopUp(): void {
   proceedToDelete.value = false
 }
 
@@ -94,7 +94,7 @@ function handleClickOutsideOfEdit(event: MouseEvent): void {
           />
           <DeletePopUp
             v-if="proceedToDelete"
-            @closedDeletePopUp="closedDeletePopUpObserver"
+            @closedDeletePopUp="closedDeletePopUp"
           />
         </div>
       </div>

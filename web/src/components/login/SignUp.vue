@@ -19,7 +19,7 @@ const formData = {
   confirmPassword: '',
 }
 
-function backStepObserver(): void {
+function backStep(): void {
   nextStep.value = false
 }
 function handleSignIn(): void {
@@ -29,7 +29,10 @@ function handleSignIn(): void {
 
 <template>
   <div :class="css.wrapper">
-    <form @submit="nextStep = true" v-if="nextStep === false">
+    <form
+      @submit="nextStep = true"
+      v-if="nextStep === false"
+    >
       <div :class="css.headerContainer">
         <h1 :class="css.title">Sign Up</h1>
         <span :class="css.alreadyHaveAnAccountSpan"
@@ -81,10 +84,8 @@ function handleSignIn(): void {
           </label>
         </div>
       </div>
-      <button type="submit" :class="css.nextBtn">
-        Next
-      </button>
+      <button type="submit" :class="css.nextBtn">Next</button>
     </form>
-    <ChooseAvatarForm @backStep="backStepObserver" v-if="nextStep === true" />
+    <ChooseAvatarForm @backStep="backStep" v-if="nextStep === true" />
   </div>
 </template>
