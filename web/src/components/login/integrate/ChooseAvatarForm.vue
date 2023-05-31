@@ -6,12 +6,19 @@ import avatarPlaceholder from '@/assets/avatar-placeholder.svg'
 import { ArrowUUPLeft } from '@/components/@globals/atoms/icons'
 import { chooseAvatarFormStyles as css } from './styles'
 import ConfirmEmail from '../ConfirmEmail.vue'
+import useNotificator from '@/hooks/Notificator'
 
 const emit = defineEmits(['backStep'])
 
+const { notify } = useNotificator()
 const proceedToChooseAvatar = ref(false)
 const proceedToConfirmEmail = ref(false)
 const selectedAvatar = ref<null | string>(null)
+
+function handleProceedToConfirmEmail() {
+  notify('SUCCESS', 'Code sent to registered email!')
+  proceedToConfirmEmail.value = true
+}
 
 function closedChooseAvatar(): void {
   proceedToChooseAvatar.value = false
@@ -65,7 +72,7 @@ const avatarUrl = computed((): string | undefined => {
         <ArrowUUPLeft width="20" height="20" /> Back
       </button>
       <button
-        @click="proceedToConfirmEmail = true"
+        @click="handleProceedToConfirmEmail"
         :disabled="selectedAvatar === null"
         :class="css.createBtn"
       >

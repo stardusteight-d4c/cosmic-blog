@@ -1,9 +1,30 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import CodeInput from './integrate/CodeInput.vue'
+import useNotificator from '@/hooks/Notificator'
+
+const { notify } = useNotificator()
+
+const pastedCode = ref<number[]>([])
+
 function handlePaste(event: ClipboardEvent) {
   const pastedText = event.clipboardData?.getData('text')
-  console.log('Texto colado:', pastedText)
+  if (!pastedText) {
+    return
+  }
+  if (pastedText?.length != 6) {
+    notify('ERROR', 'A valid code was not entered!')
+  }
+  const arrayOfNumber = pastedText.split('').map((item) => Number(item))
+  const isAllNumbers = arrayOfNumber.every(
+    (elemento) => typeof elemento === 'number' && !Number.isNaN(elemento)
+  )
+  if (isAllNumbers) {
+    pastedCode.value = arrayOfNumber
+  } else {
+    notify('ERROR', 'A valid code was not entered!')
+  }
 }
-
 </script>
 
 <template>
@@ -11,37 +32,29 @@ function handlePaste(event: ClipboardEvent) {
     <h2 class="text-3xl md:text-4xl text-center font-bold mb-14">
       Confirm your email address!
     </h2>
-    <div @paste="handlePaste">paste</div>
-    <input
-      ref="hiddenInput"
-      type="text"
-      style="opacity: 0; position: absolute; top: -9999px; left: -9999px"
-    />
+    <div class="flex items-center justify-center w-full mb-4">
+      <div
+        class="border border-dashed border-[#ccc]/50 rounded-md w-fit relative"
+      >
+        <div
+          class="text-2xl text-white/50 pointer-events-none absolute left-1/2 -translate-x-1/2 font-bold tracking-widest whitespace-nowrap"
+        >
+          Paste here
+        </div>
+        <input
+          @paste="handlePaste"
+          type="text"
+          class="bg-transparent cursor-pointer w-[155px] h-[32px] outline-none caret-transparent z-50 opacity-0"
+        />
+      </div>
+    </div>
     <div class="flex items-center justify-center gap-x-8 w-full">
-      <span
-        class="w-full h-full min-w-[80px] min-h-[80px] bg-black/80 rounded-md text-4xl text-white font-bold flex items-center justify-center"
-        >x</span
-      >
-      <span
-        class="w-full h-full min-w-[80px] min-h-[80px] bg-black/80 rounded-md text-4xl text-white font-bold flex items-center justify-center"
-        >x</span
-      >
-      <span
-        class="w-full h-full min-w-[80px] min-h-[80px] bg-black/80 rounded-md text-4xl text-white font-bold flex items-center justify-center"
-        >x</span
-      >
-      <span
-        class="w-full h-full min-w-[80px] min-h-[80px] bg-black/80 rounded-md text-4xl text-white font-bold flex items-center justify-center"
-        >x</span
-      >
-      <span
-        class="w-full h-full min-w-[80px] min-h-[80px] bg-black/80 rounded-md text-4xl text-white font-bold flex items-center justify-center"
-        >x</span
-      >
-      <span
-        class="w-full h-full min-w-[80px] min-h-[80px] bg-black/80 rounded-md text-4xl text-white font-bold flex items-center justify-center"
-        >x</span
-      >
+      <CodeInput
+        v-for="index in 6"
+        :index="index"
+        :key="index"
+        :pastedCode="pastedCode"
+      />
     </div>
     <button
       type="submit"
