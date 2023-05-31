@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Arrow } from '@/components/@globals/atoms/icons'
 import { LabelSpan, ChooseAvatarForm } from './integrate'
 import { calculateDelay } from '@/utils/calculate-delay'
 import { signUpStyles as css } from './styles'
@@ -83,7 +82,6 @@ function handleSignIn(): void {
         </div>
       </div>
       <button type="submit" :class="css.nextBtn">
-        <Arrow />
         Next
       </button>
     </form>

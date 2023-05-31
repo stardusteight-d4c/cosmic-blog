@@ -1,5 +1,5 @@
 export const chooseAvatarFormStyles = {
-  title: `text-4xl text-center font-bold mb-8`,
+  title: `text-3xl md:text-4xl text-center font-bold mb-8`,
   avatarWrapper: `w-full flex items-center justify-center h-32 relative`,
   avatarContainer: `w-32 h-32 rounded-full relative cursor-pointer flex items-center justify-center`,
   placeholderAvatarImage: `inner-shadow w-32 bg-[#1A1A1A] transition-all duration-500 hover:scale-110 ease-in-out active:scale-95 absolute z-[100] rounded-full object-cover`,
