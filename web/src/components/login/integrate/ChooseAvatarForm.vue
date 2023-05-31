@@ -7,15 +7,20 @@ import { ArrowUUPLeft } from '@/components/@globals/atoms/icons'
 import { chooseAvatarFormStyles as css } from './styles'
 import ConfirmEmail from '../ConfirmEmail.vue'
 import useNotificator from '@/hooks/Notificator'
+import { useAppStore } from '@/store'
+import { ACTION_EMAIL_VERIFY } from '@/store/actions'
 
 const emit = defineEmits(['backStep'])
 
 const { notify } = useNotificator()
+const store = useAppStore()
 const proceedToChooseAvatar = ref(false)
 const proceedToConfirmEmail = ref(false)
 const selectedAvatar = ref<null | string>(null)
+const email = computed(() => store.state.login.signUpData.email)
 
 function handleProceedToConfirmEmail() {
+  store.dispatch(ACTION_EMAIL_VERIFY, email.value)
   notify('SUCCESS', 'Code sent to registered email!')
   proceedToConfirmEmail.value = true
 }

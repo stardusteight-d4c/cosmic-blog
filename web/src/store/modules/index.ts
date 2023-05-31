@@ -1,5 +1,4 @@
 export { article } from './article/article'
 export type { IArticleState } from './article/article'
-export {auth} from './auth/auth'
-export type { IAuthState } from './auth/auth'
-
+export { login } from './login/login'
+export type { ILoginState } from './login/login'

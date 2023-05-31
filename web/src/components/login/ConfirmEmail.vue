@@ -32,28 +32,13 @@ function handlePaste(event: ClipboardEvent) {
     <h2 class="text-3xl md:text-4xl text-center font-bold mb-14">
       Confirm your email address!
     </h2>
-    <div class="flex items-center justify-center w-full mb-4">
-      <div
-        class="border border-dashed border-[#ccc]/50 rounded-md w-fit relative"
-      >
-        <div
-          class="text-2xl text-white/50 pointer-events-none absolute left-1/2 -translate-x-1/2 font-bold tracking-widest whitespace-nowrap"
-        >
-          Paste here
-        </div>
-        <input
-          @paste="handlePaste"
-          type="text"
-          class="bg-transparent cursor-pointer w-[155px] h-[32px] outline-none caret-transparent z-50 opacity-0"
-        />
-      </div>
-    </div>
     <div class="flex items-center justify-center gap-x-8 w-full">
       <CodeInput
         v-for="index in 6"
         :index="index"
         :key="index"
         :pastedCode="pastedCode"
+        @paste="handlePaste"
       />
     </div>
     <button

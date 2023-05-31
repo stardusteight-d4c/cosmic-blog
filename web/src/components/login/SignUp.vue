@@ -3,15 +3,18 @@ import { ref } from 'vue'
 import { LabelSpan, ChooseAvatarForm } from './integrate'
 import { calculateDelay } from '@/utils/calculate-delay'
 import { signUpStyles as css } from './styles'
+import { useAppStore } from '@store/index'
+import { MUTATION_SIGN_UP_DATA } from '@store/mutations'
 
 const emit = defineEmits(['changeToSignIn'])
 
+const store = useAppStore()
 const usernameSpan = 'Username'.split('')
 const emailSpan = 'Email'.split('')
 const passwordSpan = 'Password'.split('')
 const confirmPasswordSpan = 'Confirm Password'.split('')
-
 const nextStep = ref<boolean>(false)
+
 const formData = {
   username: '',
   email: '',
@@ -19,9 +22,15 @@ const formData = {
   confirmPassword: '',
 }
 
-function backStep(): void {
+function handleBackStep(): void {
   nextStep.value = false
 }
+
+function handleNextStep(): void {
+  store.commit(MUTATION_SIGN_UP_DATA, formData)
+  nextStep.value = true
+}
+
 function handleSignIn(): void {
   emit('changeToSignIn', 'SignIn')
 }
@@ -29,10 +38,7 @@ function handleSignIn(): void {
 
 <template>
   <div :class="css.wrapper">
-    <form
-      @submit="nextStep = true"
-      v-if="nextStep === false"
-    >
+    <form @submit="handleNextStep" v-if="nextStep === false">
       <div :class="css.headerContainer">
         <h1 :class="css.title">Sign Up</h1>
         <span :class="css.alreadyHaveAnAccountSpan"
@@ -86,6 +92,6 @@ function handleSignIn(): void {
       </div>
       <button type="submit" :class="css.nextBtn">Next</button>
     </form>
-    <ChooseAvatarForm @backStep="backStep" v-if="nextStep === true" />
+    <ChooseAvatarForm @backStep="handleBackStep" v-if="nextStep === true" />
   </div>
 </template>

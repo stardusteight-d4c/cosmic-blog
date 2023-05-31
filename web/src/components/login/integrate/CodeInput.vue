@@ -41,9 +41,6 @@ function onInputIsFilled() {
     }
   }
 }
-
-console.log(props.pastedCode);
-
 </script>
 
 <template>
