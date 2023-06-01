@@ -3,4 +3,15 @@ export interface ISignUpData {
   email: string
   password: string
   confirmPassword: string
+  selectedAvatar: string
+}
+
+export type TUserRole = 'reader' | 'author'
+
+export interface IRegisterUserData {
+  email: string
+  username: string
+  password: string
+  avatar: string
+  userRole: TUserRole
 }

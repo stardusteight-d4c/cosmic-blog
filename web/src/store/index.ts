@@ -21,6 +21,7 @@ export const store = createStore<AppState>({
         email: '',
         password: '',
         confirmPassword: '',
+        selectedAvatar: '',
       },
     },
     article: {

@@ -1,8 +1,8 @@
 import type { Module } from 'vuex'
 import type { AppState } from '@/store'
-import { ACTION_EMAIL_VERIFY } from '@/store/actions'
+import { ACTION_EMAIL_VERIFY, ACTION_REGISTER_USER } from '@/store/actions'
 import api from '@/lib/axios'
-import { ISignUpData } from './@interfaces'
+import { IRegisterUserData, ISignUpData } from './@interfaces'
 import { MUTATION_SIGN_UP_DATA } from '@/store/mutations'
 
 export interface ILoginState {
@@ -22,6 +22,13 @@ export const login: Module<ILoginState, AppState> = {
         .then((res) => res.data)
         .catch((error) => console.log(error))
       return encryptedCode
+    },
+    async [ACTION_REGISTER_USER](_, payload: IRegisterUserData) {
+      const data = await api
+        .post(`/user/register`, payload)
+        .then((res) => res.data)
+        .catch((error) => console.log(error))
+      return data
     },
   },
 }

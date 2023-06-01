@@ -1,10 +1,10 @@
 import type { Module } from 'vuex'
 import type { AppState } from '@/store'
-import type { IArticleData } from '@interfaces/article'
 import {
   MUTATION_SEED_TEXT_EDITOR_DATA,
   MUTATION_EVENT_SHOW_PREVIEW,
 } from '@store/mutations'
+import { IArticleData } from './@interfaces'
 
 export interface IArticleState {
   textEditorData: IArticleData

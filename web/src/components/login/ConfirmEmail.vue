@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import CodeInput from './integrate/CodeInput.vue'
 import useNotificator from '@/hooks/Notificator'
 import bcryptjs from 'bcryptjs'
+import { useAppStore } from '@/store'
+import { ACTION_REGISTER_USER } from '@/store/actions'
+import { IRegisterUserData } from '@/store/modules/login/@interfaces'
+import { setCookie } from '@/utils/set-cookie'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   encryptedCode: {
@@ -11,8 +16,10 @@ const props = defineProps({
   },
 })
 
+const store = useAppStore()
+const router = useRouter()
 const { notify } = useNotificator()
-
+const signUpData = computed(() => store.state.login.signUpData)
 const pastedCode = ref<number[]>([])
 
 function handlePaste(event: ClipboardEvent) {
@@ -47,15 +54,25 @@ function getCombinedInputValue() {
   return combinedString
 }
 
-function confirmCode() {
+async function confirmCode() {
   const code = getCombinedInputValue()
-  console.log(props.encryptedCode, code)
   const isCodeValid = bcryptjs.compareSync(code, props.encryptedCode)
-  console.log('isCodeValid', isCodeValid)
   if (isCodeValid) {
     notify('SUCCESS', 'A valid code was entered!')
+    const registerData: IRegisterUserData = {
+      email: signUpData.value.email,
+      avatar: signUpData.value.selectedAvatar!,
+      username: signUpData.value.username,
+      password: signUpData.value.password,
+      userRole: 'reader',
+    }
+    const data = await store.dispatch(ACTION_REGISTER_USER, registerData)
+    if (data) {
+      setCookie(data.sessionToken)
+      router.push(`/profile/${data.user.id}`)
+    }
   } else {
-    notify('ERROR', 'A valid code was not entered!')
+    notify('ERROR', 'The code does not match the code sent!')
   }
 }
 </script>
