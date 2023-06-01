@@ -5,13 +5,17 @@ import { detectClickOutsideElement } from '@/utils/detect-click-outside-element'
 import { Smiley } from '@/components/@globals/atoms/icons'
 import { BaseLayoutSlot } from '.'
 import { editProfileSocialPopUpStyles as css } from './styles'
+import { useAppStore } from '@/store'
+import { ACTION_UPDATE_SOCIAL_LINKS } from '@/store/actions'
 
 // fazer a validação se de fato é um link de perfil da rede social
 
 const emit = defineEmits(['closedEditProfileSocialLinksPopUp'])
 
+const store = useAppStore()
 const showSocialNetworks = ref(false)
 const selectedSocialNetwork = ref(socialNetworks[0])
+const inputValue = ref('')
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutsideOfNetworksListDropDown)
@@ -32,6 +36,12 @@ function handleClickOutsideOfNetworksListDropDown(event: MouseEvent) {
 
 function handleCancel() {
   emit('closedEditProfileSocialLinksPopUp')
+}
+
+async function save() {
+  const socialNetwork = selectedSocialNetwork.value.name.toLowerCase()
+  const newSocialLink = { [socialNetwork]: inputValue.value }
+  await store.dispatch(ACTION_UPDATE_SOCIAL_LINKS, newSocialLink)
 }
 </script>
 
@@ -66,13 +76,14 @@ function handleCancel() {
             </ul>
           </div>
           <input
+            v-model="inputValue"
             :placeholder="`Insert your ${selectedSocialNetwork.name.toLowerCase()} link`"
             :class="css.input"
           />
         </div>
       </template>
       <template #operations>
-        <button :class="css.saveBtn">Save</button>
+        <button @click="save" :class="css.saveBtn">Save</button>
         <button @click="handleCancel" :class="css.cancelBtn">Cancel</button>
       </template>
     </BaseLayoutSlot>

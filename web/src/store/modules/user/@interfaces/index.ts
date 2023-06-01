@@ -20,3 +20,13 @@ export interface IUserData {
   favoritesAmount: number
   commentsAmount: number
 }
+
+export interface IUserReflectObject {
+  id?: string;
+  email: string;
+  username: string;
+  password: string;
+  avatar?: string;
+  userRole?: TUserRole;
+  socialLinks?: ISocialLinks | undefined;
+}
