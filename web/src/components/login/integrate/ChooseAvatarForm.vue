@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ChooseAvatarPopUp } from '@/components/pop-ups'
-import { chooseAvatars } from '@/utils/data'
 import avatarPlaceholder from '@/assets/avatar-placeholder.svg'
 import { ArrowUUPLeft } from '@/components/@globals/atoms/icons'
 import { chooseAvatarFormStyles as css } from './styles'
@@ -10,6 +9,7 @@ import useNotificator from '@/hooks/Notificator'
 import { useAppStore } from '@/store'
 import { ACTION_EMAIL_VERIFY } from '@/store/actions'
 import { MUTATION_SIGN_UP_DATA } from '@/store/mutations'
+import { getAvatarUrlById } from '@/utils/getAvatarUrlById'
 
 const emit = defineEmits(['backStep'])
 
@@ -22,7 +22,10 @@ const selectedAvatar = ref<null | string>(null)
 const signUpData = computed(() => store.state.login.signUpData)
 
 async function handleProceedToConfirmEmail() {
-  encryptedCode.value = await store.dispatch(ACTION_EMAIL_VERIFY, signUpData.value.email)
+  encryptedCode.value = await store.dispatch(
+    ACTION_EMAIL_VERIFY,
+    signUpData.value.email
+  )
   notify('SUCCESS', 'Code sent to registered email!')
   proceedToConfirmEmail.value = true
 }
@@ -33,23 +36,20 @@ function closedChooseAvatar(): void {
 function selectedChooseAvatarPopUp(payload: { id: string }): void {
   selectedAvatar.value = payload.id
 }
-function getUrlById(id: string): string | undefined {
-  const avatar = chooseAvatars.find((avatar) => avatar.id === id)
-  return avatar?.url
-}
+
 function handleBackStep(): void {
   emit('backStep')
 }
 
 const avatarUrl = computed((): string | undefined => {
-  console.log('signUpData.value', signUpData.value);
-  
   store.commit(MUTATION_SIGN_UP_DATA, {
     ...signUpData.value,
     selectedAvatar: selectedAvatar.value,
   })
-  return getUrlById(selectedAvatar.value!)
+  return getAvatarUrlById(selectedAvatar.value!)
 })
+
+
 </script>
 
 <template>

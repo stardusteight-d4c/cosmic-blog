@@ -5,7 +5,7 @@ import { MUTATION_SEED_TEXT_EDITOR_DATA } from '@store/mutations'
 import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils/html-ids'
 import useNotificator from '@/hooks/Notificator'
 import { headerStyles as css } from './styles'
-import type { IHeadArticleData } from '@interfaces/article'
+import { IHeadArticleData } from '@/store/modules/article/@interfaces'
 
 // Gerar url da coverImg no serviço de storage do supabase, mas isto apenas quando enviar ao servidor,
 // para a preview gere uma string base64 e envie-à como props

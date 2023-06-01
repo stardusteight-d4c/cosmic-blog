@@ -1,19 +1,36 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { EditProfileSocialLinksPopUp } from '@/components/pop-ups'
 import { PencilLine } from '@/components/@globals/atoms/icons'
-import memoji from '@/assets/my-memoji02.png'
 import { headerStyles as css } from './styles'
+import { useAppStore } from '@/store'
+import { getAvatarUrlById } from '@/utils/getAvatarUrlById'
 
 const route = useRoute()
-const username = Array.isArray(route.params.username)
-  ? route.params.username[0]
-  : route.params.username ?? ''
-const editSocialLinks = ref(false)
+const store = useAppStore()
+const userData = computed(() => store.state.user.userData)
+console.log(userData.value)
 
+const userAvatar = getAvatarUrlById(userData.value.avatar)
+console.log(userData.value.avatar)
+console.log(userAvatar)
+const handledAvatarString = userAvatar?.replace(/-\d+\.png$/, '-')
+
+console.log('handledAvatarString', handledAvatarString)
+
+const editSocialLinks = ref(false)
 function closedEditSocialLinksPopUp() {
   editSocialLinks.value = false
+}
+
+let currentMemoji = ref(1)
+function handleMemoji(): void {
+  if (currentMemoji.value < 3) {
+    currentMemoji.value++
+  } else if (currentMemoji.value === 3) {
+    currentMemoji.value = 1
+  }
 }
 </script>
 
@@ -22,7 +39,11 @@ function closedEditSocialLinksPopUp() {
     <div :class="css.boxAnimate" />
     <div :class="css.backgroundOverlay" />
     <div :class="css.avatarImageWrapper">
-      <img :src="memoji" :class="css.avatarImage" />
+      <img
+        @click="handleMemoji"
+        :src="`${handledAvatarString}${currentMemoji}.png`"
+        :class="css.avatarImage"
+      />
       <PencilLine
         @click="editSocialLinks = true"
         width="38"
@@ -35,5 +56,5 @@ function closedEditSocialLinksPopUp() {
       />
     </div>
   </div>
-  <h1 :class="css.username">#{{ username }}'s Profile</h1>
+  <h1 :class="css.username">#{{ userData.username }}'s Profile</h1>
 </template>

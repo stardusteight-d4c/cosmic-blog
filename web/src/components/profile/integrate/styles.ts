@@ -3,7 +3,7 @@ export const headerStyles = {
   boxAnimate: `box-animate w-40 h-40 absolute z-10 bg-gradient-to-t from-blue-500 to-violet-500 rounded-full mx-auto`,
   backgroundOverlay: `inner-shadow w-[150px] h-[150px] pointer-events-none absolute z-50 bg-[#1a1a1a] rounded-full mx-auto`,
   avatarImageWrapper: `absolute w-48 h-48`,
-  avatarImage: `pendulum absolute top-0 pointer-events-none w-48 z-[100] mx-auto`,
+  avatarImage: `pendulum absolute top-0 cursor-pointer w-48 z-[100] mx-auto`,
   editIcon: `inner-shadow hover:scale-105 transition-all cursor-pointer absolute bg-[#1a1a1a] text-[#f2f2f2] p-2 rounded-full top-5 right-4 z-[200]`,
   username: `capitalize font-semibold mx-auto w-fit text-3xl mt-2`,
 }

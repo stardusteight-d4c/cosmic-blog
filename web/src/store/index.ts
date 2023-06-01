@@ -1,14 +1,17 @@
 import type { InjectionKey } from 'vue'
 import { createStore, Store, useStore } from 'vuex'
-import { article, login, ILoginState } from './modules'
-import type { IArticleState } from './modules'
+import { article, login, user } from './modules'
 import { MUTATION_NOTIFY } from './mutations'
 import type { INotification } from '@interfaces/notification'
+import { IUserState } from './modules/user/user'
+import { ILoginState } from './modules/login/login'
+import { IArticleState } from './modules/article/article'
 
 export const key: InjectionKey<Store<AppState>> = Symbol()
 
 export interface AppState {
   login: ILoginState
+  user: IUserState
   article: IArticleState
   notifications: INotification[]
 }
@@ -24,6 +27,19 @@ export const store = createStore<AppState>({
         selectedAvatar: '',
       },
     },
+    user: {
+      userData: {
+        id: '',
+        email: '',
+        username: '',
+        password: '',
+        avatar: '',
+        userRole: 'reader',
+        socialLinks: undefined,
+        favoritesAmount: 0,
+        commentsAmount: 0,
+      },
+    },
     article: {
       textEditorData: {
         tags: [],
@@ -36,7 +52,7 @@ export const store = createStore<AppState>({
     },
     notifications: [],
   },
-  modules: { article, login },
+  modules: { article, login, user },
   mutations: {
     [MUTATION_NOTIFY](state, newNotification: INotification) {
       const indexResult = state.notifications.findIndex(

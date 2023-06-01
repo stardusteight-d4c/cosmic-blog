@@ -4,9 +4,9 @@ import { Navbar } from '@/components/navbar'
 import { baseLayoutStyles as css } from './styles'
 
 const route = useRoute()
-const username = Array.isArray(route.params.username)
-  ? route.params.username[0]
-  : route.params.username ?? ''
+const username = Array.isArray(route.params.id)
+  ? route.params.id[0]
+  : route.params.id ?? ''
 </script>
 
 <template>

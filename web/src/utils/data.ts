@@ -55,7 +55,7 @@ import twitter from '@/assets/social/twitter.svg'
 import facebook from '@/assets/social/facebook.svg'
 import email from '@/assets/social/email.svg'
 
-export interface ChooseAvatars {
+export interface IAvatars {
   url: string
   id: string
 }
@@ -81,7 +81,7 @@ export const socialNetworks: Array<SocialNetwork> = [
   { url: email, name: 'Email' },
 ]
 
-export const chooseAvatars: Array<ChooseAvatars> = [
+export const chooseAvatars: Array<IAvatars> = [
   { url: Mavatar0101, id: 'Mavatar01' },
   { url: Favatar0101, id: 'Favatar01' },
   { url: Mavatar0201, id: 'Mavatar02' },
@@ -89,6 +89,18 @@ export const chooseAvatars: Array<ChooseAvatars> = [
   { url: Mavatar0301, id: 'Mavatar03' },
   { url: Favatar0301, id: 'Favatar03' },
 ]
+
+// export const avatars: Array<IAvatars> = [
+//   { url: Mavatar0101, id: 'Mavatar01' },
+//   { url: Favatar0101, id: 'Favatar01' },
+
+
+//   { url: Favatar0101, id: 'Favatar01' },
+//   { url: Mavatar0201, id: 'Mavatar02' },
+//   { url: Favatar0201, id: 'Favatar02' },
+//   { url: Mavatar0301, id: 'Mavatar03' },
+//   { url: Favatar0301, id: 'Favatar03' },
+// ]
 
 export const techs: Techs = {
   backend: [node, fastify, nest, docker, stripe],
