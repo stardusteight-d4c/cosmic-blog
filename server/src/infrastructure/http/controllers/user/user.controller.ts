@@ -19,6 +19,7 @@ import jwt from "jsonwebtoken";
 import { SessionTokenAdapter } from "@/application/adapters/SessionTokenAdapter";
 import { transporter } from "@/infrastructure/lib/nodemailer";
 import { SendMailAdapter } from "@/application/adapters/SendMailAdapter";
+import brcypt from "bcrypt";
 
 @Controller("user")
 export class UserController {
@@ -60,7 +61,12 @@ export class UserController {
   async verifyEmail(@Param("email") email: string) {
     try {
       const sendMailAdapter = new SendMailAdapter(transporter as any);
-      await this.#userUseCases.verifyEmail({ email, sendMailAdapter });
+      const code = await this.#userUseCases.verifyEmail({
+        email,
+        sendMailAdapter,
+      });
+      const encryptedCode = await brcypt.hash(String(code), 10);
+      return encryptedCode;
     } catch (error) {
       errorHandler(error);
     }

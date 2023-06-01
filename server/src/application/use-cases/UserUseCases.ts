@@ -1,6 +1,6 @@
 import { IUserReflectObject, IUserService, User } from "@domain/src/user";
 import { SessionTokenAdapter } from "../adapters/SessionTokenAdapter";
-import {  SendMailAdapter } from "../adapters/SendMailAdapter";
+import { SendMailAdapter } from "../adapters/SendMailAdapter";
 
 type RegisterUserResult = { user: User; sessionToken: string };
 
@@ -24,10 +24,11 @@ export class UserUseCases {
   async verifyEmail(request: {
     email: string;
     sendMailAdapter: SendMailAdapter;
-  }) {
+  }): Promise<number> {
     const { email, sendMailAdapter } = request;
     const randomSixDigitCode = Math.floor(100000 + Math.random() * 900000);
-    return await sendMailAdapter.verifyEmail({ email, randomSixDigitCode });
+    await sendMailAdapter.verifyEmail({ email, randomSixDigitCode });
+    return randomSixDigitCode;
   }
 
   async getBy(request: {
