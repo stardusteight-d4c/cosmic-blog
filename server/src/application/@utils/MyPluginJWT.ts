@@ -1,6 +1,6 @@
-import { IJwt, IUserTokenInfo } from "../adapters/@interfaces";
+import { IPluginJWT, IUserTokenInfo } from "../adapters/@interfaces";
 
-export class MockJWT implements IJwt {
+export class MyPluginJWT implements IPluginJWT {
   sign(
     payload: string | object | Buffer,
     secretOrPrivateKey: string,

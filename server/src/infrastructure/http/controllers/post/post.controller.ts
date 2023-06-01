@@ -16,9 +16,8 @@ import { appInMemory } from "@infra/index";
 import { errorHandler } from "@infra/http/@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
-import { VerifySessionTokenAdapter } from "@/application/adapters/VerifySessionToken";
 import jwt from "jsonwebtoken";
-import { IUserTokenInfo } from "@/application/adapters/@interfaces";
+import { SessionTokenAdapter } from "@/application/adapters/SessionTokenAdapter";
 
 @Controller("post")
 export class PostController {
@@ -43,9 +42,8 @@ export class PostController {
     @Headers("authorization") authorization: string,
   ): Promise<IPostReflectObject> {
     try {
-      const verifySessionTokenAdapter = new VerifySessionTokenAdapter(jwt);
-      const decoded =
-        verifySessionTokenAdapter.verifySessionToken(authorization);
+      const sessionTokenAdapter = new SessionTokenAdapter(jwt);
+      const decoded = sessionTokenAdapter.verifySessionToken(authorization);
       if (decoded.type === "reader") {
         throw new Error(
           "(reader) type users are not authorized to publish posts",
@@ -124,9 +122,8 @@ export class PostController {
     @Headers("authorization") authorization: string,
   ): Promise<IPostReflectObject> {
     try {
-      const verifySessionTokenAdapter = new VerifySessionTokenAdapter(jwt);
-      const decoded =
-        verifySessionTokenAdapter.verifySessionToken(authorization);
+      const sessionTokenAdapter = new SessionTokenAdapter(jwt);
+      const decoded = sessionTokenAdapter.verifySessionToken(authorization);
       if (decoded.type === "reader") {
         throw new Error(
           "(reader) type users are not authorized to publish posts",

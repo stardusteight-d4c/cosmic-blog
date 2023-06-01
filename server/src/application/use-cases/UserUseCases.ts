@@ -1,5 +1,6 @@
 import { IUserReflectObject, IUserService, User } from "@domain/src/user";
-import { CreateSessionTokenAdapter } from "../adapters/CreateSessionToken";
+import { SessionTokenAdapter } from "../adapters/SessionTokenAdapter";
+import {  SendMailAdapter } from "../adapters/SendMailAdapter";
 
 type RegisterUserResult = { user: User; sessionToken: string };
 
@@ -8,16 +9,25 @@ export class UserUseCases {
 
   async register(request: {
     user: IUserReflectObject;
-    createSessionTokenAdapter: CreateSessionTokenAdapter;
+    sessionTokenAdapter: SessionTokenAdapter;
   }): Promise<RegisterUserResult> {
-    const { user, createSessionTokenAdapter } = request;
+    const { user, sessionTokenAdapter } = request;
     const userInstance = await this.userService.createUser(user);
-    const sessionToken = createSessionTokenAdapter.createSessionToken({
+    const sessionToken = sessionTokenAdapter.createSessionToken({
       user_id: userInstance.reflect.id!,
       email: userInstance.reflect.email,
       type: userInstance.reflect.userRole,
     });
     return { user: userInstance, sessionToken };
+  }
+
+  async verifyEmail(request: {
+    email: string;
+    sendMailAdapter: SendMailAdapter;
+  }) {
+    const { email, sendMailAdapter } = request;
+    const randomSixDigitCode = Math.floor(100000 + Math.random() * 900000);
+    return await sendMailAdapter.verifyEmail({ email, randomSixDigitCode });
   }
 
   async getBy(request: {
@@ -41,11 +51,10 @@ export class UserUseCases {
   async signin(request: {
     email: string;
     password: string;
-    createSessionTokenAdapter: CreateSessionTokenAdapter;
+    sessionTokenAdapter: SessionTokenAdapter;
   }): Promise<RegisterUserResult> {
-    const { email, password, createSessionTokenAdapter } = request;
+    const { email, password, sessionTokenAdapter } = request;
     const user = await this.userService.getUserByEmail(email);
-
     if (!user) {
       throw new Error("Email does not exist");
     }
@@ -53,7 +62,7 @@ export class UserUseCases {
     if (!isValidPassword) {
       throw new Error("Invalid password");
     }
-    const sessionToken = createSessionTokenAdapter.createSessionToken({
+    const sessionToken = sessionTokenAdapter.createSessionToken({
       user_id: user.reflect.id!,
       email: user.reflect.email,
       type: user.reflect.userRole,

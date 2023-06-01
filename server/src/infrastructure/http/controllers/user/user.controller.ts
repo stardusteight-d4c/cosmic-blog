@@ -4,6 +4,7 @@ import {
   Get,
   Headers,
   Inject,
+  Param,
   Post,
   Put,
   Query,
@@ -14,10 +15,10 @@ import { IUserReflectObject } from "@domain/src/user";
 import { errorHandler } from "../../@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
-import { CreateSessionTokenAdapter } from "@/application/adapters/CreateSessionToken";
 import jwt from "jsonwebtoken";
-import { VerifySessionTokenAdapter } from "@/application/adapters/VerifySessionToken";
-import { IUserTokenInfo } from "@/application/adapters/@interfaces";
+import { SessionTokenAdapter } from "@/application/adapters/SessionTokenAdapter";
+import { transporter } from "@/infrastructure/lib/nodemailer";
+import { SendMailAdapter } from "@/application/adapters/SendMailAdapter";
 
 @Controller("user")
 export class UserController {
@@ -41,16 +42,26 @@ export class UserController {
     @Body() user: IUserReflectObject,
   ): Promise<{ user: IUserReflectObject; sessionToken: string }> {
     try {
-      const createSessionTokenAdapter = new CreateSessionTokenAdapter(jwt);
+      const sessionTokenAdapter = new SessionTokenAdapter(jwt);
       return await this.#userUseCases
         .register({
           user,
-          createSessionTokenAdapter,
+          sessionTokenAdapter,
         })
         .then(({ user, sessionToken }) => {
           return { user: user.reflect, sessionToken };
         });
     } catch (error: any) {
+      errorHandler(error);
+    }
+  }
+
+  @Post("verifyEmail/:email")
+  async verifyEmail(@Param("email") email: string) {
+    try {
+      const sendMailAdapter = new SendMailAdapter(transporter as any);
+      await this.#userUseCases.verifyEmail({ email, sendMailAdapter });
+    } catch (error) {
       errorHandler(error);
     }
   }
@@ -102,12 +113,12 @@ export class UserController {
   async signin(@Query() query: { email: string; password: string }) {
     try {
       const { email, password } = query;
-      const createSessionTokenAdapter = new CreateSessionTokenAdapter(jwt);
+      const sessionTokenAdapter = new SessionTokenAdapter(jwt);
       return await this.#userUseCases
         .signin({
           email,
           password,
-          createSessionTokenAdapter,
+          sessionTokenAdapter,
         })
         .then(({ user, sessionToken }) => {
           return {
@@ -126,9 +137,8 @@ export class UserController {
     @Headers("authorization") authorization: string,
   ): Promise<IUserReflectObject> {
     try {
-      const verifySessionTokenAdapter = new VerifySessionTokenAdapter(jwt);
-      const decoded =
-        verifySessionTokenAdapter.verifySessionToken(authorization);
+      const sessionTokenAdapter = new SessionTokenAdapter(jwt);
+      const decoded = sessionTokenAdapter.verifySessionToken(authorization);
       if (decoded.user_id === updatedUser.id) {
         throw new Error(
           "the session user is different from the user being updated",

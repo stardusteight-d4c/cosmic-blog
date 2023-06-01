@@ -1,6 +1,14 @@
 import { TUserRole } from "@/domain/src/user";
 
-export interface IJwt {
+export interface IUserTokenInfo {
+  user_id: string;
+  email: string;
+  type: TUserRole;
+  iat?: number;
+  exp?: number;
+}
+
+export interface IPluginJWT {
   sign(
     payload: string | object | Buffer,
     secretOrPrivateKey: string,
@@ -9,18 +17,24 @@ export interface IJwt {
   verify(token: string, secretOrPublicKey: string): object | string;
 }
 
-export interface ICreateSessionToken {
-  createSessionToken(data: { user_id: string; email: string }): string;
+export interface IPluginSendMail {
+  sendMail(data: {
+    subject: string;
+    from: string;
+    to: string;
+    text: string;
+    html: string;
+  }): Promise<void>;
 }
 
-export interface IVerifySessionToken {
+export interface ISessionTokenAdapter {
+  createSessionToken(data: { user_id: string; email: string }): string;
   verifySessionToken(token: string): IUserTokenInfo;
 }
 
-export interface IUserTokenInfo {
-  user_id: string;
-  email: string;
-  type: TUserRole;
-  iat?: number;
-  exp?: number;
+export interface ISendMailAdapter {
+  verifyEmail(request: {
+    email: string;
+    randomSixDigitCode: number;
+  }): Promise<void>;
 }

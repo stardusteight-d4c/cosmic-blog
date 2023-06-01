@@ -1,1 +1,0 @@
-- Verificar no serviço de criação de usuário se já existe um usuário com o mesmo nick ou email
