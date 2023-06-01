@@ -2,6 +2,14 @@
 import { ref } from 'vue'
 import CodeInput from './integrate/CodeInput.vue'
 import useNotificator from '@/hooks/Notificator'
+import bcryptjs from 'bcryptjs'
+
+const props = defineProps({
+  encryptedCode: {
+    type: String,
+    required: true,
+  },
+})
 
 const { notify } = useNotificator()
 
@@ -25,6 +33,31 @@ function handlePaste(event: ClipboardEvent) {
     notify('ERROR', 'A valid code was not entered!')
   }
 }
+
+function getCombinedInputValue() {
+  let combinedString = ''
+  for (let i = 1; i <= 6; i++) {
+    const inputId = `input-${i}`
+    const inputElement = document.getElementById(inputId) as HTMLInputElement
+    if (inputElement) {
+      const inputValue = inputElement.value
+      combinedString += inputValue
+    }
+  }
+  return combinedString
+}
+
+function confirmCode() {
+  const code = getCombinedInputValue()
+  console.log(props.encryptedCode, code)
+  const isCodeValid = bcryptjs.compareSync(code, props.encryptedCode)
+  console.log('isCodeValid', isCodeValid)
+  if (isCodeValid) {
+    notify('SUCCESS', 'A valid code was entered!')
+  } else {
+    notify('ERROR', 'A valid code was not entered!')
+  }
+}
 </script>
 
 <template>
@@ -42,7 +75,7 @@ function handlePaste(event: ClipboardEvent) {
       />
     </div>
     <button
-      type="submit"
+      @click="confirmCode"
       class="form-login-button w-fit text-xl mx-auto mt-8 font-semibold"
     >
       Confirm

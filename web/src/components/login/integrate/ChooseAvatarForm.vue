@@ -16,11 +16,12 @@ const { notify } = useNotificator()
 const store = useAppStore()
 const proceedToChooseAvatar = ref(false)
 const proceedToConfirmEmail = ref(false)
+const encryptedCode = ref()
 const selectedAvatar = ref<null | string>(null)
 const email = computed(() => store.state.login.signUpData.email)
 
-function handleProceedToConfirmEmail() {
-  store.dispatch(ACTION_EMAIL_VERIFY, email.value)
+async function handleProceedToConfirmEmail() {
+  encryptedCode.value = await store.dispatch(ACTION_EMAIL_VERIFY, email.value)
   notify('SUCCESS', 'Code sent to registered email!')
   proceedToConfirmEmail.value = true
 }
@@ -45,7 +46,10 @@ const avatarUrl = computed((): string | undefined => {
 </script>
 
 <template>
-  <ConfirmEmail v-if="proceedToConfirmEmail === true" />
+  <ConfirmEmail
+    v-if="proceedToConfirmEmail === true"
+    :encryptedCode="encryptedCode"
+  />
   <main v-if="proceedToConfirmEmail === false">
     <h2 :class="css.title">Choose your avatar!</h2>
     <div :class="css.avatarWrapper">

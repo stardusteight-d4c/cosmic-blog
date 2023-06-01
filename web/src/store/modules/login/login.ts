@@ -16,14 +16,12 @@ export const login: Module<ILoginState, AppState> = {
     },
   },
   actions: {
-    async [ACTION_EMAIL_VERIFY](_, email: string) {
-      console.log('email', email)
-
-      //  await api
-      //   .post('/auth/verifyEmail', {
-      //     email,
-      //   })
-      //   .catch((error) => console.log(error))
+    async [ACTION_EMAIL_VERIFY](_, email: string): Promise<string> {
+      const encryptedCode = await api
+        .post(`/user/verifyEmail/${email}`)
+        .then((res) => res.data)
+        .catch((error) => console.log(error))
+      return encryptedCode
     },
   },
 }

@@ -12,6 +12,7 @@
     "@supabase/supabase-js": "^2.10.0",
     "@tailwindcss/line-clamp": "^0.4.2",
     "axios": "^1.4.0",
+    "bcryptjs": "^2.4.3",
     "marked": "^4.2.12",
     "portal-vue": "^3.0.0",
     "tailwind-scrollbar-hide": "^1.1.7",
@@ -20,6 +21,7 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/marked": "^4.0.8",
     "@types/prismjs": "^1.26.0",
     "@vitejs/plugin-vue": "^4.0.0",
