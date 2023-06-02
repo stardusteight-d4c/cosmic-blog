@@ -2,6 +2,7 @@
 import { socialNetworks } from '@/utils'
 import { socialLinksStyles as css } from './styles'
 import { computed } from 'vue'
+import { isObjectEmpty } from '@/utils/isObjectEmpty'
 
 const props = defineProps({
   socialLinks: {
@@ -19,7 +20,7 @@ const filteredSocialLinks = computed(() => {
 
 <template>
   <div :class="css.wrapper">
-    <div :class="css.linksWrapper" v-if="socialLinks">
+    <div :class="css.linksWrapper" v-if="!isObjectEmpty(socialLinks)">
       <div v-for="network in filteredSocialLinks">
         <a
           v-if="network.name === 'Email'"
@@ -40,6 +41,9 @@ const filteredSocialLinks = computed(() => {
           {{ network.name }}
         </a>
       </div>
+    </div>
+    <div v-else class="text-base mt-2 text-[#f2f2f2]/70">
+      No social links yet
     </div>
   </div>
 </template>

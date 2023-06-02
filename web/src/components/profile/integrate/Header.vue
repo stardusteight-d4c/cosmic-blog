@@ -36,11 +36,14 @@ function handleMemoji(): void {
     <div :class="css.boxAnimate" />
     <div :class="css.backgroundOverlay" />
     <div :class="css.avatarImageWrapper">
-      <img
-        @click="handleMemoji"
-        :src="`${avatarUrl}${currentMemoji}.png`"
-        :class="css.avatarImage"
-      />
+      <div class="pendulum relative z-[50]">
+        <img
+          @click="handleMemoji"
+          :src="`${avatarUrl}${currentMemoji}.png`"
+          v-bind:key="currentMemoji"
+          :class="css.avatarImage"
+        />
+      </div>
       <PencilLine
         @click="editSocialLinks = true"
         width="38"
@@ -55,3 +58,24 @@ function handleMemoji(): void {
   </div>
   <h1 :class="css.username">#{{ username }}'s Profile</h1>
 </template>
+
+<style scoped>
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(5px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animated-bounce {
+  animation: bounce ease-in-out 0.3s;
+}
+</style>

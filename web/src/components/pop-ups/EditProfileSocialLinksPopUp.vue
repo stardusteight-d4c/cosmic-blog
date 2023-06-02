@@ -39,6 +39,7 @@ async function save() {
   const socialNetwork = selectedSocialNetwork.value.name.toLowerCase()
   const newSocialLink = { [socialNetwork]: inputValue.value }
   await store.dispatch(ACTION_UPDATE_SOCIAL_LINKS, newSocialLink)
+  handleCancel()
 }
 </script>
 
