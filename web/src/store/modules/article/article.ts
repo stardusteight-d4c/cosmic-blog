@@ -4,7 +4,7 @@ import {
   MUTATION_SEED_TEXT_EDITOR_DATA,
   MUTATION_EVENT_SHOW_PREVIEW,
 } from '@store/mutations'
-import { IArticleData } from './@interfaces'
+import { IArticleData } from '@/@interfaces/article'
 
 export interface IArticleState {
   textEditorData: IArticleData

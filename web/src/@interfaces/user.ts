@@ -1,4 +1,4 @@
-import { TUserRole } from "../../login/@interfaces";
+import { TUserRole } from "./login";
 
 export interface ISocialLinks {
   [key: string]: string | undefined;
@@ -22,7 +22,7 @@ export interface IUserData {
   commentAmount: number
 }
 
-export interface IUserReflectObject {
+export interface IUserObject {
   id?: string;
   email: string;
   username: string;
@@ -31,3 +31,4 @@ export interface IUserReflectObject {
   userRole?: TUserRole;
   socialLinks?: ISocialLinks | undefined;
 }
+

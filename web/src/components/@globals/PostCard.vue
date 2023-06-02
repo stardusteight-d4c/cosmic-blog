@@ -8,9 +8,23 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  title: {
+    type: String,
+    required: true,
+  },
+  postedAt: {
+    type: Date,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  tags: {
+    type: Array<string>,
+    required: true,
+  },
 })
-
-const tags = ['typescript', 'vuejs', 'nestjs', 'knex']
 </script>
 
 <template>
@@ -22,17 +36,12 @@ const tags = ['typescript', 'vuejs', 'nestjs', 'knex']
     />
     <div :class="css.infosContainer">
       <h2 :class="css.title">
-        GO! RN - Gestão de conhecimento focado em evolução do time
+        {{ title }}
       </h2>
       <div :class="css.calendarContainer">
-        <Calendar width="18" height="18" />Mar 5, 2023
+        <Calendar width="18" height="18" />{{ postedAt }}
       </div>
-      <span :class="css.previewText"
-        >Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cumque at et
-        voluptatem iusto ex impedit quod eos asperiores placeat libero, qui
-        dicta esse in, vero explicabo laboriosam sequi, cupiditate
-        deserunt.</span
-      >
+      <span :class="css.previewText">{{ content }}</span>
       <div :class="css.tagsContainer">
         <Tag v-for="tag in tags" :tag="tag" />
       </div>

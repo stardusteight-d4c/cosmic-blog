@@ -2,8 +2,8 @@ import type { Module } from 'vuex'
 import type { AppState } from '@/store'
 import { ACTION_EMAIL_VERIFY, ACTION_REGISTER_USER } from '@/store/actions'
 import api from '@/lib/axios'
-import { IRegisterUserData, ISignUpData } from './@interfaces'
 import { MUTATION_SIGN_UP_DATA } from '@/store/mutations'
+import { IRegisterUserData, ISignUpData } from '@/@interfaces/login'
 
 export interface ILoginState {
   signUpData: ISignUpData

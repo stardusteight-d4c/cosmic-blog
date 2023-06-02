@@ -5,7 +5,10 @@ import {
   BaseLayoutSlot,
 } from '@/components/profile'
 import { useAppStore } from '@/store'
-import { ACTION_GET_USER_DATA } from '@/store/actions'
+import {
+  ACTION_GET_USER_DATA,
+  ACTION_GET_USER_FAVORITE_POSTS_WITH_PAGINATION,
+} from '@/store/actions'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -21,7 +24,7 @@ onMounted(async () => {
     await store.dispatch(ACTION_GET_USER_DATA, { id })
     loading.value = false
   } catch (error) {
-    console.error('Erro ao carregar os dados do usuário:', error)
+    console.error('Error loading user data:', error)
     loading.value = false
   }
 })

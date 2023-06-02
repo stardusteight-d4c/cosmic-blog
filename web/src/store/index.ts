@@ -39,6 +39,7 @@ export const store = createStore<AppState>({
         favoriteAmount: 0,
         commentAmount: 0,
       },
+      favoritedPosts: [],
     },
     article: {
       textEditorData: {
