@@ -18,8 +18,8 @@ export interface IUserData {
   avatar: string
   userRole: TUserRole
   socialLinks: ISocialLinks | undefined
-  favoritesAmount: number
-  commentsAmount: number
+  favoriteAmount: number
+  commentAmount: number
 }
 
 export interface IUserReflectObject {

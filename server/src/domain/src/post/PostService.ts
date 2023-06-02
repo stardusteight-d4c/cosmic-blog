@@ -9,19 +9,23 @@ import Validators from "@domain/@utils/validators";
 import { IPublisher } from "@domain/@interfaces";
 import DeletePostCommand from "./PostCommands";
 import { IUserRepository } from "../user";
+import { IFavoriteRepository } from "../favorite";
 
 export class PostService implements IPostService {
   #postRepository: IPostRepository;
   #userRepository: IUserRepository;
+  #favoriteRepository: IFavoriteRepository;
   #publisher?: IPublisher;
 
   constructor(implementations: {
     postRepository: IPostRepository;
     userRepository: IUserRepository;
+    favoriteRepository: IFavoriteRepository;
     publisher?: IPublisher;
   }) {
     this.#postRepository = implementations.postRepository;
     this.#userRepository = implementations.userRepository;
+    this.#favoriteRepository = implementations.favoriteRepository;
     if (implementations.publisher) {
       this.#publisher = implementations.publisher;
     }
@@ -75,5 +79,18 @@ export class PostService implements IPostService {
       pageSize,
     });
     return posts;
+  }
+
+  public async getUserFavoritePostsByPagination(request: {
+    userId: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[]> {
+    const { userId, skip, pageSize } = request;
+    const favorites = await this.#favoriteRepository.findAllByUserId(userId);
+    const postIds = favorites.map((favorite) => favorite.reflect.postId);
+    const favoritedPosts = await this.#postRepository.findByIds(postIds);
+    const paginatedPosts = favoritedPosts.slice(skip, skip + pageSize);
+    return paginatedPosts;
   }
 }

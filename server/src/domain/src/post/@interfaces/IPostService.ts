@@ -12,4 +12,9 @@ export interface IPostService {
     skip: number;
     pageSize: number;
   }): Promise<Post[]>;
+  getUserFavoritePostsByPagination(request: {
+    userId: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[]>;
 }

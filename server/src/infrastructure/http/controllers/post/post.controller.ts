@@ -105,6 +105,19 @@ export class PostController {
     }
   }
 
+  @Get("pagination/byUserFavorites")
+  async getWithPaginationByUserFavorites(
+    @Query() query: { userId: string; skip: number; pageSize: number },
+  ): Promise<IPostReflectObject[]> {
+    try {
+      return await this.#postUseCases
+        .getUserFavoritePostsWithPagination(query)
+        .then((posts) => posts?.map((post) => post?.reflect));
+    } catch (error: any) {
+      errorHandler(error);
+    }
+  }
+
   @Get("")
   async all(): Promise<IPostReflectObject[]> {
     try {

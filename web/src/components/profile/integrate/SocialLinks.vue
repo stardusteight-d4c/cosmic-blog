@@ -20,7 +20,7 @@ const filteredSocialLinks = computed(() => {
 
 <template>
   <div :class="css.wrapper">
-    <div :class="css.linksWrapper" v-if="!isObjectEmpty(socialLinks)">
+    <div :class="css.linksWrapper" v-if="socialLinks && !isObjectEmpty(socialLinks)">
       <div v-for="network in filteredSocialLinks">
         <a
           v-if="network.name === 'Email'"

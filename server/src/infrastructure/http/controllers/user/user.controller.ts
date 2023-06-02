@@ -43,7 +43,6 @@ export class UserController {
     @Body() user: IUserReflectObject,
   ): Promise<{ user: IUserReflectObject; sessionToken: string }> {
     try {
-      console.log(user);
       const sessionTokenAdapter = new SessionTokenAdapter(jwt);
       return await this.#userUseCases
         .register({

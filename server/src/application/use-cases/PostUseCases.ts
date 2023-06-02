@@ -37,4 +37,17 @@ export class PostUseCases {
   async getAll(): Promise<Post[]> {
     return await this.postService.getPosts();
   }
+
+  async getUserFavoritePostsWithPagination(request: {
+    userId: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[]> {
+    const { userId, skip, pageSize } = request;
+    return await this.postService.getUserFavoritePostsByPagination({
+      userId,
+      skip,
+      pageSize,
+    });
+  }
 }

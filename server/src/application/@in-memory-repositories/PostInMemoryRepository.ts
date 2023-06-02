@@ -53,7 +53,11 @@ export class PostInMemoryRepository implements IPostRepository {
 
   public async findByTitle(postTitle: string): Promise<Post | undefined> {
     for (const post of this.#posts.values()) {
-      if (post.reflect.title.toLocaleLowerCase().includes(postTitle.toLocaleLowerCase())) {
+      if (
+        post.reflect.title
+          .toLocaleLowerCase()
+          .includes(postTitle.toLocaleLowerCase())
+      ) {
         return post;
       }
     }
@@ -74,6 +78,17 @@ export class PostInMemoryRepository implements IPostRepository {
     const startIndex = Math.max(0, skip);
     const paginatedPosts = allPosts.slice(startIndex, startIndex + pageSize);
     return paginatedPosts;
+  }
+
+  public async findByIds(postIds: string[]): Promise<Post[]> {
+    const posts: Post[] = [];
+    for (const postId of postIds) {
+      const post = this.#posts.get(postId);
+      if (post) {
+        posts.push(post);
+      }
+    }
+    return posts;
   }
 
   public get posts() {

@@ -27,7 +27,23 @@ export const user: Module<IUserState, AppState> = {
         .get(`/user/search?by=id&value=${payload.id}`)
         .then((res) => res.data)
         .catch((error) => console.log(error))
-      commit(MUTATION_SEED_USER_DATA, userData.user)
+      commit(MUTATION_SEED_USER_DATA, {
+        ...userData.user,
+        favoriteAmount: userData.favoriteAmount,
+        commentAmount: userData.commentAmount,
+      })
+      return userData
+    },
+    async [ACTION_GET_USER_DATA]({ commit }, payload: { id: string }) {
+      const userData = await api
+        .get(`/user/search?by=id&value=${payload.id}`)
+        .then((res) => res.data)
+        .catch((error) => console.log(error))
+      commit(MUTATION_SEED_USER_DATA, {
+        ...userData.user,
+        favoriteAmount: userData.favoriteAmount,
+        commentAmount: userData.commentAmount,
+      })
       return userData
     },
     async [ACTION_UPDATE_SOCIAL_LINKS]({ commit }, payload: ISocialLinks) {

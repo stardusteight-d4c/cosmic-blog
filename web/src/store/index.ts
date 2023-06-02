@@ -36,8 +36,8 @@ export const store = createStore<AppState>({
         avatar: '',
         userRole: 'reader',
         socialLinks: {},
-        favoritesAmount: 0,
-        commentsAmount: 0,
+        favoriteAmount: 0,
+        commentAmount: 0,
       },
     },
     article: {

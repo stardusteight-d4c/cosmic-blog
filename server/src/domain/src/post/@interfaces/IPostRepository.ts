@@ -9,4 +9,5 @@ export interface IPostRepository {
   findByTitle(postTitle: string): Promise<Post | undefined>;
   findAll(): Promise<Post[]>;
   findWithPagination(request: { skip: number; pageSize: number }): Promise<Post[]>;
+  findByIds(postIds: string[]): Promise<Post[]>
 }

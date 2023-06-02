@@ -47,7 +47,6 @@ export class ApplicationUseCases {
     this.#userRepository = repositories.userRepository;
     this.#commentRepository = repositories.commentRepository;
     this.#favoriteRepository = repositories.favoriteRepository;
-
     this.initialization();
   }
 
@@ -56,6 +55,7 @@ export class ApplicationUseCases {
     const postService = new PostService({
       postRepository: this.#postRepository,
       userRepository: this.#userRepository,
+      favoriteRepository: this.#favoriteRepository,
       publisher,
     });
     const userService = new UserService({
