@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { BaseLayoutSlot } from '.'
 import { Download } from '@/components/@globals/atoms/icons'
-import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils/html-ids'
+import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils'
 import { importSavePopUpStyles as css } from './styles'
 import useNotificator from '@/hooks/Notificator'
 

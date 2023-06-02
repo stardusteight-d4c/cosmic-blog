@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { DeletePopUp } from '@/components/pop-ups'
-import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
+import {
+  detectClickOutsideElement,
+  HTML_ELEMENT_IDS_POST_PAGE as ids,
+} from '@/utils'
 import { Edit, Trash } from '@globals/atoms/icons'
 import memoji from '@/assets/my-memoji02.png'
 import Btn from '@globals/Btn.vue'
-import { detectClickOutsideElement } from '@/utils/detect-click-outside-element'
 import { commentStyles as css } from './styles'
 
 // Quando o usuário clicar em seu comentário em Profile redirecioanar para o post e seu comentário

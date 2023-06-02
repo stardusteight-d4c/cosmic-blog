@@ -1,18 +1,45 @@
 <script setup lang="ts">
-import { socialNetworks } from '@/utils/data'
+import { socialNetworks } from '@/utils'
 import { socialLinksStyles as css } from './styles'
+import { computed } from 'vue'
+
+const props = defineProps({
+  socialLinks: {
+    type: Object as any,
+  },
+})
+
+const filteredSocialLinks = computed(() => {
+  const socialLinksKeys = Object.keys(props.socialLinks)
+  return socialNetworks.filter((network) =>
+    socialLinksKeys.includes(network.name.toLowerCase())
+  )
+})
 </script>
 
 <template>
   <div :class="css.wrapper">
-    <div :class="css.linksWrapper">
-      <a
-        v-for="social in socialNetworks"
-        href=""
-        target="_blank"
-        :class="css.link"
-        ><img :src="social.url" width="20" />{{ social.name }}</a
-      >
+    <div :class="css.linksWrapper" v-if="socialLinks">
+      <div v-for="network in filteredSocialLinks">
+        <a
+          v-if="network.name === 'Email'"
+          :href="`mailto:${socialLinks[network.name.toLowerCase()]}`"
+          :class="css.link"
+        >
+          <img :src="network.url" width="20" />
+          {{ network.name }}
+        </a>
+        <a
+          v-if="network.name != 'Email'"
+          :key="network.name"
+          :href="socialLinks[network.name.toLowerCase()]"
+          target="_blank"
+          :class="css.link"
+        >
+          <img :src="network.url" width="20" />
+          {{ network.name }}
+        </a>
+      </div>
     </div>
   </div>
 </template>

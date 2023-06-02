@@ -1,22 +1,27 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { EditProfileSocialLinksPopUp } from '@/components/pop-ups'
 import { PencilLine } from '@/components/@globals/atoms/icons'
 import { headerStyles as css } from './styles'
-import { useAppStore } from '@/store'
-import { getAvatarUrlById } from '@/utils/getAvatarUrlById'
 
-const store = useAppStore()
-const userData = computed(() => store.state.user.userData)
-const userAvatar = getAvatarUrlById(userData.value.avatar)
-const handledAvatarString = userAvatar?.replace(/-\d+\.png$/, '-')
+defineProps({
+  avatarUrl: {
+    type: String,
+    required: true,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+})
 
 const editSocialLinks = ref(false)
+let currentMemoji = ref(1)
+
 function closedEditSocialLinksPopUp() {
   editSocialLinks.value = false
 }
 
-let currentMemoji = ref(1)
 function handleMemoji(): void {
   if (currentMemoji.value < 3) {
     currentMemoji.value++
@@ -33,7 +38,7 @@ function handleMemoji(): void {
     <div :class="css.avatarImageWrapper">
       <img
         @click="handleMemoji"
-        :src="`${handledAvatarString}${currentMemoji}.png`"
+        :src="`${avatarUrl}${currentMemoji}.png`"
         :class="css.avatarImage"
       />
       <PencilLine
@@ -48,5 +53,5 @@ function handleMemoji(): void {
       />
     </div>
   </div>
-  <h1 :class="css.username">#{{ userData.username }}'s Profile</h1>
+  <h1 :class="css.username">#{{ username }}'s Profile</h1>
 </template>

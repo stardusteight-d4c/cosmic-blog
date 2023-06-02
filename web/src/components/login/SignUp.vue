@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { LabelSpan, ChooseAvatarForm } from './integrate'
-import { calculateDelay } from '@/utils/calculate-delay'
+import { calculateDelay } from '@/utils'
 import { signUpStyles as css } from './styles'
 import { useAppStore } from '@store/index'
 import { MUTATION_SIGN_UP_DATA } from '@store/mutations'

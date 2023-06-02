@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { socialNetworks } from '@/utils/data'
-import { detectClickOutsideElement } from '@/utils/detect-click-outside-element'
+import { detectClickOutsideElement, socialNetworks } from '@/utils'
 import { Smiley } from '@/components/@globals/atoms/icons'
 import { BaseLayoutSlot } from '.'
 import { editProfileSocialPopUpStyles as css } from './styles'
 import { useAppStore } from '@/store'
 import { ACTION_UPDATE_SOCIAL_LINKS } from '@/store/actions'
-
-// fazer a validação se de fato é um link de perfil da rede social
 
 const emit = defineEmits(['closedEditProfileSocialLinksPopUp'])
 

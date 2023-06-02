@@ -146,9 +146,9 @@ export class UserController {
     try {
       const sessionTokenAdapter = new SessionTokenAdapter(jwt);
       const decoded = sessionTokenAdapter.verifySessionToken(authorization);
-      if (decoded.user_id === updatedUser.id) {
+      if (decoded.user_id != updatedUser.id) {
         throw new Error(
-          "the session user is different from the user being updated",
+          `the session user is different from the user being updated`,
         );
       }
       return await this.#userUseCases

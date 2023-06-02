@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { calculateDelay } from '@/utils/calculate-delay';
+import { calculateDelay } from '@/utils';
 import { LabelSpan } from './integrate'
 import { signInStyles as css } from './styles'
 

@@ -2,7 +2,7 @@
 import { ref, watch, reactive } from 'vue'
 import { useAppStore } from '@store/index'
 import { MUTATION_SEED_TEXT_EDITOR_DATA } from '@store/mutations'
-import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils/html-ids'
+import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils'
 import useNotificator from '@/hooks/Notificator'
 import { headerStyles as css } from './styles'
 import { IHeadArticleData } from '@/store/modules/article/@interfaces'

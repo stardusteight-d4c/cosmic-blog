@@ -45,7 +45,7 @@ function onInputIsFilled() {
 
 <template>
   <span
-    class="w-full h-full relative min-w-[80px] min-h-[80px] bg-black/50 rounded-md text-4xl text-white font-bold flex items-center justify-center"
+    class="w-full h-full relative min-w-[80px] min-h-[80px] max-w-[80px] max-h-[80px] bg-black/50 rounded-md text-4xl text-white font-bold flex items-center justify-center"
   >
     <input
       :id="`input-${index}`"

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { handleMarkdown } from '@/utils/handle-markdown'
 import { Controls } from '.'
-import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils/html-ids'
+import { handleMarkdown, HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils'
 import { editorStyles as css } from './styles'
 
 // Gerar url da coverImg no serviço de storage do supabase, mas isto apenas quando enviar ao servidor,

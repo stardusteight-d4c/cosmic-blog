@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {  reactive, toRef } from 'vue'
-import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
+import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils'
 import { ArticleHeader, ArticleBody } from './integrate'
 import { articleStyles as css } from './styles'
 

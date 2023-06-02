@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { AlignLeft, AlignJustify } from '@/components/@globals/atoms/icons'
-import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
+import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils'
 import { alignStyles as css } from './styles'
 
 const textAlign = ref<'left' | 'justify' | 'center'>('left')

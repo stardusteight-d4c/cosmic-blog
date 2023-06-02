@@ -1,6 +1,7 @@
 import { TUserRole } from "../../login/@interfaces";
 
 export interface ISocialLinks {
+  [key: string]: string | undefined;
   github?: string;
   linkedin?: string;
   instagram?: string;

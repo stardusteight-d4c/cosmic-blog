@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import { handleMarkdown } from '@/utils/handle-markdown'
 import { SavePopUp, ImportSavePopUp } from '@/components/pop-ups'
 import { useAppStore } from '@store/index'
 import {
@@ -8,7 +7,7 @@ import {
   MUTATION_EVENT_SHOW_PREVIEW,
 } from '@store/mutations'
 import * as Icon from '@/components/@globals/atoms/icons'
-import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils/html-ids'
+import { handleMarkdown, HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils'
 import { controlsStyles as css } from './styles'
 
 onMounted((): void => {

@@ -9,7 +9,7 @@ import useNotificator from '@/hooks/Notificator'
 import { useAppStore } from '@/store'
 import { ACTION_EMAIL_VERIFY } from '@/store/actions'
 import { MUTATION_SIGN_UP_DATA } from '@/store/mutations'
-import { getAvatarUrlById } from '@/utils/getAvatarUrlById'
+import { getAvatarUrlById } from '@/utils'
 
 const emit = defineEmits(['backStep'])
 

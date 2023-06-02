@@ -1,8 +1,8 @@
-import type { ChooseAvatars } from '@/utils/data'
+import type { IAvatars } from '@/utils'
 
 export const baseLayoutSlotStyles = {
   overlay: `inset-0 bg-black/40 z-[950] fixed`,
-  wrapper: `bg-[#1a1a1a]/50 transform backdrop-blur-sm text-[#F2F2F2] w-full max-w-[450px] border border-[#F2F2F220] shadow-lg shadow-black/70 fixed left-1/2 z-[1000] p-8 rounded-md top-1/2 -translate-y-1/2 -translate-x-1/2`,
+  wrapper: `bg-[#1a1a1a]/50 transform backdrop-blur-sm text-[#F2F2F2] w-full max-w-[360px] md:max-w-[450px] border border-[#F2F2F220] shadow-lg shadow-black/70 fixed left-1/2 z-[1000] p-8 rounded-md top-1/2 -translate-y-1/2 -translate-x-1/2`,
   container: `flex flex-col items-center justify-center`,
   operations: `flex items-center mx-auto mt-4 gap-x-2 w-fit`,
 }
@@ -53,7 +53,7 @@ export const chooseAvatarPopUpStyles = {
   arrowLeft: `absolute -left-5 md:-left-10 top-1/2 -translate-y-1/2 text-[#F2F2F2]/80 cursor-pointer -rotate-180`,
   arrowRight: `absolute -right-5 md:-right-10 top-1/2 -translate-y-1/2 text-[#F2F2F2]/80 cursor-pointer`,
   handleAvatarsImage: (
-    slicedAvatars: ChooseAvatars[],
+    slicedAvatars: IAvatars[],
     selectedAvatar: string | null,
     index: number
   ) => {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { ArrowsIn, ArrowsOut } from '@/components/@globals/atoms/icons'
-import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils/html-ids'
+import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils'
 import { scaleStyles as css } from './styles'
 
 const scaleUp = ref(false)

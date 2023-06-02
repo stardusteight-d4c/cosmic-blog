@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { techs, descriptions } from '@/utils/data'
+import { techs, descriptions, isEven } from '@/utils'
 import { techItemStyles as css } from './styles'
-import { isEven } from '@/utils/isEven'
 type Techs = 'backend' | 'language' | 'frontend' | 'database'
 
 defineProps({
