@@ -10,7 +10,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTk3ZjBkNTkt
  "coverImage": "https://example.com/cover-image.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "e67c2023-5a4f-484b-bdfe-248481209d92",
+    "id": "4a834bf4-9fff-423c-a95e-ecf26e6eaf5a",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "password": "pa$$word1",
@@ -54,8 +54,8 @@ PUT http://localhost:3000/favorite/toggle
 Content-Type: application/json
 
 { 
-  "postId": "6f84865e-91a3-4cfe-8883-f0e07288a1ad",
-  "userId": "e67c2023-5a4f-484b-bdfe-248481209d92" 
+  "postId": "ca4ba187-2610-47ea-bb38-528c4024b7ca",
+  "userId": "4a834bf4-9fff-423c-a95e-ecf26e6eaf5a" 
 }
 
 ### COMMENT

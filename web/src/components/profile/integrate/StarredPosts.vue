@@ -70,30 +70,31 @@ async function handleBackPage() {
   <div :class="css.columnSpanWrapper">
     <div :class="css.headerContainer">
       <h3 :class="css.title">Starred {{ favoriteAmount }}</h3>
+
       <Star width="24" height="24" color="#f2f2f280" />
     </div>
     <div
       v-if="favoritedPosts"
-      class="flex items-center relative max-w-[140px] min-w-[140px] mx-auto justify-center mt-4 text-[#7c7c7c]"
+      class="flex items-center relative mt-4 w-full overflow-visible justify-end text-[#7c7c7c]"
     >
       <Arrow
         @click="handleBackPage"
         v-if="currentPage > 0"
         width="42"
         height="42"
-        class="cursor-pointer hover:text-[#b8b8b8] p-1 rotate-180 antialiased"
+        class="cursor-pointer absolute -left-1 hover:text-[#b8b8b8] p-1 rotate-180 antialiased"
       />
       <span
-        v-if="!(currentPage === 0 && favoritedPosts.length < 3)"
-        class="text-2xl mx-1 font-semibold"
-        >{{ currentPage }}</span
-      >
+          v-if="!(currentPage === 0 && favoritedPosts.length < 3)"
+          class="text-2xl mx-1 font-semibold absolute left-1/2 -translate-x-1/2"
+          >{{ currentPage }}</span
+        >
       <Arrow
         @click="handleNextPage"
         v-if="favoritedPosts.length === 3"
         width="42"
         height="42"
-        class="cursor-pointer hover:text-[#b8b8b8] p-1"
+        class="cursor-pointer absolute -right-1 hover:text-[#b8b8b8] p-1 antialiased"
       />
     </div>
     <div :class="css.starredPostsWrapper">
