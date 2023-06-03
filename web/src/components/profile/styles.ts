@@ -4,5 +4,5 @@ export const baseLayoutStyles = {
 }
 
 export const interactionsWithPostsStyles = {
-  wrapper: `grid grid-cols-2 gap-x-4 mt-16`,
+  wrapper: `flex flex-col gap-y-8 md:gap-y-0 px-2 md:px-0 sm:grid grid-cols-2 gap-x-4 mt-16`,
 }

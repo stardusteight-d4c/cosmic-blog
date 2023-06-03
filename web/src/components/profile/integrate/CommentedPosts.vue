@@ -81,7 +81,6 @@ async function handleBackPage() {
         class="cursor-pointer absolute -left-1 hover:text-[#b8b8b8] p-1 rotate-180 antialiased"
       />
       <span
-        v-if="!(currentPage === 0 && commentedPosts.length < 3)"
         class="text-2xl mx-1 font-semibold absolute left-1/2 -translate-x-1/2"
         >{{ currentPage }}</span
       >
@@ -102,30 +101,22 @@ async function handleBackPage() {
         :username="comment.owner.username"
         :content="comment.content"
       />
-      <div v-if="loading == true" class="blur animate-pulse">
+      <div v-if="loading == true" v-for="i in 3" class="blur animate-pulse">
         <PostComment
           username="Link"
-          content="The Legend of Zelda is a Nintendo video game series created in 1986 by Shigeru Miyamoto and Takashi Tezuka. It is centered around action-adventure video games and some RPG elements."
+          content="The Legend of Zelda is a Nintendo video game series created in 1986 by Shigeru Miyamoto and Takashi Tezuka."
           title="The Legend of Zelda"
           :postedAt="new Date('1986-02-21T03:00:00.000Z')"
         />
       </div>
-      <div v-if="loading == true" class="blur animate-pulse">
-        <PostComment
-          username="Link"
-          content="The Legend of Zelda is a Nintendo video game series created in 1986 by Shigeru Miyamoto and Takashi Tezuka. It is centered around action-adventure video games and some RPG elements."
-          title="The Legend of Zelda"
-          :postedAt="new Date('1986-02-21T03:00:00.000Z')"
-        />
-      </div>
-      <div v-if="loading == true" class="blur animate-pulse">
-        <PostComment
-          username="Link"
-          content="The Legend of Zelda is a Nintendo video game series created in 1986 by Shigeru Miyamoto and Takashi Tezuka. It is centered around action-adventure video games and some RPG elements."
-          title="The Legend of Zelda"
-          :postedAt="new Date('1986-02-21T03:00:00.000Z')"
-        />
-      </div>
+    </div>
+    <div
+      v-if="commentedPosts && commentedPosts.length === 0"
+      class="flex items-center justify-center w-full"
+    >
+      <span class="block font-medium text-xl mt-8 text-[#f2f2f2]/70">
+        There are no commented posts
+      </span>
     </div>
   </div>
 </template>

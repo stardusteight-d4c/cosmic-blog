@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { postCommentStyles as css } from './styles'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
 
 defineProps({
   postedAt: {
@@ -23,7 +26,7 @@ defineProps({
 
 <template>
   <div :class="css.wrapper">
-    <span :class="css.dateSpan">{{ postedAt }}</span>
+    <span :class="css.dateSpan">{{ dayjs(postedAt).fromNow()  }}</span>
     <h2 :class="css.postTitle">
       {{ title }}
     </h2>

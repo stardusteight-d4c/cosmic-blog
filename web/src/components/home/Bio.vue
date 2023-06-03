@@ -11,10 +11,9 @@ import { bioStyles as css } from './styles'
       <div :class="css.bioContainer">
         <img :src="starStruck" :class="css.starIcon" />
         <p :class="css.paragraph">
-          Olá! Sou Gabriel Sena, desenvolvedor web focado na Stack JavaScript!
-          Gosto de estudar as tendências do mercado e busco sempre desenvolver
-          aplicações web de ponta a ponta sempre extraindo o melhor de cada
-          tecnologia.
+          Hello! I'm Gabriel Sena, web developer focused on Stack JavaScript! I
+          like to study market trends and I always try to develop end-to-end web
+          applications, always extracting the best from each technology.
           <br />
           <br />
           Node.js | TypeScript | React | Vue.js

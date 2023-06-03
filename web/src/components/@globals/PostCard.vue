@@ -3,7 +3,6 @@ import { Calendar } from '@globals/atoms/icons'
 import Tag from './integrate/Tag.vue'
 import { postCardStyles as css } from './styles'
 import dayjs from 'dayjs'
-import ptBr from 'dayjs/locale/pt-br'
 
 defineProps({
   isMinimalist: {
