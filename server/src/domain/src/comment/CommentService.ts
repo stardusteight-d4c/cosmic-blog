@@ -1,5 +1,5 @@
 import { IPostRepository } from "../post";
-import { IUserRepository } from "../user";
+import { IUserRepository, User } from "../user";
 import { ICommentRepository } from "./@interfaces";
 import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 import { ICommentService } from "./@interfaces/ICommentService";
@@ -65,12 +65,9 @@ export class CommentService implements ICommentService {
     skip: number;
     pageSize: number;
   }): Promise<Comment[]> {
-    const { postId, skip, pageSize } = request;
-    const comments = await this.#commentRepository.findByPostIdWithPagination({
-      postId,
-      skip,
-      pageSize,
-    });
+    const comments = await this.#commentRepository.findByPostIdWithPagination(
+      request,
+    );
     return comments;
   }
 
@@ -79,12 +76,9 @@ export class CommentService implements ICommentService {
     skip: number;
     pageSize: number;
   }): Promise<Comment[]> {
-    const { userId, skip, pageSize } = request;
-    const comments = await this.#commentRepository.findByUserIdWithPagination({
-      userId,
-      skip,
-      pageSize,
-    });
+    const comments = await this.#commentRepository.findByUserIdWithPagination(
+      request,
+    );
     return comments;
   }
 

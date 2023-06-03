@@ -91,6 +91,15 @@ export class PostInMemoryRepository implements IPostRepository {
     return posts;
   }
 
+  public async findPostTitleById(postId: string): Promise<string> {
+    const post = this.#posts.get(postId);
+    if (post) {
+      return post.reflect.title;
+    } else {
+      throw new Error(`Post not found for ID: ${postId}`);
+    }
+  }
+
   public get posts() {
     throw new Error("Cannot access posts property directly.");
   }

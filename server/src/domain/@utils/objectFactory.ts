@@ -8,6 +8,7 @@ export interface IObjectFactory {
   getPost: () => IPostReflectObject;
   getComment: (data: {
     postId: string;
+    postTitle?: string;
     owner?: IUserReflectObject;
     content?: string;
   }) => ICommentReflectObject;
@@ -35,12 +36,14 @@ export function objectFactory(): IObjectFactory {
 
   const comment = (data: {
     postId: string;
+    postTitle?: string;
     owner?: IUserReflectObject;
     content?: string;
   }): ICommentReflectObject => {
     return {
-      owner: data.owner ?? user,
       postId: data.postId,
+      postTitle: data.postTitle ?? "Fake title",
+      owner: data.owner ?? user,
       content: data.content ?? "Great post! I really enjoyed reading it.",
       postedAt: new Date(),
     };
@@ -65,11 +68,13 @@ export function objectFactory(): IObjectFactory {
     },
     getComment: (data: {
       postId: string;
+      postTitle?: string;
       owner?: IUserReflectObject;
       content?: string;
     }) => {
       return comment({
         postId: data.postId,
+        postTitle: data.postTitle,
         owner: data?.owner,
         content: data?.content,
       });

@@ -10,7 +10,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTk3ZjBkNTkt
  "coverImage": "https://example.com/cover-image.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "4a834bf4-9fff-423c-a95e-ecf26e6eaf5a",
+    "id": "103842cb-94eb-4793-99eb-0d99c44a39ca",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "password": "pa$$word1",
@@ -63,9 +63,10 @@ POST http://localhost:3000/comment
 Content-Type: application/json
 
 {
-  "postId": "874da23e-db86-45d4-ac9c-ca53c668ee68",
+  "postId": "27c036a9-e4cb-4072-9595-62569e850dc6",
+  "postTitle": "Sample Post",
   "owner": {
-    "id": "cf4da33e-0938-4f21-8065-5f4baa2e6d29",
+    "id": "103842cb-94eb-4793-99eb-0d99c44a39ca",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "password": "pa$$word1",
@@ -76,6 +77,6 @@ Content-Type: application/json
   "postedAt": "2023-05-30T14:31:44.545Z"
 }
 ###
-GET http://localhost:3000/pagination?by=postId&value=c5d68477-129e-4cc0-8f36-e8ddc9874519&skip=2&pageSize=2
+GET http://localhost:3000/comment/pagination?by=postId&value=c5d68477-129e-4cc0-8f36-e8ddc9874519&skip=2&pageSize=2
 ###
-GET http://localhost:3000/pagination?by=userId&value=a09a2591-4cb8-4196-9e59-4101333bff62&skip=2&pageSize=2
+GET http://localhost:3000/comment/pagination?by=userId&value=b85d3a17-355f-4735-833c-c5468fecc98c&skip=0&pageSize=3

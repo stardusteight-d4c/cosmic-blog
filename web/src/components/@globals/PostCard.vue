@@ -2,6 +2,8 @@
 import { Calendar } from '@globals/atoms/icons'
 import Tag from './integrate/Tag.vue'
 import { postCardStyles as css } from './styles'
+import dayjs from 'dayjs'
+import ptBr from 'dayjs/locale/pt-br'
 
 defineProps({
   isMinimalist: {
@@ -39,7 +41,9 @@ defineProps({
         {{ title }}
       </h2>
       <div :class="css.calendarContainer">
-        <Calendar width="18" height="18" />{{ postedAt }}
+        <Calendar width="18" height="18" />{{
+          dayjs(postedAt).format('D[/]MMM[, ]YYYY')
+        }}
       </div>
       <span :class="css.previewText">{{ content }}</span>
       <div :class="css.tagsContainer">

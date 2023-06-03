@@ -29,9 +29,9 @@ export const commentedPostsStyles = {
 }
 
 export const postCommentStyles = {
-  wrapper: `bg-[#252525] p-2 rounded-sm hover:scale-[1.02] transition-all duration-100 ease-linear hover:shadow-md hover:shadow-black/20 cursor-pointer`,
+  wrapper: `bg-[#252525] p-2 w-full rounded-sm hover:scale-[1.02] transition-all duration-100 ease-linear hover:shadow-md hover:shadow-black/20 cursor-pointer`,
   dateSpan: `text-xs block text-[#F2F2F2]/60 -mt-[1px] mb-2`,
-  postTitle: `leading-5 h-[40px] line-clamp-2 font-medium`,
+  postTitle: `leading-5 line-clamp-2 font-medium`,
   authorInfos: `text-base my-2 font-medium text-[#F2F2F2]/60 flex items-center gap-x-1 border-b border-b-[#F2F2F2]/20`,
   commentParagraph: `line-clamp-5 text-sm text-[#F2F2F2]/60`,
 }

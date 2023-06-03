@@ -12,10 +12,12 @@ import { Comment } from "../Comment";
 import { commentBuilderFactory } from "../helpers";
 import {
   CommentInMemoryRepository,
+  FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
 } from "@app/@in-memory-repositories";
 import { ICommentRepository } from "../@interfaces";
+import { IFavoriteRepository } from "../../favorite";
 
 let commentService: CommentService;
 let postService: PostService;
@@ -26,12 +28,14 @@ let postInstance: Post;
 let factory: IObjectFactory;
 let userRepository: IUserRepository;
 let postRepository: IPostRepository;
+let favoriteRepository: IFavoriteRepository;
 let commentRepository: ICommentRepository;
 
 describe("CommentService", () => {
   beforeEach(async () => {
     userRepository = UserInMemoryRepository.getInstance();
     postRepository = PostInMemoryRepository.getInstance();
+    favoriteRepository = FavoriteInMemoryRepository.getInstance();
     commentRepository = CommentInMemoryRepository.getInstance();
     commentService = new CommentService({
       commentRepository,
@@ -41,6 +45,7 @@ describe("CommentService", () => {
     postService = new PostService({
       postRepository,
       userRepository,
+      favoriteRepository,
     });
     userService = new UserService({
       userRepository,

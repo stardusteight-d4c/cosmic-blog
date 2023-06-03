@@ -5,13 +5,15 @@ import { starredPostsStyles as css } from './styles'
 import { computed } from 'vue'
 import { useAppStore } from '@/store'
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { ACTION_GET_USER_FAVORITE_POSTS_WITH_PAGINATION } from '@/store/actions'
-import { IPostObject } from '@/@interfaces/post'
 
-defineProps({
+const props = defineProps({
   favoriteAmount: {
     type: Number,
+  },
+  userId: {
+    type: String,
+    required: true,
   },
 })
 
@@ -19,15 +21,11 @@ const store = useAppStore()
 const favoritedPosts = computed(() => store.state.user.favoritedPosts)
 const loading = ref(true)
 const currentPage = ref(0)
-const route = useRoute()
-const id = Array.isArray(route.params.id)
-  ? route.params.id[0]
-  : route.params.id ?? ''
 
 onMounted(async () => {
   try {
     await store.dispatch(ACTION_GET_USER_FAVORITE_POSTS_WITH_PAGINATION, {
-      userId: id,
+      userId: props.userId,
       skip: 0,
     })
     loading.value = false
@@ -42,7 +40,7 @@ async function handleNextPage() {
     loading.value = true
     currentPage.value++
     await store.dispatch(ACTION_GET_USER_FAVORITE_POSTS_WITH_PAGINATION, {
-      userId: id,
+      userId: props.userId,
       skip: currentPage.value * 3,
     })
     setTimeout(() => {
@@ -56,7 +54,7 @@ async function handleBackPage() {
     loading.value = true
     currentPage.value--
     await store.dispatch(ACTION_GET_USER_FAVORITE_POSTS_WITH_PAGINATION, {
-      userId: id,
+      userId: props.userId,
       skip: currentPage.value * 3,
     })
     setTimeout(() => {
@@ -70,7 +68,6 @@ async function handleBackPage() {
   <div :class="css.columnSpanWrapper">
     <div :class="css.headerContainer">
       <h3 :class="css.title">Starred {{ favoriteAmount }}</h3>
-
       <Star width="24" height="24" color="#f2f2f280" />
     </div>
     <div
@@ -85,10 +82,10 @@ async function handleBackPage() {
         class="cursor-pointer absolute -left-1 hover:text-[#b8b8b8] p-1 rotate-180 antialiased"
       />
       <span
-          v-if="!(currentPage === 0 && favoritedPosts.length < 3)"
-          class="text-2xl mx-1 font-semibold absolute left-1/2 -translate-x-1/2"
-          >{{ currentPage }}</span
-        >
+        v-if="!(currentPage === 0 && favoritedPosts.length < 3)"
+        class="text-2xl mx-1 font-semibold absolute left-1/2 -translate-x-1/2"
+        >{{ currentPage }}</span
+      >
       <Arrow
         @click="handleNextPage"
         v-if="favoritedPosts.length === 3"

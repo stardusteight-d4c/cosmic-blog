@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
 import { Navbar } from '@/components/navbar'
 import { baseLayoutStyles as css } from './styles'
+import { useAppStore } from '@/store'
+import { computed } from 'vue'
 
-const route = useRoute()
-const username = Array.isArray(route.params.id)
-  ? route.params.id[0]
-  : route.params.id ?? ''
+const store = useAppStore()
+const username = computed(() => store.state.user.userData.username)
 </script>
 
 <template>

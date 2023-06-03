@@ -5,6 +5,7 @@ import { Comment } from ".";
 export class CommentBuilder {
   #id: string;
   #postId: string;
+  #postTitle: string;
   #owner: IUserReflectObject;
   #content: string;
   #postedAt: Date;
@@ -16,6 +17,11 @@ export class CommentBuilder {
 
   public setPostId(postId: string): CommentBuilder {
     this.#postId = postId;
+    return this;
+  }
+
+  public setPostTitle(postTitle: string): CommentBuilder {
+    this.#postTitle = postTitle;
     return this;
   }
 
@@ -51,6 +57,7 @@ export class CommentBuilder {
     return new Comment({
       id: this.#id || randomUUID(),
       postId: this.#postId,
+      postTitle: this.#postTitle,
       owner: this.#owner,
       content: this.#content,
       postedAt: this.#postedAt,
