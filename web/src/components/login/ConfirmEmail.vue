@@ -7,7 +7,7 @@ import { useAppStore } from '@/store'
 import { setCookie } from '@/utils'
 import { useRouter } from 'vue-router'
 import { IRegisterUserData } from '@/@interfaces/login'
-import { ACTION_REGISTER_USER } from '@/store/modules/login/actions'
+import { loginMethods } from '@/store/modules/login'
 
 const props = defineProps({
   encryptedCode: {
@@ -66,7 +66,10 @@ async function confirmCode() {
       password: signUpData.value.password,
       userRole: 'reader',
     }
-    const data = await store.dispatch(ACTION_REGISTER_USER, registerData)
+    const data = await store.dispatch(
+      loginMethods.actions.REGISTER_USER,
+      registerData
+    )
     if (data) {
       setCookie(data.sessionToken)
       router.push(`/profile/${data.user.id}`)
@@ -85,20 +88,20 @@ async function confirmCode() {
     <div class="flex flex-col items-center justify-center md:flex-row gap-8">
       <div class="flex items-center justify-center gap-8 w-full">
         <CodeInput
-        v-for="index in 3"
-        :index="index"
-        :key="index"
-        :pastedCode="pastedCode"
-        @paste="handlePaste"
-      />
-    </div>
-    <div class="flex items-center justify-center gap-8 w-full">
-      <CodeInput
-        v-for="index in 3"
-        :index="index + 3"
-        :key="index + 3"
-        :pastedCode="pastedCode"
-        @paste="handlePaste"
+          v-for="index in 3"
+          :index="index"
+          :key="index"
+          :pastedCode="pastedCode"
+          @paste="handlePaste"
+        />
+      </div>
+      <div class="flex items-center justify-center gap-8 w-full">
+        <CodeInput
+          v-for="index in 3"
+          :index="index + 3"
+          :key="index + 3"
+          :pastedCode="pastedCode"
+          @paste="handlePaste"
         />
       </div>
     </div>

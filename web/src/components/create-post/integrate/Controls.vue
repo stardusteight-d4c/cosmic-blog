@@ -8,10 +8,7 @@ import {
   HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids,
 } from '@/utils'
 import { controlsStyles as css } from './styles'
-import {
-  MUTATION_SHOW_PREVIEW,
-  MUTATION_TEXT_EDITOR_DATA,
-} from '@/store/modules/editor/mutations'
+import { editorMethods } from '@/store/modules/editor'
 
 onMounted((): void => {
   textarea.value = document.getElementById(
@@ -44,8 +41,8 @@ function handleShowPreview(): void {
   const payload = {
     body: textarea.value?.value,
   }
-  store.commit(MUTATION_TEXT_EDITOR_DATA, { ...payload })
-  store.commit(MUTATION_SHOW_PREVIEW, true)
+  store.commit(editorMethods.mutations.TEXT_EDITOR_DATA, { ...payload })
+  store.commit(editorMethods.mutations.SHOW_PREVIEW, true)
 }
 
 const iconsFirstSection = [

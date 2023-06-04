@@ -46,7 +46,7 @@ export class UserController {
       const sessionTokenAdapter = new SessionTokenAdapter(jwt);
       return await this.#userUseCases
         .register({
-          user,
+          user: { ...user, userRole: "author" },
           sessionTokenAdapter,
         })
         .then(({ user, sessionToken }) => {

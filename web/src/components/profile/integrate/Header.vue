@@ -56,7 +56,7 @@ function handleMemoji(): void {
       />
     </div>
   </div>
-  <h1 :class="css.username">#{{ username }}'s Profile</h1>
+  <h1 :class="css.username">#{{ username }}'s <br class="md:hidden" /> <span>Profile</span></h1>
 </template>
 
 <style scoped>

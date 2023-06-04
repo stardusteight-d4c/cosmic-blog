@@ -5,9 +5,9 @@ export const headerStyles = {
   avatarImageWrapper: `absolute w-40 h-40 md:w-48 md:h-48`,
   avatarImage: `animated-bounce absolute top-0 cursor-pointer w-40 md:w-48 z-[100] mx-auto`,
   editIcon: `inner-shadow hover:scale-105 transition-all cursor-pointer absolute bg-[#1a1a1a] text-[#f2f2f2] p-2 rounded-full top-0 md:top-5 right-2 md:right-4 z-[200]`,
-  username: `capitalize font-semibold mx-auto w-fit text-3xl mt-2`,
+  username: `capitalize text-center font-semibold mx-auto w-fit text-3xl mt-2`,
 }
-// class='w4'
+
 export const socialLinksStyles = {
   wrapper: `flex flex-col items-center justify-center`,
   linksWrapper: `flex items-center justify-center flex-wrap gap-x-4 w-[300px] mt-4`,

@@ -4,14 +4,14 @@ import { useAppStore } from '@store/index'
 import { computed } from 'vue'
 import { ArrowUUPLeft } from '@globals/atoms/icons'
 import { previewPostStyles as css } from './styles'
-import { MUTATION_SHOW_PREVIEW } from '@/store/modules/editor/mutations'
+import { editorMethods } from '@/store/modules/editor'
 
 const store = useAppStore()
 
 const editorData = computed(() => store.state.editor.textEditorData)
 
 function handleBackToEditor(): void {
-  store.commit(MUTATION_SHOW_PREVIEW, false)
+  store.commit(editorMethods.mutations.SHOW_PREVIEW, false)
 }
 </script>
 

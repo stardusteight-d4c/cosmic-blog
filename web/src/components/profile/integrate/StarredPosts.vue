@@ -5,7 +5,7 @@ import { starredPostsStyles as css } from './styles'
 import { computed } from 'vue'
 import { useAppStore } from '@/store'
 import { onMounted, ref } from 'vue'
-import { ACTION_GET_PROFILE_FAVORITED_POSTS } from '@/store/modules/profile/actions'
+import { profileMethods } from '@/store/modules/profile'
 
 const props = defineProps({
   favoriteAmount: {
@@ -24,7 +24,7 @@ const currentPage = ref(0)
 
 onMounted(async () => {
   try {
-    await store.dispatch(ACTION_GET_PROFILE_FAVORITED_POSTS, {
+    await store.dispatch(profileMethods.actions.GET_PROFILE_FAVORITED_POSTS, {
       userId: props.userId,
       skip: 0,
     })
@@ -39,7 +39,7 @@ async function handleNextPage() {
   if (favoritedPosts.value.length === 3) {
     loading.value = true
     currentPage.value++
-    await store.dispatch(ACTION_GET_PROFILE_FAVORITED_POSTS, {
+    await store.dispatch(profileMethods.actions.GET_PROFILE_FAVORITED_POSTS, {
       userId: props.userId,
       skip: currentPage.value * 3,
     })
@@ -53,7 +53,7 @@ async function handleBackPage() {
   if (currentPage.value > 0) {
     loading.value = true
     currentPage.value--
-    await store.dispatch(ACTION_GET_PROFILE_FAVORITED_POSTS, {
+    await store.dispatch(profileMethods.actions.GET_PROFILE_FAVORITED_POSTS, {
       userId: props.userId,
       skip: currentPage.value * 3,
     })
@@ -117,7 +117,9 @@ async function handleBackPage() {
       v-if="favoritedPosts && favoritedPosts.length === 0"
       class="flex items-center justify-center w-full"
     >
-      <span class="block font-medium text-xl mt-8 text-[#f2f2f2]/70">
+      <span
+        class="block text-center md:font-medium md:text-xl mt-8 text-[#f2f2f2]/70"
+      >
         There are no favorite posts
       </span>
     </div>

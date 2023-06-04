@@ -8,8 +8,7 @@ import ConfirmEmail from '../ConfirmEmail.vue'
 import useNotificator from '@/hooks/Notificator'
 import { useAppStore } from '@/store'
 import { getAvatarUrlById } from '@/utils'
-import { ACTION_EMAIL_VERIFY } from '@/store/modules/login/actions'
-import { MUTATION_SIGN_UP_DATA } from '@/store/modules/login/mutations'
+import { loginMethods } from '@/store/modules/login'
 
 const emit = defineEmits(['backStep'])
 
@@ -23,7 +22,7 @@ const signUpData = computed(() => store.state.login.signUpData)
 
 async function handleProceedToConfirmEmail() {
   encryptedCode.value = await store.dispatch(
-    ACTION_EMAIL_VERIFY,
+    loginMethods.actions.EMAIL_VERIFY,
     signUpData.value.email
   )
   notify('SUCCESS', 'Code sent to registered email!')
@@ -42,14 +41,12 @@ function handleBackStep(): void {
 }
 
 const avatarUrl = computed((): string | undefined => {
-  store.commit(MUTATION_SIGN_UP_DATA, {
+  store.commit(loginMethods.mutations.SIGN_UP_DATA, {
     ...signUpData.value,
     selectedAvatar: selectedAvatar.value,
   })
   return getAvatarUrlById(selectedAvatar.value!)
 })
-
-
 </script>
 
 <template>

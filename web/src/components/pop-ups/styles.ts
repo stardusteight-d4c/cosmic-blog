@@ -36,7 +36,7 @@ export const editProfileSocialPopUpStyles = {
   title: `text-3xl font-semibold`,
   span: `text-center inline-block w-[250px] text-sm text-[#F2F2F2]/70 mt-2`,
   inputContainer: `flex items-center gap-x-2 mt-4`,
-  networkListWrapper: `bg-[#1A1A1A] relative p-1 rounded-md cursor-pointer border border-[#F2F2F220]`,
+  networkListWrapper: `bg-[#1A1A1A] relative w-[34px] p-1 rounded-md cursor-pointer border border-[#F2F2F220]`,
   networkListDropDown: `absolute -right-[1.8px] mt-2 bg-[#1A1A1A] w-[34px] overflow-hidden rounded-md border border-[#F2F2F220] shadow-md shadow-black/70`,
   optionsContainer: `max-h-[100px] scrollbar-hide overflow-y-scroll`,
   optionItem: `flex items-center p-1 gap-x-1 transition-all hover:bg-black/50 cursor-pointer`,

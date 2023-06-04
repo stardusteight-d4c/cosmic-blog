@@ -1,6 +1,6 @@
 import type { NotificationType } from '@interfaces/notification'
 import { store } from '@/store'
-import { MUTATION_NOTIFY } from '@/store/modules/notification/mutations'
+import { notificationMethods } from '@/store/modules/notification'
 
 type Notificator = {
   notify: (type: NotificationType, content: string, title?: string) => void
@@ -12,7 +12,7 @@ export default (): Notificator => {
     content: string,
     title?: string
   ): void => {
-    store.commit(MUTATION_NOTIFY, {
+    store.commit(notificationMethods.mutations.NOTIFY, {
       title,
       content,
       type,

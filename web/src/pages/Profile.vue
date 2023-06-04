@@ -5,7 +5,7 @@ import {
   BaseLayoutSlot,
 } from '@/components/profile'
 import { useAppStore } from '@/store'
-import { ACTION_GET_PROFILE_DATA } from '@/store/modules/profile/actions'
+import { profileMethods } from '@/store/modules/profile'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -18,7 +18,7 @@ const store = useAppStore()
 
 onMounted(async () => {
   try {
-    await store.dispatch(ACTION_GET_PROFILE_DATA, { id })
+    await store.dispatch(profileMethods.actions.GET_PROFILE_DATA, { id })
     loading.value = false
   } catch (error) {
     console.error('Error loading user data:', error)

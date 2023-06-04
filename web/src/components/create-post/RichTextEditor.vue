@@ -6,30 +6,32 @@ import { useAppStore } from '@/store'
 import { computed } from 'vue'
 import ShortUniqueId from 'short-unique-id'
 import { uploadImageToFirebase } from '@/utils/uploadImageToFirebase'
+import { authMethods } from '@/store/modules/auth'
+import { editorMethods } from '@/store/modules/editor'
 
 const store = useAppStore()
-
 async function submitPost() {
   const editorData = computed(() => store.state.editor.textEditorData)
-  console.log('editorData', editorData.value);
-  
-  console.log('editorData', editorData.value)
+  store.commit(authMethods.mutations.CURRENT_SESSION)
+  const session = computed(() => store.state.auth.session)
   const uid = new ShortUniqueId({ length: 10 })
   const fileName = uid()
-  const publicImageURL = await uploadImageToFirebase(
-    editorData.value.coverImage,
-    fileName
-  )
-  // const payload: IPostObject = {
-  //   title: editorData.value.title,
-  //   body: editorData.value.body,
-  //   tags: editorData.value.tags,
-  //   postedIn: new Date(),
-  //   coverImage: publicImageURL,
-  //   author: {
-
-  //   }
-  // }
+  // const publicImageURL = await uploadImageToFirebase(
+  //   editorData.value.coverImage,
+  //   fileName
+  // )
+  const post = {
+    title: editorData.value.title,
+    body: editorData.value.body,
+    tags: editorData.value.tags,
+    postedIn: new Date(),
+    coverImage: 'publicImageURL',
+    author: {
+      id: session.value.decodedToken!.user_id,
+      email: session.value.decodedToken!.email,
+    },
+  }
+  await store.dispatch(editorMethods.actions.PUBLISH_POST, post)
 }
 </script>
 

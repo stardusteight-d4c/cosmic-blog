@@ -4,7 +4,7 @@ import { LabelSpan, ChooseAvatarForm } from './integrate'
 import { calculateDelay } from '@/utils'
 import { signUpStyles as css } from './styles'
 import { useAppStore } from '@store/index'
-import { MUTATION_SIGN_UP_DATA } from '@/store/modules/login/mutations'
+import { loginMethods } from '@/store/modules/login'
 
 const emit = defineEmits(['changeToSignIn'])
 
@@ -27,7 +27,7 @@ function handleBackStep(): void {
 }
 
 function handleNextStep(): void {
-  store.commit(MUTATION_SIGN_UP_DATA, formData)
+  store.commit(loginMethods.mutations.SIGN_UP_DATA, formData)
   nextStep.value = true
 }
 

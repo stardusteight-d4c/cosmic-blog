@@ -21,6 +21,9 @@ defineProps({
     type: String,
     required: true,
   },
+  cover: {
+    type: String,
+  },
   tags: {
     type: Array<string>,
     required: true,
@@ -29,12 +32,8 @@ defineProps({
 </script>
 
 <template>
-  <router-link to="/post/455446461" :class="css.wrapper">
-    <img
-      v-if="!isMinimalist"
-      src="https://www.paulsblog.dev/content/images/size/w2000/2022/09/image--41-.webp"
-      :class="css.cover"
-    />
+  <router-link :to="`/post/${title}`" :class="css.wrapper">
+    <img v-if="!isMinimalist" :src="cover" :class="css.cover" />
     <div :class="css.infosContainer">
       <h2 :class="css.title">
         {{ title }}

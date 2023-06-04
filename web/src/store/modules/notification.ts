@@ -1,18 +1,24 @@
 import type { Module } from 'vuex'
 import { AppState } from '@/store'
 import { INotification } from '@/@interfaces/notification'
-import { MUTATION_NOTIFY } from './mutations'
 
 export interface INotificationState {
   notifications: INotification[]
 }
+
+export const notificationMethods = {
+  mutations: {
+    NOTIFY: 'MUTATION_NOTIFY',
+  },
+}
+const M = notificationMethods.mutations
 
 export const notification: Module<INotificationState, AppState> = {
   state: {
     notifications: [],
   },
   mutations: {
-    [MUTATION_NOTIFY](state, newNotification: INotification) {
+    [M.NOTIFY](state, newNotification: INotification) {
       const indexResult = state.notifications.findIndex(
         (notification) => notification.content === newNotification.content
       )

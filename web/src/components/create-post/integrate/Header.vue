@@ -5,7 +5,7 @@ import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils'
 import useNotificator from '@/hooks/Notificator'
 import { headerStyles as css } from './styles'
 import { IHeadArticleData } from '@/@interfaces/article'
-import { MUTATION_TEXT_EDITOR_DATA } from '@/store/modules/editor/mutations'
+import { editorMethods } from '@/store/modules/editor'
 
 // Gerar url da coverImg no serviço de storage do supabase, mas isto apenas quando enviar ao servidor,
 // para a preview gere uma string base64 e envie-à como props
@@ -29,7 +29,7 @@ watch(editorData, (newVal, _oldVal): void => {
     tags: newVal.tags,
     date: newVal.date,
   }
-  store.commit(MUTATION_TEXT_EDITOR_DATA, payload)
+  store.commit(editorMethods.mutations.TEXT_EDITOR_DATA, payload)
 })
 
 function onFileChange(event: Event): void {
