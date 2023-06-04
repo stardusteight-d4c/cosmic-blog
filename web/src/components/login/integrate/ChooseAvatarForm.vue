@@ -7,9 +7,9 @@ import { chooseAvatarFormStyles as css } from './styles'
 import ConfirmEmail from '../ConfirmEmail.vue'
 import useNotificator from '@/hooks/Notificator'
 import { useAppStore } from '@/store'
-import { ACTION_EMAIL_VERIFY } from '@/store/actions'
-import { MUTATION_SIGN_UP_DATA } from '@/store/mutations'
 import { getAvatarUrlById } from '@/utils'
+import { ACTION_EMAIL_VERIFY } from '@/store/modules/login/actions'
+import { MUTATION_SIGN_UP_DATA } from '@/store/modules/login/mutations'
 
 const emit = defineEmits(['backStep'])
 

@@ -1,22 +1,24 @@
 import type { InjectionKey } from 'vue'
 import { createStore, Store, useStore } from 'vuex'
-import { notification, article, login, user } from './modules'
-import { IUserState } from './modules/user/user'
-import { ILoginState } from './modules/login/login'
-import { IArticleState } from './modules/article/article'
-import { INotificationState } from './modules/notification/notification'
+import { profile, IProfileState } from './modules/profile/profile'
+import { login, ILoginState } from './modules/login/login'
+import { editor, IEditorState } from './modules/editor/editor'
+import {
+  notification,
+  INotificationState,
+} from './modules/notification/notification'
 
 export const key: InjectionKey<Store<AppState>> = Symbol()
 
 export interface AppState {
   notification: INotificationState
   login: ILoginState
-  user: IUserState
-  article: IArticleState
+  profile: IProfileState
+  editor: IEditorState
 }
 
 export const store = createStore<AppState>({
-  modules: { notification, login, user, article },
+  modules: { notification, login, profile, editor },
 })
 
 export function useAppStore(): Store<AppState> {

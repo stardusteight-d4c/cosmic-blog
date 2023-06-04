@@ -4,10 +4,10 @@ import CodeInput from './integrate/CodeInput.vue'
 import useNotificator from '@/hooks/Notificator'
 import bcryptjs from 'bcryptjs'
 import { useAppStore } from '@/store'
-import { ACTION_REGISTER_USER } from '@/store/actions'
-import { IRegisterUserData } from '@/store/modules/login/@interfaces'
 import { setCookie } from '@/utils'
 import { useRouter } from 'vue-router'
+import { IRegisterUserData } from '@/@interfaces/login'
+import { ACTION_REGISTER_USER } from '@/store/modules/login/actions'
 
 const props = defineProps({
   encryptedCode: {

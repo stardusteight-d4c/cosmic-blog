@@ -5,7 +5,7 @@ import { computed } from 'vue'
 import { getAvatarUrlById } from '@/utils'
 
 const store = useAppStore()
-const userData = computed(() => store.state.user.userData)
+const userData = computed(() => store.state.profile.userData)
 const userAvatar = getAvatarUrlById(userData.value.avatar)
 const handledAvatarString = userAvatar?.replace(/-\d+\.png$/, '-')!
 </script>

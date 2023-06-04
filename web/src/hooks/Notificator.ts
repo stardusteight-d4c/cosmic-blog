@@ -1,9 +1,9 @@
 import type { NotificationType } from '@interfaces/notification'
 import { store } from '@/store'
-import { MUTATION_NOTIFY } from '@/store/mutations'
+import { MUTATION_NOTIFY } from '@/store/modules/notification/mutations'
 
 type Notificator = {
-  notify: (type: NotificationType,  content: string, title?: string) => void
+  notify: (type: NotificationType, content: string, title?: string) => void
 }
 
 export default (): Notificator => {

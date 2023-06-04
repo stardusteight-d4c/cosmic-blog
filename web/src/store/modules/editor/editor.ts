@@ -1,17 +1,14 @@
 import type { Module } from 'vuex'
 import type { AppState } from '@/store'
-import {
-  MUTATION_SEED_TEXT_EDITOR_DATA,
-  MUTATION_EVENT_SHOW_PREVIEW,
-} from '@store/mutations'
 import { IArticleData } from '@/@interfaces/article'
+import { MUTATION_SHOW_PREVIEW, MUTATION_TEXT_EDITOR_DATA } from './mutations'
 
-export interface IArticleState {
+export interface IEditorState {
   textEditorData: IArticleData
   showPreview: boolean
 }
 
-export const article: Module<IArticleState, AppState> = {
+export const editor: Module<IEditorState, AppState> = {
   state: {
     textEditorData: {
       tags: [],
@@ -23,10 +20,10 @@ export const article: Module<IArticleState, AppState> = {
     showPreview: false,
   },
   mutations: {
-    [MUTATION_SEED_TEXT_EDITOR_DATA](state, payload: IArticleData) {
+    [MUTATION_TEXT_EDITOR_DATA](state, payload: IArticleData) {
       state.textEditorData = { ...state.textEditorData, ...payload }
     },
-    [MUTATION_EVENT_SHOW_PREVIEW](state, payload: boolean) {
+    [MUTATION_SHOW_PREVIEW](state, payload: boolean) {
       state.showPreview = payload
     },
   },

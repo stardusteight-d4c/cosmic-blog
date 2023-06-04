@@ -5,7 +5,7 @@ import { useAppStore } from '@/store'
 import { computed } from 'vue'
 
 const store = useAppStore()
-const username = computed(() => store.state.user.userData.username)
+const username = computed(() => store.state.profile.userData.username)
 </script>
 
 <template>

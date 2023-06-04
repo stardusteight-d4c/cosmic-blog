@@ -10,7 +10,7 @@ import { uploadImageToFirebase } from '@/utils/uploadImageToFirebase'
 const store = useAppStore()
 
 async function submitPost() {
-  const editorData = computed(() => store.state.article.textEditorData)
+  const editorData = computed(() => store.state.editor.textEditorData)
   console.log('editorData', editorData.value);
   
   console.log('editorData', editorData.value)

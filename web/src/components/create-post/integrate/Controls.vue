@@ -2,13 +2,16 @@
 import { ref, reactive, onMounted } from 'vue'
 import { SavePopUp, ImportSavePopUp } from '@/components/pop-ups'
 import { useAppStore } from '@store/index'
-import {
-  MUTATION_SEED_TEXT_EDITOR_DATA,
-  MUTATION_EVENT_SHOW_PREVIEW,
-} from '@store/mutations'
 import * as Icon from '@/components/@globals/atoms/icons'
-import { handleMarkdown, HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils'
+import {
+  handleMarkdown,
+  HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids,
+} from '@/utils'
 import { controlsStyles as css } from './styles'
+import {
+  MUTATION_SHOW_PREVIEW,
+  MUTATION_TEXT_EDITOR_DATA,
+} from '@/store/modules/editor/mutations'
 
 onMounted((): void => {
   textarea.value = document.getElementById(
@@ -41,8 +44,8 @@ function handleShowPreview(): void {
   const payload = {
     body: textarea.value?.value,
   }
-  store.commit(MUTATION_SEED_TEXT_EDITOR_DATA, { ...payload })
-  store.commit(MUTATION_EVENT_SHOW_PREVIEW, true)
+  store.commit(MUTATION_TEXT_EDITOR_DATA, { ...payload })
+  store.commit(MUTATION_SHOW_PREVIEW, true)
 }
 
 const iconsFirstSection = [

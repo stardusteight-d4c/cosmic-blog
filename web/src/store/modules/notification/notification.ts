@@ -1,7 +1,7 @@
 import type { Module } from 'vuex'
 import { AppState } from '@/store'
-import { MUTATION_NOTIFY } from '@/store/mutations'
 import { INotification } from '@/@interfaces/notification'
+import { MUTATION_NOTIFY } from './mutations'
 
 export interface INotificationState {
   notifications: INotification[]
@@ -13,8 +13,6 @@ export const notification: Module<INotificationState, AppState> = {
   },
   mutations: {
     [MUTATION_NOTIFY](state, newNotification: INotification) {
-      console.log(state, newNotification)
-
       const indexResult = state.notifications.findIndex(
         (notification) => notification.content === newNotification.content
       )

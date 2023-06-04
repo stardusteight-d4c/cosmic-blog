@@ -8,7 +8,7 @@ import {
 import { useAppStore } from '@store/index'
 const store = useAppStore()
 
-const showPreview = computed(() => store.state.article.showPreview)
+const showPreview = computed(() => store.state.editor.showPreview)
 </script>
 
 <template>

@@ -9,7 +9,7 @@ const ctx = {
 }
 
 const store = useAppStore()
-const notifications = computed(() => store.state.notifications)
+const notifications = computed(() => store.state.notification.notifications)
 </script>
 
 <template>

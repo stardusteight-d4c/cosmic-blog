@@ -10,7 +10,7 @@ export interface ISocialLinks {
   email?: string;
 }
 
-export interface IUserData {
+export interface IProfileData {
   id: string
   email: string
   username: string

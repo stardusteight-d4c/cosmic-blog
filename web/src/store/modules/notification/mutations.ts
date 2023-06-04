@@ -1,0 +1,1 @@
+export const MUTATION_NOTIFY = 'MUTATION_NOTIFY'

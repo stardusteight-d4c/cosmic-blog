@@ -1,31 +1,22 @@
 import type { Module } from 'vuex'
 import { AppState } from '@/store'
 import api from '@/lib/axios'
-import {
-  ACTION_GET_USER_COMMENT_POSTS_WITH_PAGINATION,
-  ACTION_GET_USER_DATA,
-  ACTION_GET_USER_FAVORITE_POSTS_WITH_PAGINATION,
-  ACTION_UPDATE_SOCIAL_LINKS,
-} from '@/store/actions'
-import {
-  MUTATION_SEED_COMMENTED_POSTS,
-  MUTATION_SEED_FAVORITED_POSTS,
-  MUTATION_SEED_USER_DATA,
-} from '@/store/mutations'
 import { getSessionCookie } from '@/utils/getSessionCookie'
 import { getSinglePropertyValue } from '@/utils/getSinglePropertyValue'
 import { removeEmptyValues } from '@/utils/removeObjEmptyValues'
-import { ISocialLinks, IUserData } from '@/@interfaces/user'
+import { ISocialLinks, IProfileData } from '@/@interfaces/user'
 import { IPostObject } from '@/@interfaces/post'
 import { ICommentResponse } from '@/@interfaces/comment'
+import { MUTATION_PROFILE_COMMENTED_POSTS, MUTATION_PROFILE_DATA, MUTATION_PROFILE_FAVORITED_POSTS } from './mutations'
+import { ACTION_GET_PROFILE_COMMENTED_POSTS, ACTION_GET_PROFILE_DATA, ACTION_GET_PROFILE_FAVORITED_POSTS, ACTION_UPDATE_PROFILE_SOCIAL_LINKS } from './actions'
 
-export interface IUserState {
-  userData: IUserData
+export interface IProfileState {
+  userData: IProfileData
   favoritedPosts: IPostObject[]
   commentedPosts: ICommentResponse[]
 }
 
-export const user: Module<IUserState, AppState> = {
+export const profile: Module<IProfileState, AppState> = {
   state: {
     userData: {
       id: '',
@@ -42,30 +33,30 @@ export const user: Module<IUserState, AppState> = {
     commentedPosts: [],
   },
   mutations: {
-    [MUTATION_SEED_USER_DATA](state, payload: IUserState) {
+    [MUTATION_PROFILE_DATA](state, payload: IProfileState) {
       state.userData = { ...state.userData, ...payload }
     },
-    [MUTATION_SEED_FAVORITED_POSTS](state, payload: IPostObject[]) {
+    [MUTATION_PROFILE_FAVORITED_POSTS](state, payload: IPostObject[]) {
       state.favoritedPosts = payload
     },
-    [MUTATION_SEED_COMMENTED_POSTS](state, payload: ICommentResponse[]) {
+    [MUTATION_PROFILE_COMMENTED_POSTS](state, payload: ICommentResponse[]) {
       state.commentedPosts = payload
     },
   },
   actions: {
-    async [ACTION_GET_USER_DATA]({ commit }, payload: { id: string }) {
+    async [ACTION_GET_PROFILE_DATA]({ commit }, payload: { id: string }) {
       const userData = await api
         .get(`/user/search?by=id&value=${payload.id}`)
         .then((res) => res.data)
         .catch((error) => console.log(error))
-      commit(MUTATION_SEED_USER_DATA, {
+      commit(MUTATION_PROFILE_DATA, {
         ...userData.user,
         favoriteAmount: userData.favoriteAmount,
         commentAmount: userData.commentAmount,
       })
       return userData
     },
-    async [ACTION_GET_USER_FAVORITE_POSTS_WITH_PAGINATION](
+    async [ACTION_GET_PROFILE_FAVORITED_POSTS](
       { commit },
       payload: { userId: string; skip: number }
     ) {
@@ -76,11 +67,11 @@ export const user: Module<IUserState, AppState> = {
         )
         .then((res) => res.data)
         .catch((error) => console.log(error))
-      commit(MUTATION_SEED_FAVORITED_POSTS, favoritedPosts)
+      commit(MUTATION_PROFILE_FAVORITED_POSTS, favoritedPosts)
       return favoritedPosts
     },
 
-    async [ACTION_GET_USER_COMMENT_POSTS_WITH_PAGINATION](
+    async [ACTION_GET_PROFILE_COMMENTED_POSTS](
       { commit },
       payload: { userId: string; skip: number }
     ) {
@@ -91,12 +82,12 @@ export const user: Module<IUserState, AppState> = {
         )
         .then((res) => res.data)
         .catch((error) => console.log(error))
-      commit(MUTATION_SEED_COMMENTED_POSTS, commentedPosts)
+      commit(MUTATION_PROFILE_COMMENTED_POSTS, commentedPosts)
       return commentedPosts
     },
-    async [ACTION_UPDATE_SOCIAL_LINKS]({ commit }, payload: ISocialLinks) {
-      let updatedUserData: IUserData
-      const userData = this.state.user.userData
+    async [ACTION_UPDATE_PROFILE_SOCIAL_LINKS]({ commit }, payload: ISocialLinks) {
+      let updatedUserData: IProfileData
+      const userData = this.state.profile.userData
       const payloadValue = getSinglePropertyValue(payload)
       updatedUserData = {
         ...userData,
@@ -116,7 +107,7 @@ export const user: Module<IUserState, AppState> = {
           },
         })
         .catch((error) => console.log(error))
-      commit(MUTATION_SEED_USER_DATA, updatedUserData)
+      commit(MUTATION_PROFILE_DATA, updatedUserData)
     },
   },
 }

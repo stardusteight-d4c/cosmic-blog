@@ -4,7 +4,7 @@ import { LabelSpan, ChooseAvatarForm } from './integrate'
 import { calculateDelay } from '@/utils'
 import { signUpStyles as css } from './styles'
 import { useAppStore } from '@store/index'
-import { MUTATION_SIGN_UP_DATA } from '@store/mutations'
+import { MUTATION_SIGN_UP_DATA } from '@/store/modules/login/mutations'
 
 const emit = defineEmits(['changeToSignIn'])
 
