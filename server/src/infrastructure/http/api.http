@@ -10,7 +10,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTk3ZjBkNTkt
  "coverImage": "https://example.com/cover-image.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "103842cb-94eb-4793-99eb-0d99c44a39ca",
+    "id": "96b4baef-0299-43e9-aaab-2069a3fc9be4",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "password": "pa$$word1",
@@ -54,8 +54,8 @@ PUT http://localhost:3000/favorite/toggle
 Content-Type: application/json
 
 { 
-  "postId": "4e87fd2a-5b86-437d-80bc-a17c4e2ab212",
-  "userId": "103842cb-94eb-4793-99eb-0d99c44a39ca" 
+  "postId": "6ed87f4d-ac83-4815-a6f3-3dc778525122",
+  "userId": "96b4baef-0299-43e9-aaab-2069a3fc9be4" 
 }
 
 ### COMMENT
@@ -63,10 +63,10 @@ POST http://localhost:3000/comment
 Content-Type: application/json
 
 {
-  "postId": "27c036a9-e4cb-4072-9595-62569e850dc6",
+  "postId": "6ed87f4d-ac83-4815-a6f3-3dc778525122",
   "postTitle": "Sample Post",
   "owner": {
-    "id": "2179aa2d-3269-4053-a8e3-34e63d62a5d0",
+    "id": "96b4baef-0299-43e9-aaab-2069a3fc9be4",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "password": "pa$$word1",

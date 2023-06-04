@@ -71,7 +71,7 @@ async function handleBackPage() {
       <Star width="24" height="24" color="#f2f2f280" />
     </div>
     <div
-      v-if="favoritedPosts"
+      v-if="!(favoritedPosts && favoritedPosts.length === 0)"
       class="flex items-center relative mt-4 w-full overflow-visible justify-end text-[#7c7c7c]"
     >
       <Arrow
@@ -87,7 +87,7 @@ async function handleBackPage() {
       >
       <Arrow
         @click="handleNextPage"
-        v-if="favoritedPosts.length === 3"
+        v-if="favoritedPosts && favoritedPosts.length === 3"
         width="42"
         height="42"
         class="cursor-pointer absolute -right-1 hover:text-[#b8b8b8] p-1 antialiased"
@@ -103,7 +103,7 @@ async function handleBackPage() {
         :content="post.body"
         :tags="post.tags"
       />
-      <div v-if="loading == true"  v-for="i in 3"  class="blur animate-pulse">
+      <div v-if="loading == true" v-for="i in 3" class="blur animate-pulse">
         <PostCard
           :isMinimalist="true"
           title="The Legend of Zelda"

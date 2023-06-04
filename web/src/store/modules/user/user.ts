@@ -22,10 +22,25 @@ import { ICommentResponse } from '@/@interfaces/comment'
 export interface IUserState {
   userData: IUserData
   favoritedPosts: IPostObject[]
-  commentedPosts:  ICommentResponse[]
+  commentedPosts: ICommentResponse[]
 }
 
 export const user: Module<IUserState, AppState> = {
+  state: {
+    userData: {
+      id: '',
+      email: '',
+      username: '',
+      password: '',
+      avatar: '',
+      userRole: 'reader',
+      socialLinks: {},
+      favoriteAmount: 0,
+      commentAmount: 0,
+    },
+    favoritedPosts: [],
+    commentedPosts: [],
+  },
   mutations: {
     [MUTATION_SEED_USER_DATA](state, payload: IUserState) {
       state.userData = { ...state.userData, ...payload }

@@ -12,6 +12,16 @@ export interface IArticleState {
 }
 
 export const article: Module<IArticleState, AppState> = {
+  state: {
+    textEditorData: {
+      tags: [],
+      coverImage: '',
+      title: '',
+      date: new Date(),
+      body: '',
+    },
+    showPreview: false,
+  },
   mutations: {
     [MUTATION_SEED_TEXT_EDITOR_DATA](state, payload: IArticleData) {
       state.textEditorData = { ...state.textEditorData, ...payload }

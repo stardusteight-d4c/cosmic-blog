@@ -10,6 +10,15 @@ export interface ILoginState {
 }
 
 export const login: Module<ILoginState, AppState> = {
+  state: {
+    signUpData: {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      selectedAvatar: '',
+    },
+  },
   mutations: {
     [MUTATION_SIGN_UP_DATA](state, payload: ISignUpData) {
       state.signUpData = payload
