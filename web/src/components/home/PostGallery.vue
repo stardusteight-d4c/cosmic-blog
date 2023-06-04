@@ -17,6 +17,7 @@ console.log(posts.value);
   <div :class="css.wrapper">
     <PostCard
       v-for="post in posts"
+      :postId="post.id!"
       :title="post.title"
       :postedAt="post.postedIn"
       :content="post.body"

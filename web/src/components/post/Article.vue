@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import {  reactive, toRef } from 'vue'
+import {  computed, reactive, toRef } from 'vue'
 import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils'
 import { ArticleHeader, ArticleBody } from './integrate'
 import { articleStyles as css } from './styles'
+import { useAppStore } from '@/store'
 
 const props = defineProps({
   showFooter: {
@@ -25,6 +26,12 @@ const props = defineProps({
     type: String,
   },
 })
+
+
+// const store = useAppStore()
+// const post = computed(() => store.state.post.post)
+
+// console.log(post.value);
 
 const headerProps = reactive({
   coverImage: toRef(props, 'coverImage'),

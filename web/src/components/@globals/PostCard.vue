@@ -9,6 +9,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  postId: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
@@ -32,7 +36,7 @@ defineProps({
 </script>
 
 <template>
-  <router-link :to="`/post/${title}`" :class="css.wrapper">
+  <router-link :to="`/post/${postId}`" :class="css.wrapper">
     <img v-if="!isMinimalist" :src="cover" :class="css.cover" />
     <div :class="css.infosContainer">
       <h2 :class="css.title">
