@@ -25,7 +25,7 @@ onMounted(async () => {
 <template>
   <BaseLayoutSlot>
     <template #main>
-      <Article v-bind="post" />
+      <Article v-bind="post" :showFooter="true" />
       <Comments />
     </template>
   </BaseLayoutSlot>

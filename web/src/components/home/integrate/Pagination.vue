@@ -14,7 +14,7 @@ defineProps<IProps>()
 </script>
 
 <template>
-  <div v-if="currentPage > 0 && posts.length === 0">
+  <div v-if="posts.length === 0">
     <span
       class="block text-center md:font-medium md:text-xl mt-8 text-[#f2f2f2]/70"
     >

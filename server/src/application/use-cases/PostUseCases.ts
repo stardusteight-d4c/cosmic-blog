@@ -27,11 +27,7 @@ export class PostUseCases {
     skip: number;
     pageSize: number;
   }): Promise<Post[]> {
-    const { skip, pageSize } = request;
-    return await this.postService.getPostsByPagination({
-      skip,
-      pageSize,
-    });
+    return await this.postService.getPostsByPagination(request);
   }
 
   async getAll(): Promise<Post[]> {
@@ -43,11 +39,6 @@ export class PostUseCases {
     skip: number;
     pageSize: number;
   }): Promise<Post[]> {
-    const { userId, skip, pageSize } = request;
-    return await this.postService.getUserFavoritePostsByPagination({
-      userId,
-      skip,
-      pageSize,
-    });
+    return await this.postService.getUserFavoritePostsByPagination(request);
   }
 }

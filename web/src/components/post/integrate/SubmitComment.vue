@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import Send from '@globals/atoms/icons/Send.vue'
 import Btn from '@globals/Btn.vue'
 import memoji from '@/assets/my-memoji02.png'
 import { submitCommentStyles as css } from './styles'
+import { useAppStore } from '@/store'
 
 const comment = ref('')
 const countCharacters = ref(0)
@@ -11,10 +12,13 @@ const countCharacters = ref(0)
 watch(comment, (newValue) => {
   countCharacters.value = newValue.length
 })
+
+const isGuest = computed(() => store.state.post.post?.isGuest ?? true) 
+const store = useAppStore()
 </script>
 
 <template>
-  <div :class="css.wrapper">
+  <div v-if="!isGuest" :class="css.wrapper">
     <img :src="memoji" :class="css.memoji" />
     <div :class="css.contentContainer">
       <div :class="css.triangleSubmit" />

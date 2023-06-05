@@ -29,7 +29,7 @@ export interface IPluginSendMail {
 
 export interface ISessionTokenAdapter {
   createSessionToken(data: { user_id: string; email: string }): string;
-  verifySessionToken(token: string): IUserTokenInfo;
+  verifySessionToken(token: string): IUserTokenInfo | false;
 }
 
 export interface ISendMailAdapter {

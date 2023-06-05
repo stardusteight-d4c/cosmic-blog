@@ -32,10 +32,15 @@ export class SessionTokenAdapter implements ISessionTokenAdapter {
     return sessionToken;
   }
 
-  verifySessionToken(token: string): IUserTokenInfo {
-    const decoded = this.#pluginJWT.verify(token, process.env.JWT_SECRET!);
-    if (decoded) {
-      return decoded as IUserTokenInfo;
+  verifySessionToken(token: string): IUserTokenInfo | false {
+    try {
+      const decoded = this.#pluginJWT.verify(token, process.env.JWT_SECRET!);
+      if (decoded) {
+        return decoded as IUserTokenInfo;
+      }
+    } catch (error) {
+      console.error("Erro na validação do token:", error);
     }
+    return false;
   }
 }

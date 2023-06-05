@@ -3,16 +3,17 @@ import Tag from '@globals/integrate/Tag.vue'
 import Star from '@globals/atoms/icons/Star.vue'
 import coverPlaceholder from '@/assets/cover-placeholder.webp'
 import { articleHeaderStyles as css } from './styles'
+import { computed, onMounted, ref } from 'vue'
+import { useAppStore } from '@/store'
 
-defineProps({
-  coverImage: {
-    type: String,
-    default: '',
-  },
-  tags: {
-    type: Array<string>,
-  },
-})
+interface IProps {
+  coverImage?: string
+  tags?: string[]
+}
+defineProps<IProps>()
+
+const store = useAppStore()
+let isGuest = computed(() => store.state.post.post?.isGuest ?? true) 
 </script>
 
 <template>
@@ -25,7 +26,7 @@ defineProps({
       <Tag v-for="tag in tags" :tag="tag" />
     </div>
     <div :class="css.favoriteWrapper">
-      <div :class="css.favoriteContainer">
+      <div v-if="!isGuest" :class="css.favoriteContainer">
         <Star :class="css.starIcon" />
         <div :class="css.dropDownContainer">
           <div :class="css.triangle" />

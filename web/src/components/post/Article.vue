@@ -1,37 +1,20 @@
 <script setup lang="ts">
-import {  computed, reactive, toRef } from 'vue'
+import { computed, reactive, toRef } from 'vue'
 import { HTML_ELEMENT_IDS_POST_PAGE as ids } from '@/utils'
 import { ArticleHeader, ArticleBody } from './integrate'
 import { articleStyles as css } from './styles'
 import { useAppStore } from '@/store'
 
-const props = defineProps({
-  showFooter: {
-    type: Boolean,
-    default: true,
-  },
-  coverImage: {
-    type: String,
-  },
-  tags: {
-    type: Array<string>,
-  },
-  date: {
-    type: Date,
-  },
-  title: {
-    type: String,
-  },
-  body: {
-    type: String,
-  },
-})
+interface IProps {
+  showFooter?: boolean
+  coverImage?: string
+  tags?: string[]
+  date?: Date
+  title?: string
+  body?: string
+}
 
-
-// const store = useAppStore()
-// const post = computed(() => store.state.post.post)
-
-// console.log(post.value);
+const props = defineProps<IProps>()
 
 const headerProps = reactive({
   coverImage: toRef(props, 'coverImage'),

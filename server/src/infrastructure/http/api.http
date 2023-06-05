@@ -1,7 +1,7 @@
 ### POST
 POST http://localhost:3000/post
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTk3ZjBkNTktNjM3ZS00M2VlLTg3MDUtYzQ4YmZkOGY0YjQxIiwiZW1haWwiOiJqb2huc3Nkb2VAZW1haWwuY29tIiwidHlwZSI6ImF1dGhvciIsImlhdCI6MTY4NTQ3NDE2OSwiZXhwIjoxNjg2MDc4OTY5fQ.l4nSQYIzqruNN3LEX4PQ9IxyksHjQ29avtWHHpzEYFc
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiODE4OTJjZGEtZDg5Ni00OWZlLWJmNzMtMjdjNThkYmZkMDkyIiwiZW1haWwiOiJqb2huc3NkYWVAZW1haWwuY29tIiwidHlwZSI6ImF1dGhvciIsImlhdCI6MTY4NTk4NjUyOSwiZXhwIjoxNjg2NTkxMzI5fQ.SyOo6poioznoavtPhN46lTZj8qkih0EGClBH86Sld4I
 
 {
  "title": "Sample Post 6",
@@ -10,35 +10,32 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTk3ZjBkNTkt
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "7844d21c-b5d2-4f7a-9889-de032edcbb08",
+    "id": "b33ab24e-b459-479e-b42a-2ae4124dcb47",
     "email": "johndoe@email.com",
     "username": "johndoe",
-    "password": "pa$$word1",
-    "avatar": "AVATAR01",
-    "userRole": "author"
+    "avatar": "AVATAR01"
   }
 }
 ###
 GET http://localhost:3000/post
 ###
+GET http://localhost:3000/post/874da23e-db86-45d4-ac9c-ca53c668ee68
+###
 GET http://localhost:3000/post/pagination?skip=6&pageSize=6
 ###
 GET http://localhost:3000/post/pagination/byUserFavorites?userId=7554275a-21c4-4758-81ad-fc71083876d9&skip=0&pageSize=3
-###
-GET http://localhost:3000/post/search?by=id&value=874da23e-db86-45d4-ac9c-ca53c668ee68
-###
-GET http://localhost:3000/post/search?by=title&value=sample
+
 
 ### USER
 POST http://localhost:3000/user/register
 Content-Type: application/json
 
 {
-  "email": "johnssde@email.com",
-  "username": "jshndoe",
+  "email": "johnssaadae@email.com",
+  "username": "jshnsdaaoe",
   "password": "pa$$word1",
   "avatar": "AVATAR01",
-  "userRole": "author"
+  "userRole": "reader"
 }
 ###
 POST http://localhost:3000/user/verifyEmail/stardusteight.d4cc@gmail.com
@@ -49,6 +46,7 @@ GET http://localhost:3000/user/search?by=id&value=a09a2591-4cb8-4196-9e59-410133
 ###
 GET http://localhost:3000/user/search?by=email&value=johndoe@email.com
 
+
 ### FAVORITE
 PUT http://localhost:3000/favorite/toggle
 Content-Type: application/json
@@ -57,6 +55,7 @@ Content-Type: application/json
   "postId": "6ed87f4d-ac83-4815-a6f3-3dc778525122",
   "userId": "96b4baef-0299-43e9-aaab-2069a3fc9be4" 
 }
+
 
 ### COMMENT
 POST http://localhost:3000/comment
