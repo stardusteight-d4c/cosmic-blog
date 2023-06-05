@@ -4,35 +4,17 @@ import Tag from './integrate/Tag.vue'
 import { postCardStyles as css } from './styles'
 import dayjs from 'dayjs'
 
-defineProps({
-  isMinimalist: {
-    type: Boolean,
-    default: false,
-  },
-  postId: {
-    type: String,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  postedAt: {
-    type: Date,
-    required: true,
-  },
-  content: {
-    type: String,
-    required: true,
-  },
-  cover: {
-    type: String,
-  },
-  tags: {
-    type: Array<string>,
-    required: true,
-  },
-})
+interface IProps {
+  isMinimalist?: boolean
+  cover?: string
+  postId: string
+  title: string
+  postedAt: Date
+  content: string
+  tags: string[]
+}
+
+defineProps<IProps>()
 </script>
 
 <template>

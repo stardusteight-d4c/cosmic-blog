@@ -4,13 +4,13 @@ Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTk3ZjBkNTktNjM3ZS00M2VlLTg3MDUtYzQ4YmZkOGY0YjQxIiwiZW1haWwiOiJqb2huc3Nkb2VAZW1haWwuY29tIiwidHlwZSI6ImF1dGhvciIsImlhdCI6MTY4NTQ3NDE2OSwiZXhwIjoxNjg2MDc4OTY5fQ.l4nSQYIzqruNN3LEX4PQ9IxyksHjQ29avtWHHpzEYFc
 
 {
- "title": "Sample Post",
+ "title": "Sample Post 6",
  "body": "This is the content of the post.",
- "tags": ["tag1", "tag2", "tag3"],
- "coverImage": "https://example.com/cover-image.jpg",
+ "tags": ["typescript", "typescript", "typescript", "web"],
+ "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "96b4baef-0299-43e9-aaab-2069a3fc9be4",
+    "id": "7844d21c-b5d2-4f7a-9889-de032edcbb08",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "password": "pa$$word1",
@@ -21,7 +21,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTk3ZjBkNTkt
 ###
 GET http://localhost:3000/post
 ###
-GET http://localhost:3000/post/pagination?skip=2&pageSize=2
+GET http://localhost:3000/post/pagination?skip=6&pageSize=6
 ###
 GET http://localhost:3000/post/pagination/byUserFavorites?userId=7554275a-21c4-4758-81ad-fc71083876d9&skip=0&pageSize=3
 ###

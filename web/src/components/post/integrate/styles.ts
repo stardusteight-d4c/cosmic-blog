@@ -35,7 +35,7 @@ export const backToTopStyles = {
 export const articleHeaderStyles = {
   wrapper: `relative`,
   cover: `w-full h-[325px] rounded-t-sm object-cover`,
-  tagsContainer: `mt-2 text-sm absolute cursor-default left-4 top-2`,
+  tagsContainer: `mt-2 flex items-center gap-2 text-sm absolute cursor-default left-4 top-2`,
   favoriteWrapper: `absolute right-4 top-2 mt-1 p-[2px] rounded-sm border-[#F2F2F2]/20 bg-[#1a1a1a]`,
   favoriteContainer: `relative w-8 h-8 group`,
   starIcon: `w-8 h-8 cursor-pointer text-[#f2f2f295]`,

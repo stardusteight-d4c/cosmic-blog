@@ -4,12 +4,52 @@ import GalleryHeader from './integrate/GalleryHeader.vue'
 import Pagination from './integrate/Pagination.vue'
 import { postGalleryStyles as css } from './styles'
 import { useAppStore } from '@/store'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { postMethods } from '@store/modules/post'
 
 const store = useAppStore()
 const posts = computed(() => store.state.post.home)
-console.log(posts.value);
+const currentPage = ref(0)
+const loading = ref(true)
 
+async function handleNextPage() {
+  if (posts.value.length === 6) {
+    loading.value = true
+    currentPage.value++
+    await store.dispatch(postMethods.actions.GET_HOME_POSTS, {
+      skip: currentPage.value * 6,
+    })
+    setTimeout(() => {
+      loading.value = false
+    }, 500)
+    const element = document.getElementById('post-gallery')!
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
+    })
+  }
+}
+
+async function handleBackPage() {
+  console.log(posts.value)
+  if (currentPage.value > 0) {
+    loading.value = true
+    currentPage.value--
+    await store.dispatch(postMethods.actions.GET_HOME_POSTS, {
+      skip: currentPage.value * 6,
+    })
+    setTimeout(() => {
+      loading.value = false
+    }, 500)
+    const element = document.getElementById('post-gallery')!
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
+    })
+  }
+}
 </script>
 
 <template>
@@ -19,11 +59,17 @@ console.log(posts.value);
       v-for="post in posts"
       :postId="post.id!"
       :title="post.title"
+      :cover="post.coverImage"
       :postedAt="post.postedIn"
       :content="post.body"
       :tags="post.tags"
       :full="true"
     />
   </div>
-  <Pagination />
+  <Pagination
+    :posts="posts"
+    :currentPage="currentPage"
+    :back="handleBackPage"
+    :next="handleNextPage"
+  />
 </template>

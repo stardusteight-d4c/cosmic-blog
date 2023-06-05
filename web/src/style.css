@@ -16,7 +16,6 @@ body {
 ::-webkit-scrollbar-thumb {
   cursor: pointer;
   background: #f2f2f250;
-  border-radius: 20px;
 }
 
 .inner-shadow-input {

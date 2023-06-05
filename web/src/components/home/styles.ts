@@ -25,7 +25,7 @@ export const bioStyles = {
 }
 
 export const postGalleryStyles = {
-  wrapper: `grid grid-cols-2 gap-4 mt-4`,
+  wrapper: `grid grid-cols-1 smm:grid-cols-2 gap-4 mt-4`,
 }
 
 export const footerStyles = {

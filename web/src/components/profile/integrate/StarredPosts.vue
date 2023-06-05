@@ -7,16 +7,12 @@ import { useAppStore } from '@/store'
 import { onMounted, ref } from 'vue'
 import { profileMethods } from '@/store/modules/profile'
 
-const props = defineProps({
-  favoriteAmount: {
-    type: Number,
-  },
-  userId: {
-    type: String,
-    required: true,
-  },
-})
+interface IProps {
+  favoriteAmount: number
+  userId: string
+}
 
+const props = defineProps<IProps>()
 const store = useAppStore()
 const favoritedPosts = computed(() => store.state.profile.favoritedPosts)
 const loading = ref(true)
@@ -97,6 +93,7 @@ async function handleBackPage() {
       <PostCard
         v-if="favoritedPosts && favoritedPosts.length > 0 && loading === false"
         v-for="post in favoritedPosts"
+        postId="aaaa"
         :isMinimalist="true"
         :title="post.title"
         :postedAt="post.postedIn"
@@ -105,6 +102,7 @@ async function handleBackPage() {
       />
       <div v-if="loading == true" v-for="i in 3" class="blur animate-pulse">
         <PostCard
+          postId="aaaa"
           :isMinimalist="true"
           title="The Legend of Zelda"
           :postedAt="new Date('1986-02-21T03:00:00.000Z')"

@@ -75,8 +75,7 @@ export class PostInMemoryRepository implements IPostRepository {
   }): Promise<Post[]> {
     const { skip, pageSize } = request;
     const allPosts: Post[] = Array.from(this.#posts.values());
-    const startIndex = Math.max(0, skip);
-    const paginatedPosts = allPosts.slice(startIndex, startIndex + pageSize);
+    const paginatedPosts = allPosts.reverse().slice(Number(skip), Number(pageSize) + Number(skip));
     return paginatedPosts;
   }
 

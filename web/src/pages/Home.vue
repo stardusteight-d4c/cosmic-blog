@@ -8,7 +8,6 @@ import {
 } from '@/components/home'
 import { useAppStore } from '@/store'
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { postMethods } from '@store/modules/post'
 
 const loading = ref(true)

@@ -5,7 +5,7 @@ import { postHeaderStyles as css } from './styles'
 </script>
 
 <template>
-  <div :class="css.wrapper">
+  <div id="post-gallery" :class="css.wrapper">
     <div :class="css.squaresFourContainer">
       <SquaresFour width="24" /><span :class="css.gallerySpan"
         >Gallery view</span
