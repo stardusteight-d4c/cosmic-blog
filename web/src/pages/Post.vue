@@ -20,13 +20,6 @@ onMounted(async () => {
     loading.value = false
   }
 })
-const articleProps = {
-  coverImage: '',
-  tags: ['typescript', 'nodejs', 'vuejs', 'nest'],
-  date: new Date(),
-  title: '',
-  body: '',
-}
 </script>
 
 <template>

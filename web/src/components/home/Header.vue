@@ -2,8 +2,8 @@
 import headerBackground from '@/assets/hero.png'
 import { TechItem, Memoji } from './integrate'
 import { headerStyles as css } from './styles'
-type Types = 'backend' | 'language' | 'frontend' | 'database'
 
+type Types = 'backend' | 'language' | 'frontend' | 'database'
 const types: Array<Types> = ['backend', 'language', 'frontend', 'database']
 </script>
 
