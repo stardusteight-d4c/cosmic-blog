@@ -4,13 +4,13 @@ Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiODE4OTJjZGEtZDg5Ni00OWZlLWJmNzMtMjdjNThkYmZkMDkyIiwiZW1haWwiOiJqb2huc3NkYWVAZW1haWwuY29tIiwidHlwZSI6ImF1dGhvciIsImlhdCI6MTY4NTk4NjUyOSwiZXhwIjoxNjg2NTkxMzI5fQ.SyOo6poioznoavtPhN46lTZj8qkih0EGClBH86Sld4I
 
 {
- "title": "Sample Post 6",
+ "title": "Sample Post 2002",
  "body": "This is the content of the post.",
  "tags": ["typescript", "typescript", "typescript", "web"],
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "99659409-0f9d-4d64-8c1e-e1c0adc16f1e",
+    "id": "5a51eb51-6106-4995-a454-9e1a72bfbfcb",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "avatar": "AVATAR01"
@@ -31,11 +31,11 @@ POST http://localhost:3000/user/register
 Content-Type: application/json
 
 {
-  "email": "johnssaadae@email.com",
-  "username": "jshnsdaaoe",
+  "email": "email@email.com",
+  "username": "lisnk",
   "password": "pa$$word1",
   "avatar": "AVATAR01",
-  "userRole": "reader"
+  "userRole": "author"
 }
 ###
 POST http://localhost:3000/user/verifyEmail/stardusteight.d4cc@gmail.com

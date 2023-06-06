@@ -58,4 +58,9 @@ export class FavoriteService implements IFavoriteService {
   public async getAllFavoritesByPostId(postId: string): Promise<Favorite[]> {
     return await this.#favoriteRepository.findAllByPostId(postId);
   }
+
+  public async getFavorite(favorite: Favorite): Promise<Favorite> {
+    const favoriteKey = `${favorite.reflect.postId}-${favorite.reflect.userId}`
+    return await this.#favoriteRepository.findFavoriteByKey(favoriteKey);
+  }
 }

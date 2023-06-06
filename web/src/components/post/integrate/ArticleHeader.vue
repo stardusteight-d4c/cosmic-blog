@@ -3,8 +3,9 @@ import Tag from '@globals/integrate/Tag.vue'
 import Star from '@globals/atoms/icons/Star.vue'
 import coverPlaceholder from '@/assets/cover-placeholder.webp'
 import { articleHeaderStyles as css } from './styles'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useAppStore } from '@/store'
+import { postMethods } from '@store/modules/post'
 
 interface IProps {
   coverImage?: string
@@ -13,7 +14,21 @@ interface IProps {
 defineProps<IProps>()
 
 const store = useAppStore()
-let isGuest = computed(() => store.state.post.post?.isGuest ?? true)
+const postId = computed(() => store.state.post.post?.id)
+const isGuest = computed(() => store.state.post.post?.isGuest ?? true)
+const isFavorited = computed({
+  get: () => store.state.post.post?.isFavorited ?? false,
+  set: (value) => store.commit(postMethods.mutations.SET_IS_FAVORITED, value),
+})
+const userId = computed(() => store.state.auth.session.decodedToken?.user_id)
+
+async function toggleFavorite() {
+  isFavorited.value = !isFavorited.value
+  await store.dispatch(postMethods.actions.TOGGLE_FAVORITE, {
+    postId: postId.value,
+    userId: userId.value,
+  })
+}
 </script>
 
 <template>
@@ -26,8 +41,8 @@ let isGuest = computed(() => store.state.post.post?.isGuest ?? true)
       <Tag v-for="tag in tags" :tag="tag" />
     </div>
     <div v-if="!isGuest" :class="css.favoriteWrapper">
-      <div :class="css.favoriteContainer">
-        <Star :class="css.starIcon" />
+      <div @click="toggleFavorite" :class="css.favoriteContainer">
+        <Star :class="css.starIcon(isFavorited)" />
         <div :class="css.dropDownContainer">
           <div :class="css.triangle" />
           <span>Favorite</span>

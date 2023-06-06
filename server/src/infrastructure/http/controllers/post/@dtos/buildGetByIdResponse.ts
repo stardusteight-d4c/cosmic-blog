@@ -11,13 +11,19 @@ export async function buildGetByIdResponse(request: {
   const { controller, authToken, post } = request;
   let isAuthor: boolean;
   let isGuest: boolean;
+  let isFavorited: boolean;
   const sessionTokenAdapter = new SessionTokenAdapter(jwt);
   const decoded = sessionTokenAdapter.verifySessionToken(authToken);
   isAuthor = false;
   isGuest = true;
+  isFavorited = false;
   if (decoded) {
     isAuthor = decoded.user_id === post.author.id;
     isGuest = false;
+    isFavorited = await controller.isFavoritedByUser({
+      userId: decoded.user_id,
+      postId: post.id,
+    });
   }
   return {
     post,
@@ -25,5 +31,6 @@ export async function buildGetByIdResponse(request: {
     commentAmount: await controller.getCommentAmount(post.id),
     isAuthor,
     isGuest,
+    isFavorited,
   };
 }

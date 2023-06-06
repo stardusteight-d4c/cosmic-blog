@@ -1,4 +1,4 @@
-import { IFavoriteService } from "@domain/src/favorite";
+import { Favorite, IFavoriteService } from "@domain/src/favorite";
 
 export class FavoriteUseCases {
   constructor(private favoriteService: IFavoriteService) {}
@@ -17,5 +17,9 @@ export class FavoriteUseCases {
 
   async getUserAmount(userId: string) {
     return await this.favoriteService.getUserFavoriteAmount(userId);
+  }
+
+  async getFavorite(favorite: Favorite) {
+    return await this.favoriteService.getFavorite(favorite);
   }
 }

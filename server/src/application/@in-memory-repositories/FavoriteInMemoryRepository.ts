@@ -48,6 +48,13 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
     return undefined;
   }
 
+  public async findFavoriteByUserId(userId: string): Promise<Favorite> {
+    const favoritesArray = Array.from(this.#favorites.values());
+    return favoritesArray.find(
+      (favorite) => favorite.reflect.userId === userId,
+    );
+  }
+
   public async update(updatedFavorite: Favorite): Promise<Favorite> {
     const favorite = await this.replace(updatedFavorite);
     return favorite;

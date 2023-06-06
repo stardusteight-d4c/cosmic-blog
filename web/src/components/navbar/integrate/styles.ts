@@ -1,6 +1,6 @@
 export const profileButtonStyles = {
   wrapper: `cursor-pointer p-2`,
-  innerContainer: `relative w-8`,
+  innerContainer: `relative mt-1 w-8`,
   animations: {
     spinner: `spinner`,
     spinner1: `spinner1`,

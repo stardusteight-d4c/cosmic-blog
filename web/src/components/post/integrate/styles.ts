@@ -38,7 +38,11 @@ export const articleHeaderStyles = {
   tagsContainer: `mt-2 flex items-center gap-2 text-sm absolute cursor-default left-4 top-2`,
   favoriteWrapper: `absolute right-4 top-2 mt-1 p-[2px] rounded-sm border-[#F2F2F2]/20 bg-[#1a1a1a]`,
   favoriteContainer: `relative w-8 h-8 group`,
-  starIcon: `w-8 h-8 cursor-pointer text-[#f2f2f295]`,
+  starIcon: (isFavorited: boolean): string => {
+    return `w-8 h-8 cursor-pointer ${
+      isFavorited ? 'text-violet-500' : 'text-[#f2f2f295]'
+    }`
+  },
   dropDownContainer: `absolute shadow-md shadow-black/20 left-1/2 -translate-x-1/2  z-10 hidden group-hover:block text-[#F2F2F2]/90 font-medium mt-4 w-fit bg-black/80 backdrop-blur-md transform text-sm leading-5 p-1 rounded-sm`,
   triangle: `triangle absolute left-1/2 -translate-x-1/2 -top-[10px] bg-black/80`,
 }

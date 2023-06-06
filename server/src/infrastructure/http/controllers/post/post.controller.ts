@@ -135,6 +135,13 @@ export class PostController {
     return this.#commentController.amount({ of: "post", id: postId });
   }
 
+  public async isFavoritedByUser(request: {
+    userId: string;
+    postId: string;
+  }): Promise<boolean> {
+    return this.#favoriteController.isFavorited(request);
+  }
+
   // Method Overriding
   private async buildResponse(request: {
     post: IPostReflectObject;

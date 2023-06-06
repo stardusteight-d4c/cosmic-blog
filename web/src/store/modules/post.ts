@@ -13,10 +13,12 @@ export const postMethods = {
   mutations: {
     HOME_POSTS: 'MUTATION_HOME_POSTS',
     POST_DATA: 'MUTATION_POST_DATA',
+    SET_IS_FAVORITED: 'SET_IS_FAVORITED',
   },
   actions: {
     GET_HOME_POSTS: 'ACTION_GET_HOME_POSTS',
     GET_POST_DATA: 'ACTION_GET_POST_DATA',
+    TOGGLE_FAVORITE: 'ACTION_TOGGLE_FAVORITE',
   },
 }
 const M = postMethods.mutations
@@ -34,6 +36,9 @@ export const post: Module<IPostState, AppState> = {
     [M.POST_DATA](state, post: IPostObject) {
       state.post = post
     },
+    [M.SET_IS_FAVORITED](state, isFavorited: boolean) {
+      state.post!.isFavorited =  isFavorited 
+    },
   },
   actions: {
     async [A.GET_HOME_POSTS]({ commit }, payload: { skip: number }) {
@@ -43,21 +48,23 @@ export const post: Module<IPostState, AppState> = {
       commit(M.HOME_POSTS, posts.data)
       return posts
     },
-    // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiODUxM2UzYWQtYjhhYS00ZjFiLWE1ZTUtODI5NWFkNTg1NmUxIiwiZW1haWwiOiJzdGFyZHVzdGVpZ2h0LmQ0Y2NAZ21haWwuY29tIiwidHlwZSI6ImF1dGhvciIsImlhdCI6MTY4NTk5MDc0NiwiZXhwIjoxNjg2NTk1NTQ2fQ.VG2r5CTeDQbklJ0_QnWnwWEekAEtnw2gW1k3YOSbQVg
-    async [A.GET_POST_DATA]({ commit }, payload: { postId: number }) {
+    async [A.GET_POST_DATA]({ commit }, payload: { postId: string }) {
       const authorization = getSessionCookie()
       const post = await api.get(`/post/${payload.postId}`, {
         headers: {
           Authorization: authorization,
         },
       })
-      console.log('post module', post.data)
       commit(M.POST_DATA, {
         ...post.data.post,
         isAuthor: post.data.isAuthor,
         isGuest: post.data.isGuest,
+        isFavorited: post.data.isFavorited,
       })
       return post.data
+    },
+    async [A.TOGGLE_FAVORITE](_, payload: { postId: string; userId: string }) {
+      await api.put(`/favorite/toggle`, payload)
     },
   },
 }
