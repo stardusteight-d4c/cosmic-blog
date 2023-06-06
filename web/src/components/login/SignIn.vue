@@ -1,18 +1,31 @@
 <script setup lang="ts">
-import { calculateDelay } from '@/utils';
+import { calculateDelay } from '@/utils'
 import { LabelSpan } from './integrate'
 import { signInStyles as css } from './styles'
+import { useAppStore } from '@/store'
+import { loginMethods } from '@/store/modules/login'
+import { useRouter } from 'vue-router'
 
 const emit = defineEmits(['changeToSignUp'])
 
+const store = useAppStore()
+const router = useRouter()
 const usernameOrEmailSpan = 'Username or Email'.split('')
 const passwordSpan = 'Password'.split('')
-const confirmPasswordSpan = 'Confirm Password'.split('')
 
 const formData = {
   usernameOrEmail: '',
   password: '',
-  confirmPassword: '',
+}
+
+async function signIn() {
+  const data = await store.dispatch(loginMethods.actions.SIGNIN, {
+    identifier: formData.usernameOrEmail,
+    password: formData.password,
+  })
+  if (data) {
+    router.push(`/profile/${data.user.id}`)
+  }
 }
 
 function handleSignUp(): void {
@@ -54,7 +67,7 @@ function handleSignUp(): void {
           </label>
         </div>
       </div>
-      <button type="submit" :class="css.submitBtn">Sign In</button>
+      <button @click="signIn" type="button" :class="css.submitBtn">Sign In</button>
     </form>
   </div>
 </template>

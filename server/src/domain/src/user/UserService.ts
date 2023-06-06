@@ -67,6 +67,11 @@ export class UserService implements IUserService {
     return await this.#userRepository.findByEmail(userEmail);
   }
 
+  public async getUserByUsername(username: string): Promise<User> {
+    Validators.checkPrimitiveType({ validating: username, type: "string" });
+    return await this.#userRepository.findByUsername(username);
+  }
+
   public async changeEmail(data: {
     userId: string;
     confirmationPassword: string;

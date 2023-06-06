@@ -60,7 +60,7 @@ export const profile: Module<IProfileState, AppState> = {
   actions: {
     async [A.GET_PROFILE_DATA]({ commit }, payload: { id: string }) {
       const userData = await api
-        .get(`/user/search?by=id&value=${payload.id}`)
+        .get(`/user/${payload.id}`)
         .then((res) => res.data)
         .catch((error) => console.log(error))
       commit(M.PROFILE_DATA, {

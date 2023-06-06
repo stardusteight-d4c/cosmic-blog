@@ -2,6 +2,7 @@ import type { Module } from 'vuex'
 import type { AppState } from '@/store'
 import api from '@/lib/axios'
 import { IRegisterUserData, ISignUpData } from '@/@interfaces/login'
+import { setCookie } from '@/utils'
 
 export interface ILoginState {
   signUpData: ISignUpData
@@ -14,6 +15,7 @@ export const loginMethods = {
   actions: {
     EMAIL_VERIFY: 'ACTION_EMAIL_VERIFY',
     REGISTER_USER: 'ACTION_REGISTER_USER',
+    SIGNIN: 'ACTION_SIGNIN',
   },
 }
 const M = loginMethods.mutations
@@ -47,6 +49,16 @@ export const login: Module<ILoginState, AppState> = {
         .post(`/user/register`, payload)
         .then((res) => res.data)
         .catch((error) => console.log(error))
+      setCookie(data.sessionToken)
+      return data
+    },
+    async [A.SIGNIN](_, payload: { identifier: string; password: string }) {
+      const { identifier, password } = payload
+      const data = await api
+        .get(`/user/signin?identifier=${identifier}&password=${password}`)
+        .then((res) => res.data)
+        .catch((error) => console.log(error))
+      setCookie(data.sessionToken)
       return data
     },
   },

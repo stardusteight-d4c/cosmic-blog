@@ -40,7 +40,7 @@ Content-Type: application/json
 ###
 POST http://localhost:3000/user/verifyEmail/stardusteight.d4cc@gmail.com
 ###
-GET http://localhost:3000/user/signin?email=johndoe@email.com&password=pa$$word1
+GET http://localhost:3000/user/signin?identifier=stardusteight.d4cc@gmail.com&password=pa$$word1
 ###
 GET http://localhost:3000/user/search?by=id&value=a09a2591-4cb8-4196-9e59-4101333bff62
 ###

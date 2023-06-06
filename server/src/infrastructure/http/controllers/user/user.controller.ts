@@ -20,12 +20,17 @@ import { SessionTokenAdapter } from "@/application/adapters/SessionTokenAdapter"
 import { transporter } from "@/infrastructure/lib/nodemailer";
 import { SendMailAdapter } from "@/application/adapters/SendMailAdapter";
 import brcypt from "bcrypt";
+import { IPluginSendMail } from "@/application/adapters/@interfaces";
+import { GetByIdResponse, RegisterResponse } from "./@dtos";
+import { buildGetByIdResponse } from "./@dtos/buildGetByIdResponse";
+import Validators from "../../@utils/validators";
 
 @Controller("user")
 export class UserController {
   #userUseCases: UserUseCases;
   #favoriteController: FavoriteController;
   #commentController: CommentController;
+  sessionTokenAdapter: SessionTokenAdapter;
 
   constructor(
     @Inject(FavoriteController)
@@ -36,102 +41,63 @@ export class UserController {
     this.#userUseCases = appInMemory.getUserUsesCases();
     this.#favoriteController = favoriteController;
     this.#commentController = commentController;
+    this.sessionTokenAdapter = new SessionTokenAdapter(jwt);
   }
 
   @Post("register")
-  async register(
+  public async register(
     @Body() user: IUserReflectObject,
-  ): Promise<{ user: IUserReflectObject; sessionToken: string }> {
+  ): Promise<RegisterResponse> {
     try {
-      const sessionTokenAdapter = new SessionTokenAdapter(jwt);
-      return await this.#userUseCases
-        .register({
-          // user, 
-          user: { ...user, userRole: "author" }, // for test
-          sessionTokenAdapter,
-        })
+      const sessionTokenAdapter = this.sessionTokenAdapter;
+      return this.#userUseCases
+        .register({ user, sessionTokenAdapter })
         .then(({ user, sessionToken }) => {
           return { user: user.reflect, sessionToken };
         });
-    } catch (error: any) {
-      errorHandler(error);
-    }
-  }
-
-  @Post("verifyEmail/:email")
-  async verifyEmail(@Param("email") email: string) {
-    try {
-      const sendMailAdapter = new SendMailAdapter(transporter as any);
-      const code = await this.#userUseCases.verifyEmail({
-        email,
-        sendMailAdapter,
-      });
-      const encryptedCode = await brcypt.hash(String(code), 10);
-      return encryptedCode;
     } catch (error) {
       errorHandler(error);
     }
   }
 
-  @Get("search")
-  async getUserBy(
-    @Query() query: { by: "id" | "email"; value: string },
-  ): Promise<{
-    user: IUserReflectObject;
-    favoriteAmount: number;
-    commentAmount: number;
-  }> {
+  @Post("verifyEmail/:email")
+  public async verifyEmail(@Param("email") email: string) {
     try {
-      if (query.by === "id") {
-        return await this.#userUseCases.getBy(query).then(async (user) => {
-          return {
-            user: user?.reflect,
-            favoriteAmount: await this.#favoriteController.amount({
-              of: "user",
-              id: user.reflect.id,
-            }),
-            commentAmount: await this.#commentController.amount({
-              of: "user",
-              id: user.reflect.id,
-            }),
-          };
+      const sendMailAdapter = new SendMailAdapter(
+        transporter as unknown as IPluginSendMail,
+      );
+      return this.#userUseCases
+        .verifyEmail({ email, sendMailAdapter })
+        .then(async (code) => {
+          return await brcypt.hash(String(code), 10);
         });
-      } else if (query.by === "email") {
-        return await this.#userUseCases.getBy(query).then(async (user) => {
-          return {
-            user: user?.reflect,
-            favoriteAmount: await this.#favoriteController.amount({
-              of: "user",
-              id: user.reflect.id,
-            }),
-            commentAmount: await this.#commentController.amount({
-              of: "user",
-              id: user.reflect.id,
-            }),
-          };
-        });
-      }
-    } catch (error: any) {
+    } catch (error) {
+      errorHandler(error);
+    }
+  }
+
+  @Get(":id")
+  public async getById(@Param("id") id: string): Promise<GetByIdResponse> {
+    try {
+      return this.#userUseCases.getById(id).then(async (user) => {
+        return await this.buildResponse(user.reflect);
+      });
+    } catch (error) {
       errorHandler(error);
     }
   }
 
   @Get("signin")
-  async signin(@Query() query: { email: string; password: string }) {
+  public async signin(
+    @Query() query: { identifier: string; password: string },
+  ) {
     try {
-      const { email, password } = query;
-      const sessionTokenAdapter = new SessionTokenAdapter(jwt);
+      const { identifier, password } = query;
+      const sessionTokenAdapter = this.sessionTokenAdapter;
       return await this.#userUseCases
-        .signin({
-          email,
-          password,
-          sessionTokenAdapter,
-        })
+        .signin({ identifier, password, sessionTokenAdapter })
         .then(({ user, sessionToken }) => {
-          return {
-            user: user.reflect,
-            sessionToken,
-          };
+          return { user: user.reflect, sessionToken };
         });
     } catch (error) {
       errorHandler(error);
@@ -139,23 +105,35 @@ export class UserController {
   }
 
   @Put("update")
-  async edit(
+  public async edit(
     @Body() updatedUser: IUserReflectObject,
     @Headers("authorization") authorization: string,
   ): Promise<IUserReflectObject> {
     try {
-      const sessionTokenAdapter = new SessionTokenAdapter(jwt);
-      const decoded = sessionTokenAdapter.verifySessionToken(authorization);
-      // if (decoded.user_id != updatedUser.id) {
-      //   throw new Error(
-      //     `the session user is different from the user being updated`,
-      //   );
-      // }
+      Validators.isSameUser({
+        controller: this,
+        authToken: authorization,
+        userId: updatedUser.id,
+      });
       return await this.#userUseCases
         .update(updatedUser)
         .then((user) => user?.reflect);
-    } catch (error: any) {
+    } catch (error) {
       errorHandler(error);
     }
+  }
+
+  public async getFavoriteAmount(userId: string): Promise<number> {
+    return this.#favoriteController.amount({ of: "user", id: userId });
+  }
+
+  public async getCommentAmount(userId: string): Promise<number> {
+    return this.#commentController.amount({ of: "user", id: userId });
+  }
+
+  private async buildResponse(
+    user: IUserReflectObject,
+  ): Promise<GetByIdResponse> {
+    return await buildGetByIdResponse({ controller: this, user });
   }
 }

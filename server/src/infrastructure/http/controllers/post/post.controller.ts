@@ -45,7 +45,7 @@ export class PostController {
   ): Promise<IPostReflectObject> {
     try {
       return this.#postUseCases.create(post).then((post) => post?.reflect);
-    } catch (error: any) {
+    } catch (error) {
       errorHandler(error);
     }
   }
@@ -56,7 +56,7 @@ export class PostController {
       return this.#postUseCases
         .getAll()
         .then((posts) => posts?.map((post) => post?.reflect));
-    } catch (error: any) {
+    } catch (error) {
       errorHandler(error);
     }
   }
@@ -73,7 +73,7 @@ export class PostController {
           authToken: authorization,
         });
       });
-    } catch (error: any) {
+    } catch (error) {
       errorHandler(error);
     }
   }
@@ -86,7 +86,7 @@ export class PostController {
       return this.#postUseCases
         .getWithPagination(query)
         .then((posts) => posts?.map((post) => post?.reflect));
-    } catch (error: any) {
+    } catch (error) {
       errorHandler(error);
     }
   }
@@ -99,7 +99,7 @@ export class PostController {
       return this.#postUseCases
         .getUserFavoritePostsWithPagination(query)
         .then((posts) => posts?.map((post) => post?.reflect));
-    } catch (error: any) {
+    } catch (error) {
       errorHandler(error);
     }
   }
@@ -113,7 +113,7 @@ export class PostController {
       return this.#postUseCases
         .update(updatedPost)
         .then((post) => post?.reflect);
-    } catch (error: any) {
+    } catch (error) {
       errorHandler(error);
     }
   }
@@ -122,7 +122,7 @@ export class PostController {
   public async delete(@Param("postId") postId: string): Promise<void> {
     try {
       this.#postUseCases.delete(postId);
-    } catch (error: any) {
+    } catch (error) {
       errorHandler(error);
     }
   }

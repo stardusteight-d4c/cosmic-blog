@@ -71,7 +71,6 @@ async function confirmCode() {
       registerData
     )
     if (data) {
-      setCookie(data.sessionToken)
       router.push(`/profile/${data.user.id}`)
     }
   } else {
