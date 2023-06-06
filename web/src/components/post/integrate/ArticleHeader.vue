@@ -24,6 +24,11 @@ const userId = computed(() => store.state.auth.session.decodedToken?.user_id)
 
 async function toggleFavorite() {
   isFavorited.value = !isFavorited.value
+  if (isFavorited.value === true) {
+    store.commit(postMethods.mutations.SET_FAVORITE_AMOUNT, true)
+  } else {
+    store.commit(postMethods.mutations.SET_FAVORITE_AMOUNT, false)
+  }
   await store.dispatch(postMethods.actions.TOGGLE_FAVORITE, {
     postId: postId.value,
     userId: userId.value,

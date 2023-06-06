@@ -14,6 +14,7 @@ export const postMethods = {
     HOME_POSTS: 'MUTATION_HOME_POSTS',
     POST_DATA: 'MUTATION_POST_DATA',
     SET_IS_FAVORITED: 'SET_IS_FAVORITED',
+    SET_FAVORITE_AMOUNT: 'SET_FAVORITE_AMOUNT',
   },
   actions: {
     GET_HOME_POSTS: 'ACTION_GET_HOME_POSTS',
@@ -37,7 +38,14 @@ export const post: Module<IPostState, AppState> = {
       state.post = post
     },
     [M.SET_IS_FAVORITED](state, isFavorited: boolean) {
-      state.post!.isFavorited =  isFavorited 
+      state.post!.isFavorited = isFavorited
+    },
+    [M.SET_FAVORITE_AMOUNT](state, isFavorited: boolean) {
+      if (isFavorited) {
+        state.post!.favoriteAmount = state.post!.favoriteAmount + 1
+      } else {
+        state.post!.favoriteAmount = state.post!.favoriteAmount - 1
+      }
     },
   },
   actions: {
@@ -60,6 +68,8 @@ export const post: Module<IPostState, AppState> = {
         isAuthor: post.data.isAuthor,
         isGuest: post.data.isGuest,
         isFavorited: post.data.isFavorited,
+        favoriteAmount: post.data.favoriteAmount,
+        commentAmount: post.data.commentAmount,
       })
       return post.data
     },

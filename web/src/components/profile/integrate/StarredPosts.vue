@@ -93,7 +93,7 @@ async function handleBackPage() {
       <PostCard
         v-if="favoritedPosts && favoritedPosts.length > 0 && loading === false"
         v-for="post in favoritedPosts"
-        postId="aaaa"
+        :postId="post.id!"
         :isMinimalist="true"
         :title="post.title"
         :postedAt="post.postedIn"
