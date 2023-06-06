@@ -53,16 +53,6 @@ function handleSignUp(): void {
             />
           </label>
         </div>
-        <div class="form-control">
-          <input v-model="formData.confirmPassword" type="password" required />
-          <label>
-            <LabelSpan
-              v-for="(letter, index) in confirmPasswordSpan"
-              :letter="letter"
-              :delay="calculateDelay(index)"
-            />
-          </label>
-        </div>
       </div>
       <button type="submit" :class="css.submitBtn">Sign In</button>
     </form>

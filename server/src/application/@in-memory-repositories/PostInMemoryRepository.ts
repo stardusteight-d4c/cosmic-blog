@@ -6,13 +6,6 @@ export class PostInMemoryRepository implements IPostRepository {
 
   private constructor() {}
 
-  public static getInstance(): PostInMemoryRepository {
-    if (!PostInMemoryRepository.instance) {
-      PostInMemoryRepository.instance = new PostInMemoryRepository();
-    }
-    return PostInMemoryRepository.instance;
-  }
-
   private async replace(updatedPost: Post): Promise<Post> {
     const existingPost = await this.findById(updatedPost.reflect.id!);
     if (!existingPost) {
@@ -21,6 +14,13 @@ export class PostInMemoryRepository implements IPostRepository {
     this.#posts.delete(existingPost.reflect.id!);
     this.#posts.set(updatedPost.reflect.id!, updatedPost);
     return updatedPost;
+  }
+
+  public static getInstance(): PostInMemoryRepository {
+    if (!PostInMemoryRepository.instance) {
+      PostInMemoryRepository.instance = new PostInMemoryRepository();
+    }
+    return PostInMemoryRepository.instance;
   }
 
   public async create(post: Post): Promise<Post> {
@@ -75,7 +75,9 @@ export class PostInMemoryRepository implements IPostRepository {
   }): Promise<Post[]> {
     const { skip, pageSize } = request;
     const allPosts: Post[] = Array.from(this.#posts.values());
-    const paginatedPosts = allPosts.reverse().slice(Number(skip), Number(pageSize) + Number(skip));
+    const paginatedPosts = allPosts
+      .reverse()
+      .slice(Number(skip), Number(pageSize) + Number(skip));
     return paginatedPosts;
   }
 

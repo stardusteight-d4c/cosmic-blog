@@ -13,7 +13,7 @@ interface IProps {
 defineProps<IProps>()
 
 const store = useAppStore()
-let isGuest = computed(() => store.state.post.post?.isGuest ?? true) 
+let isGuest = computed(() => store.state.post.post?.isGuest ?? true)
 </script>
 
 <template>
@@ -25,8 +25,8 @@ let isGuest = computed(() => store.state.post.post?.isGuest ?? true)
     <div :class="css.tagsContainer">
       <Tag v-for="tag in tags" :tag="tag" />
     </div>
-    <div :class="css.favoriteWrapper">
-      <div v-if="!isGuest" :class="css.favoriteContainer">
+    <div v-if="!isGuest" :class="css.favoriteWrapper">
+      <div :class="css.favoriteContainer">
         <Star :class="css.starIcon" />
         <div :class="css.dropDownContainer">
           <div :class="css.triangle" />

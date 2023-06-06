@@ -25,6 +25,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 32px;
   gap: 4px;
   font-size: 16px;
   background-image: linear-gradient(to top, #3b82f6, #8b5cf6);

@@ -19,8 +19,7 @@ import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
 import { RequireAuthorPermission } from "../../@guards/RequireAuthorPermission";
 import { GetByIdResponse } from "./@dtos";
-import { SessionTokenAdapter } from "@/application/adapters/SessionTokenAdapter";
-import jwt from "jsonwebtoken";
+import { buildGetByIdResponse } from "./@dtos/buildGetByIdResponse";
 
 @Controller("post")
 export class PostController {
@@ -41,7 +40,7 @@ export class PostController {
 
   @Post("")
   @UseGuards(RequireAuthorPermission)
-  async publishPost(
+  public async publishPost(
     @Body() post: IPostReflectObject,
   ): Promise<IPostReflectObject> {
     try {
@@ -52,7 +51,7 @@ export class PostController {
   }
 
   @Get("")
-  async all(): Promise<IPostReflectObject[]> {
+  public async all(): Promise<IPostReflectObject[]> {
     try {
       return this.#postUseCases
         .getAll()
@@ -63,7 +62,7 @@ export class PostController {
   }
 
   @Get(":id")
-  async getById(
+  public async getById(
     @Param("id") id: string,
     @Headers("authorization") authorization: string,
   ): Promise<GetByIdResponse> {
@@ -80,7 +79,7 @@ export class PostController {
   }
 
   @Get("pagination")
-  async getWithPagination(
+  public async getWithPagination(
     @Query() query: { skip: number; pageSize: number },
   ): Promise<IPostReflectObject[]> {
     try {
@@ -93,7 +92,7 @@ export class PostController {
   }
 
   @Get("pagination/byUserFavorites")
-  async getWithPaginationByUserFavorites(
+  public async getWithPaginationByUserFavorites(
     @Query() query: { userId: string; skip: number; pageSize: number },
   ): Promise<IPostReflectObject[]> {
     try {
@@ -107,7 +106,7 @@ export class PostController {
 
   @Put("update")
   @UseGuards(RequireAuthorPermission)
-  async edit(
+  public async edit(
     @Body() updatedPost: IPostReflectObject,
   ): Promise<IPostReflectObject> {
     try {
@@ -120,7 +119,7 @@ export class PostController {
   }
 
   @Delete(":postId")
-  async delete(@Param("postId") postId: string): Promise<void> {
+  public async delete(@Param("postId") postId: string): Promise<void> {
     try {
       this.#postUseCases.delete(postId);
     } catch (error: any) {
@@ -128,11 +127,11 @@ export class PostController {
     }
   }
 
-  private async getFavoriteAmount(postId: string): Promise<number> {
+  public async getFavoriteAmount(postId: string): Promise<number> {
     return this.#favoriteController.amount({ of: "post", id: postId });
   }
 
-  private async getCommentAmount(postId: string): Promise<number> {
+  public async getCommentAmount(postId: string): Promise<number> {
     return this.#commentController.amount({ of: "post", id: postId });
   }
 
@@ -142,28 +141,6 @@ export class PostController {
     authToken: string;
   }): Promise<GetByIdResponse> {
     const { post, authToken } = request;
-    let isAuthor: boolean;
-    let isGuest: boolean;
-    const sessionTokenAdapter = new SessionTokenAdapter(jwt);
-    const decoded = sessionTokenAdapter.verifySessionToken(authToken);
-    console.log('decoded', decoded);
-    
-    if (decoded) {
-      console.log(' isAuthor = decoded.user_id === post.author.id;',  isAuthor = decoded.user_id === post.author.id);
-      console.log(post);
-      
-      isAuthor = decoded.user_id === post.author.id;
-      isGuest = false;
-    } else {
-      isAuthor = false;
-      isGuest = true;
-    }
-    return {
-      post,
-      favoriteAmount: await this.getFavoriteAmount(post.id),
-      commentAmount: await this.getCommentAmount(post.id),
-      isAuthor,
-      isGuest,
-    };
+    return await buildGetByIdResponse({ controller: this, authToken, post });
   }
 }

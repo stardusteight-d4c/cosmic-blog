@@ -7,13 +7,6 @@ export class CommentInMemoryRepository implements ICommentRepository {
 
   private constructor() {}
 
-  public static getInstance(): CommentInMemoryRepository {
-    if (!CommentInMemoryRepository.instance) {
-      CommentInMemoryRepository.instance = new CommentInMemoryRepository();
-    }
-    return CommentInMemoryRepository.instance;
-  }
-
   private async replace(updatedComment: Comment): Promise<Comment> {
     const existingComment = await this.findById(updatedComment.reflect.id!);
     if (!existingComment) {
@@ -22,6 +15,13 @@ export class CommentInMemoryRepository implements ICommentRepository {
     this.#comments.delete(existingComment.reflect.id!);
     this.#comments.set(updatedComment.reflect.id!, updatedComment);
     return updatedComment;
+  }
+
+  public static getInstance(): CommentInMemoryRepository {
+    if (!CommentInMemoryRepository.instance) {
+      CommentInMemoryRepository.instance = new CommentInMemoryRepository();
+    }
+    return CommentInMemoryRepository.instance;
   }
 
   public async create(comment: Comment): Promise<Comment> {

@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { useAppStore } from '@/store'
 import { Logo, ButtonNewPost, ButtonLogin, ButtonProfile } from './integrate'
 import { styles as css } from './styles'
+import { computed } from 'vue'
+import { authMethods } from '@/store/modules/auth'
+import ButtonLogout from './integrate/ButtonLogout.vue'
 
 defineProps({
   path: {
@@ -8,6 +12,10 @@ defineProps({
     required: true,
   },
 })
+
+const store = useAppStore()
+store.commit(authMethods.mutations.CURRENT_SESSION)
+const session = computed(() => store.state.auth.session)
 </script>
 
 <template>
@@ -19,9 +27,13 @@ defineProps({
           <h2 :class="css.path">/ {{ path }}</h2>
         </div>
         <div :class="css.buttonsContainer">
-          <ButtonNewPost />
-          <ButtonLogin />
-          <ButtonProfile />
+          <ButtonNewPost v-if="session.decodedToken?.type === 'author'" />
+          <ButtonLogin v-if="session.activeSession === false" />
+          <ButtonLogout  v-if="session.activeSession === true"  />
+          <ButtonProfile
+            v-if="session.activeSession === true"
+            :userId="session.decodedToken!.user_id"
+          />
         </div>
       </div>
     </nav>

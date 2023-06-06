@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { EditProfileSocialLinksPopUp } from '@/components/pop-ups'
 import { PencilLine } from '@/components/@globals/atoms/icons'
 import { headerStyles as css } from './styles'
+import { useAppStore } from '@/store'
+import { authMethods } from '@/store/modules/auth'
+import { useRoute } from 'vue-router'
 
 defineProps({
   avatarUrl: {
@@ -17,6 +20,15 @@ defineProps({
 
 const editSocialLinks = ref(false)
 let currentMemoji = ref(1)
+
+const route = useRoute()
+const userId = Array.isArray(route.params.id)
+  ? route.params.id[0]
+  : route.params.id
+
+const store = useAppStore()
+store.commit(authMethods.mutations.CURRENT_SESSION)
+const session = computed(() => store.state.auth.session)
 
 function closedEditSocialLinksPopUp() {
   editSocialLinks.value = false
@@ -45,6 +57,7 @@ function handleMemoji(): void {
         />
       </div>
       <PencilLine
+        v-if="session.activeSession && session.decodedToken?.user_id === userId"
         @click="editSocialLinks = true"
         width="38"
         height="38"
@@ -56,7 +69,10 @@ function handleMemoji(): void {
       />
     </div>
   </div>
-  <h1 :class="css.username">#{{ username }}'s <br class="md:hidden" /> <span>Profile</span></h1>
+  <h1 :class="css.username">
+    #{{ username }}'s <br class="md:hidden" />
+    <span>Profile</span>
+  </h1>
 </template>
 
 <style scoped>

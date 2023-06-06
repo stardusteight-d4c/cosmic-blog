@@ -6,13 +6,6 @@ export class UserInMemoryRepository implements IUserRepository {
 
   private constructor() {}
 
-  public static getInstance(): UserInMemoryRepository {
-    if (!UserInMemoryRepository.instance) {
-      UserInMemoryRepository.instance = new UserInMemoryRepository();
-    }
-    return UserInMemoryRepository.instance;
-  }
-
   private async replace(updatedUser: User): Promise<User> {
     const existingUser = await this.findById(updatedUser.reflect.id!);
     if (!existingUser) {
@@ -21,6 +14,13 @@ export class UserInMemoryRepository implements IUserRepository {
     this.#users.delete(existingUser.reflect.id!);
     this.#users.set(updatedUser.reflect.id!, updatedUser);
     return updatedUser;
+  }
+
+  public static getInstance(): UserInMemoryRepository {
+    if (!UserInMemoryRepository.instance) {
+      UserInMemoryRepository.instance = new UserInMemoryRepository();
+    }
+    return UserInMemoryRepository.instance;
   }
 
   public async create(user: User): Promise<User> {

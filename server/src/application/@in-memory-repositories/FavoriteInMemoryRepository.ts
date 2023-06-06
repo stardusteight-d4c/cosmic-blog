@@ -6,13 +6,6 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
 
   private constructor() {}
 
-  public static getInstance(): FavoriteInMemoryRepository {
-    if (!FavoriteInMemoryRepository.instance) {
-      FavoriteInMemoryRepository.instance = new FavoriteInMemoryRepository();
-    }
-    return FavoriteInMemoryRepository.instance;
-  }
-
   private generateKey(favorite: Favorite): string {
     return `${favorite.postId}-${favorite.userId}`;
   }
@@ -26,6 +19,13 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
     this.#favorites.delete(key);
     this.#favorites.set(key, updatedFavorite);
     return updatedFavorite;
+  }
+
+  public static getInstance(): FavoriteInMemoryRepository {
+    if (!FavoriteInMemoryRepository.instance) {
+      FavoriteInMemoryRepository.instance = new FavoriteInMemoryRepository();
+    }
+    return FavoriteInMemoryRepository.instance;
   }
 
   public async create(favorite: Favorite): Promise<Favorite> {
