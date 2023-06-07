@@ -74,7 +74,7 @@ export class CommentController {
   }
 
   @Delete(":commentId")
-  async delete(@Param("postId") commentId: string): Promise<void> {
+  async delete(@Param("commentId") commentId: string): Promise<void> {
     try {
       await this.#commentUseCases.delete(commentId)
     } catch (error) {

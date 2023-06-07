@@ -69,7 +69,7 @@ export const articleFooterStyles = {
 
 export const submitCommentStyles = {
   wrapper: `flex items-start w-full`,
-  memoji: `w-24 h-24 -ml-6 -mt-4`,
+  memoji: `animated-bounce w-24 h-24 -ml-6 -mt-4 cursor-pointer`,
   contentContainer: `relative z-0 w-full`,
   triangleSubmit: `triangle-submit-comment absolute top-[22px] -left-[19px] bg-[#252525] -rotate-90`,
   textarea: `textarea-submit-comment group border border-transparent rounded-sm focus:border-blue-500 transition-all text-[#F2F2F2]/80 w-full h-40 outline-none p-4 bg-[#252525] resize-none`,

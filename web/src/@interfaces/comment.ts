@@ -16,6 +16,7 @@ export interface ICommentResponse {
 }
 
 export interface IComment {
+  id: string
   postId: string
   postTitle: string
   owner: {

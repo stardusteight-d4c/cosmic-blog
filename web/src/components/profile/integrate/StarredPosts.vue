@@ -18,9 +18,6 @@ const favoritedPosts = computed(() => store.state.profile.favoritedPosts)
 const loading = ref(true)
 const currentPage = ref(0)
 
-console.log('favoritedPosts', favoritedPosts.value);
-
-
 onMounted(async () => {
   try {
     await store.dispatch(profileMethods.actions.GET_PROFILE_FAVORITED_POSTS, {
@@ -70,12 +67,12 @@ async function handleBackPage() {
       <Star width="24" height="24" color="#f2f2f280" />
     </div>
     <div
-      v-if="!(favoritedPosts && favoritedPosts.length === 0)"
+      v-if="!(currentPage === 0 && favoritedPosts.length === 0)"
       class="flex items-center relative mt-4 w-full overflow-visible justify-end text-[#7c7c7c]"
     >
       <Arrow
+        v-if="currentPage !== 0"
         @click="handleBackPage"
-        v-if="currentPage > 0"
         width="42"
         height="42"
         class="cursor-pointer absolute -left-1 hover:text-[#b8b8b8] p-1 rotate-180 antialiased"
@@ -86,7 +83,7 @@ async function handleBackPage() {
       >
       <Arrow
         @click="handleNextPage"
-        v-if="favoritedPosts && favoritedPosts.length === 3"
+        v-if="favoritedPosts.length >= 3"
         width="42"
         height="42"
         class="cursor-pointer absolute -right-1 hover:text-[#b8b8b8] p-1 antialiased"

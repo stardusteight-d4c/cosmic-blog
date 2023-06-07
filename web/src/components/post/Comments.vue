@@ -20,10 +20,14 @@ const comments = computed(() => store.state.post.comments)
 const currentPage = ref(0)
 const loading = ref(true)
 
+function onSubmitComment() {
+  currentPage.value = 0
+}
+
 async function handleNextPage() {
   console.log('next', currentPage.value)
 
-  if (comments.value.length === 4) {
+  if (comments.value.length >= 4) {
     loading.value = true
     currentPage.value++
     await store.dispatch(postMethods.actions.GET_COMMENTS, {
@@ -39,7 +43,6 @@ async function handleNextPage() {
       block: 'start',
       inline: 'nearest',
     })
-    console.log('next', currentPage.value)
   }
 }
 
@@ -68,10 +71,12 @@ async function handleBackPage() {
 <template>
   <section :id="ids.commentsSection">
     <h2 :class="css.title">Comments</h2>
-    <SubmitComment />
+    <SubmitComment @submitComment="onSubmitComment" />
     <div id="comments">
       <Comment
         v-for="comment in comments"
+        :id="comment.id"
+        :currentPage="currentPage"
         :ownerId="comment.owner.id"
         :username="comment.owner.username"
         :content="comment.content"

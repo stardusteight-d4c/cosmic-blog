@@ -26,6 +26,7 @@ export const postMethods = {
     GET_COMMENTS: 'ACTION_GET_COMMENTS',
     TOGGLE_FAVORITE: 'ACTION_TOGGLE_FAVORITE',
     LEAVE_A_COMMENT: 'ACTION_LEAVE_A_COMMENT',
+    DELETE_COMMENT: 'ACTION_DELETE_COMMENT',
   },
 }
 const M = postMethods.mutations
@@ -106,11 +107,20 @@ export const post: Module<IPostState, AppState> = {
       commit(M.SET_COMMENTS, comments)
     },
     async [A.LEAVE_A_COMMENT]({ commit, state }, payload: IComment) {
-    await api
+      await api
         .post('/comment', payload)
         .then((res) => res.data)
         .catch((error) => console.log(error))
       const updatedComments = [payload, ...state.comments]
+      commit(M.SET_COMMENTS, updatedComments)
+    },
+    async [A.DELETE_COMMENT](
+      { commit, dispatch },
+      payload: { commentId: string; postId: string; skip: number }
+    ) {
+      const { commentId, postId, skip } = payload
+      await api.delete(`/comment/${commentId}`).catch((error) => console.log(error))
+      const updatedComments = dispatch(A.GET_COMMENTS, { postId, skip })
       commit(M.SET_COMMENTS, updatedComments)
     },
   },

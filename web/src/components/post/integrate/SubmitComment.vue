@@ -2,13 +2,14 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import Send from '@globals/atoms/icons/Send.vue'
 import Btn from '@globals/Btn.vue'
-import memoji from '@/assets/my-memoji02.png'
 import { submitCommentStyles as css } from './styles'
 import { useAppStore } from '@/store'
 import { getAvatarUrlById } from '@/utils'
-import { authMethods } from '@/store/modules/auth'
 import { postMethods } from '@/store/modules/post'
 import { IComment } from '@/@interfaces/comment'
+
+
+const emit = defineEmits(['submitComment'])
 
 const comment = ref('')
 const countCharacters = ref(0)
@@ -38,6 +39,7 @@ function handleMemoji(): void {
 }
 
 async function submitComment() {
+  emit('submitComment')
   const session = currentUserSession.value.decodedToken!
   const payload: IComment = {
     content: comment.value,

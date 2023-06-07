@@ -2,8 +2,45 @@
 import { XCircle } from '@/components/@globals/atoms/icons'
 import { BaseLayoutSlot } from '.'
 import { deletePopUpStyles as css } from './styles'
+import { useAppStore } from '@/store'
+import { post, postMethods } from '@/store/modules/post'
+import { useRoute } from 'vue-router'
+
+interface IProps {
+  commentId: string
+  currentPage: number
+}
+
+const props = defineProps<IProps>()
 
 const emit = defineEmits(['closedDeletePopUp'])
+const route = useRoute()
+const store = useAppStore()
+const postId = route.params.id
+
+async function handleDelete() {
+  console.log(props.currentPage)
+
+  console.log({
+    commentId: props.commentId,
+    postId,
+    skip: Number(props.currentPage) * 4,
+  })
+  await store.dispatch(postMethods.actions.DELETE_COMMENT, {
+    commentId: props.commentId,
+    postId,
+    skip: props.currentPage * 4,
+  })
+  emit('closedDeletePopUp')
+  setTimeout(() => {
+    const element = document.getElementById('comments')!
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
+    })
+  }, 100)
+}
 
 function handleCancel() {
   emit('closedDeletePopUp')
@@ -21,7 +58,7 @@ function handleCancel() {
         >
       </template>
       <template #operations>
-        <button :class="css.BtnDelete">Delete</button>
+        <button @click="handleDelete" :class="css.BtnDelete">Delete</button>
         <button @click="handleCancel" :class="css.btnCancel">Cancel</button>
       </template>
     </BaseLayoutSlot>

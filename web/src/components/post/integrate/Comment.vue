@@ -6,7 +6,6 @@ import {
   HTML_ELEMENT_IDS_POST_PAGE as ids,
 } from '@/utils'
 import { Edit, Trash } from '@globals/atoms/icons'
-import memoji from '@/assets/my-memoji02.png'
 import Btn from '@globals/Btn.vue'
 import { commentStyles as css } from './styles'
 import dayjs from 'dayjs'
@@ -17,14 +16,19 @@ import { store } from '@/store'
 // http://localhost:5173/post/455446461/#IDdoComentário
 
 interface IProps {
+  id: string
   ownerId: string
   username: string
   content: string
   postedAt: Date
   avatarUrl: string
+  currentPage: number
 }
 
 const props = defineProps<IProps>()
+
+console.log('props.currentPage', props.currentPage);
+
 
 const edit = ref(props.content)
 const commentEditableElement = ref<HTMLTextAreaElement | null>(null)
@@ -116,6 +120,8 @@ function handleClickOutsideOfEdit(event: MouseEvent): void {
             :class="css.handleDelete(proceedToDelete)"
           />
           <DeletePopUp
+            :commentId="id"
+            :currentPage="currentPage"
             v-if="proceedToDelete"
             @closedDeletePopUp="closedDeletePopUp"
           />

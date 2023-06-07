@@ -70,12 +70,12 @@ async function handleBackPage() {
       <Chat width="24" height="24" color="#f2f2f280" />
     </div>
     <div
-      v-if="!(commentedPosts && commentedPosts.length === 0)"
+      v-if="!(currentPage === 0 && commentedPosts.length === 0)"
       class="flex items-center relative mt-4 w-full overflow-visible justify-end text-[#7c7c7c]"
     >
       <Arrow
         @click="handleBackPage"
-        v-if="currentPage > 0"
+        v-if="currentPage !== 0"
         width="42"
         height="42"
         class="cursor-pointer absolute -left-1 hover:text-[#b8b8b8] p-1 rotate-180 antialiased"
@@ -86,7 +86,7 @@ async function handleBackPage() {
       >
       <Arrow
         @click="handleNextPage"
-        v-if="commentedPosts && commentedPosts.length === 3"
+        v-if="commentedPosts.length >= 3"
         width="42"
         height="42"
         class="cursor-pointer absolute -right-1 hover:text-[#b8b8b8] p-1 antialiased"

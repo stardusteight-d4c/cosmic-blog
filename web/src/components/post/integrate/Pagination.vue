@@ -14,16 +14,32 @@ defineProps<IProps>()
 </script>
 
 <template>
+  <div
+    v-if="!(currentPage === 0 && comments.length === 0)"
+    :class="css.wrapper"
+  >
+    <Arrow
+      v-if="currentPage !== 0"
+      @click="back"
+      width="42"
+      height="42"
+      :class="css.arrowLeft"
+    />
+    <span :class="css.pageCount">{{ currentPage }}</span>
+    <Arrow
+      v-if="comments.length >= 4"
+      @click="next"
+      width="42"
+      height="42"
+      :class="css.arrowRight"
+    />
+  </div>
   <div>
-    <!-- <span
+    <span
+      v-if="comments.length === 0"
       class="block text-center md:font-medium md:text-xl mt-8 text-[#f2f2f2]/70"
     >
-      There are no posts yet
-    </span> -->
-  </div>
-  <div :class="css.wrapper">
-    <Arrow @click="back" width="42" height="42" :class="css.arrowLeft" />
-    <span :class="css.pageCount">{{ currentPage }}</span>
-    <Arrow @click="next" width="42" height="42" :class="css.arrowRight" />
+      There are no comments yet
+    </span>
   </div>
 </template>
