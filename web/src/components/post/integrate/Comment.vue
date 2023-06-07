@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
 import { DeletePopUp } from '@/components/pop-ups'
 import {
   detectClickOutsideElement,
@@ -10,6 +10,7 @@ import memoji from '@/assets/my-memoji02.png'
 import Btn from '@globals/Btn.vue'
 import { commentStyles as css } from './styles'
 import dayjs from 'dayjs'
+import { store } from '@/store'
 
 // Quando o usuário clicar em seu comentário em Profile redirecioanar para o post e seu comentário
 // Inserir dinâmicamente uma propriedade ID no wrapper do comentário com o id do Comentário no Banco de Dados
@@ -31,6 +32,7 @@ const commentElement = ref<HTMLDivElement | null>(null)
 const textareaHeight = ref('')
 const selectedEditComment = ref(false)
 const proceedToDelete = ref(false)
+const currentSession = computed(() => store.state.auth.session.decodedToken)
 
 onMounted((): void => {
   document.addEventListener('click', handleClickOutsideOfEdit)
@@ -86,7 +88,10 @@ function handleClickOutsideOfEdit(event: MouseEvent): void {
     <div :class="css.contentCotainer">
       <div :class="css.header">
         <div :class="css.authorInfosContainer">
-          <RouterLink :to="`/profile/${ownerId}`" class="flex items-center cursor-pointer">
+          <RouterLink
+            :to="`/profile/${ownerId}`"
+            class="flex items-center cursor-pointer"
+          >
             <img :src="avatarUrl" :class="css.authorImage" />
             <h3 :class="css.authorName">#{{ username }}</h3>
           </RouterLink>
@@ -96,6 +101,7 @@ function handleClickOutsideOfEdit(event: MouseEvent): void {
         </div>
         <div :class="css.operationsContainer">
           <Edit
+            v-if="currentSession?.user_id === ownerId"
             :id="ids.editComment"
             @click="showCommentTextarea"
             width="24"
@@ -103,6 +109,7 @@ function handleClickOutsideOfEdit(event: MouseEvent): void {
             :class="css.handleEdit(selectedEditComment)"
           />
           <Trash
+            v-if="currentSession?.user_id === ownerId"
             @click="proceedToDelete = true"
             width="24"
             height="24"

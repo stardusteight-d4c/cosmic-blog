@@ -18,6 +18,7 @@ export const postMethods = {
     SET_IS_FAVORITED: 'SET_IS_FAVORITED',
     SET_COMMENTS: 'SET_COMMENTS',
     SET_FAVORITE_AMOUNT: 'SET_FAVORITE_AMOUNT',
+    SET_COMMENT_AMOUNT: 'SET_COMMENT_AMOUNT',
   },
   actions: {
     GET_HOME_POSTS: 'ACTION_GET_HOME_POSTS',
@@ -54,6 +55,13 @@ export const post: Module<IPostState, AppState> = {
         state.post!.favoriteAmount = state.post!.favoriteAmount + 1
       } else {
         state.post!.favoriteAmount = state.post!.favoriteAmount - 1
+      }
+    },
+    [M.SET_COMMENT_AMOUNT](state, isCommenting: boolean) {
+      if (isCommenting) {
+        state.post!.commentAmount = state.post!.commentAmount + 1
+      } else {
+        state.post!.commentAmount = state.post!.commentAmount - 1
       }
     },
   },
