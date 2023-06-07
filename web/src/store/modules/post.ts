@@ -3,10 +3,12 @@ import { AppState } from '@/store'
 import { IPostObject } from '@/@interfaces/post'
 import api from '@/lib/axios'
 import { getSessionCookie } from '@/utils/getSessionCookie'
+import { IComment } from '@/@interfaces/comment'
 
 export interface IPostState {
   home: IPostObject[]
   post: IPostObject | undefined
+  comments: IComment[]
 }
 
 export const postMethods = {
@@ -14,12 +16,15 @@ export const postMethods = {
     HOME_POSTS: 'MUTATION_HOME_POSTS',
     POST_DATA: 'MUTATION_POST_DATA',
     SET_IS_FAVORITED: 'SET_IS_FAVORITED',
+    SET_COMMENTS: 'SET_COMMENTS',
     SET_FAVORITE_AMOUNT: 'SET_FAVORITE_AMOUNT',
   },
   actions: {
     GET_HOME_POSTS: 'ACTION_GET_HOME_POSTS',
     GET_POST_DATA: 'ACTION_GET_POST_DATA',
+    GET_COMMENTS: 'ACTION_GET_COMMENTS',
     TOGGLE_FAVORITE: 'ACTION_TOGGLE_FAVORITE',
+    LEAVE_A_COMMENT: 'ACTION_LEAVE_A_COMMENT',
   },
 }
 const M = postMethods.mutations
@@ -29,6 +34,7 @@ export const post: Module<IPostState, AppState> = {
   state: {
     home: [],
     post: undefined,
+    comments: [],
   },
   mutations: {
     [M.HOME_POSTS](state, posts: IPostObject[]) {
@@ -39,6 +45,9 @@ export const post: Module<IPostState, AppState> = {
     },
     [M.SET_IS_FAVORITED](state, isFavorited: boolean) {
       state.post!.isFavorited = isFavorited
+    },
+    [M.SET_COMMENTS](state, comments: IComment[]) {
+      state.comments = comments
     },
     [M.SET_FAVORITE_AMOUNT](state, isFavorited: boolean) {
       if (isFavorited) {
@@ -75,6 +84,26 @@ export const post: Module<IPostState, AppState> = {
     },
     async [A.TOGGLE_FAVORITE](_, payload: { postId: string; userId: string }) {
       await api.put(`/favorite/toggle`, payload)
+    },
+    async [A.GET_COMMENTS](
+      { commit },
+      payload: { postId: string; skip: number }
+    ) {
+      const comments = await api
+        .get(
+          `/comment/pagination?by=postId&value=${payload.postId}&skip=${payload.skip}&pageSize=4`
+        )
+        .then((res) => res.data)
+        .catch((error) => console.log(error))
+      commit(M.SET_COMMENTS, comments)
+    },
+    async [A.LEAVE_A_COMMENT]({ commit, state }, payload: IComment) {
+    await api
+        .post('/comment', payload)
+        .then((res) => res.data)
+        .catch((error) => console.log(error))
+      const updatedComments = [payload, ...state.comments]
+      commit(M.SET_COMMENTS, updatedComments)
     },
   },
 }

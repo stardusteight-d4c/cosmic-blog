@@ -1,6 +1,6 @@
 export const HTML_ELEMENT_IDS_POST_PAGE = {
   post: 'post',
-  commentsSection: 'commentsSection',
+  commentsSection: 'comments-section',
   commentDiv: 'commentDiv',
   commentTextarea: 'commentTextarea',
   editComment: 'editComment',

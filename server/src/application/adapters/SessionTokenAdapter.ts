@@ -12,16 +12,7 @@ export class SessionTokenAdapter implements ISessionTokenAdapter {
     this.#pluginJWT = pluginJWT;
   }
 
-  createSessionToken(data: {
-    user_id: string;
-    email: string;
-    type: TUserRole;
-  }): string {
-    const payload: IUserTokenInfo = {
-      user_id: data.user_id,
-      email: data.email,
-      type: data.type,
-    };
+  createSessionToken(payload: IUserTokenInfo): string {
     const sessionToken = this.#pluginJWT.sign(
       payload,
       process.env.JWT_SECRET!,

@@ -90,7 +90,10 @@ export class PostService implements IPostService {
     const favorites = await this.#favoriteRepository.findAllByUserId(userId);
     const postIds = favorites.map((favorite) => favorite.reflect.postId);
     const favoritedPosts = await this.#postRepository.findByIds(postIds);
-    const paginatedPosts = favoritedPosts.slice(skip, skip + pageSize);
+    const paginatedPosts = favoritedPosts.slice(
+      Number(skip),
+      Number(skip) + Number(pageSize),
+    );
     return paginatedPosts;
   }
 }

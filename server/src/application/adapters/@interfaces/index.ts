@@ -4,6 +4,8 @@ export interface IUserTokenInfo {
   user_id: string;
   email: string;
   type: TUserRole;
+  username: string;
+  avatarId: string;
   iat?: number;
   exp?: number;
 }

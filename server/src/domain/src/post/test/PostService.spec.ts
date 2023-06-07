@@ -67,6 +67,7 @@ describe("PostService", () => {
     postService = new PostService({
       postRepository,
       userRepository,
+      favoriteRepository,
       publisher: publisher,
     });
     userService = new UserService({

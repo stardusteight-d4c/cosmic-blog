@@ -18,6 +18,8 @@ export class UserUseCases {
       user_id: userInstance.reflect.id!,
       email: userInstance.reflect.email,
       type: userInstance.reflect.userRole,
+      username: userInstance.reflect.username,
+      avatarId: userInstance.reflect.avatar,
     });
     return { user: userInstance, sessionToken };
   }
@@ -66,6 +68,8 @@ export class UserUseCases {
     const sessionToken = sessionTokenAdapter.createSessionToken({
       user_id: user.reflect.id!,
       email: user.reflect.email,
+      username: user.reflect.username,
+      avatarId: user.reflect.avatar,
       type: user.reflect.userRole,
     });
     return {

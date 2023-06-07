@@ -8,9 +8,7 @@ import { useRoute } from 'vue-router'
 const store = useAppStore()
 const userData = computed(() => store.state.profile.userData)
 const route = useRoute()
-const userId = Array.isArray(route.params.id)
-  ? route.params.id[0]
-  : route.params.id
+const userId = route.params.id as string
 </script>
 
 <template>

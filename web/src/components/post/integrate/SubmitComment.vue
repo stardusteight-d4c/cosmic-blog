@@ -5,6 +5,10 @@ import Btn from '@globals/Btn.vue'
 import memoji from '@/assets/my-memoji02.png'
 import { submitCommentStyles as css } from './styles'
 import { useAppStore } from '@/store'
+import { getAvatarUrlById } from '@/utils'
+import { authMethods } from '@/store/modules/auth'
+import { postMethods } from '@/store/modules/post'
+import { IComment } from '@/@interfaces/comment'
 
 const comment = ref('')
 const countCharacters = ref(0)
@@ -13,13 +17,51 @@ watch(comment, (newValue) => {
   countCharacters.value = newValue.length
 })
 
-const isGuest = computed(() => store.state.post.post?.isGuest ?? true) 
+const isGuest = computed(() => store.state.post.post?.isGuest ?? true)
 const store = useAppStore()
+
+const currentUserSession = computed(() => store.state.auth.session)
+const userAvatar = getAvatarUrlById(
+  currentUserSession.value.decodedToken?.avatarId ?? ''
+)
+const handledAvatarString = userAvatar?.replace(/-\d+\.png$/, '-')!
+let currentMemoji = ref(1)
+console.log(handledAvatarString)
+const postId = computed(() => store.state.post.post?.id)
+const postTitle = computed(() => store.state.post.post?.title)
+function handleMemoji(): void {
+  if (currentMemoji.value < 3) {
+    currentMemoji.value++
+  } else if (currentMemoji.value === 3) {
+    currentMemoji.value = 1
+  }
+}
+
+async function submitComment() {
+  const session = currentUserSession.value.decodedToken!
+  const payload: IComment = {
+    content: comment.value,
+    postedAt: new Date(),
+    postId: postId.value!,
+    postTitle: postTitle.value!,
+    owner: {
+      id: session.user_id,
+      avatar: `${handledAvatarString}${currentMemoji.value}.png`,
+      username: session.username,
+    },
+  }
+  await store.dispatch(postMethods.actions.LEAVE_A_COMMENT, payload)
+}
 </script>
 
 <template>
   <div v-if="!isGuest" :class="css.wrapper">
-    <img :src="memoji" :class="css.memoji" />
+    <img
+      @click="handleMemoji"
+      v-bind:key="currentMemoji"
+      :src="`${handledAvatarString}${currentMemoji}.png`"
+      :class="css.memoji"
+    />
     <div :class="css.contentContainer">
       <div :class="css.triangleSubmit" />
       <textarea
@@ -32,7 +74,11 @@ const store = useAppStore()
         <span :class="css.handleCountColor(countCharacters)"
           >{{ countCharacters }}/500</span
         >
-        <Btn title="Submit" :disabled="countCharacters > 500">
+        <Btn
+          @click="submitComment"
+          title="Submit"
+          :disabled="countCharacters > 500"
+        >
           <template #icon> <Send size="16" /></template>
         </Btn>
       </div>

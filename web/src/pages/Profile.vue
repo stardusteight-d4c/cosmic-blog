@@ -11,9 +11,7 @@ import { useRoute } from 'vue-router'
 
 const loading = ref(true)
 const route = useRoute()
-const id = Array.isArray(route.params.id)
-  ? route.params.id[0]
-  : route.params.id ?? ''
+const id = route.params.id
 const store = useAppStore()
 
 onMounted(async () => {

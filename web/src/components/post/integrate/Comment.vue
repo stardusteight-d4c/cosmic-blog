@@ -9,14 +9,23 @@ import { Edit, Trash } from '@globals/atoms/icons'
 import memoji from '@/assets/my-memoji02.png'
 import Btn from '@globals/Btn.vue'
 import { commentStyles as css } from './styles'
+import dayjs from 'dayjs'
 
 // Quando o usuário clicar em seu comentário em Profile redirecioanar para o post e seu comentário
 // Inserir dinâmicamente uma propriedade ID no wrapper do comentário com o id do Comentário no Banco de Dados
 // http://localhost:5173/post/455446461/#IDdoComentário
 
-const edit = ref(
-  'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aut consequatur temporibus, possimus mollitia voluptates ratione maxime voluptatibus labore accusantium unde nulla reiciendis explicabo tempore dolor totam a consequuntur adipisci.'
-)
+interface IProps {
+  ownerId: string
+  username: string
+  content: string
+  postedAt: Date
+  avatarUrl: string
+}
+
+const props = defineProps<IProps>()
+
+const edit = ref(props.content)
 const commentEditableElement = ref<HTMLTextAreaElement | null>(null)
 const commentElement = ref<HTMLDivElement | null>(null)
 const textareaHeight = ref('')
@@ -77,8 +86,13 @@ function handleClickOutsideOfEdit(event: MouseEvent): void {
     <div :class="css.contentCotainer">
       <div :class="css.header">
         <div :class="css.authorInfosContainer">
-          <img :src="memoji" :class="css.authorImage" />
-          <h3 :class="css.authorName">#Stardusteight</h3>
+          <RouterLink :to="`/profile/${ownerId}`" class="flex items-center cursor-pointer">
+            <img :src="avatarUrl" :class="css.authorImage" />
+            <h3 :class="css.authorName">#{{ username }}</h3>
+          </RouterLink>
+          <span class="text-sm ml-1 -mt-[10px] text-[#f2f2f280] cursor-default"
+            >| {{ dayjs(postedAt).format('D[/]MMM[, ]YYYY') }}</span
+          >
         </div>
         <div :class="css.operationsContainer">
           <Edit
@@ -119,10 +133,7 @@ function handleClickOutsideOfEdit(event: MouseEvent): void {
         v-show="!selectedEditComment"
         :class="css.commentContainer"
       >
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aut
-        consequatur temporibus, possimus mollitia voluptates ratione maxime
-        voluptatibus labore accusantium unde nulla reiciendis explicabo tempore
-        dolor totam a consequuntur adipisci.
+        {{ content }}
       </div>
     </div>
   </div>

@@ -22,9 +22,7 @@ const editSocialLinks = ref(false)
 let currentMemoji = ref(1)
 
 const route = useRoute()
-const userId = Array.isArray(route.params.id)
-  ? route.params.id[0]
-  : route.params.id
+const userId = route.params.id
 
 const store = useAppStore()
 store.commit(authMethods.mutations.CURRENT_SESSION)

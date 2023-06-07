@@ -14,3 +14,15 @@ export interface ICommentResponse {
   content: string
   postedAt: Date
 }
+
+export interface IComment {
+  postId: string
+  postTitle: string
+  owner: {
+    id: string
+    username: string
+    avatar: string
+  }
+  content: string
+  postedAt: Date
+}

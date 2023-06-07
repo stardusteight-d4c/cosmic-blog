@@ -18,6 +18,9 @@ const favoritedPosts = computed(() => store.state.profile.favoritedPosts)
 const loading = ref(true)
 const currentPage = ref(0)
 
+console.log('favoritedPosts', favoritedPosts.value);
+
+
 onMounted(async () => {
   try {
     await store.dispatch(profileMethods.actions.GET_PROFILE_FAVORITED_POSTS, {

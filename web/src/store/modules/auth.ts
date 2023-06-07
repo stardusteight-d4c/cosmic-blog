@@ -6,6 +6,8 @@ import { TUserRole } from '@/@interfaces/login'
 
 type decodedToken = {
   user_id: string
+  username: string
+  avatarId: string
   email: string
   type: TUserRole
 }
@@ -46,6 +48,8 @@ export const auth: Module<IAuthState, AppState> = {
       } else {
         try {
           const decodedToken: decodedToken = jwt_decode(sessionCookie)
+          console.log('decodedToken', decodedToken);
+          
           if (decodedToken?.user_id) {
             state.session = {
               activeSession: true,

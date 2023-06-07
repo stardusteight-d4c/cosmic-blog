@@ -85,10 +85,10 @@ export const submitCommentStyles = {
 }
 
 export const commentStyles = {
-  wrapper: `mt-14 bg-[#252525] rounded-sm p-4`,
+  wrapper: `mt-14 bg-[#252525] block rounded-sm p-4`,
   contentCotainer: `flex flex-col items-start w-full`,
   header: `flex items-center justify-between w-full`,
-  authorInfosContainer: `flex items-center cursor-pointer`,
+  authorInfosContainer: `flex items-center`,
   authorImage: `w-16 h-16 -ml-4 -mt-4`,
   authorName: `text-lg font-semibold -mt-3`,
   operationsContainer: `-mt-[10px] flex items-center gap-x-2 text-[#7c7c7c]`,
