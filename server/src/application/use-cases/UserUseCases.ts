@@ -38,6 +38,10 @@ export class UserUseCases {
     return await this.userService.getUserById(id);
   }
 
+  async getManyByUsername(username: string): Promise<User[]> {
+    return await this.userService.getUsersByUsername(username);
+  }
+
   async update(updatedUser: IUserReflectObject): Promise<User | undefined> {
     return await this.userService.updateUser(updatedUser);
   }

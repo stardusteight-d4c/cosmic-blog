@@ -7,6 +7,7 @@ export interface IUserService {
   getUserById(userId: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getUsersByUsername(username: string): Promise<User[]>;
   changeEmail(data: {
     userId: string;
     confirmationPassword: string;

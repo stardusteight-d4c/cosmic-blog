@@ -29,7 +29,7 @@ defineProps<IProps>()
       height="42"
       :class="css.arrowLeft"
     />
-    <span :class="css.pageCount">{{ currentPage }}</span>
+    <span id="home-current-page" :class="css.pageCount">{{ currentPage }}</span>
     <Arrow
       v-if="posts && posts.length === 6"
       @click="next"

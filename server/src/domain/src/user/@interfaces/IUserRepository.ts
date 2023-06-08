@@ -8,4 +8,5 @@ export interface IUserRepository {
   findById(userId: string): Promise<User | undefined>;
   findByEmail(email: string): Promise<User | undefined>;
   findByUsername(email: string): Promise<User | undefined>;
+  findManyByUsername(username: string): Promise<User[]>;
 }

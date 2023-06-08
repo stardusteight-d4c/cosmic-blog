@@ -58,6 +58,17 @@ export class UserInMemoryRepository implements IUserRepository {
     );
   }
 
+  public async findManyByUsername(username: string): Promise<User[]> {
+    const normalizedUsername = username.toLowerCase();
+    const usersArray = Array.from(this.#users.values());
+    const filteredUsers = usersArray.filter((user) => {
+      const normalizedUser = user.reflect.username.toLowerCase();
+      return normalizedUser.includes(normalizedUsername);
+    });
+    const limitedUsers = filteredUsers.slice(0, 6);
+    return limitedUsers;
+  }
+
   public async update(updatedUser: User): Promise<User> {
     const user = await this.replace(updatedUser);
     return user;

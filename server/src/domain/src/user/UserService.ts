@@ -72,6 +72,11 @@ export class UserService implements IUserService {
     return await this.#userRepository.findByUsername(username);
   }
 
+  public async getUsersByUsername(username: string): Promise<User[]> {
+    const users = await this.#userRepository.findManyByUsername(username);
+    return users;
+  }
+
   public async changeEmail(data: {
     userId: string;
     confirmationPassword: string;

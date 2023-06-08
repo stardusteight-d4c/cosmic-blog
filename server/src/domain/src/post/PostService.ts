@@ -60,8 +60,8 @@ export class PostService implements IPostService {
 
   public async getPostsByTitle(postTitle: string): Promise<Post[]> {
     Validators.checkPrimitiveType({ validating: postTitle, type: "string" });
-    const post = await this.#postRepository.findManyByTitle(postTitle);
-    return post;
+    const posts = await this.#postRepository.findManyByTitle(postTitle);
+    return posts;
   }
 
   public async getPosts(): Promise<Post[]> {

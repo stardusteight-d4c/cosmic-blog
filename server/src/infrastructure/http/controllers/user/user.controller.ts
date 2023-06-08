@@ -87,6 +87,19 @@ export class UserController {
     }
   }
 
+  @Get("username")
+  public async getManyByUsername(
+    @Query("equals") equals: string,
+  ): Promise<IUserReflectObject[]> {
+    try {
+      return this.#userUseCases
+        .getManyByUsername(equals)
+        .then((users) => users.map((user) => user.reflect));
+    } catch (error) {
+      errorHandler(error);
+    }
+  }
+
   @Get("signin")
   public async signin(
     @Query() query: { identifier: string; password: string },

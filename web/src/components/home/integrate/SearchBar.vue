@@ -11,20 +11,16 @@ import { useAppStore } from '@/store'
 import { postMethods } from '@/store/modules/post'
 
 const setSearch = ref(false)
-const filter = ref<'post' | 'user'>('post')
 const term = ref('')
 const store = useAppStore()
 
-function toggleFilter() {
-  if (filter.value === 'post') {
-    filter.value = 'user'
-  } else if (filter.value === 'user') {
-    filter.value = 'post'
-  }
-}
-
 async function handleExit() {
-  await store.dispatch(postMethods.actions.GET_HOME_POSTS, { skip: 0 })
+  term.value = ''
+  const currentPageElement = document.getElementById('home-current-page')
+  const currentPageValue = currentPageElement?.innerText
+  await store.dispatch(postMethods.actions.GET_HOME_POSTS, {
+    skip: Number(currentPageValue) * 6,
+  })
 }
 
 async function search() {
@@ -51,22 +47,11 @@ async function search() {
         @input="search"
         type="text"
         v-model="term"
-        :placeholder="`Search for a ${filter}`"
+        :placeholder="`Search for a post`"
         :class="css.input"
       />
       <div :class="css.fadersContainer">
-        <Note
-          v-if="filter === 'post'"
-          @click="toggleFilter"
-          width="24"
-          height="24"
-        />
-        <User
-          v-if="filter === 'user'"
-          @click="toggleFilter"
-          width="24"
-          height="24"
-        />
+        <Note width="24" height="24" />
       </div>
     </div>
   </div>

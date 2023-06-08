@@ -16,15 +16,15 @@ export const memojiStyles = {
 
 export const postHeaderStyles = {
   wrapper: `w-full mt-8 flex justify-between border-b text-[#F2F2F2]/80 border-b-[#F2F2F2]/20`,
-  squaresFourContainer: `flex items-center justify-center rounded-sm cursor-pointer hover:bg-[#252525] gap-x-1 px-1 border-b-[2px] border-[#F2F2F2] w-fit`,
+  squaresFourContainer: `hidden md:flex items-center justify-center rounded-sm cursor-pointer hover:bg-[#252525] gap-x-1 px-1 border-b-[2px] border-[#F2F2F2] w-fit`,
   gallerySpan: `mt-[1px]`,
 }
 
 export const searchBarStyles = {
-  wrapper: `flex items-center h-fit`,
+  wrapper: `flex items-center h-fit w-full md:w-auto`,
   searchIconContainer: `animated-left bg-[#252525] flex items-center rounded-sm cursor-pointer p-[5px] w-fit`,
-  searchContainer: `flex items-center`,
-  input: `search-bar-animated-left inner-shadow-input text-[#f2f2f2] bg-[#252525] outline-none max-w-[250px] py-1 px-[10px] rounded-sm border border-transparent focus:border-blue-500 transition-all`,
+  searchContainer: `flex w-full md:w-auto items-center`,
+  input: `search-bar-animated-left inner-shadow-input text-[#f2f2f2] bg-[#252525] outline-none w-full md:max-w-[250px] py-1 px-[10px] rounded-sm border border-transparent focus:border-blue-500 transition-all`,
   fadersContainer: `flex items-center bg-[#252525] transition-all justify-center rounded-sm cursor-pointer p-[5px] w-fit`,
 }
 
