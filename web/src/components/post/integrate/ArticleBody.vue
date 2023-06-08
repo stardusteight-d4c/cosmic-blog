@@ -23,8 +23,6 @@ defineProps({
   },
 })
 
-// const htmlBody = ref(marked.marked(placeholder))
-const htmlBody = ref()
 const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
 </script>
 

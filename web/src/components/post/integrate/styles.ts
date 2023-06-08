@@ -1,5 +1,5 @@
 export const optionsStyles = {
-  wrapper: `flex z-[1000] flex-col items-end justify-end gap-y-4 w-fit h-fit fixed bottom-4 right-4`,
+  wrapper: `hidden lg:flex z-[1000] flex-col items-end justify-end gap-y-4 w-fit h-fit fixed bottom-4 right-4`,
 }
 
 export const opacityStyles = {
@@ -31,11 +31,11 @@ export const backToTopStyles = {
   span: `options-animate-span font-medium bg-black/90 rounded-full px-4 py-2 hidden group-hover:block text-[#F2F2F2]/70`,
   topIconContainer: `bg-[#252525] cursor-pointer shadow-md shadow-black/20 z-50 rounded-sm w-[50px] text-[#F2F2F280] h-[50px] relative flex items-center justify-center`,
 }
-
+// class='top5'
 export const articleHeaderStyles = {
   wrapper: `relative`,
   cover: `w-full h-[325px] rounded-t-sm object-cover`,
-  tagsContainer: `mt-2 flex items-center gap-2 text-sm absolute cursor-default left-4 top-2`,
+  tagsContainer: `mt-2 flex items-center gap-1 md:gap-2 text-sm absolute cursor-default bottom-2 left-1/2 -translate-x-1/2 md:-translate-x-0 md:left-4 md:top-[20px] md:bottom-full`,
   favoriteWrapper: `absolute right-4 top-2 mt-1 p-[2px] rounded-sm border-[#F2F2F2]/20 bg-[#1a1a1a]`,
   favoriteContainer: `relative w-8 h-8 group`,
   starIcon: (isFavorited: boolean): string => {
@@ -53,25 +53,25 @@ export const articleBodyStyles = {
       !showFooter && 'pb-8'
     } bg-[#252525] relative rounded-b-sm overflow-hidden mb-28 pt-4 z-50 shadow-sm shadow-black/10 duration-300 cursor-default transition-all`
   },
-  articleContentContainer: `px-4`,
-  date: `my-2 font-medium text-base text-[#F2F2F2]/60 flex items-center justify-center gap-x-1`,
-  title: `text-4xl bg-gradient-to-t from-blue-500 to-violet-500 bg-clip-text text-transparent font-bold text-center`,
+  articleContentContainer: `px-2 md:px-4`,
+  date: `my-2 font-medium text-sm md:text-base text-[#F2F2F2]/60 flex items-center justify-center gap-x-1`,
+  title: `text-3xl md:text-4xl bg-gradient-to-t from-blue-500 to-violet-500 bg-clip-text text-transparent font-bold text-center`,
   divider: `border-b border-[#F2F2F2]/20 w-[50%] mx-auto my-8 h-0`,
-  articleContent: `articleBody text-[#F2F2F280] break-words text-lg font-medium`,
+  articleContent: `articleBody text-[#F2F2F280] break-words text-base md:text-lg`,
 }
 
 export const articleFooterStyles = {
   wrapper: `border-t flex gap-x-2 items-center justify-center border-[#F2F2F2]/10 py-4 mt-8 text-[#F2F2F2]/60`,
   iconContainer: `flex items-center gap-x-1`,
   icon: `w-4 -mt-[1px]`,
-  dividerSpan: `text-2xl mb-1 text-[#F2F2F2]/20`,
+  dividerSpan: `text-xl md:text-2xl mb-1 text-[#F2F2F2]/20`,
 }
 
 export const submitCommentStyles = {
   wrapper: `flex items-start w-full`,
-  memoji: `animated-bounce w-24 h-24 -ml-6 -mt-4 cursor-pointer`,
-  contentContainer: `relative z-0 w-full`,
-  triangleSubmit: `triangle-submit-comment absolute top-[22px] -left-[19px] bg-[#252525] -rotate-90`,
+  memoji: `hidden md:block animated-bounce w-24 h-24 -ml-6 -mt-4 cursor-pointer`,
+  contentContainer: `px-2 md:px-0 relative z-0 w-full`,
+  triangleSubmit: `hidden md:block triangle-submit-comment absolute top-[22px] -left-[19px] bg-[#252525] -rotate-90`,
   textarea: `textarea-submit-comment group border border-transparent rounded-sm focus:border-blue-500 transition-all text-[#F2F2F2]/80 w-full h-40 outline-none p-4 bg-[#252525] resize-none`,
   footerContainer: `flex items-center justify-between`,
   handleCountColor: (countCharacters: number) => {
@@ -85,7 +85,7 @@ export const submitCommentStyles = {
 }
 
 export const commentStyles = {
-  wrapper: `mt-14 bg-[#252525] block rounded-sm p-4`,
+  wrapper: `mx-2 md:mx-0 mt-11 md:mt-14 bg-[#252525] block rounded-sm p-4`,
   contentCotainer: `flex flex-col items-start w-full`,
   header: `flex items-center justify-between w-full`,
   authorInfosContainer: `flex items-center`,
@@ -111,7 +111,7 @@ export const commentStyles = {
 }
 
 export const paginationStyles = {
-  wrapper: `flex items-center justify-end mt-4 text-[#7c7c7c]`,
+  wrapper: `flex items-center mr-2 md:mr-0 justify-end mt-4 text-[#7c7c7c]`,
   arrowLeft: `cursor-pointer hover:text-[#b8b8b8] p-1 rotate-180 antialiased`,
   pageCount: `text-2xl mx-1 font-semibold`,
   arrowRight: `cursor-pointer hover:text-[#b8b8b8] p-1`,

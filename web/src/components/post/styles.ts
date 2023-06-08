@@ -8,5 +8,5 @@ export const articleStyles = {
 }
 
 export const commentsStyles = {
-  title: `text-2xl text-[#F2F2F2]/50 border-b border-[#F2F2F2]/20 mb-8 pb-2`,
+  title: `text-2xl px-2 md:px-0 block text-[#F2F2F2]/50 border-b border-[#F2F2F2]/20 mb-8 pb-2`,
 }

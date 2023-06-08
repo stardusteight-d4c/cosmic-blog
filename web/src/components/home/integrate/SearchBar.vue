@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { MagnifyingGlass, X, Faders } from '@/components/@globals/atoms/icons'
+import { MagnifyingGlass, X, Note, User } from '@/components/@globals/atoms/icons'
 import { searchBarStyles as css } from './styles'
 
 const setSearch = ref(false)
+const filter = ref<'post' | 'user'>('post')
+
+function toggleFilter() {
+  if (filter.value === 'post') {
+    filter.value = 'user'
+  } else if (filter.value === 'user') {
+    filter.value = 'post'
+  }
+}
 </script>
 
 <template>
@@ -17,9 +26,10 @@ const setSearch = ref(false)
       <X width="24" height="24" v-else :size="24" />
     </div>
     <div v-if="setSearch" :class="css.searchContainer">
-      <input type="text" placeholder="Search for a post" :class="css.input" />
+      <input type="text" :placeholder="`Search for a ${filter}`" :class="css.input" />
       <div :class="css.fadersContainer">
-        <Faders width="24" height="24" />
+        <Note v-if="filter === 'post'" @click="toggleFilter" width="24" height="24" />
+        <User v-if="filter === 'user'" @click="toggleFilter" width="24" height="24" />
       </div>
     </div>
   </div>
