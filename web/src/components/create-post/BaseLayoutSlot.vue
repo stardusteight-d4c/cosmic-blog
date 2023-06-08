@@ -5,6 +5,7 @@ import { baseLayoutSlotStyles as css } from './styles'
 
 <template>
   <div :class="css.wrapper">
+    <portal-target name="deletePostPopUp"></portal-target>
     <portal-target name="savePopUp"></portal-target>
     <portal-target name="importSavePopUp"></portal-target>
     <div :class="css.container">

@@ -94,9 +94,9 @@ export const post: Module<IPostState, AppState> = {
       })
       return post.data
     },
-    async [A.SEARCH_BY_TITLE]({ commit }, payload: { title: string }) {
-      const posts = await api.get(`/post/title?equals=${payload.title}`)
-      commit(M.HOME_POSTS, posts.data)
+    async [A.SEARCH_BY_TITLE](_, payload: { title: string }) {
+      const response = await api.get(`/post/title?equals=${payload.title}`)
+      return response.data
     },
     async [A.TOGGLE_FAVORITE](_, payload: { postId: string; userId: string }) {
       await api.put(`/favorite/toggle`, payload)

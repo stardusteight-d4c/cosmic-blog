@@ -117,7 +117,7 @@ export class PostController {
     }
   }
 
-  @Put("update")
+  @Put("")
   @UseGuards(RequireAuthorPermission)
   public async edit(
     @Body() updatedPost: IPostReflectObject,
@@ -132,6 +132,7 @@ export class PostController {
   }
 
   @Delete(":postId")
+  @UseGuards(RequireAuthorPermission)
   public async delete(@Param("postId") postId: string): Promise<void> {
     try {
       this.#postUseCases.delete(postId);

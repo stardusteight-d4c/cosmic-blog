@@ -6,7 +6,7 @@ import { baseLayoutSlotStyles as css } from './styles'
 
 <template>
   <div :class="css.wrapper">
-    <portal-target name="deletePopUp"></portal-target>
+    <portal-target name="deleteCommentPopUp"></portal-target>
     <Options />
     <Navbar path="post" />
     <div :class="css.mainContainer">

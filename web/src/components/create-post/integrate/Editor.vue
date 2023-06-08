@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { Controls } from '.'
 import { handleMarkdown, HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils'
 import { editorStyles as css } from './styles'
+import { useAppStore } from '@/store'
 
 // Gerar url da coverImg no serviço de storage do supabase, mas isto apenas quando enviar ao servidor,
 // para a preview gere uma string base64 e envie-à como props
@@ -13,8 +14,9 @@ onMounted((): void => {
   )! as HTMLTextAreaElement
 })
 
+const store = useAppStore()
 const textarea = ref<HTMLTextAreaElement>()
-
+const editorData = computed(() => store.state.editor.textEditorData)
 function insertTab(event: KeyboardEvent): void {
   event.preventDefault()
   const textareaElement = textarea.value
@@ -33,6 +35,7 @@ function insertTab(event: KeyboardEvent): void {
     <div :class="css.textareaContainer">
       <textarea
         :id="ids.textareaEditor"
+        v-model="editorData.body"
         :spellcheck="false"
         @keydown.tab.prevent="insertTab"
         :class="css.textarea"

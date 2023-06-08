@@ -48,7 +48,7 @@ function handleCancel() {
 </script>
 
 <template>
-  <portal to="deletePopUp">
+  <portal to="deleteCommentPopUp">
     <BaseLayoutSlot>
       <template #content>
         <XCircle width="48" height="48" :class="css.XCircleIcon" />

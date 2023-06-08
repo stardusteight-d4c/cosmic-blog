@@ -24,10 +24,11 @@ async function handleExit() {
 }
 
 async function search() {
-  if (term.value.length > 4) {
-    await store.dispatch(postMethods.actions.SEARCH_BY_TITLE, {
+  if (term.value.length > 3) {
+    const posts = await store.dispatch(postMethods.actions.SEARCH_BY_TITLE, {
       title: term.value,
     })
+    store.commit(postMethods.mutations.HOME_POSTS, posts)
   }
 }
 </script>
@@ -47,7 +48,7 @@ async function search() {
         @input="search"
         type="text"
         v-model="term"
-        :placeholder="`Search for a post`"
+        placeholder="Search for a post"
         :class="css.input"
       />
       <div :class="css.fadersContainer">

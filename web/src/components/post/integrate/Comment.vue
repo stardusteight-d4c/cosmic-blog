@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
-import { DeletePopUp } from '@/components/pop-ups'
 import { detectClickOutsideElement } from '@/utils'
 import { Edit, Trash } from '@globals/atoms/icons'
 import Btn from '@globals/Btn.vue'
@@ -10,6 +9,7 @@ import { useAppStore } from '@/store'
 import { IComment } from '@/@interfaces/comment'
 import { useRoute } from 'vue-router'
 import { postMethods } from '@/store/modules/post'
+import { DeleteCommentPopUp } from '@/components/pop-ups'
 
 // Quando o usuário clicar em seu comentário em Profile redirecioanar para o post e seu comentário
 // Inserir dinâmicamente uma propriedade ID no wrapper do comentário com o id do Comentário no Banco de Dados
@@ -130,7 +130,7 @@ function handleClickOutsideOfEdit(event: MouseEvent): void {
             height="24"
             :class="css.handleDelete(proceedToDelete)"
           />
-          <DeletePopUp
+          <DeleteCommentPopUp
             :commentId="comment.id!"
             :currentPage="currentPage"
             v-if="proceedToDelete"
