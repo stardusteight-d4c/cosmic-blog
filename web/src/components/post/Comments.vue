@@ -77,13 +77,8 @@ async function handleBackPage() {
         <Comment
           v-if="comment !== undefined"
           v-bind:key="String(comment.id)"
-          :id="comment.id!"
+          v-bind:comment="comment"
           :currentPage="currentPage"
-          :ownerId="comment.owner.id"
-          :username="comment.owner.username"
-          :content="comment.content"
-          :postedAt="comment.postedAt"
-          :avatarUrl="comment.owner.avatar"
         />
       </div>
       <Pagination

@@ -52,7 +52,6 @@ async function submitComment() {
     },
   }
   await store.dispatch(postMethods.actions.LEAVE_A_COMMENT, payload)
-  store.commit(postMethods.mutations.SET_COMMENT_AMOUNT, true)
   comment.value = ''
 }
 </script>

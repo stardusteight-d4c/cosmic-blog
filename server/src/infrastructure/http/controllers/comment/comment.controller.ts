@@ -12,7 +12,7 @@ export class CommentController {
     this.#commentUseCases = appInMemory.getCommentUsesCases();
   }
 
-  @Post()
+  @Post("")
   async comment(
     @Body() comment: ICommentReflectObject,
   ): Promise<ICommentReflectObject> {
@@ -25,7 +25,7 @@ export class CommentController {
     }
   }
 
-  @Get()
+  @Get("")
   async amount(
     @Query() query: { of: "post" | "user"; id: string },
   ): Promise<number> {
@@ -60,7 +60,7 @@ export class CommentController {
     }
   }
 
-  @Put()
+  @Put("")
   async edit(
     @Body() updatedComment: ICommentReflectObject,
   ): Promise<ICommentReflectObject> {

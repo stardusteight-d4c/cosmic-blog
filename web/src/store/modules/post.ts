@@ -108,28 +108,12 @@ export const post: Module<IPostState, AppState> = {
         .catch((error) => console.log(error))
       commit(M.SET_COMMENTS, comments)
     },
-    async [A.LEAVE_A_COMMENT]({ commit, state }, payload: IComment) {
+    async [A.LEAVE_A_COMMENT]({ dispatch }, payload: IComment) {
       const comment = await api
         .post('/comment', payload)
         .then((res) => res.data)
         .catch((error) => console.log(error))
-        console.log('comment.id', comment.id);
-
-      
-        
-      const newComment = {
-        id: comment.id,
-        ...payload,
-      }
-      const updatedComments = [
-        newComment,
-        state.comments[0],
-        state.comments[1],
-        state.comments[2],
-      ]
-      console.log('updatedComments', updatedComments);
-      
-      commit(M.SET_COMMENTS, updatedComments)
+      await dispatch(A.GET_COMMENTS, { postId: payload.postId, skip: 0 })
     },
     async [A.DELETE_COMMENT](
       { dispatch },
@@ -142,7 +126,7 @@ export const post: Module<IPostState, AppState> = {
       dispatch(A.GET_COMMENTS, { postId, skip })
     },
     async [A.UPDATE_COMMENT]({ state, commit }, updatedComment: IComment) {
-      await api.put('/comment/', updatedComment)
+      await api.put('/comment', updatedComment)
       const updatedComments = updateCommentInArray(
         state.comments,
         updatedComment

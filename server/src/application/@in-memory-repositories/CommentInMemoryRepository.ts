@@ -83,7 +83,12 @@ export class CommentInMemoryRepository implements ICommentRepository {
     const commentsByPostId = comments.filter(
       (comment) => comment.reflect.postId === postId,
     );
-    const paginatedComments = commentsByPostId.reverse().slice(
+    const sortedComments = commentsByPostId.sort((a, b) => {
+      const aPostedAt = new Date(a.reflect.postedAt);
+      const bPostedAt = new Date(b.reflect.postedAt);
+      return bPostedAt.getTime() - aPostedAt.getTime();
+    });
+    const paginatedComments = sortedComments.slice(
       Number(skip),
       Number(skip) + Number(pageSize),
     );
