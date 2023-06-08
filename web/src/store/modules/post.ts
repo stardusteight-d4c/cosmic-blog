@@ -25,6 +25,7 @@ export const postMethods = {
     GET_HOME_POSTS: 'ACTION_GET_HOME_POSTS',
     GET_POST_DATA: 'ACTION_GET_POST_DATA',
     GET_COMMENTS: 'ACTION_GET_COMMENTS',
+    SEARCH_BY_TITLE: 'ACTION_SEARCH_BY_TITLE',
     TOGGLE_FAVORITE: 'ACTION_TOGGLE_FAVORITE',
     LEAVE_A_COMMENT: 'ACTION_LEAVE_A_COMMENT',
     DELETE_COMMENT: 'ACTION_DELETE_COMMENT',
@@ -92,6 +93,10 @@ export const post: Module<IPostState, AppState> = {
         commentAmount: post.data.commentAmount,
       })
       return post.data
+    },
+    async [A.SEARCH_BY_TITLE]({ commit }, payload: { title: string }) {
+      const posts = await api.get(`/post/title?equals=${payload.title}`)
+      commit(M.HOME_POSTS, posts.data)
     },
     async [A.TOGGLE_FAVORITE](_, payload: { postId: string; userId: string }) {
       await api.put(`/favorite/toggle`, payload)

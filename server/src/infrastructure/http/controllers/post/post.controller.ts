@@ -78,6 +78,19 @@ export class PostController {
     }
   }
 
+  @Get("title")
+  public async getManyByTitle(
+    @Query("equals") equals: string,
+  ): Promise<IPostReflectObject[]> {
+    try {
+      return await this.#postUseCases
+        .getManyByTitle(equals)
+        .then((posts) => posts?.map((post) => post?.reflect));
+    } catch (error) {
+      errorHandler(error);
+    }
+  }
+
   @Get("pagination")
   public async getWithPagination(
     @Query() query: { skip: number; pageSize: number },
@@ -142,7 +155,6 @@ export class PostController {
     return this.#favoriteController.isFavorited(request);
   }
 
-  // Method Overriding
   private async buildResponse(request: {
     post: IPostReflectObject;
     authToken: string;

@@ -51,17 +51,15 @@ export class PostInMemoryRepository implements IPostRepository {
     return post;
   }
 
-  public async findByTitle(postTitle: string): Promise<Post | undefined> {
-    for (const post of this.#posts.values()) {
-      if (
-        post.reflect.title
-          .toLocaleLowerCase()
-          .includes(postTitle.toLocaleLowerCase())
-      ) {
-        return post;
-      }
-    }
-    return undefined;
+  public async findManyByTitle(postTitle: string): Promise<Post[]> {
+    const normalizedPostTitle = postTitle.toLowerCase();
+    const postsArray = Array.from(this.#posts.values());
+    const filteredPosts = postsArray.filter(post => {
+      const normalizedPost = post.reflect.title.toLowerCase();
+      return normalizedPost.includes(normalizedPostTitle);
+    });
+    const limitedPosts = filteredPosts.slice(0, 6);
+    return limitedPosts;
   }
 
   public async findAll(): Promise<Post[]> {

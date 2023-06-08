@@ -19,8 +19,8 @@ export class PostUseCases {
     return await this.postService.getPostById(postId);
   }
 
-  async getByTitle(title: string): Promise<Post | undefined> {
-    return await this.postService.getPostByTitle(title);
+  async getManyByTitle(title: string): Promise<Post[]> {
+    return await this.postService.getPostsByTitle(title);
   }
 
   async getWithPagination(request: {

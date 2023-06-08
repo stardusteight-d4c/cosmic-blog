@@ -6,7 +6,7 @@ export interface IPostService {
   updatePost(post: IPostReflectObject): Promise<Post>;
   deletePost(postId: string): Promise<void>;
   getPostById(postId: string): Promise<Post | undefined>;
-  getPostByTitle(postTitle: string): Promise<Post | undefined>;
+  getPostsByTitle(postTitle: string): Promise<Post[] | undefined>;
   getPosts(): Promise<Post[]>;
   getPostsByPagination(request: {
     skip: number;
