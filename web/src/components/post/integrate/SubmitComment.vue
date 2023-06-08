@@ -8,7 +8,6 @@ import { getAvatarUrlById } from '@/utils'
 import { postMethods } from '@/store/modules/post'
 import { IComment } from '@/@interfaces/comment'
 
-
 const emit = defineEmits(['submitComment'])
 
 const comment = ref('')

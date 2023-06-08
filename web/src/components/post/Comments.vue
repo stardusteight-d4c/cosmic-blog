@@ -73,16 +73,19 @@ async function handleBackPage() {
     <h2 :class="css.title">Comments</h2>
     <SubmitComment @submitComment="onSubmitComment" />
     <div id="comments">
-      <Comment
-        v-for="comment in comments"
-        :id="comment.id"
-        :currentPage="currentPage"
-        :ownerId="comment.owner.id"
-        :username="comment.owner.username"
-        :content="comment.content"
-        :postedAt="comment.postedAt"
-        :avatarUrl="comment.owner.avatar"
-      />
+      <div v-for="comment in comments">
+        <Comment
+          v-if="comment !== undefined"
+          v-bind:key="String(comment.id)"
+          :id="comment.id!"
+          :currentPage="currentPage"
+          :ownerId="comment.owner.id"
+          :username="comment.owner.username"
+          :content="comment.content"
+          :postedAt="comment.postedAt"
+          :avatarUrl="comment.owner.avatar"
+        />
+      </div>
       <Pagination
         :currentPage="currentPage"
         :comments="comments"

@@ -4,6 +4,7 @@ import { IPostObject } from '@/@interfaces/post'
 import api from '@/lib/axios'
 import { getSessionCookie } from '@/utils/getSessionCookie'
 import { IComment } from '@/@interfaces/comment'
+import { updateCommentInArray } from '@/utils/updateCommentInArray'
 
 export interface IPostState {
   home: IPostObject[]
@@ -27,6 +28,7 @@ export const postMethods = {
     TOGGLE_FAVORITE: 'ACTION_TOGGLE_FAVORITE',
     LEAVE_A_COMMENT: 'ACTION_LEAVE_A_COMMENT',
     DELETE_COMMENT: 'ACTION_DELETE_COMMENT',
+    UPDATE_COMMENT: 'ACTION_UPDATE_COMMENT',
   },
 }
 const M = postMethods.mutations
@@ -107,20 +109,44 @@ export const post: Module<IPostState, AppState> = {
       commit(M.SET_COMMENTS, comments)
     },
     async [A.LEAVE_A_COMMENT]({ commit, state }, payload: IComment) {
-      await api
+      const comment = await api
         .post('/comment', payload)
         .then((res) => res.data)
         .catch((error) => console.log(error))
-      const updatedComments = [payload, ...state.comments]
+        console.log('comment.id', comment.id);
+
+      
+        
+      const newComment = {
+        id: comment.id,
+        ...payload,
+      }
+      const updatedComments = [
+        newComment,
+        state.comments[0],
+        state.comments[1],
+        state.comments[2],
+      ]
+      console.log('updatedComments', updatedComments);
+      
       commit(M.SET_COMMENTS, updatedComments)
     },
     async [A.DELETE_COMMENT](
-      { commit, dispatch },
+      { dispatch },
       payload: { commentId: string; postId: string; skip: number }
     ) {
       const { commentId, postId, skip } = payload
-      await api.delete(`/comment/${commentId}`).catch((error) => console.log(error))
-      const updatedComments = dispatch(A.GET_COMMENTS, { postId, skip })
+      await api
+        .delete(`/comment/${commentId}`)
+        .catch((error) => console.log(error))
+      dispatch(A.GET_COMMENTS, { postId, skip })
+    },
+    async [A.UPDATE_COMMENT]({ state, commit }, updatedComment: IComment) {
+      await api.put('/comment/', updatedComment)
+      const updatedComments = updateCommentInArray(
+        state.comments,
+        updatedComment
+      )
       commit(M.SET_COMMENTS, updatedComments)
     },
   },
