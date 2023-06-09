@@ -18,7 +18,7 @@ const props = defineProps({
 const store = useAppStore()
 const router = useRouter()
 const { notify } = useNotificator()
-const signUpData = computed(() => store.state.login.signUpData)
+const signUpData = computed(() => store.state.login.signUp)
 const pastedCode = ref<number[]>([])
 
 function handlePaste(event: ClipboardEvent) {
@@ -66,7 +66,7 @@ async function confirmCode() {
       userRole: 'reader',
     }
     const data = await store.dispatch(
-      loginMethods.actions.REGISTER_USER,
+      loginMethods.actions.registerUser,
       registerData
     )
     if (data) {

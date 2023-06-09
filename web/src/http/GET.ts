@@ -1,6 +1,7 @@
 import { IPostResponse } from "@/@interfaces/post";
 import { IUser } from "@/@interfaces/user";
 import api from "@/lib/axios";
+import { setCookie } from "@/utils";
 
 export class GET {
   constructor() { }
@@ -33,5 +34,15 @@ export class GET {
       .then((res) => res.data)
       .catch((error) => console.log(error))
     return commentedPosts
+  }
+
+  static async sign(request: { identifier: string; password: string }) {
+    const { identifier, password } = request
+    const data = await api
+      .get(`/user/signin?identifier=${identifier}&password=${password}`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error))
+    setCookie(data.sessionToken)
+    return data
   }
 }

@@ -1,14 +1,14 @@
 import type { Module } from 'vuex'
 import { AppState } from '@/store'
-import { IPostObject } from '@/@interfaces/post'
 import api from '@/lib/axios'
 import { getSessionCookie } from '@/utils/getSessionCookie'
 import { IComment } from '@/@interfaces/comment'
 import { updateCommentInArray } from '@/utils/updateCommentInArray'
+import { IPostResponse } from '@/@interfaces/post'
 
 export interface IPostState {
-  home: IPostObject[]
-  post: IPostObject | undefined
+  home: IPostResponse[]
+  post: IPostResponse | undefined
   comments: IComment[]
 }
 
@@ -42,10 +42,10 @@ export const post: Module<IPostState, AppState> = {
     comments: [],
   },
   mutations: {
-    [M.HOME_POSTS](state, posts: IPostObject[]) {
+    [M.HOME_POSTS](state, posts: IPostResponse[]) {
       state.home = posts
     },
-    [M.POST_DATA](state, post: IPostObject) {
+    [M.POST_DATA](state, post: IPostResponse) {
       state.post = post
     },
     [M.SET_IS_FAVORITED](state, isFavorited: boolean) {

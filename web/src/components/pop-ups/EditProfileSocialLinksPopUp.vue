@@ -5,7 +5,7 @@ import { Smiley } from '@/components/@globals/atoms/icons'
 import { BaseLayoutSlot } from '.'
 import { editProfileSocialPopUpStyles as css } from './styles'
 import { useAppStore } from '@/store'
-import { profileOperations } from '@/store/modules/profile'
+import { profileMethods } from '@/store/modules/profile'
 
 const emit = defineEmits(['closedEditProfileSocialLinksPopUp'])
 
@@ -39,7 +39,7 @@ async function save() {
   const socialNetwork = selectedSocialNetwork.value.name.toLowerCase()
   const newSocialLink = { [socialNetwork]: inputValue.value }
   await store.dispatch(
-    profileOperations.actions.updateSocialLinks,
+    profileMethods.actions.updateSocialLinks,
     newSocialLink
   )
   handleCancel()

@@ -19,7 +19,7 @@ const formData = {
 }
 
 async function signIn() {
-  const data = await store.dispatch(loginMethods.actions.SIGNIN, {
+  const data = await store.dispatch(loginMethods.actions.sign, {
     identifier: formData.usernameOrEmail,
     password: formData.password,
   })

@@ -4,7 +4,7 @@ import { Arrow, Chat } from '@/components/@globals/atoms/icons'
 import { commentedPostsStyles as css } from './styles'
 import { useAppStore } from '@/store'
 import { computed, onMounted, ref } from 'vue'
-import { profileOperations } from '@/store/modules/profile'
+import { profileMethods } from '@/store/modules/profile'
 
 const props = defineProps({
   commentAmount: {
@@ -23,7 +23,7 @@ const currentPage = ref(0)
 
 onMounted(async () => {
   try {
-    await store.dispatch(profileOperations.actions.getCommentedPosts, {
+    await store.dispatch(profileMethods.actions.getCommentedPosts, {
       userId: props.userId,
       skip: 0,
     })
@@ -38,7 +38,7 @@ async function handleNextPage() {
   if (commentedPosts.value.length === 3) {
     loading.value = true
     currentPage.value++
-    await store.dispatch(profileOperations.actions.getCommentedPosts, {
+    await store.dispatch(profileMethods.actions.getCommentedPosts, {
       userId: props.userId,
       skip: currentPage.value * 3,
     })
@@ -52,7 +52,7 @@ async function handleBackPage() {
   if (currentPage.value > 0) {
     loading.value = true
     currentPage.value--
-    await store.dispatch(profileOperations.actions.getCommentedPosts, {
+    await store.dispatch(profileMethods.actions.getCommentedPosts, {
       userId: props.userId,
       skip: currentPage.value * 3,
     })

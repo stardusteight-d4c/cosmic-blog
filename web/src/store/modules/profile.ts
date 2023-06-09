@@ -12,7 +12,7 @@ export interface IProfileState {
   commentedPosts: ICommentResponse[]
 }
 
-export const profileOperations = {
+export const profileMethods = {
   mutations: {
     setUser: 'SET_USER',
     setFavoritedPosts: 'SET_FAVORITED_POSTS',
@@ -26,8 +26,8 @@ export const profileOperations = {
   },
 }
 
-const mutations = profileOperations.mutations
-const actions = profileOperations.actions
+const mutations = profileMethods.mutations
+const actions = profileMethods.actions
 
 export const profile: Module<IProfileState, AppState> = {
   state: {
@@ -60,7 +60,7 @@ export const profile: Module<IProfileState, AppState> = {
   actions: {
     async [actions.getUserData]({ commit }, payload: { id: string }) {
       const user = await GET.userData(payload.id)
-      commit(profileOperations.mutations.setUser, { ...user })
+      commit(mutations.setUser, { ...user })
       return user
     },
 
@@ -69,7 +69,7 @@ export const profile: Module<IProfileState, AppState> = {
       payload: { userId: string; skip: number }
     ) {
       const favoritedPosts = await GET.favoritedPosts(payload)
-      commit(profileOperations.mutations.setFavoritedPosts, favoritedPosts)
+      commit(mutations.setFavoritedPosts, favoritedPosts)
       return favoritedPosts
     },
 
@@ -78,14 +78,14 @@ export const profile: Module<IProfileState, AppState> = {
       payload: { userId: string; skip: number }
     ) {
       const commentedPosts = await GET.commentedPosts(payload)
-      commit(profileOperations.mutations.setCommentedPosts, commentedPosts)
+      commit(mutations.setCommentedPosts, commentedPosts)
       return commentedPosts
     },
 
     async [actions.updateSocialLinks]({ commit }, payload: ISocialLinks) {
       const updatedUser = updateSocialLinks({ store: this, payload })
       await PUT.updateUser(updatedUser)
-      commit(profileOperations.mutations.setUser, updatedUser)
+      commit(mutations.setUser, updatedUser)
     },
   },
 }

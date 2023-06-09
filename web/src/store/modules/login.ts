@@ -1,29 +1,29 @@
 import type { Module } from 'vuex'
 import type { AppState } from '@/store'
-import api from '@/lib/axios'
 import { IRegisterUserData, ISignUpData } from '@/@interfaces/login'
-import { setCookie } from '@/utils'
+import { GET, POST } from '@/http'
 
 export interface ILoginState {
-  signUpData: ISignUpData
+  signUp: ISignUpData
 }
 
 export const loginMethods = {
   mutations: {
-    SIGN_UP_DATA: 'MUTATION_SIGN_UP_DATA',
+    setSignUp: 'SET_SIGN_UP',
   },
   actions: {
-    EMAIL_VERIFY: 'ACTION_EMAIL_VERIFY',
-    REGISTER_USER: 'ACTION_REGISTER_USER',
-    SIGNIN: 'ACTION_SIGNIN',
+    verifyEmail: 'VERIFY_EMAIL',
+    registerUser: 'REGISTER_USER',
+    sign: 'SIGNIN',
   },
 }
-const M = loginMethods.mutations
-const A = loginMethods.actions
+
+const mutations = loginMethods.mutations
+const actions = loginMethods.actions
 
 export const login: Module<ILoginState, AppState> = {
   state: {
-    signUpData: {
+    signUp: {
       username: '',
       email: '',
       password: '',
@@ -32,34 +32,21 @@ export const login: Module<ILoginState, AppState> = {
     },
   },
   mutations: {
-    [M.SIGN_UP_DATA](state, payload: ISignUpData) {
-      state.signUpData = payload
+    [mutations.setSignUp](state, payload: ISignUpData) {
+      state.signUp = payload
     },
   },
   actions: {
-    async [A.EMAIL_VERIFY](_, email: string): Promise<string> {
-      const encryptedCode = await api
-        .post(`/user/verifyEmail/${email}`)
-        .then((res) => res.data)
-        .catch((error) => console.log(error))
-      return encryptedCode
+    async [actions.verifyEmail](_, email: string): Promise<string> {
+      return await POST.verifyEmail(email)
     },
-    async [A.REGISTER_USER](_, payload: IRegisterUserData) {
-      const data = await api
-        .post(`/user/register`, payload)
-        .then((res) => res.data)
-        .catch((error) => console.log(error))
-      setCookie(data.sessionToken)
-      return data
+
+    async [actions.registerUser](_, payload: IRegisterUserData) {
+      return await POST.registerUser(payload)
     },
-    async [A.SIGNIN](_, payload: { identifier: string; password: string }) {
-      const { identifier, password } = payload
-      const data = await api
-        .get(`/user/signin?identifier=${identifier}&password=${password}`)
-        .then((res) => res.data)
-        .catch((error) => console.log(error))
-      setCookie(data.sessionToken)
-      return data
-    },
+
+    async [actions.sign](_, payload: { identifier: string; password: string }) {
+      return await GET.sign(payload)
+    }
   },
 }

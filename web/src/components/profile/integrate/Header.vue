@@ -4,8 +4,8 @@ import { EditProfileSocialLinksPopUp } from '@/components/pop-ups'
 import { PencilLine } from '@/components/@globals/atoms/icons'
 import { headerStyles as css } from './styles'
 import { useAppStore } from '@/store'
-import { authMethods } from '@/store/modules/auth'
 import { useRoute } from 'vue-router'
+import { authMethods } from '@/store/modules/auth'
 
 defineProps({
   avatarUrl: {
@@ -25,7 +25,7 @@ const route = useRoute()
 const userId = route.params.id
 
 const store = useAppStore()
-store.commit(authMethods.mutations.CURRENT_SESSION)
+store.commit(authMethods.mutations.setCurrentSession)
 const session = computed(() => store.state.auth.session)
 
 function closedEditSocialLinksPopUp() {

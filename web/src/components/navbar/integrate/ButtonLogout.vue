@@ -11,7 +11,7 @@ const store = useAppStore()
 function logout() {
   document.cookie =
     'sessionCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-  store.commit(authMethods.mutations.CURRENT_SESSION)
+  store.commit(authMethods.mutations.setCurrentSession)
   router.push('/')
 }
 </script>

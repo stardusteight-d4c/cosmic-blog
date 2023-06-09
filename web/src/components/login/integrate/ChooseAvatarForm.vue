@@ -18,11 +18,11 @@ const proceedToChooseAvatar = ref(false)
 const proceedToConfirmEmail = ref(false)
 const encryptedCode = ref()
 const selectedAvatar = ref<null | string>(null)
-const signUpData = computed(() => store.state.login.signUpData)
+const signUpData = computed(() => store.state.login.signUp)
 
 async function handleProceedToConfirmEmail() {
   encryptedCode.value = await store.dispatch(
-    loginMethods.actions.EMAIL_VERIFY,
+    loginMethods.actions.verifyEmail,
     signUpData.value.email
   )
   notify('SUCCESS', 'Code sent to registered email!')
@@ -41,7 +41,7 @@ function handleBackStep(): void {
 }
 
 const avatarUrl = computed((): string | undefined => {
-  store.commit(loginMethods.mutations.SIGN_UP_DATA, {
+  store.commit(loginMethods.mutations.setSignUp, {
     ...signUpData.value,
     selectedAvatar: selectedAvatar.value,
   })

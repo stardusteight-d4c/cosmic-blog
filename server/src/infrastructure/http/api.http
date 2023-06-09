@@ -4,13 +4,13 @@ Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiODE4OTJjZGEtZDg5Ni00OWZlLWJmNzMtMjdjNThkYmZkMDkyIiwiZW1haWwiOiJqb2huc3NkYWVAZW1haWwuY29tIiwidHlwZSI6ImF1dGhvciIsImlhdCI6MTY4NTk4NjUyOSwiZXhwIjoxNjg2NTkxMzI5fQ.SyOo6poioznoavtPhN46lTZj8qkih0EGClBH86Sld4I
 
 {
- "title": "NestJS",
+ "title": "Outro novo novo outro post",
  "body": "Taaaaaaa",
  "tags": ["typescript", "typescript", "typescript", "web"],
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "c627df80-1093-43ab-b489-4eab57ad1339",
+    "id": "fc1b0102-3764-4421-9357-a24c6f73a2f9",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "avatar": "AVATAR01"

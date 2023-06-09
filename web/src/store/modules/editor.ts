@@ -2,8 +2,8 @@ import type { Module } from 'vuex'
 import type { AppState } from '@/store'
 import { IArticleData } from '@/@interfaces/article'
 import api from '@/lib/axios'
-import { IPostObject } from '@/@interfaces/post'
 import { getSessionCookie } from '@/utils/getSessionCookie'
+import { IPostResponse } from '@/@interfaces/post'
 
 export interface IEditorState {
   textEditorData: IArticleData
@@ -51,7 +51,7 @@ export const editor: Module<IEditorState, AppState> = {
     },
   },
   actions: {
-    async [A.PUBLISH_POST](_, post: IPostObject) {
+    async [A.PUBLISH_POST](_, post: IPostResponse) {
       const authorization = getSessionCookie()
       await api
         .post('/post', post, {
@@ -62,7 +62,7 @@ export const editor: Module<IEditorState, AppState> = {
         .then((res) => res.data)
         .catch((error) => console.log(error))
     },
-    async [A.UPDATE_POST](_, post: IPostObject) {
+    async [A.UPDATE_POST](_, post: IPostResponse) {
       const authorization = getSessionCookie()
       await api
         .put('/post', post, {

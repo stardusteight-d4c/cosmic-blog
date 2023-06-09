@@ -6,9 +6,9 @@ import { useAppStore } from '@/store'
 import { computed, ref } from 'vue'
 import ShortUniqueId from 'short-unique-id'
 import { uploadImageToFirebase } from '@/utils/uploadImageToFirebase'
-import { authMethods } from '@/store/modules/auth'
 import { editorMethods } from '@/store/modules/editor'
 import { DeletePostPopUp } from '../pop-ups'
+import { authMethods } from '@/store/modules/auth'
 
 const store = useAppStore()
 const editMode = computed(() => store.state.editor.editMode)
@@ -58,7 +58,7 @@ async function updatePost() {
 }
 
 async function submitPost() {
-  store.commit(authMethods.mutations.CURRENT_SESSION)
+  store.commit(authMethods.mutations.setCurrentSession)
   const uid = new ShortUniqueId({ length: 10 })
   const fileName = uid()
   // const publicImageURL = await uploadImageToFirebase(

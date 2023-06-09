@@ -1,32 +1,20 @@
 import type { Module } from 'vuex'
 import type { AppState } from '@/store'
-import { getSessionCookie } from '@/utils/getSessionCookie'
-import jwt_decode from 'jwt-decode'
-import { TUserRole } from '@/@interfaces/login'
+import { ISession } from '@/@interfaces/auth'
+import { handleSection } from '@/utils/handleSection'
 
-type decodedToken = {
-  user_id: string
-  username: string
-  avatarId: string
-  email: string
-  type: TUserRole
-}
 
 export interface IAuthState {
-  session: {
-    activeSession: boolean
-    token: string | undefined
-    decodedToken: decodedToken | undefined
-  }
+  session: ISession
 }
 
 export const authMethods = {
   mutations: {
-    CURRENT_SESSION: ' MUTATION_CURRENT_SESSION',
+    setCurrentSession: 'SET_CURRENT_SESSION',
   },
   actions: {},
 }
-const M = authMethods.mutations
+const mutations = authMethods.mutations
 
 export const auth: Module<IAuthState, AppState> = {
   state: {
@@ -37,34 +25,8 @@ export const auth: Module<IAuthState, AppState> = {
     },
   },
   mutations: {
-    [M.CURRENT_SESSION](state) {
-      const sessionCookie = getSessionCookie()
-      if (!sessionCookie) {
-        state.session = {
-          activeSession: false,
-          token: undefined,
-          decodedToken: undefined,
-        }
-      } else {
-        try {
-          const decodedToken: decodedToken = jwt_decode(sessionCookie)
-          console.log('decodedToken', decodedToken);
-          
-          if (decodedToken?.user_id) {
-            state.session = {
-              activeSession: true,
-              token: sessionCookie,
-              decodedToken: decodedToken,
-            }
-          }
-        } catch (error) {
-          state.session = {
-            activeSession: false,
-            token: undefined,
-            decodedToken: undefined,
-          }
-        }
-      }
+    [mutations.setCurrentSession](state) {
+      handleSection(state)
     },
   },
   actions: {},

@@ -27,7 +27,7 @@ function handleBackStep(): void {
 }
 
 function handleNextStep(): void {
-  store.commit(loginMethods.mutations.SIGN_UP_DATA, formData)
+  store.commit(loginMethods.mutations.setSignUp, formData)
   nextStep.value = true
 }
 

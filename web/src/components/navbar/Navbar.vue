@@ -3,8 +3,8 @@ import { useAppStore } from '@/store'
 import { Logo, ButtonNewPost, ButtonLogin, ButtonProfile } from './integrate'
 import { styles as css } from './styles'
 import { computed } from 'vue'
-import { authMethods } from '@/store/modules/auth'
 import ButtonLogout from './integrate/ButtonLogout.vue'
+import { authMethods } from '@/store/modules/auth'
 
 defineProps({
   path: {
@@ -14,7 +14,7 @@ defineProps({
 })
 
 const store = useAppStore()
-store.commit(authMethods.mutations.CURRENT_SESSION)
+store.commit(authMethods.mutations.setCurrentSession)
 const session = computed(() => store.state.auth.session)
 </script>
 
