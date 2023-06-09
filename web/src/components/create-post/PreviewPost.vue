@@ -8,10 +8,10 @@ import { editorMethods } from '@/store/modules/editor'
 
 const store = useAppStore()
 
-const editorData = computed(() => store.state.editor.textEditorData)
+const editorData = computed(() => store.state.editor.richTextEditor)
 
 function handleBackToEditor(): void {
-  store.commit(editorMethods.mutations.SHOW_PREVIEW, false)
+  store.commit(editorMethods.mutations.setShowPreview, false)
 }
 </script>
 

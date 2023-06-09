@@ -1,6 +1,8 @@
 import { IRegisterUserData } from "@/@interfaces/login"
+import { IPostResponse } from "@/@interfaces/post"
 import api from "@/lib/axios"
 import { setCookie } from "@/utils"
+import { getSessionCookie } from "@/utils/getSessionCookie"
 
 export class POST {
   constructor() { }
@@ -21,4 +23,18 @@ export class POST {
     setCookie(data.sessionToken)
     return data
   }
+
+  static async publishPost(post: IPostResponse) {
+    const authorization = getSessionCookie()
+    await api
+      .post('/post', post, {
+        headers: {
+          Authorization: authorization,
+        },
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error))
+  }
+
+ 
 }

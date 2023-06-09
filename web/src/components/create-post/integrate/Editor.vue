@@ -16,7 +16,7 @@ onMounted((): void => {
 
 const store = useAppStore()
 const textarea = ref<HTMLTextAreaElement>()
-const editorData = computed(() => store.state.editor.textEditorData)
+const editorData = computed(() => store.state.editor.richTextEditor)
 function insertTab(event: KeyboardEvent): void {
   event.preventDefault()
   const textareaElement = textarea.value
@@ -33,13 +33,8 @@ function insertTab(event: KeyboardEvent): void {
       <Controls />
     </div>
     <div :class="css.textareaContainer">
-      <textarea
-        :id="ids.textareaEditor"
-        v-model="editorData.body"
-        :spellcheck="false"
-        @keydown.tab.prevent="insertTab"
-        :class="css.textarea"
-      />
+      <textarea :id="ids.textareaEditor" v-model="editorData.body" :spellcheck="false" @keydown.tab.prevent="insertTab"
+        :class="css.textarea" />
     </div>
   </div>
 </template>

@@ -41,8 +41,8 @@ function handleShowPreview(): void {
   const payload = {
     body: textarea.value?.value,
   }
-  store.commit(editorMethods.mutations.TEXT_EDITOR_DATA, { ...payload })
-  store.commit(editorMethods.mutations.SHOW_PREVIEW, true)
+  store.commit(editorMethods.mutations.setRichTextEditor, { ...payload })
+  store.commit(editorMethods.mutations.setShowPreview, true)
 }
 
 const iconsFirstSection = [

@@ -4,31 +4,34 @@ import { IArticleData } from '@/@interfaces/article'
 import api from '@/lib/axios'
 import { getSessionCookie } from '@/utils/getSessionCookie'
 import { IPostResponse } from '@/@interfaces/post'
+import { POST, PUT } from '@/http'
+import { DELETE } from '@/http/DELETE'
 
 export interface IEditorState {
-  textEditorData: IArticleData
+  richTextEditor: IArticleData
   showPreview: boolean
   editMode: boolean
 }
 
 export const editorMethods = {
   mutations: {
-    TEXT_EDITOR_DATA: 'MUTATION_TEXT_EDITOR_DATA',
-    SHOW_PREVIEW: 'MUTATION_SHOW_PREVIEW',
-    SET_EDIT_MODE: 'SET_EDIT_MODE',
+    setRichTextEditor: 'SET_RICH_TEXT_EDITOR',
+    setShowPreview: 'SET_SHOW_PREVIEW',
+    setEditMode: 'SET_EDIT_MODE',
   },
   actions: {
-    PUBLISH_POST: 'ACTION_PUBLISH_POST',
-    UPDATE_POST: 'ACTION_UPDATE_POST',
-    DELETE_POST: 'ACTION_DELETE_POST',
+    publishPost: 'PUBLISH_POST',
+    updatePost: 'UPDATE_POST',
+    deletePost: 'DELETE_POST',
   },
 }
-const M = editorMethods.mutations
-const A = editorMethods.actions
+
+const mutations = editorMethods.mutations
+const actions = editorMethods.actions
 
 export const editor: Module<IEditorState, AppState> = {
   state: {
-    textEditorData: {
+    richTextEditor: {
       postId: undefined,
       tags: [],
       coverImage: '',
@@ -40,49 +43,29 @@ export const editor: Module<IEditorState, AppState> = {
     editMode: false,
   },
   mutations: {
-    [M.TEXT_EDITOR_DATA](state, payload: IArticleData) {
-      state.textEditorData = { ...state.textEditorData, ...payload }
+    [mutations.setRichTextEditor](state, payload: IArticleData) {
+      state.richTextEditor = { ...state.richTextEditor, ...payload }
     },
-    [M.SHOW_PREVIEW](state, payload: boolean) {
+
+    [mutations.setShowPreview](state, payload: boolean) {
       state.showPreview = payload
     },
-    [M.SET_EDIT_MODE](state, payload: boolean) {
+
+    [mutations.setEditMode](state, payload: boolean) {
       state.editMode = payload
     },
   },
   actions: {
-    async [A.PUBLISH_POST](_, post: IPostResponse) {
-      const authorization = getSessionCookie()
-      await api
-        .post('/post', post, {
-          headers: {
-            Authorization: authorization,
-          },
-        })
-        .then((res) => res.data)
-        .catch((error) => console.log(error))
+    async [actions.publishPost](_, post: IPostResponse) {
+      await POST.publishPost(post)
     },
-    async [A.UPDATE_POST](_, post: IPostResponse) {
-      const authorization = getSessionCookie()
-      await api
-        .put('/post', post, {
-          headers: {
-            Authorization: authorization,
-          },
-        })
-        .then((res) => res.data)
-        .catch((error) => console.log(error))
+
+    async [actions.updatePost](_, updatedPost: IPostResponse) {
+      await PUT.updatePost(updatedPost)
     },
-    async [A.DELETE_POST](_, postId: string) {
-      const authorization = getSessionCookie()
-      await api
-        .delete(`/post/${postId}`, {
-          headers: {
-            Authorization: authorization,
-          },
-        })
-        .then((res) => res.data)
-        .catch((error) => console.log(error))
+
+    async [actions.deletePost](_, postId: string) {
+      await DELETE.deletePost(postId)
     },
   },
 }

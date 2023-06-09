@@ -17,8 +17,8 @@ const route = useRoute()
 const store = useAppStore()
 
 async function handleDelete() {
-  await store.dispatch(editorMethods.actions.DELETE_POST, props.postId)
-  store.commit(editorMethods.mutations.TEXT_EDITOR_DATA, {
+  await store.dispatch(editorMethods.actions.deletePost, props.postId)
+  store.commit(editorMethods.mutations.setRichTextEditor, {
     postId: undefined,
     tags: [],
     coverImage: '',
@@ -26,7 +26,7 @@ async function handleDelete() {
     date: new Date(),
     body: '',
   })
-  store.commit(editorMethods.mutations.SET_EDIT_MODE, false)
+  store.commit(editorMethods.mutations.setEditMode, false)
   emit('closedDeletePopUp')
  
 }

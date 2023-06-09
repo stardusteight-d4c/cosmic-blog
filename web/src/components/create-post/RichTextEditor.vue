@@ -13,7 +13,7 @@ import { authMethods } from '@/store/modules/auth'
 const store = useAppStore()
 const editMode = computed(() => store.state.editor.editMode)
 const session = computed(() => store.state.auth.session)
-const editorData = computed(() => store.state.editor.textEditorData)
+const editorData = computed(() => store.state.editor.richTextEditor)
 const proceedToDelete = ref(false)
 
 function closedDeletePopUp(): void {
@@ -21,8 +21,8 @@ function closedDeletePopUp(): void {
 }
 
 function handleCancelEdit() {
-  store.commit(editorMethods.mutations.SET_EDIT_MODE, false)
-  store.commit(editorMethods.mutations.TEXT_EDITOR_DATA, {
+  store.commit(editorMethods.mutations.setEditMode, false)
+  store.commit(editorMethods.mutations.setRichTextEditor, {
     postId: undefined,
     tags: [],
     coverImage: '',
@@ -45,8 +45,8 @@ async function updatePost() {
       email: session.value.decodedToken!.email,
     },
   }
-  await store.dispatch(editorMethods.actions.UPDATE_POST, post)
-  store.commit(editorMethods.mutations.TEXT_EDITOR_DATA, {
+  await store.dispatch(editorMethods.actions.updatePost, post)
+  store.commit(editorMethods.mutations.setRichTextEditor, {
     postId: undefined,
     tags: [],
     coverImage: '',
@@ -54,7 +54,7 @@ async function updatePost() {
     date: new Date(),
     body: '',
   })
-  store.commit(editorMethods.mutations.SET_EDIT_MODE, false)
+  store.commit(editorMethods.mutations.setEditMode, false)
 }
 
 async function submitPost() {
@@ -76,7 +76,7 @@ async function submitPost() {
       email: session.value.decodedToken!.email,
     },
   }
-  await store.dispatch(editorMethods.actions.PUBLISH_POST, post)
+  await store.dispatch(editorMethods.actions.publishPost, post)
 }
 </script>
 

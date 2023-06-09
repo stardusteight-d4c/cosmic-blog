@@ -12,7 +12,7 @@ export default (): Notificator => {
     content: string,
     title?: string
   ): void => {
-    store.commit(notificationMethods.mutations.NOTIFY, {
+    store.commit(notificationMethods.mutations.notify, {
       title,
       content,
       type,

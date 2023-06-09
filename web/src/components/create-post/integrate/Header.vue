@@ -4,10 +4,9 @@ import { useAppStore } from '@store/index'
 import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils'
 import useNotificator from '@/hooks/Notificator'
 import { headerStyles as css } from './styles'
-import { IHeadArticleData } from '@/@interfaces/article'
 import { editorMethods } from '@/store/modules/editor'
 import { postMethods } from '@/store/modules/post'
-import { IPostObject } from '@/@interfaces/post'
+import { IPostResponse } from '@/@interfaces/post'
 
 // Gerar url da coverImg no serviço de storage do supabase, mas isto apenas quando enviar ao servidor,
 // para a preview gere uma string base64 e envie-à como props
@@ -16,11 +15,11 @@ const store = useAppStore()
 const { notify } = useNotificator()
 const term = ref('')
 const editMode = computed(() => store.state.editor.editMode)
-const posts = ref<IPostObject[]>([])
+const posts = ref<IPostResponse[]>([])
 const tag = ref<string>('')
 const fileUploaded = ref<FileList | null>(null)
 const fileUploadedOnEditMode = ref<FileList | null>(null)
-const editorData = computed(() => store.state.editor.textEditorData)
+const editorData = computed(() => store.state.editor.richTextEditor)
 
 function onFileChange(event: Event): void {
   const input = event.target as HTMLInputElement
@@ -78,8 +77,8 @@ async function search() {
   }
 }
 
-function handleSelectedToEdit(post: IPostObject) {
-  store.commit(editorMethods.mutations.SET_EDIT_MODE, true)
+function handleSelectedToEdit(post: IPostResponse) {
+  store.commit(editorMethods.mutations.setEditMode, true)
   fileUploaded.value = null
   posts.value = []
   term.value = ''
@@ -96,7 +95,7 @@ function handleSelectedToEdit(post: IPostObject) {
   editorData.value.coverImage = post.coverImage
   editorData.value.date = new Date(post.postedIn)
   editorData.value.body = post.body
-  store.commit(editorMethods.mutations.TEXT_EDITOR_DATA, editorData.value)
+  store.commit(editorMethods.mutations.setRichTextEditor, editorData.value)
 }
 </script>
 
