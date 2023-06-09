@@ -5,7 +5,7 @@ import { starredPostsStyles as css } from './styles'
 import { computed } from 'vue'
 import { useAppStore } from '@/store'
 import { onMounted, ref } from 'vue'
-import { profileMethods } from '@/store/modules/profile'
+import { profileOperations } from '@/store/modules/profile'
 
 interface IProps {
   favoriteAmount: number
@@ -20,7 +20,7 @@ const currentPage = ref(0)
 
 onMounted(async () => {
   try {
-    await store.dispatch(profileMethods.actions.GET_PROFILE_FAVORITED_POSTS, {
+    await store.dispatch(profileOperations.actions.getFavoritedPosts, {
       userId: props.userId,
       skip: 0,
     })
@@ -35,7 +35,7 @@ async function handleNextPage() {
   if (favoritedPosts.value.length === 3) {
     loading.value = true
     currentPage.value++
-    await store.dispatch(profileMethods.actions.GET_PROFILE_FAVORITED_POSTS, {
+    await store.dispatch(profileOperations.actions.getFavoritedPosts, {
       userId: props.userId,
       skip: currentPage.value * 3,
     })
@@ -49,7 +49,7 @@ async function handleBackPage() {
   if (currentPage.value > 0) {
     loading.value = true
     currentPage.value--
-    await store.dispatch(profileMethods.actions.GET_PROFILE_FAVORITED_POSTS, {
+    await store.dispatch(profileOperations.actions.getFavoritedPosts, {
       userId: props.userId,
       skip: currentPage.value * 3,
     })
@@ -94,7 +94,7 @@ async function handleBackPage() {
         v-if="favoritedPosts && favoritedPosts.length > 0 && loading === false"
         v-for="post in favoritedPosts"
         :postId="post.id!"
-        :isMinimalist="true"
+       :isMinimalist="true"
         :title="post.title"
         :postedAt="post.postedIn"
         :content="post.body"

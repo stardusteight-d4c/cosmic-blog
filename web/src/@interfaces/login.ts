@@ -6,7 +6,7 @@ export interface ISignUpData {
   selectedAvatar: string
 }
 
-export type TUserRole = 'reader' | 'author'
+export type TUserRole = 'reader' | 'author' | undefined
 
 export interface IRegisterUserData {
   email: string

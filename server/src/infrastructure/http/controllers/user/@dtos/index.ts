@@ -1,13 +1,19 @@
-import { IUserReflectObject } from "@/domain/src/user";
+import { ISocialLinks, TUserRole } from "@/domain/src/user";
 
-export interface RegisterResponse {
-  user: IUserReflectObject;
+export interface IUserResponse {
+  id?: string;
+  email: string;
+  username: string;
+  avatar: string;
+  userRole: TUserRole;
+  socialLinks?: ISocialLinks | undefined;
+  favoriteAmount?: number
+  commentAmount?: number
+}
+
+export interface IRegisterResponse {
+  user: IUserResponse;
   sessionToken: string;
 }
 
-export interface GetByIdResponse {
-  user: IUserReflectObject;
-  favoriteAmount: number;
-  commentAmount: number;
-}
 

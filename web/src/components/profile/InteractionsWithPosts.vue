@@ -6,7 +6,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 const store = useAppStore()
-const userData = computed(() => store.state.profile.userData)
+const userData = computed(() => store.state.profile.user)
 const route = useRoute()
 const userId = route.params.id as string
 </script>

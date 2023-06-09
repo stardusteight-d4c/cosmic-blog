@@ -4,16 +4,22 @@ export class UserInMemoryRepository implements IUserRepository {
   private static instance: UserInMemoryRepository;
   #users: Map<string, User> = new Map();
 
-  private constructor() {}
+  private constructor() { }
 
   private async replace(updatedUser: User): Promise<User> {
+    const copyUpdate = updatedUser.reflect
     const existingUser = await this.findById(updatedUser.reflect.id!);
     if (!existingUser) {
       throw new Error(`No user found with id: ${updatedUser.reflect.id}`);
     }
+    if (copyUpdate.password === undefined) {
+      delete copyUpdate.password
+    }
+    const updatedUserObj = { ...existingUser.reflect, ...copyUpdate };
+    const newUser = new User({ ...updatedUserObj })
     this.#users.delete(existingUser.reflect.id!);
-    this.#users.set(updatedUser.reflect.id!, updatedUser);
-    return updatedUser;
+    this.#users.set(newUser.reflect.id!, newUser);
+    return newUser;
   }
 
   public static getInstance(): UserInMemoryRepository {

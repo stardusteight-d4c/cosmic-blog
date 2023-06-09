@@ -10,7 +10,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiODE4OTJjZGEt
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "f2cdc9a9-10f7-41ec-aadf-f8fee9724dc6",
+    "id": "c627df80-1093-43ab-b489-4eab57ad1339",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "avatar": "AVATAR01"
@@ -41,11 +41,11 @@ Content-Type: application/json
 ###
 POST http://localhost:3000/user/verifyEmail/stardusteight.d4cc@gmail.com
 ###
+GET http://localhost:3000/user/36cec40d-9acc-4322-a94b-12bf58119f4a
+###
 POST http://localhost:3000/user/username?equals=xablau
 ###
 GET http://localhost:3000/user/signin?identifier=stardusteight.d4cc@gmail.com&password=pa$$word1
-###
-GET http://localhost:3000/user/search?by=id&value=a09a2591-4cb8-4196-9e59-4101333bff62
 ###
 GET http://localhost:3000/user/search?by=email&value=johndoe@email.com
 

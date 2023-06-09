@@ -1,6 +1,6 @@
 import { IUserObject } from './user'
 
-export interface IPostObject {
+export interface IPostResponse {
   [x: string]: any
   id?: string
   title: string
@@ -14,3 +14,5 @@ export interface IPostObject {
   isGuest?: boolean
   isFavorited?: boolean
 }
+
+

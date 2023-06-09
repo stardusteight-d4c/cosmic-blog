@@ -6,7 +6,7 @@ export class UserBuilder {
   #id: string;
   #email: string;
   #username: string;
-  #password: string;
+  #password: string | undefined;
   #avatar: string | undefined;
   #userRole: TUserRole;
   #socialLinks: ISocialLinks | undefined;
@@ -29,8 +29,10 @@ export class UserBuilder {
   }
 
   public setPassword(password: string): UserBuilder {
-    Validators.validatePassword(password);
-    this.#password = password;
+    if (password) {
+      Validators.validatePassword(password);
+      this.#password = password;
+    }
     return this;
   }
 
@@ -55,9 +57,6 @@ export class UserBuilder {
     }
     if (!this.#username) {
       throw new Error("Username is required.");
-    }
-    if (!this.#password) {
-      throw new Error("Password is required.");
     }
     return new User({
       id: this.#id || randomUUID(),

@@ -21,9 +21,10 @@ import { transporter } from "@/infrastructure/lib/nodemailer";
 import { SendMailAdapter } from "@/application/adapters/SendMailAdapter";
 import brcypt from "bcrypt";
 import { IPluginSendMail } from "@/application/adapters/@interfaces";
-import { GetByIdResponse, RegisterResponse } from "./@dtos";
-import { buildGetByIdResponse } from "./@dtos/buildGetByIdResponse";
+import { IRegisterResponse, IUserResponse } from "./@dtos";
 import Validators from "../../@utils/validators";
+import { getByIdResponse } from "./@dtos/builders/getByIdResponse";
+import { registerResponse } from "./@dtos/builders/registerResponse";
 
 @Controller("user")
 export class UserController {
@@ -47,13 +48,13 @@ export class UserController {
   @Post("register")
   public async register(
     @Body() user: IUserReflectObject,
-  ): Promise<RegisterResponse> {
+  ): Promise<IRegisterResponse> {
     try {
       const sessionTokenAdapter = this.sessionTokenAdapter;
       return this.#userUseCases
         .register({ user, sessionTokenAdapter })
         .then(({ user, sessionToken }) => {
-          return { user: user.reflect, sessionToken };
+          return this.buildRegisterResponse(user.reflect, sessionToken);
         });
     } catch (error) {
       errorHandler(error);
@@ -77,10 +78,11 @@ export class UserController {
   }
 
   @Get(":id")
-  public async getById(@Param("id") id: string): Promise<GetByIdResponse> {
+  public async getById(@Param("id") id: string):
+    Promise<{ user: IUserResponse }> {
     try {
       return this.#userUseCases.getById(id).then(async (user) => {
-        return await this.buildResponse(user.reflect);
+        return await this.buildGetByIdResponse(user.reflect);
       });
     } catch (error) {
       errorHandler(error);
@@ -144,9 +146,16 @@ export class UserController {
     return this.#commentController.amount({ of: "user", id: userId });
   }
 
-  private async buildResponse(
+  private buildRegisterResponse(
     user: IUserReflectObject,
-  ): Promise<GetByIdResponse> {
-    return await buildGetByIdResponse({ controller: this, user });
+    sessionToken: string
+  ): IRegisterResponse {
+    return registerResponse({ user, sessionToken });
+  }
+
+  private async buildGetByIdResponse(
+    user: IUserReflectObject,
+  ): Promise<{ user: IUserResponse }> {
+    return await getByIdResponse({ controller: this, user });
   }
 }

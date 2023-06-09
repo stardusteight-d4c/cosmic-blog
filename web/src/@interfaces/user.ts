@@ -10,16 +10,15 @@ export interface ISocialLinks {
   email?: string;
 }
 
-export interface IProfileData {
+export interface IUser {
   id: string
   email: string
   username: string
-  password: string
   avatar: string
   userRole: TUserRole
   socialLinks: ISocialLinks | undefined
-  favoriteAmount: number
-  commentAmount: number
+  favoriteAmount?: number
+  commentAmount?: number
 }
 
 export interface IUserObject {

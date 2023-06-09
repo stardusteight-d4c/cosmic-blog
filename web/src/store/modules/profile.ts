@@ -1,45 +1,43 @@
 import type { Module } from 'vuex'
 import { AppState } from '@/store'
-import api from '@/lib/axios'
-import { getSessionCookie } from '@/utils/getSessionCookie'
-import { getSinglePropertyValue } from '@/utils/getSinglePropertyValue'
-import { removeEmptyValues } from '@/utils/removeObjEmptyValues'
-import { ISocialLinks, IProfileData } from '@/@interfaces/user'
-import { IPostObject } from '@/@interfaces/post'
+import { ISocialLinks, IUser } from '@/@interfaces/user'
+import { IPostResponse } from '@/@interfaces/post'
 import { ICommentResponse } from '@/@interfaces/comment'
+import { updateSocialLinks } from '@/utils/updateSocialLinks'
+import { GET, PUT } from '@/http'
 
 export interface IProfileState {
-  userData: IProfileData
-  favoritedPosts: IPostObject[]
+  user: IUser
+  favoritedPosts: IPostResponse[]
   commentedPosts: ICommentResponse[]
 }
 
-export const profileMethods = {
+export const profileOperations = {
   mutations: {
-    PROFILE_DATA: 'MUTATION_PROFILE_DATA',
-    PROFILE_FAVORITED_POSTS: 'MUTATION_PROFILE_FAVORITED_POSTS',
-    PROFILE_COMMENTED_POSTS: 'MUTATION_PROFILE_COMMENTED_POSTS',
+    setUser: 'SET_USER',
+    setFavoritedPosts: 'SET_FAVORITED_POSTS',
+    setCommentedPosts: 'SET_COMMENTED_POSTS',
   },
   actions: {
-    GET_PROFILE_DATA: 'ACTION_GET_PROFILE_DATA',
-    GET_PROFILE_FAVORITED_POSTS: 'ACTION_GET_PROFILE_FAVORITED_POSTS',
-    GET_PROFILE_COMMENTED_POSTS: 'ACTION_GET_PROFILE_COMMENTED_POSTS',
-    UPDATE_PROFILE_SOCIAL_LINKS: 'ACTION_UPDATE_PROFILE_SOCIAL_LINKS',
+    getUserData: 'GET_USER_DATA',
+    getFavoritedPosts: 'GET_FAVORITED_POSTS',
+    getCommentedPosts: 'GET_COMMENTED_POSTS',
+    updateSocialLinks: 'UPDATE_SOCIAL_LINKS',
   },
 }
-const M = profileMethods.mutations
-const A = profileMethods.actions
+
+const mutations = profileOperations.mutations
+const actions = profileOperations.actions
 
 export const profile: Module<IProfileState, AppState> = {
   state: {
-    userData: {
+    user: {
       id: '',
       email: '',
       username: '',
-      password: '',
       avatar: '',
-      userRole: 'reader',
-      socialLinks: {},
+      userRole: undefined,
+      socialLinks: undefined,
       favoriteAmount: 0,
       commentAmount: 0,
     },
@@ -47,81 +45,47 @@ export const profile: Module<IProfileState, AppState> = {
     commentedPosts: [],
   },
   mutations: {
-    [M.PROFILE_DATA](state, payload: IProfileState) {
-      state.userData = { ...state.userData, ...payload }
+    [mutations.setUser](state, payload: IUser) {
+      state.user = { ...state.user, ...payload }
     },
-    [M.PROFILE_FAVORITED_POSTS](state, payload: IPostObject[]) {
+
+    [mutations.setFavoritedPosts](state, payload: IPostResponse[]) {
       state.favoritedPosts = payload
     },
-    [M.PROFILE_COMMENTED_POSTS](state, payload: ICommentResponse[]) {
+
+    [mutations.setCommentedPosts](state, payload: ICommentResponse[]) {
       state.commentedPosts = payload
     },
   },
   actions: {
-    async [A.GET_PROFILE_DATA]({ commit }, payload: { id: string }) {
-      const userData = await api
-        .get(`/user/${payload.id}`)
-        .then((res) => res.data)
-        .catch((error) => console.log(error))
-      commit(M.PROFILE_DATA, {
-        ...userData.user,
-        favoriteAmount: userData.favoriteAmount,
-        commentAmount: userData.commentAmount,
-      })
-      return userData
+    async [actions.getUserData]({ commit }, payload: { id: string }) {
+      const user = await GET.userData(payload.id)
+      commit(profileOperations.mutations.setUser, { ...user })
+      return user
     },
-    async [A.GET_PROFILE_FAVORITED_POSTS](
+
+    async [actions.getFavoritedPosts](
       { commit },
       payload: { userId: string; skip: number }
     ) {
-      const { userId, skip } = payload
-      const favoritedPosts = await api
-        .get(
-          `/post/pagination/byUserFavorites?userId=${userId}&skip=${skip}&pageSize=3`
-        )
-        .then((res) => res.data)
-        .catch((error) => console.log(error))
-      commit(M.PROFILE_FAVORITED_POSTS, favoritedPosts)
+      const favoritedPosts = await GET.favoritedPosts(payload)
+      commit(profileOperations.mutations.setFavoritedPosts, favoritedPosts)
       return favoritedPosts
     },
 
-    async [A.GET_PROFILE_COMMENTED_POSTS](
+    async [actions.getCommentedPosts](
       { commit },
       payload: { userId: string; skip: number }
     ) {
-      const { userId, skip } = payload
-      const commentedPosts = await api
-        .get(
-          `/comment/pagination?by=userId&value=${userId}&skip=${skip}&pageSize=3`
-        )
-        .then((res) => res.data)
-        .catch((error) => console.log(error))
-      commit(M.PROFILE_COMMENTED_POSTS, commentedPosts)
+      const commentedPosts = await GET.commentedPosts(payload)
+      commit(profileOperations.mutations.setCommentedPosts, commentedPosts)
       return commentedPosts
     },
-    async [A.UPDATE_PROFILE_SOCIAL_LINKS]({ commit }, payload: ISocialLinks) {
-      let updatedUserData: IProfileData
-      const userData = this.state.profile.userData
-      const payloadValue = getSinglePropertyValue(payload)
-      updatedUserData = {
-        ...userData,
-        socialLinks: {
-          ...userData.socialLinks,
-          ...payload,
-        },
-      }
-      if (payloadValue === '') {
-        removeEmptyValues(updatedUserData.socialLinks)
-      }
-      const authorization = getSessionCookie()
-      await api
-        .put(`/user/update`, updatedUserData, {
-          headers: {
-            Authorization: authorization,
-          },
-        })
-        .catch((error) => console.log(error))
-      commit(M.PROFILE_DATA, updatedUserData)
+
+    async [actions.updateSocialLinks]({ commit }, payload: ISocialLinks) {
+      const updatedUser = updateSocialLinks({ store: this, payload })
+      await PUT.updateUser(updatedUser)
+      commit(profileOperations.mutations.setUser, updatedUser)
     },
   },
 }
