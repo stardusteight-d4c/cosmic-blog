@@ -100,38 +100,21 @@ function handleSelectedToEdit(post: IPostResponse) {
 </script>
 
 <template>
-  <div>
-    <input
-      @input="search"
-      type="text"
-      v-model="term"
-      :placeholder="`Search for a post`"
-      class="inner-shadow-input mb-4 text-[#f2f2f2] bg-[#252525] outline-none w-full md:max-w-[250px] py-1 px-[10px] rounded-sm border border-transparent focus:border-blue-500 transition-all"
-    />
-    <ul
-      :class="`${
-        posts.length > 0 ? 'block' : 'hidden'
-      } absolute -mt-4 bg-[#161616] shadow-black/50 shadow-md text-white w-full md:max-w-[250px] `"
-    >
-      <li
-        v-for="post in posts"
-        class="p-1 hover:bg-white/10 cursor-pointer"
-        @click="handleSelectedToEdit(post)"
-      >
+  <div class="px-2 md:px-0">
+    <input @input="search" type="text" v-model="term" :placeholder="`Search for a post`"
+      class="inner-shadow-input mb-4 text-[#f2f2f2] bg-[#252525] outline-none w-full md:max-w-[250px] py-1 px-[10px] rounded-sm border border-transparent focus:border-blue-500 transition-all" />
+    <ul :class="`${posts.length > 0 ? 'block' : 'hidden'
+      } absolute -mt-4 bg-[#161616] shadow-black/50 shadow-md text-white w-full md:max-w-[250px] `">
+      <li v-for="post in posts" class="p-1 hover:bg-white/10 cursor-pointer" @click="handleSelectedToEdit(post)">
         {{ post.title }}
       </li>
     </ul>
   </div>
   <div :class="css.wrapper">
     <div>
-      <button
-        v-on:click="onClickUpload"
-        :class="css.handleUploadBtn(fileUploaded)"
-      >
-        <span v-if="fileUploaded" :class="css.uploadedSpan"
-          >Uploaded Image</span
-        >
-        <span v-else>Add a cover image</span>
+      <button v-on:click="onClickUpload" :class="css.handleUploadBtn(fileUploaded)">
+        <span v-if="fileUploaded" :class="css.uploadedSpan">Uploaded Image</span>
+        <span v-else :class="css.uploadedSpan">Add a cover image</span>
       </button>
     </div>
     <span v-if="fileUploaded && !editMode" :class="css.fileName">{{
@@ -141,30 +124,13 @@ function handleSelectedToEdit(post: IPostResponse) {
       (fileUploaded && fileUploaded[0].name) ?? editorData.coverImage
     }}</span>
   </div>
-  <input
-    type="file"
-    class="hidden"
-    :id="ids.inputFile"
-    accept="image/png, image/jpeg"
-    @change="onFileChange"
-  />
-  <input
-    type="text"
-    v-model="editorData.title"
-    placeholder="New post title here..."
-    :class="css.titleInput"
-  />
+  <input type="file" class="hidden" :id="ids.inputFile" accept="image/png, image/jpeg" @change="onFileChange" />
+  <div class="mx-2 md:mx-0">
+    <input type="text" v-model="editorData.title" placeholder="New post title here..." :class="css.titleInput" />
+  </div>
   <div :class="css.tagsContainer">
-    <span v-for="(tag, index) in editorData.tags" :key="index" :class="css.tag"
-      >#{{ tag }}</span
-    >
-    <input
-      type="text"
-      placeholder="Add up to 4 tags..."
-      @keydown.enter="handleTags"
-      v-model="tag"
-      @keydown="onKeyDownInTagInput"
-      :class="css.tagInput"
-    />
+    <span v-for="(tag, index) in editorData.tags" :key="index" :class="css.tag">#{{ tag }}</span>
+    <input type="text" placeholder="Add up to 4 tags..." @keydown.enter="handleTags" v-model="tag"
+      @keydown="onKeyDownInTagInput" :class="css.tagInput" />
   </div>
 </template>

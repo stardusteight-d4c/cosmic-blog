@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { SavePopUp, ImportSavePopUp } from '@/components/pop-ups'
 import { useAppStore } from '@store/index'
 import * as Icon from '@/components/@globals/atoms/icons'

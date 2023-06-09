@@ -106,9 +106,9 @@ async function submitPost() {
       >
         Delete
       </button>
-      <Btn @click="updatePost" title="Update" class="ml-auto" />
+      <Btn @click="updatePost" title="Update" class="ml-auto mr-2 md:mr-0" />
     </div>
-    <Btn v-if="!editMode" @click="submitPost" title="Submit" class="ml-auto" />
+    <Btn v-if="!editMode" @click="submitPost" title="Submit" class="ml-auto mr-2 md:mr-0" />
   </div>
 </template>
 
