@@ -71,7 +71,7 @@ function onKeyDownInTagInput(event: KeyboardEvent): void {
 
 async function search() {
   if (term.value.length > 3) {
-    posts.value = await store.dispatch(postMethods.actions.SEARCH_BY_TITLE, {
+    posts.value = await store.dispatch(postMethods.actions.searchByTitle, {
       title: term.value,
     })
   }

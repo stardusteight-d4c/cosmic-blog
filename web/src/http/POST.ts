@@ -1,3 +1,4 @@
+import { IComment } from "@/@interfaces/comment"
 import { IRegisterUserData } from "@/@interfaces/login"
 import { IPostResponse } from "@/@interfaces/post"
 import api from "@/lib/axios"
@@ -36,5 +37,9 @@ export class POST {
       .catch((error) => console.log(error))
   }
 
- 
+  static async leaveComment(comment: IComment) {
+    await api
+      .post('/comment', comment)
+      .catch((error) => console.log(error))
+  }
 }

@@ -26,7 +26,7 @@ export async function buildGetByIdResponse(request: {
     });
   }
   return {
-    post,
+    ...post,
     favoriteAmount: await controller.getFavoriteAmount(post.id),
     commentAmount: await controller.getCommentAmount(post.id),
     isAuthor,

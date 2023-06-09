@@ -18,17 +18,17 @@ async function handleExit() {
   term.value = ''
   const currentPageElement = document.getElementById('home-current-page')
   const currentPageValue = currentPageElement?.innerText
-  await store.dispatch(postMethods.actions.GET_HOME_POSTS, {
+  await store.dispatch(postMethods.actions.getHomePosts, {
     skip: Number(currentPageValue) * 6,
   })
 }
 
 async function search() {
   if (term.value.length > 3) {
-    const posts = await store.dispatch(postMethods.actions.SEARCH_BY_TITLE, {
+    const posts = await store.dispatch(postMethods.actions.searchByTitle, {
       title: term.value,
     })
-    store.commit(postMethods.mutations.HOME_POSTS, posts)
+    store.commit(postMethods.mutations.setHomePosts, posts)
   }
 }
 </script>

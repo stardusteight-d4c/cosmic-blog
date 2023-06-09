@@ -1,8 +1,6 @@
 import type { Module } from 'vuex'
 import type { AppState } from '@/store'
 import { IArticleData } from '@/@interfaces/article'
-import api from '@/lib/axios'
-import { getSessionCookie } from '@/utils/getSessionCookie'
 import { IPostResponse } from '@/@interfaces/post'
 import { POST, PUT } from '@/http'
 import { DELETE } from '@/http/DELETE'

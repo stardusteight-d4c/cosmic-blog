@@ -26,7 +26,7 @@ async function handleDelete() {
     postId,
     skip: Number(props.currentPage) * 4,
   })
-  await store.dispatch(postMethods.actions.DELETE_COMMENT, {
+  await store.dispatch(postMethods.actions.deleteComment, {
     commentId: props.commentId,
     postId,
     skip: props.currentPage * 4,

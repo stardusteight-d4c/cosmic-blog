@@ -15,4 +15,10 @@ export class DELETE {
       .then((res) => res.data)
       .catch((error) => console.log(error))
   }
+
+  static async deleteComment(commentId: string) {
+    await api
+      .delete(`/comment/${commentId}`)
+      .catch((error) => console.log(error))
+  }
 }

@@ -16,7 +16,7 @@ async function handleNextPage() {
   if (posts.value.length === 6) {
     loading.value = true
     currentPage.value++
-    await store.dispatch(postMethods.actions.GET_HOME_POSTS, {
+    await store.dispatch(postMethods.actions.getHomePosts, {
       skip: currentPage.value * 6,
     })
     setTimeout(() => {
@@ -36,7 +36,7 @@ async function handleBackPage() {
   if (currentPage.value > 0) {
     loading.value = true
     currentPage.value--
-    await store.dispatch(postMethods.actions.GET_HOME_POSTS, {
+    await store.dispatch(postMethods.actions.getHomePosts, {
       skip: currentPage.value * 6,
     })
     setTimeout(() => {

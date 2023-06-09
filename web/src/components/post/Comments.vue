@@ -11,7 +11,7 @@ const route = useRoute()
 const store = useAppStore()
 const id = route.params.id
 onMounted(async () => {
-  await store.dispatch(postMethods.actions.GET_COMMENTS, {
+  await store.dispatch(postMethods.actions.getComments, {
     postId: id,
     skip: 0,
   })
@@ -30,7 +30,7 @@ async function handleNextPage() {
   if (comments.value.length >= 4) {
     loading.value = true
     currentPage.value++
-    await store.dispatch(postMethods.actions.GET_COMMENTS, {
+    await store.dispatch(postMethods.actions.getComments, {
       postId: id,
       skip: currentPage.value * 4,
     })
@@ -51,7 +51,7 @@ async function handleBackPage() {
   if (currentPage.value > 0) {
     loading.value = true
     currentPage.value--
-    await store.dispatch(postMethods.actions.GET_COMMENTS, {
+    await store.dispatch(postMethods.actions.getComments, {
       postId: id,
       skip: currentPage.value * 4,
     })

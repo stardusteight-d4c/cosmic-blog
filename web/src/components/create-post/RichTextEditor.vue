@@ -33,6 +33,7 @@ function handleCancelEdit() {
 }
 
 async function updatePost() {
+  // verificar se a foto é uma url ou string base 64 e fazer conversão
   const post = {
     id: editorData.value.postId,
     title: editorData.value.title,

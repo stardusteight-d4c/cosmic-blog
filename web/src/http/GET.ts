@@ -2,6 +2,7 @@ import { IPostResponse } from "@/@interfaces/post";
 import { IUser } from "@/@interfaces/user";
 import api from "@/lib/axios";
 import { setCookie } from "@/utils";
+import { getSessionCookie } from "@/utils/getSessionCookie";
 
 export class GET {
   constructor() { }
@@ -44,5 +45,42 @@ export class GET {
       .catch((error) => console.log(error))
     setCookie(data.sessionToken)
     return data
+  }
+
+  static async homePosts(skip: number) {
+    const posts = await api
+      .get<IPostResponse[]>(`/post/pagination?skip=${skip}&pageSize=6`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error))
+    return posts
+  }
+
+  static async post(postId: string) {
+    const authorization = getSessionCookie()
+    const post = await api.get<IPostResponse>(`/post/${postId}`, {
+      headers: {
+        Authorization: authorization,
+      },
+    }).then((res) => res.data)
+      .catch((error) => console.log(error))
+    return post
+  }
+
+  static async searchByTitle(title: string) {
+    const results = await api.get<IPostResponse[]>(`/post/title?equals=${title}`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error))
+    return results
+  }
+
+  static async comments(request: { postId: string, skip: number }) {
+    const { postId, skip } = request
+    const comments = await api
+      .get(
+        `/comment/pagination?by=postId&value=${postId}&skip=${skip}&pageSize=4`
+      )
+      .then((res) => res.data)
+      .catch((error) => console.log(error))
+    return comments
   }
 }

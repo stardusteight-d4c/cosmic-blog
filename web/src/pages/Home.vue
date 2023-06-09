@@ -15,7 +15,7 @@ const store = useAppStore()
 
 onMounted(async () => {
   try {
-    await store.dispatch(postMethods.actions.GET_HOME_POSTS, { skip: 0 })
+    await store.dispatch(postMethods.actions.getHomePosts, { skip: 0 })
     loading.value = false
   } catch (error) {
     console.error('Error loading user data:', error)

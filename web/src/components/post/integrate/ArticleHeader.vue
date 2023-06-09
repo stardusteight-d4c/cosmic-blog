@@ -18,18 +18,18 @@ const postId = computed(() => store.state.post.post?.id)
 const isGuest = computed(() => store.state.post.post?.isGuest ?? true)
 const isFavorited = computed({
   get: () => store.state.post.post?.isFavorited ?? false,
-  set: (value) => store.commit(postMethods.mutations.SET_IS_FAVORITED, value),
+  set: (value) => store.commit(postMethods.mutations.setIsFavorited, value),
 })
 const userId = computed(() => store.state.auth.session.decodedToken?.user_id)
 
 async function toggleFavorite() {
   isFavorited.value = !isFavorited.value
   if (isFavorited.value === true) {
-    store.commit(postMethods.mutations.SET_FAVORITE_AMOUNT, true)
+    store.commit(postMethods.mutations.setFavoriteAmount, true)
   } else {
-    store.commit(postMethods.mutations.SET_FAVORITE_AMOUNT, false)
+    store.commit(postMethods.mutations.setFavoriteAmount, false)
   }
-  await store.dispatch(postMethods.actions.TOGGLE_FAVORITE, {
+  await store.dispatch(postMethods.actions.toggleFavorite, {
     postId: postId.value,
     userId: userId.value,
   })

@@ -51,7 +51,7 @@ async function submitComment() {
       username: session.username,
     },
   }
-  await store.dispatch(postMethods.actions.LEAVE_A_COMMENT, payload)
+  await store.dispatch(postMethods.actions.leaveComment, payload)
   comment.value = ''
 }
 </script>

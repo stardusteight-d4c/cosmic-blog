@@ -76,7 +76,7 @@ async function editComment() {
     ...props.comment,
     content: editValue,
   }
-  await store.dispatch(postMethods.actions.UPDATE_COMMENT, updatedComment)
+  await store.dispatch(postMethods.actions.updateComment, updatedComment)
 }
 
 function closedDeletePopUp(): void {
