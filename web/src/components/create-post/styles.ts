@@ -5,6 +5,7 @@ export const baseLayoutSlotStyles = {
 
 export const richTextEditorStyles = {
   wrapper: `text-[#F2F2F2] bg-[#252525] h-auto w-full overflow-hidden rounded-sm py-4 md:p-4`,
+  button: `ml-auto mr-2 md:mr-0`
 }
 
 export const previewPostStyles = {

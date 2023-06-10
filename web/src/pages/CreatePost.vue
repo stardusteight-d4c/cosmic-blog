@@ -6,8 +6,8 @@ import {
   BaseLayoutSlot,
 } from '@/components/create-post'
 import { useAppStore } from '@store/index'
-const store = useAppStore()
 
+const store = useAppStore()
 const showPreview = computed(() => store.state.editor.showPreview)
 </script>
 
