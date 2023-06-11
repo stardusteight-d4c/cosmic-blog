@@ -2,36 +2,33 @@
 import { ref, computed } from "vue";
 import { useAppStore } from "@store/index";
 import { headerStyles as css } from "./styles";
-import useNotificator from "@/hooks/Notificator";
 import { IPostResponse } from "@/@interfaces/post";
-import { Functions } from "../functions/Functions";
+import { HeaderFunctions } from "@/functions/EditorFunctions";
 
 const store = useAppStore();
-const { notify } = useNotificator();
-
 const editMode = computed(() => store.state.editor.editMode);
 const editorData = computed(() => store.state.editor.richTextEditor);
-
 const term = ref("");
 const tag = ref<string>("");
 const posts = ref<IPostResponse[]>([]);
 const fileUploaded = ref<FileList | null>(null);
 const fileUploadedOnEditMode = ref<FileList | null>(null);
 
-const refs = {
-  tag,
+const functions = new HeaderFunctions({
+  editMode,
   editorData,
-  term,
-  posts,
   fileUploaded,
   fileUploadedOnEditMode,
-};
+  posts,
+  tag,
+  term,
+});
 </script>
 
 <template>
   <div :class="css.searchWrapper">
     <input
-      @input="Functions.search({ store, posts: refs.posts, term: refs.term })"
+      @input="functions.search"
       type="text"
       v-model="term"
       :placeholder="`Search for a post`"
@@ -41,16 +38,7 @@ const refs = {
       <li
         v-for="post in posts"
         :class="css.dropdownItem"
-        @click="
-          Functions.handleSelectedToEdit({
-            store,
-            post,
-            editorData: refs.editorData,
-            fileUploaded: refs.fileUploaded,
-            posts: refs.posts,
-            term: refs.term,
-          })
-        "
+        @click="functions.handleSelectedToEdit(post)"
       >
         {{ post.title }}
       </li>
@@ -59,7 +47,7 @@ const refs = {
   <div :class="css.wrapper">
     <div>
       <button
-        v-on:click="Functions.onClickUpload"
+        v-on:click="functions.onClickUpload"
         :class="css.handleUploadBtn(fileUploaded)"
       >
         <span v-if="fileUploaded" :class="css.uploadedSpan"
@@ -80,15 +68,7 @@ const refs = {
     class="hidden"
     id="inputFile"
     accept="image/png, image/jpeg"
-    @change="
-      Functions.onFileChange($event, {
-        notify,
-        editMode,
-        editorData: refs.editorData,
-        fileUploaded: refs.fileUploaded,
-        fileUploadedOnEditMode: refs.fileUploadedOnEditMode,
-      })
-    "
+    @change="functions.onFileChange($event)"
   />
   <div :class="css.titleContainer">
     <input
@@ -105,17 +85,10 @@ const refs = {
     <input
       type="text"
       placeholder="Add up to 4 tags..."
-      @keydown.enter="
-        Functions.handleTags({ editorData, notify, tag: refs.tag })
-      "
       v-model="tag"
-      @keydown="
-        Functions.onKeyDownInTagInput($event, {
-          editorData: refs.editorData,
-          tag,
-        })
-      "
       :class="css.tagInput"
+      @keydown.enter="functions.handleTags"
+      @keydown="functions.onKeyDownInTagInput($event)"
     />
   </div>
 </template>

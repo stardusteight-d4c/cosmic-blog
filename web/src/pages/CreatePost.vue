@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from "vue";
 import {
   RichTextEditor,
   PreviewPost,
   BaseLayoutSlot,
-} from '@/components/create-post'
-import { useAppStore } from '@store/index'
+} from "@/components/create-post";
+import { useAppStore } from "@store/index";
 
-const store = useAppStore()
-const showPreview = computed(() => store.state.editor.showPreview)
+const store = useAppStore();
+const showPreview = computed(() => store.state.editor.showPreview);
 </script>
 
 <template>

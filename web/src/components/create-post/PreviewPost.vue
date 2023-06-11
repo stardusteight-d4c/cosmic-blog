@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import Article from '@/components/post/Article.vue'
-import { useAppStore } from '@store/index'
-import { computed } from 'vue'
-import { ArrowUUPLeft } from '@globals/atoms/icons'
-import { previewPostStyles as css } from './styles'
-import { editorMethods } from '@/store/modules/editor'
+import Article from "@/components/post/Article.vue";
+import { useAppStore } from "@store/index";
+import { computed } from "vue";
+import { ArrowUUPLeft } from "@globals/atoms/icons";
+import { previewPostStyles as css } from "./styles";
+import { editorMethods } from "@/store/modules/editor";
 
-const store = useAppStore()
+const store = useAppStore();
 
-const editorData = computed(() => store.state.editor.richTextEditor)
+const editorData = computed(() => store.state.editor.richTextEditor);
 
 function handleBackToEditor(): void {
-  store.commit(editorMethods.mutations.setShowPreview, false)
+  store.commit(editorMethods.mutations.setShowPreview, false);
 }
 </script>
 
