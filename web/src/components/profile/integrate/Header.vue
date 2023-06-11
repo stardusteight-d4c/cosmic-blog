@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { EditProfileSocialLinksPopUp } from '@/components/pop-ups'
-import { PencilLine } from '@/components/@globals/atoms/icons'
-import { headerStyles as css } from './styles'
-import { useAppStore } from '@/store'
-import { useRoute } from 'vue-router'
-import { authMethods } from '@/store/modules/auth'
+import { computed, ref } from "vue";
+import { EditProfileSocialLinksPopUp } from "@/components/pop-ups";
+import { PencilLine } from "@/components/@globals/atoms/icons";
+import { headerStyles as css } from "./styles";
+import { useAppStore } from "@/store";
+import { useRoute } from "vue-router";
+import { authMethods } from "@/store/modules/auth";
 
 defineProps({
   avatarUrl: {
@@ -16,27 +16,27 @@ defineProps({
     type: String,
     required: true,
   },
-})
+});
 
-const editSocialLinks = ref(false)
-let currentMemoji = ref(1)
+const editSocialLinks = ref(false);
+let currentMemoji = ref(1);
 
-const route = useRoute()
-const userId = route.params.id
+const route = useRoute();
+const userId = route.params.id;
 
-const store = useAppStore()
-store.commit(authMethods.mutations.setCurrentSession)
-const session = computed(() => store.state.auth.session)
+const store = useAppStore();
+store.commit(authMethods.mutations.setCurrentSession);
+const session = computed(() => store.state.auth.session);
 
 function closedEditSocialLinksPopUp() {
-  editSocialLinks.value = false
+  editSocialLinks.value = false;
 }
 
 function handleMemoji(): void {
   if (currentMemoji.value < 3) {
-    currentMemoji.value++
+    currentMemoji.value++;
   } else if (currentMemoji.value === 3) {
-    currentMemoji.value = 1
+    currentMemoji.value = 1;
   }
 }
 </script>

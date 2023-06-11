@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useAppStore } from '@/store'
-import { StarredPosts, CommentedPosts } from './integrate'
-import { interactionsWithPostsStyles as css } from './styles'
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useAppStore } from "@/store";
+import { StarredPosts, CommentedPosts } from "./integrate";
+import { interactionsWithPostsStyles as css } from "./styles";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 
-const store = useAppStore()
-const userData = computed(() => store.state.profile.user)
-const route = useRoute()
-const userId = route.params.id as string
+const store = useAppStore();
+const userData = computed(() => store.state.profile.user);
+const route = useRoute();
+const userId = route.params.id as string;
 </script>
 
 <template>

@@ -26,7 +26,6 @@ function backToTop(): void {
     window.requestAnimationFrame(backToTop);
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
     });
   }
 }

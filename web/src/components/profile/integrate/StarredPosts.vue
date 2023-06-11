@@ -1,61 +1,61 @@
 <script setup lang="ts">
-import PostCard from '@globals/PostCard.vue'
-import { Arrow, Star } from '@/components/@globals/atoms/icons'
-import { starredPostsStyles as css } from './styles'
-import { computed } from 'vue'
-import { useAppStore } from '@/store'
-import { onMounted, ref } from 'vue'
-import { profileMethods } from '@/store/modules/profile'
+import PostCard from "@globals/PostCard.vue";
+import { Arrow, Star } from "@/components/@globals/atoms/icons";
+import { starredPostsStyles as css } from "./styles";
+import { computed } from "vue";
+import { useAppStore } from "@/store";
+import { onMounted, ref } from "vue";
+import { profileMethods } from "@/store/modules/profile";
 
 interface IProps {
-  favoriteAmount: number
-  userId: string
+  favoriteAmount: number;
+  userId: string;
 }
 
-const props = defineProps<IProps>()
-const store = useAppStore()
-const favoritedPosts = computed(() => store.state.profile.favoritedPosts)
-const loading = ref(true)
-const currentPage = ref(0)
+const props = defineProps<IProps>();
+const store = useAppStore();
+const favoritedPosts = computed(() => store.state.profile.favoritedPosts);
+const loading = ref(true);
+const currentPage = ref(0);
 
 onMounted(async () => {
   try {
     await store.dispatch(profileMethods.actions.getFavoritedPosts, {
       userId: props.userId,
       skip: 0,
-    })
-    loading.value = false
+    });
+    loading.value = false;
   } catch (error) {
-    console.error('Error loading user data:', error)
-    loading.value = false
+    console.error("Error loading user data:", error);
+    loading.value = false;
   }
-})
+});
 
 async function handleNextPage() {
   if (favoritedPosts.value.length === 3) {
-    loading.value = true
-    currentPage.value++
+    loading.value = true;
+    currentPage.value++;
     await store.dispatch(profileMethods.actions.getFavoritedPosts, {
       userId: props.userId,
       skip: currentPage.value * 3,
-    })
+    });
     setTimeout(() => {
-      loading.value = false
-    }, 500)
+      loading.value = false;
+    }, 500);
   }
 }
 
 async function handleBackPage() {
   if (currentPage.value > 0) {
-    loading.value = true
-    currentPage.value--
+    loading.value = true;
+    currentPage.value--;
     await store.dispatch(profileMethods.actions.getFavoritedPosts, {
       userId: props.userId,
       skip: currentPage.value * 3,
-    })
+    });
     setTimeout(() => {
-      loading.value = false
-    }, 500)
+      loading.value = false;
+    }, 500);
   }
 }
 </script>
@@ -94,7 +94,7 @@ async function handleBackPage() {
         v-if="favoritedPosts && favoritedPosts.length > 0 && loading === false"
         v-for="post in favoritedPosts"
         :postId="post.id!"
-       :isMinimalist="true"
+        :isMinimalist="true"
         :title="post.title"
         :postedAt="post.postedIn"
         :content="post.body"
