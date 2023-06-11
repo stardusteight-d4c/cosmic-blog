@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Options } from './integrate'
-import { Navbar } from '@/components/navbar'
-import { baseLayoutSlotStyles as css } from './styles'
+import { Options } from "./integrate";
+import { Navbar } from "@/components/navbar";
+import { baseLayoutSlotStyles as css } from "./styles";
 </script>
 
 <template>

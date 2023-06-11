@@ -1,38 +1,39 @@
 <script setup lang="ts">
-import Tag from '@globals/integrate/Tag.vue'
-import Star from '@globals/atoms/icons/Star.vue'
-import coverPlaceholder from '@/assets/cover-placeholder.webp'
-import { articleHeaderStyles as css } from './styles'
-import { computed, ref } from 'vue'
-import { useAppStore } from '@/store'
-import { postMethods } from '@store/modules/post'
+import Tag from "@globals/integrate/Tag.vue";
+import Star from "@globals/atoms/icons/Star.vue";
+import coverPlaceholder from "@/assets/cover-placeholder.webp";
+import { articleHeaderStyles as css } from "./styles";
+import { computed } from "vue";
+import { useAppStore } from "@/store";
+import { postMethods } from "@store/modules/post";
 
 interface IProps {
-  coverImage?: string
-  tags?: string[]
+  coverImage?: string;
+  tags?: string[];
 }
-defineProps<IProps>()
 
-const store = useAppStore()
-const postId = computed(() => store.state.post.post?.id)
-const isGuest = computed(() => store.state.post.post?.isGuest ?? true)
+defineProps<IProps>();
+
+const store = useAppStore();
+const postId = computed(() => store.state.post.post?.id);
+const isGuest = computed(() => store.state.post.post?.isGuest ?? true);
 const isFavorited = computed({
   get: () => store.state.post.post?.isFavorited ?? false,
   set: (value) => store.commit(postMethods.mutations.setIsFavorited, value),
-})
-const userId = computed(() => store.state.auth.session.decodedToken?.user_id)
+});
+const userId = computed(() => store.state.auth.session.decodedToken?.user_id);
 
 async function toggleFavorite() {
-  isFavorited.value = !isFavorited.value
+  isFavorited.value = !isFavorited.value;
   if (isFavorited.value === true) {
-    store.commit(postMethods.mutations.setFavoriteAmount, true)
+    store.commit(postMethods.mutations.setFavoriteAmount, true);
   } else {
-    store.commit(postMethods.mutations.setFavoriteAmount, false)
+    store.commit(postMethods.mutations.setFavoriteAmount, false);
   }
   await store.dispatch(postMethods.actions.toggleFavorite, {
     postId: postId.value,
     userId: userId.value,
-  })
+  });
 }
 </script>
 

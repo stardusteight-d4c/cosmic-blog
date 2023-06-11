@@ -6,31 +6,30 @@ import { progressBarStyles as css } from './styles'
 
 const scrollPercentage = ref(0)
 
-// onMounted((): void => {
-//   window.addEventListener('scroll', handleArticleReadingScrollPercentage)
-// })
-// onUnmounted((): void => {
-//   window.removeEventListener('scroll', handleArticleReadingScrollPercentage)
-// })
+onMounted((): void => {
+  window.addEventListener('scroll', handleArticleReadingScrollPercentage)
+})
+onUnmounted((): void => {
+  window.removeEventListener('scroll', handleArticleReadingScrollPercentage)
+})
 
-// function handleArticleReadingScrollPercentage(): void {
-//   const articleBody = document.getElementById(ids.articleBody)!
-//   const computedStyle = window.getComputedStyle(articleBody)
-//   const matrixScale = computedStyle.getPropertyValue('transform')
-//   const postHeight = document.getElementById(ids.post)!.clientHeight
-//   const windowHeight = window.innerHeight
-//   const scrollY = window.scrollY
-
-//   if (matrixScale === 'matrix(1, 0, 0, 1, 0, 0)' || matrixScale === 'none') {
-//     const maxScrollY = postHeight * 1 - windowHeight // +0% (default)
-//     const newScrollPercentage = Math.min(scrollY / maxScrollY, 1) * 100
-//     scrollPercentage.value = newScrollPercentage
-//   } else if (matrixScale === 'matrix(1.2, 0, 0, 1.2, 0, 0)') {
-//     const maxScrollY = postHeight * 1.2 - windowHeight // +20%
-//     const newScrollPercentage = Math.min(scrollY / maxScrollY, 1) * 100
-//     scrollPercentage.value = newScrollPercentage
-//   }
-// }
+function handleArticleReadingScrollPercentage(): void {
+  const articleBody = document.getElementById(ids.articleBody)!
+  const computedStyle = window.getComputedStyle(articleBody)
+  const matrixScale = computedStyle.getPropertyValue('transform')
+  const postHeight = document.getElementById('article-post')!.clientHeight
+  const windowHeight = window.innerHeight
+  const scrollY = window.scrollY
+  if (matrixScale === 'matrix(1, 0, 0, 1, 0, 0)' || matrixScale === 'none') {
+    const maxScrollY = postHeight * 1 - windowHeight // +0% (default)
+    const newScrollPercentage = Math.min(scrollY / maxScrollY, 1) * 100
+    scrollPercentage.value = newScrollPercentage
+  } else if (matrixScale === 'matrix(1.2, 0, 0, 1.2, 0, 0)') {
+    const maxScrollY = postHeight * 1.2 - windowHeight // +20%
+    const newScrollPercentage = Math.min(scrollY / maxScrollY, 1) * 100
+    scrollPercentage.value = newScrollPercentage
+  }
+}
 </script>
 
 <template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Calendar } from '@/components/@globals/atoms/icons'
 import * as marked from 'marked'
 import { ArticleFooter } from '.'
@@ -27,7 +26,7 @@ const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
 </script>
 
 <template>
-  <div :id="HTML_ID.articleBody" :class="css.wrapper(showFooter)">
+  <div id="articleBody" :class="css.wrapper(showFooter)">
     <div :class="css.articleContentContainer">
       <span :class="css.date">
         <Calendar width="20" heigth="20" color="#F2F2F270" />{{
