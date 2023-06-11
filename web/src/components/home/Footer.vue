@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import brazilIcon from '@/assets/brazil.png'
-import { Copyright } from '@/components/@globals/atoms/icons'
-import { footerStyles as css } from './styles'
+import brazilIcon from "@/assets/brazil.png";
+import { Copyright } from "@/components/@globals/atoms/icons";
+import { footerStyles as css } from "./styles";
 </script>
 
 <template>

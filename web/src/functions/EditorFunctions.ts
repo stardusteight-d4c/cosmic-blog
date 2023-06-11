@@ -140,7 +140,20 @@ export class RichTextEditorFunctions {
     this.#session = params.session;
   }
 
+  private notify(
+    type: NotificationType,
+    content: string,
+    title?: string | undefined
+  ) {
+    store.commit(notificationMethods.mutations.notify, {
+      title,
+      content,
+      type,
+    });
+  }
+
   async submitPost() {
+    this.notify("WARNING", "Sending post...")
     const uid = new ShortUniqueId({ length: 10 });
     const fileName = uid();
     const publicImageURL = await uploadImageToFirebase(
@@ -159,6 +172,15 @@ export class RichTextEditorFunctions {
       },
     };
     await store.dispatch(editorMethods.actions.publishPost, post);
+    store.commit(editorMethods.mutations.setRichTextEditor, {
+      postId: undefined,
+      tags: [],
+      coverImage: "",
+      title: "",
+      date: new Date(),
+      body: "",
+    });
+    this.notify("SUCCESS", "Post sent!")
   }
 }
 

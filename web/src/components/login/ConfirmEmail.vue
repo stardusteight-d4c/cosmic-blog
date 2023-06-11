@@ -4,9 +4,9 @@ import CodeInput from './integrate/CodeInput.vue'
 import useNotificator from '@/hooks/Notificator'
 import bcryptjs from 'bcryptjs'
 import { useAppStore } from '@/store'
-import { useRouter } from 'vue-router'
 import { IRegisterUserData } from '@/@interfaces/login'
 import { loginMethods } from '@/store/modules/login'
+import router from '@/router'
 
 const props = defineProps({
   encryptedCode: {
@@ -16,7 +16,6 @@ const props = defineProps({
 })
 
 const store = useAppStore()
-const router = useRouter()
 const { notify } = useNotificator()
 const signUpData = computed(() => store.state.login.signUp)
 const pastedCode = ref<number[]>([])

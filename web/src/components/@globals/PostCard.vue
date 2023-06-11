@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { Calendar } from '@globals/atoms/icons'
-import Tag from './integrate/Tag.vue'
-import { postCardStyles as css } from './styles'
-import dayjs from 'dayjs'
+import { Calendar } from "@globals/atoms/icons";
+import Tag from "./integrate/Tag.vue";
+import { postCardStyles as css } from "./styles";
+import dayjs from "dayjs";
 
 interface IProps {
-  isMinimalist?: boolean
-  cover?: string
-  postId: string
-  title: string
-  postedAt: Date
-  content: string
-  tags: string[]
+  isMinimalist?: boolean;
+  cover?: string;
+  postId: string;
+  title: string;
+  postedAt: Date;
+  content: string;
+  tags: string[];
 }
 
-defineProps<IProps>()
+defineProps<IProps>();
 </script>
 
 <template>
@@ -26,7 +26,7 @@ defineProps<IProps>()
       </h2>
       <div :class="css.calendarContainer">
         <Calendar width="18" height="18" />{{
-          dayjs(postedAt).format('D[/]MMM[, ]YYYY')
+          dayjs(postedAt).format("D[/]MMM[, ]YYYY")
         }}
       </div>
       <span :class="css.previewText">{{ content }}</span>

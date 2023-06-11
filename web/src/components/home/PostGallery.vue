@@ -1,53 +1,52 @@
 <script setup lang="ts">
-import PostCard from '@globals/PostCard.vue'
-import GalleryHeader from './integrate/GalleryHeader.vue'
-import Pagination from './integrate/Pagination.vue'
-import { postGalleryStyles as css } from './styles'
-import { useAppStore } from '@/store'
-import { computed, ref } from 'vue'
-import { postMethods } from '@store/modules/post'
+import PostCard from "@globals/PostCard.vue";
+import GalleryHeader from "./integrate/GalleryHeader.vue";
+import Pagination from "./integrate/Pagination.vue";
+import { postGalleryStyles as css } from "./styles";
+import { useAppStore } from "@/store";
+import { computed, ref } from "vue";
+import { postMethods } from "@store/modules/post";
 
-const store = useAppStore()
-const posts = computed(() => store.state.post.home)
-const currentPage = ref(0)
-const loading = ref(true)
+const store = useAppStore();
+const posts = computed(() => store.state.post.home);
+const currentPage = ref(0);
+const loading = ref(true);
 
 async function handleNextPage() {
   if (posts.value.length === 6) {
-    loading.value = true
-    currentPage.value++
+    loading.value = true;
+    currentPage.value++;
     await store.dispatch(postMethods.actions.getHomePosts, {
       skip: currentPage.value * 6,
-    })
+    });
     setTimeout(() => {
-      loading.value = false
-    }, 500)
-    const element = document.getElementById('post-gallery')!
+      loading.value = false;
+    }, 500);
+    const element = document.getElementById("post-gallery")!;
     element.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-      inline: 'nearest',
-    })
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest",
+    });
   }
 }
 
 async function handleBackPage() {
-  console.log(posts.value)
   if (currentPage.value > 0) {
-    loading.value = true
-    currentPage.value--
+    loading.value = true;
+    currentPage.value--;
     await store.dispatch(postMethods.actions.getHomePosts, {
       skip: currentPage.value * 6,
-    })
+    });
     setTimeout(() => {
-      loading.value = false
-    }, 500)
-    const element = document.getElementById('post-gallery')!
+      loading.value = false;
+    }, 500);
+    const element = document.getElementById("post-gallery")!;
     element.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-      inline: 'nearest',
-    })
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest",
+    });
   }
 }
 </script>

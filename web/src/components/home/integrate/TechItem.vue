@@ -1,33 +1,30 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { techs, descriptions, isEven } from '@/utils'
-import { techItemStyles as css } from './styles'
-type Techs = 'backend' | 'language' | 'frontend' | 'database'
+import { ref } from "vue";
+import { techs, descriptions, isEven } from "@/utils";
+import { techItemStyles as css } from "./styles";
 
-defineProps({
-  type: {
-    type: String as () => Techs,
-    required: true,
-  },
-  index: {
-    type: Number,
-    required: true,
-  },
-})
+type Techs = "backend" | "language" | "frontend" | "database";
 
-const currentTechs = ref([0, 0, 0, 0])
+interface IProps {
+  type: Techs;
+  index: number;
+}
+
+defineProps<IProps>();
+
+const currentTechs = ref([0, 0, 0, 0]);
 
 function handleTechs(array: Techs): void {
-  const techsKeys = ['backend', 'language', 'frontend', 'database']
-  const currentTech = techsKeys.findIndex((item) => item === array)
-  const penultimateItemIndex = techs[array].length - 2
-  const lastItemIndex = techs[array].length
+  const techsKeys = ["backend", "language", "frontend", "database"];
+  const currentTech = techsKeys.findIndex((item) => item === array);
+  const penultimateItemIndex = techs[array].length - 2;
+  const lastItemIndex = techs[array].length;
   if (currentTechs.value[currentTech] <= penultimateItemIndex) {
-    currentTechs.value[currentTech]++
+    currentTechs.value[currentTech]++;
   } else if (currentTechs.value[currentTech] === lastItemIndex - 1) {
-    currentTechs.value[currentTech] = 0
+    currentTechs.value[currentTech] = 0;
   }
-  return
+  return;
 }
 </script>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import starStruck from '@/assets/star-struck.png'
-import QRcode from '@/assets/qrcode.svg'
-import { bioStyles as css } from './styles'
+import starStruck from "@/assets/star-struck.png";
+import QRcode from "@/assets/qrcode.svg";
+import { bioStyles as css } from "./styles";
 </script>
 
 <template>

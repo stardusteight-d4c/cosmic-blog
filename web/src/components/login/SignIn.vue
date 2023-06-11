@@ -4,12 +4,11 @@ import { LabelSpan } from './integrate'
 import { signInStyles as css } from './styles'
 import { useAppStore } from '@/store'
 import { loginMethods } from '@/store/modules/login'
-import { useRouter } from 'vue-router'
+import router from '@/router'
 
 const emit = defineEmits(['changeToSignUp'])
 
 const store = useAppStore()
-const router = useRouter()
 const usernameOrEmailSpan = 'Username or Email'.split('')
 const passwordSpan = 'Password'.split('')
 
