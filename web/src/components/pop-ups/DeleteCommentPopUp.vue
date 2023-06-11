@@ -1,49 +1,49 @@
 <script setup lang="ts">
-import { XCircle } from '@/components/@globals/atoms/icons'
-import { BaseLayoutSlot } from '.'
-import { deletePopUpStyles as css } from './styles'
-import { useAppStore } from '@/store'
-import { post, postMethods } from '@/store/modules/post'
-import { useRoute } from 'vue-router'
+import { XCircle } from "@/components/@globals/atoms/icons";
+import { BaseLayoutSlot } from ".";
+import { deletePopUpStyles as css } from "./styles";
+import { useAppStore } from "@/store";
+import { post, postMethods } from "@/store/modules/post";
+import { useRoute } from "vue-router";
 
 interface IProps {
-  commentId: string
-  currentPage: number
+  commentId: string;
+  currentPage: number;
 }
 
-const props = defineProps<IProps>()
+const props = defineProps<IProps>();
 
-const emit = defineEmits(['closedDeletePopUp'])
-const route = useRoute()
-const store = useAppStore()
-const postId = route.params.id
+const emit = defineEmits(["closedDeletePopUp"]);
+const route = useRoute();
+const store = useAppStore();
+const postId = route.params.id;
 
 async function handleDelete() {
-  console.log(props.currentPage)
+  console.log(props.currentPage);
 
   console.log({
     commentId: props.commentId,
     postId,
     skip: Number(props.currentPage) * 4,
-  })
+  });
   await store.dispatch(postMethods.actions.deleteComment, {
     commentId: props.commentId,
     postId,
     skip: props.currentPage * 4,
-  })
-  emit('closedDeletePopUp')
+  });
+  emit("closedDeletePopUp");
   setTimeout(() => {
-    const element = document.getElementById('comments')!
+    const element = document.getElementById("comments")!;
     element.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-      inline: 'nearest',
-    })
-  }, 100)
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest",
+    });
+  }, 100);
 }
 
 function handleCancel() {
-  emit('closedDeletePopUp')
+  emit("closedDeletePopUp");
 }
 </script>
 

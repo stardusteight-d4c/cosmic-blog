@@ -153,7 +153,7 @@ export class RichTextEditorFunctions {
   }
 
   async submitPost() {
-    this.notify("WARNING", "Sending post...")
+    this.notify("WARNING", "Sending post...");
     const uid = new ShortUniqueId({ length: 10 });
     const fileName = uid();
     const publicImageURL = await uploadImageToFirebase(
@@ -180,7 +180,7 @@ export class RichTextEditorFunctions {
       date: new Date(),
       body: "",
     });
-    this.notify("SUCCESS", "Post sent!")
+    this.notify("SUCCESS", "Post sent!");
   }
 }
 

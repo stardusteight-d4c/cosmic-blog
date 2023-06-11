@@ -1,52 +1,53 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { ChooseAvatarPopUp } from '@/components/pop-ups'
-import avatarPlaceholder from '@/assets/avatar-placeholder.svg'
-import { ArrowUUPLeft } from '@/components/@globals/atoms/icons'
-import { chooseAvatarFormStyles as css } from './styles'
-import ConfirmEmail from '../ConfirmEmail.vue'
-import useNotificator from '@/hooks/Notificator'
-import { useAppStore } from '@/store'
-import { getAvatarUrlById } from '@/utils'
-import { loginMethods } from '@/store/modules/login'
+import { ref, computed } from "vue";
+import { ChooseAvatarPopUp } from "@/components/pop-ups";
+import avatarPlaceholder from "@/assets/avatar-placeholder.svg";
+import { ArrowUUPLeft } from "@/components/@globals/atoms/icons";
+import { chooseAvatarFormStyles as css } from "./styles";
+import ConfirmEmail from "../ConfirmEmail.vue";
+import useNotificator from "@/hooks/Notificator";
+import { useAppStore } from "@/store";
+import { getAvatarUrlById } from "@/utils";
+import { loginMethods } from "@/store/modules/login";
 
-const emit = defineEmits(['backStep'])
+const emit = defineEmits(["backStep"]);
 
-const { notify } = useNotificator()
-const store = useAppStore()
-const proceedToChooseAvatar = ref(false)
-const proceedToConfirmEmail = ref(false)
-const encryptedCode = ref()
-const selectedAvatar = ref<null | string>(null)
-const signUpData = computed(() => store.state.login.signUp)
+const { notify } = useNotificator();
+const store = useAppStore();
+const proceedToChooseAvatar = ref(false);
+const proceedToConfirmEmail = ref(false);
+const encryptedCode = ref();
+const selectedAvatar = ref<null | string>(null);
+const signUpData = computed(() => store.state.login.signUp);
 
 async function handleProceedToConfirmEmail() {
   encryptedCode.value = await store.dispatch(
     loginMethods.actions.verifyEmail,
     signUpData.value.email
-  )
-  notify('SUCCESS', 'Code sent to registered email!')
-  proceedToConfirmEmail.value = true
+  );
+  notify("SUCCESS", "Code sent to registered email!");
+  proceedToConfirmEmail.value = true;
 }
 
-function closedChooseAvatar(): void {
-  proceedToChooseAvatar.value = false
+function onClosedChooseAvatar(): void {
+  proceedToChooseAvatar.value = false;
 }
-function selectedChooseAvatarPopUp(payload: { id: string }): void {
-  selectedAvatar.value = payload.id
+
+function onSelectedChooseAvatarPopUp(payload: { id: string }): void {
+  selectedAvatar.value = payload.id;
 }
 
 function handleBackStep(): void {
-  emit('backStep')
+  emit("backStep");
 }
 
 const avatarUrl = computed((): string | undefined => {
   store.commit(loginMethods.mutations.setSignUp, {
     ...signUpData.value,
     selectedAvatar: selectedAvatar.value,
-  })
-  return getAvatarUrlById(selectedAvatar.value!)
-})
+  });
+  return getAvatarUrlById(selectedAvatar.value!);
+});
 </script>
 
 <template>
@@ -65,8 +66,8 @@ const avatarUrl = computed((): string | undefined => {
           :class="css.placeholderAvatarImage"
         />
         <ChooseAvatarPopUp
-          @selectedChooseAvatarPopUp="selectedChooseAvatarPopUp"
-          @closedChooseAvatarPopUp="closedChooseAvatar"
+          @selectedChooseAvatarPopUp="onSelectedChooseAvatarPopUp"
+          @closedChooseAvatarPopUp="onClosedChooseAvatar"
           v-if="proceedToChooseAvatar"
         />
         <div

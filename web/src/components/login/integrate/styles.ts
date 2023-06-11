@@ -10,4 +10,9 @@ export const chooseAvatarFormStyles = {
   buttonsContainer: `mx-auto w-fit flex items-center justify-center gap-x-5`,
   backStepBtn: `flex mt-8 items-center justify-center gap-x-2 w-[115px] active:scale-90 rounded-full text-sm md:text-base transition-all duration-300 font-medium py-2 bg-[#f2f2f2]/5`,
   createBtn: `flex disabled:brightness-75 disabled:cursor-not-allowed mt-8 items-center justify-center gap-x-2 w-[115px] active:scale-90 rounded-full text-sm md:text-base transition-all duration-300 font-medium py-2 bg-blue-500`,
-}
+};
+
+export const codeInputStyles = {
+  wrapper: `w-full h-full relative min-w-[80px] min-h-[80px] max-w-[80px] max-h-[80px] bg-black/50 rounded-md text-4xl text-white font-bold flex items-center justify-center`,
+  input: `bg-transparent text-center text-white text-5xl cursor-pointer absolute inset-0 w-full h-full outline-none z-50`,
+};

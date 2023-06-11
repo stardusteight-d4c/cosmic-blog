@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { chooseAvatars } from '@/utils'
-import { UserCirclePlus, Arrow } from '@/components/@globals/atoms/icons'
-import { BaseLayoutSlot } from '.'
-import { chooseAvatarPopUpStyles as css } from './styles'
+import { ref, computed } from "vue";
+import { chooseAvatars } from "@/utils";
+import { UserCirclePlus, Arrow } from "@/components/@globals/atoms/icons";
+import { BaseLayoutSlot } from ".";
+import { chooseAvatarPopUpStyles as css } from "./styles";
 
 const emit = defineEmits([
-  'closedChooseAvatarPopUp',
-  'selectedChooseAvatarPopUp',
-])
+  "closedChooseAvatarPopUp",
+  "selectedChooseAvatarPopUp",
+]);
 
-const page = ref(1)
-const avatars = chooseAvatars
-const selectedAvatar = ref<null | string>(null)
+const page = ref(1);
+const avatars = chooseAvatars;
+const selectedAvatar = ref<null | string>(null);
 const slicedAvatars = computed(() => {
-  const itemsPerPage = 3
-  const startIndex = (page.value - 1) * itemsPerPage
-  const endIndex = page.value * itemsPerPage
-  return avatars.slice(startIndex, endIndex)
-})
+  const itemsPerPage = 3;
+  const startIndex = (page.value - 1) * itemsPerPage;
+  const endIndex = page.value * itemsPerPage;
+  return avatars.slice(startIndex, endIndex);
+});
 
 function handleCancel() {
-  emit('closedChooseAvatarPopUp')
+  emit("closedChooseAvatarPopUp");
 }
 function handleSelect() {
-  emit('selectedChooseAvatarPopUp', { id: selectedAvatar.value })
-  emit('closedChooseAvatarPopUp')
+  emit("selectedChooseAvatarPopUp", { id: selectedAvatar.value });
+  emit("closedChooseAvatarPopUp");
 }
 
 function handlePage() {
   if (page.value === 1) {
-    page.value = 2
+    page.value = 2;
   } else {
-    page.value = 1
+    page.value = 1;
   }
 }
 </script>

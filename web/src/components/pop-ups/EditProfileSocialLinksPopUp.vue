@@ -1,48 +1,45 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { detectClickOutsideElement, socialNetworks } from '@/utils'
-import { Smiley } from '@/components/@globals/atoms/icons'
-import { BaseLayoutSlot } from '.'
-import { editProfileSocialPopUpStyles as css } from './styles'
-import { useAppStore } from '@/store'
-import { profileMethods } from '@/store/modules/profile'
+import { ref, onMounted, onUnmounted } from "vue";
+import { detectClickOutsideElement, socialNetworks } from "@/utils";
+import { Smiley } from "@/components/@globals/atoms/icons";
+import { BaseLayoutSlot } from ".";
+import { editProfileSocialPopUpStyles as css } from "./styles";
+import { useAppStore } from "@/store";
+import { profileMethods } from "@/store/modules/profile";
 
-const emit = defineEmits(['closedEditProfileSocialLinksPopUp'])
+const emit = defineEmits(["closedEditProfileSocialLinksPopUp"]);
 
-const store = useAppStore()
-const showSocialNetworks = ref(false)
-const selectedSocialNetwork = ref(socialNetworks[0])
-const inputValue = ref('')
+const store = useAppStore();
+const showSocialNetworks = ref(false);
+const selectedSocialNetwork = ref(socialNetworks[0]);
+const inputValue = ref("");
 
 onMounted(() => {
-  document.addEventListener('click', handleClickOutsideOfNetworksListDropDown)
-})
+  document.addEventListener("click", handleClickOutsideOfNetworksListDropDown);
+});
 onUnmounted(() => {
   document.removeEventListener(
-    'click',
+    "click",
     handleClickOutsideOfNetworksListDropDown
-  )
-})
+  );
+});
 
 function handleClickOutsideOfNetworksListDropDown(event: MouseEvent) {
-  const { clickedOutside } = detectClickOutsideElement(event, 'networksList')
+  const { clickedOutside } = detectClickOutsideElement(event, "networksList");
   if (clickedOutside && showSocialNetworks.value === true) {
-    showSocialNetworks.value = false
+    showSocialNetworks.value = false;
   }
 }
 
 function handleCancel() {
-  emit('closedEditProfileSocialLinksPopUp')
+  emit("closedEditProfileSocialLinksPopUp");
 }
 
 async function save() {
-  const socialNetwork = selectedSocialNetwork.value.name.toLowerCase()
-  const newSocialLink = { [socialNetwork]: inputValue.value }
-  await store.dispatch(
-    profileMethods.actions.updateSocialLinks,
-    newSocialLink
-  )
-  handleCancel()
+  const socialNetwork = selectedSocialNetwork.value.name.toLowerCase();
+  const newSocialLink = { [socialNetwork]: inputValue.value };
+  await store.dispatch(profileMethods.actions.updateSocialLinks, newSocialLink);
+  handleCancel();
 }
 </script>
 

@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { BaseLayoutSlot } from '.'
-import { FloppyDisk } from '@/components/@globals/atoms/icons'
-import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils'
-import { savePopUpStyles as css } from './styles'
+import { BaseLayoutSlot } from ".";
+import { FloppyDisk } from "@/components/@globals/atoms/icons";
+import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from "@/utils";
+import { savePopUpStyles as css } from "./styles";
 
-const emit = defineEmits(['closedSavePopUp'])
+const emit = defineEmits(["closedSavePopUp"]);
 
 function saveText() {
   const textareaElement: HTMLTextAreaElement = document.getElementById(
     ids.textareaEditor
-  ) as HTMLTextAreaElement
-  localStorage.setItem('saveText', textareaElement.value)
-  emit('closedSavePopUp')
+  ) as HTMLTextAreaElement;
+  localStorage.setItem("saveText", textareaElement.value);
+  emit("closedSavePopUp");
 }
 
 function handleCancel() {
-  emit('closedSavePopUp')
+  emit("closedSavePopUp");
 }
 </script>
 

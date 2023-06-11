@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { calculateDelay } from '@/utils'
-import { LabelSpan } from './integrate'
-import { signInStyles as css } from './styles'
-import { useAppStore } from '@/store'
-import { loginMethods } from '@/store/modules/login'
-import router from '@/router'
+import { calculateDelay } from "@/utils";
+import { LabelSpan } from "./integrate";
+import { signInStyles as css } from "./styles";
+import { useAppStore } from "@/store";
+import { loginMethods } from "@/store/modules/login";
+import router from "@/router";
 
-const emit = defineEmits(['changeToSignUp'])
+const emit = defineEmits(["changeToSignUp"]);
 
-const store = useAppStore()
-const usernameOrEmailSpan = 'Username or Email'.split('')
-const passwordSpan = 'Password'.split('')
+const store = useAppStore();
+const usernameOrEmailSpan = "Username or Email".split("");
+const passwordSpan = "Password".split("");
 
 const formData = {
-  usernameOrEmail: '',
-  password: '',
-}
+  usernameOrEmail: "",
+  password: "",
+};
 
 async function signIn() {
   const data = await store.dispatch(loginMethods.actions.sign, {
     identifier: formData.usernameOrEmail,
     password: formData.password,
-  })
+  });
   if (data) {
-    router.push(`/profile/${data.user.id}`)
+    router.push(`/profile/${data.user.id}`);
   }
 }
 
 function handleSignUp(): void {
-  emit('changeToSignUp', 'SignUp')
+  emit("changeToSignUp", "SignUp");
 }
 </script>
 
@@ -66,7 +66,9 @@ function handleSignUp(): void {
           </label>
         </div>
       </div>
-      <button @click="signIn" type="button" :class="css.submitBtn">Sign In</button>
+      <button @click="signIn" type="button" :class="css.submitBtn">
+        Sign In
+      </button>
     </form>
   </div>
 </template>

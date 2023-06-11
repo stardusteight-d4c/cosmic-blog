@@ -1,111 +1,52 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import CodeInput from './integrate/CodeInput.vue'
-import useNotificator from '@/hooks/Notificator'
-import bcryptjs from 'bcryptjs'
-import { useAppStore } from '@/store'
-import { IRegisterUserData } from '@/@interfaces/login'
-import { loginMethods } from '@/store/modules/login'
-import router from '@/router'
+import { computed, ref } from "vue";
+import CodeInput from "./integrate/CodeInput.vue";
+import { useAppStore } from "@/store";
+import { confirmEmailStyles as css } from "./styles";
+import { ConfirmEmailFunctions } from "@/functions/ConfirmEmailFunctions";
 
 const props = defineProps({
   encryptedCode: {
     type: String,
     required: true,
   },
-})
+});
 
-const store = useAppStore()
-const { notify } = useNotificator()
-const signUpData = computed(() => store.state.login.signUp)
-const pastedCode = ref<number[]>([])
+const store = useAppStore();
+const pastedCode = ref<number[]>([]);
+const signUpData = computed(() => store.state.login.signUp);
 
-function handlePaste(event: ClipboardEvent) {
-  const pastedText = event.clipboardData?.getData('text')
-  if (!pastedText) {
-    return
-  }
-  if (pastedText?.length != 6) {
-    notify('ERROR', 'A valid code was not entered!')
-  }
-  const arrayOfNumber = pastedText.split('').map((item) => Number(item))
-  const isAllNumbers = arrayOfNumber.every(
-    (elemento) => typeof elemento === 'number' && !Number.isNaN(elemento)
-  )
-  if (isAllNumbers) {
-    pastedCode.value = arrayOfNumber
-  } else {
-    notify('ERROR', 'A valid code was not entered!')
-  }
-}
-
-function getCombinedInputValue() {
-  let combinedString = ''
-  for (let i = 1; i <= 6; i++) {
-    const inputId = `input-${i}`
-    const inputElement = document.getElementById(inputId) as HTMLInputElement
-    if (inputElement) {
-      const inputValue = inputElement.value
-      combinedString += inputValue
-    }
-  }
-  return combinedString
-}
-
-async function confirmCode() {
-  const code = getCombinedInputValue()
-  const isCodeValid = bcryptjs.compareSync(code, props.encryptedCode)
-  if (isCodeValid) {
-    notify('SUCCESS', 'A valid code was entered!')
-    const registerData: IRegisterUserData = {
-      email: signUpData.value.email,
-      avatar: signUpData.value.selectedAvatar!,
-      username: signUpData.value.username,
-      password: signUpData.value.password,
-      userRole: 'reader',
-    }
-    const data = await store.dispatch(
-      loginMethods.actions.registerUser,
-      registerData
-    )
-    if (data) {
-      router.push(`/profile/${data.user.id}`)
-    }
-  } else {
-    notify('ERROR', 'The code does not match the code sent!')
-  }
-}
+const functions = new ConfirmEmailFunctions({
+  encryptedCode: props.encryptedCode,
+  pastedCode,
+  signUpData,
+});
 </script>
 
 <template>
   <main>
-    <h2 class="text-3xl md:text-4xl text-center font-bold mb-14">
-      Confirm your email address!
-    </h2>
-    <div class="flex flex-col items-center justify-center md:flex-row gap-8">
-      <div class="flex items-center justify-center gap-8 w-full">
+    <h2 :class="css.title">Confirm your email address!</h2>
+    <div :class="css.inputsContainer">
+      <div :class="css.inputContainer">
         <CodeInput
           v-for="index in 3"
           :index="index"
           :key="index"
           :pastedCode="pastedCode"
-          @paste="handlePaste"
+          @paste="functions.handlePaste($event)"
         />
       </div>
-      <div class="flex items-center justify-center gap-8 w-full">
+      <div :class="css.inputContainer">
         <CodeInput
           v-for="index in 3"
           :index="index + 3"
           :key="index + 3"
           :pastedCode="pastedCode"
-          @paste="handlePaste"
+          @paste="functions.handlePaste($event)"
         />
       </div>
     </div>
-    <button
-      @click="confirmCode"
-      class="form-login-button w-fit text-xl mx-auto mt-8 font-semibold"
-    >
+    <button @click="functions.confirmCode" :class="css.confirmBtn">
       Confirm
     </button>
   </main>

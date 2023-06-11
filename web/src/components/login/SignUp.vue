@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { LabelSpan, ChooseAvatarForm } from './integrate'
-import { calculateDelay } from '@/utils'
-import { signUpStyles as css } from './styles'
-import { useAppStore } from '@store/index'
-import { loginMethods } from '@/store/modules/login'
+import { ref } from "vue";
+import { LabelSpan, ChooseAvatarForm } from "./integrate";
+import { calculateDelay } from "@/utils";
+import { signUpStyles as css } from "./styles";
+import { useAppStore } from "@store/index";
+import { loginMethods } from "@/store/modules/login";
 
-const emit = defineEmits(['changeToSignIn'])
+const emit = defineEmits(["changeToSignIn"]);
 
-const store = useAppStore()
-const usernameSpan = 'Username'.split('')
-const emailSpan = 'Email'.split('')
-const passwordSpan = 'Password'.split('')
-const confirmPasswordSpan = 'Confirm Password'.split('')
-const nextStep = ref<boolean>(false)
+const store = useAppStore();
+const usernameSpan = "Username".split("");
+const emailSpan = "Email".split("");
+const passwordSpan = "Password".split("");
+const confirmPasswordSpan = "Confirm Password".split("");
+const nextStep = ref<boolean>(false);
 
 const formData = {
-  username: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-}
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 function handleBackStep(): void {
-  nextStep.value = false
+  nextStep.value = false;
 }
 
 function handleNextStep(): void {
-  store.commit(loginMethods.mutations.setSignUp, formData)
-  nextStep.value = true
+  store.commit(loginMethods.mutations.setSignUp, formData);
+  nextStep.value = true;
 }
 
 function handleSignIn(): void {
-  emit('changeToSignIn', 'SignIn')
+  emit("changeToSignIn", "SignIn");
 }
 </script>
 

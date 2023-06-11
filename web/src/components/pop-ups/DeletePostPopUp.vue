@@ -1,38 +1,37 @@
 <script setup lang="ts">
-import { XCircle } from '@/components/@globals/atoms/icons'
-import { BaseLayoutSlot } from '.'
-import { deletePopUpStyles as css } from './styles'
-import { useAppStore } from '@/store'
-import { useRoute } from 'vue-router'
-import { editorMethods } from '@/store/modules/editor'
+import { XCircle } from "@/components/@globals/atoms/icons";
+import { BaseLayoutSlot } from ".";
+import { deletePopUpStyles as css } from "./styles";
+import { useAppStore } from "@/store";
+import { useRoute } from "vue-router";
+import { editorMethods } from "@/store/modules/editor";
 
 interface IProps {
-  postId: string
+  postId: string;
 }
 
-const props = defineProps<IProps>()
+const props = defineProps<IProps>();
 
-const emit = defineEmits(['closedDeletePopUp'])
-const route = useRoute()
-const store = useAppStore()
+const emit = defineEmits(["closedDeletePopUp"]);
+const route = useRoute();
+const store = useAppStore();
 
 async function handleDelete() {
-  await store.dispatch(editorMethods.actions.deletePost, props.postId)
+  await store.dispatch(editorMethods.actions.deletePost, props.postId);
   store.commit(editorMethods.mutations.setRichTextEditor, {
     postId: undefined,
     tags: [],
-    coverImage: '',
-    title: '',
+    coverImage: "",
+    title: "",
     date: new Date(),
-    body: '',
-  })
-  store.commit(editorMethods.mutations.setEditMode, false)
-  emit('closedDeletePopUp')
- 
+    body: "",
+  });
+  store.commit(editorMethods.mutations.setEditMode, false);
+  emit("closedDeletePopUp");
 }
 
 function handleCancel() {
-  emit('closedDeletePopUp')
+  emit("closedDeletePopUp");
 }
 </script>
 

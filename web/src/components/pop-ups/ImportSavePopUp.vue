@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { BaseLayoutSlot } from '.'
-import { Download } from '@/components/@globals/atoms/icons'
-import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from '@/utils'
-import { importSavePopUpStyles as css } from './styles'
-import useNotificator from '@/hooks/Notificator'
+import { BaseLayoutSlot } from ".";
+import { Download } from "@/components/@globals/atoms/icons";
+import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from "@/utils";
+import { importSavePopUpStyles as css } from "./styles";
+import useNotificator from "@/hooks/Notificator";
 
-const emit = defineEmits(['closedImportSavePopUp'])
-const { notify } = useNotificator()
+const emit = defineEmits(["closedImportSavePopUp"]);
+const { notify } = useNotificator();
 
 function getSave(): void {
-  const savedText = localStorage.getItem('saveText')
+  const savedText = localStorage.getItem("saveText");
   if (!savedText) {
-    notify('ERROR', 'No save found.')
-    emit('closedImportSavePopUp')
-    return
+    notify("ERROR", "No save found.");
+    emit("closedImportSavePopUp");
+    return;
   }
   const textareaElement: HTMLTextAreaElement = document.getElementById(
     ids.textareaEditor
-  ) as HTMLTextAreaElement
-  textareaElement.value = savedText
-  emit('closedImportSavePopUp')
+  ) as HTMLTextAreaElement;
+  textareaElement.value = savedText;
+  emit("closedImportSavePopUp");
 }
 
 function handleCancel(): void {
-  emit('closedImportSavePopUp')
+  emit("closedImportSavePopUp");
 }
 </script>
 
