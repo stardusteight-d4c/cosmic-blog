@@ -8,13 +8,11 @@ defineProps({
     type: Boolean,
     default: false,
   },
-})
+});
 </script>
 
 <template>
-  <button
-    :disabled="disabled"
-  >
+  <button :disabled="disabled">
     <slot name="icon"></slot>
     {{ title }}
   </button>

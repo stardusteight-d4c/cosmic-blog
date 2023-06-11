@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import Send from "@globals/atoms/icons/Send.vue";
 import Btn from "@globals/Btn.vue";
-import { submitCommentStyles as css } from "../styles";
+import Send from "@globals/atoms/icons/Send.vue";
 import { useAppStore } from "@/store";
 import { getAvatarUrlById } from "@/utils";
-import { postMethods } from "@/store/modules/post";
-import { IComment } from "@/@interfaces/comment";
+import { SubmitCommentFunctions } from "@/functions/CommentFunctions";
+import { submitCommentStyles as css } from "../styles";
 
 const emit = defineEmits(["submitComment"]);
 
@@ -19,13 +18,11 @@ watch(comment, (newValue) => {
 
 const isGuest = computed(() => store.state.post.post?.isGuest ?? true);
 const store = useAppStore();
-const currentUserSession = computed(() => store.state.auth.session);
-const userAvatar = getAvatarUrlById(
-  currentUserSession.value.decodedToken?.avatarId ?? ""
-);
+const session = computed(() => store.state.auth.session);
+const userAvatar = getAvatarUrlById(session.value.decodedToken?.avatarId ?? "");
 const handledAvatarString = userAvatar?.replace(/-\d+\.png$/, "-")!;
-const postId = computed(() => store.state.post.post?.id);
-const postTitle = computed(() => store.state.post.post?.title);
+const postId = computed(() => store.state.post.post!.id);
+const postTitle = computed(() => store.state.post.post!.title);
 let currentMemoji = ref(1);
 
 function handleMemoji(): void {
@@ -36,23 +33,15 @@ function handleMemoji(): void {
   }
 }
 
-async function submitComment() {
-  emit("submitComment");
-  const session = currentUserSession.value.decodedToken!;
-  const payload: IComment = {
-    content: comment.value,
-    postedAt: new Date(),
-    postId: postId.value!,
-    postTitle: postTitle.value!,
-    owner: {
-      id: session.user_id,
-      avatar: `${handledAvatarString}${currentMemoji.value}.png`,
-      username: session.username,
-    },
-  };
-  await store.dispatch(postMethods.actions.leaveComment, payload);
-  comment.value = "";
-}
+const functions = new SubmitCommentFunctions({ session });
+const refs = {
+  emit,
+  comment,
+  postId,
+  postTitle,
+  handledAvatarString,
+  currentMemoji: currentMemoji.value,
+};
 </script>
 
 <template>
@@ -76,7 +65,7 @@ async function submitComment() {
           >{{ countCharacters }}/500</span
         >
         <Btn
-          @click="submitComment"
+          @click="functions.submitComment(refs)"
           title="Submit"
           :disabled="countCharacters > 500"
         >

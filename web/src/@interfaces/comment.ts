@@ -1,29 +1,29 @@
-import { TUserRole } from './login'
+import { TUserRole } from "./login";
 
 export interface ICommentResponse {
-  id: string
-  postId: string
-  postTitle: string
+  id: string;
+  postId: string;
+  postTitle: string;
   owner: {
-    id: string
-    email: string
-    username: string
-    avatar: string
-    userRole: TUserRole
-  }
-  content: string
-  postedAt: Date
+    id: string;
+    email: string;
+    username: string;
+    avatar: string;
+    userRole: TUserRole;
+  };
+  content: string;
+  postedAt: Date;
 }
 
 export interface IComment {
-  id?: string
-  postId: string
-  postTitle: string
+  id?: string;
+  postId: string;
+  postTitle: string;
   owner: {
-    id: string
-    username: string
-    avatar: string
-  }
-  content: string
-  postedAt: Date
+    id: string;
+    username: string;
+    avatar: string;
+  };
+  content: string;
+  postedAt: Date;
 }

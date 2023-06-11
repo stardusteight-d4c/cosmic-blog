@@ -89,8 +89,10 @@ export const commentStyles = {
   contentCotainer: `flex flex-col items-start w-full`,
   header: `flex items-center justify-between w-full`,
   authorInfosContainer: `flex items-center`,
+  profileLinkContainer: `flex items-center cursor-pointer`,
   authorImage: `w-16 h-16 -ml-4 -mt-4`,
   authorName: `text-lg font-semibold -mt-3`,
+  commentDate: `text-sm ml-1 -mt-[10px] text-[#f2f2f280] cursor-default`,
   operationsContainer: `-mt-[10px] flex items-center gap-x-2 text-[#7c7c7c]`,
   handleEdit: (selectedEditComment: boolean) => {
     return {

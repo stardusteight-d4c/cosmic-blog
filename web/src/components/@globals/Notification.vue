@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useAppStore } from '@/store'
+import { computed } from "vue";
+import { useAppStore } from "@/store";
 
 const ctx = {
-  SUCCESS: 'notification-container-success',
-  ERROR: 'notification-container-error',
-  WARNING: 'notification-container-warning',
-}
+  SUCCESS: "notification-container-success",
+  ERROR: "notification-container-error",
+  WARNING: "notification-container-warning",
+};
 
-const store = useAppStore()
-const notifications = computed(() => store.state.notification.notifications)
+const store = useAppStore();
+const notifications = computed(() => store.state.notification.notifications);
 </script>
 
 <template>

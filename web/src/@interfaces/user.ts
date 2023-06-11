@@ -11,14 +11,14 @@ export interface ISocialLinks {
 }
 
 export interface IUser {
-  id: string
-  email: string
-  username: string
-  avatar: string
-  userRole: TUserRole
-  socialLinks: ISocialLinks | undefined
-  favoriteAmount?: number
-  commentAmount?: number
+  id: string;
+  email: string;
+  username: string;
+  avatar: string;
+  userRole: TUserRole;
+  socialLinks: ISocialLinks | undefined;
+  favoriteAmount?: number;
+  commentAmount?: number;
 }
 
 export interface IUserObject {
@@ -30,4 +30,3 @@ export interface IUserObject {
   userRole?: TUserRole;
   socialLinks?: ISocialLinks | undefined;
 }
-

@@ -1,15 +1,15 @@
 export interface IArticleData {
-  postId?: string
-  tags: Array<string>
-  coverImage: string
-  title: string
-  date: Date
-  body: string
+  postId?: string;
+  tags: Array<string>;
+  coverImage: string;
+  title: string;
+  date: Date;
+  body: string;
 }
 
 export interface IHeadArticleData {
-  tags: Array<string>
-  coverImage: string
-  title: string
-  date: Date
+  tags: Array<string>;
+  coverImage: string;
+  title: string;
+  date: Date;
 }
