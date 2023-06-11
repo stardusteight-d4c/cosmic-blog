@@ -1,11 +1,11 @@
-import api from "@/lib/axios"
-import { getSessionCookie } from "@/utils/getSessionCookie"
+import api from "@/lib/axios";
+import { getSessionCookie } from "@/utils/getSessionCookie";
 
 export class DELETE {
-  constructor() { }
+  constructor() {}
 
   static async deletePost(postId: string) {
-    const authorization = getSessionCookie()
+    const authorization = getSessionCookie();
     await api
       .delete(`/post/${postId}`, {
         headers: {
@@ -13,12 +13,12 @@ export class DELETE {
         },
       })
       .then((res) => res.data)
-      .catch((error) => console.log(error))
+      .catch((error) => console.log(error));
   }
 
   static async deleteComment(commentId: string) {
     await api
       .delete(`/comment/${commentId}`)
-      .catch((error) => console.log(error))
+      .catch((error) => console.log(error));
   }
 }

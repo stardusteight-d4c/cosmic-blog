@@ -1,7 +1,7 @@
-export function removeEmptyValues(obj: any) {
+export function removeObjEmptyValues(obj: any) {
   Object.keys(obj).forEach((key) => {
-    if (obj[key] === '') {
-      delete obj[key]
+    if (obj[key] === "") {
+      delete obj[key];
     }
-  })
+  });
 }

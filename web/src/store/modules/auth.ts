@@ -1,20 +1,19 @@
-import type { Module } from 'vuex'
-import type { AppState } from '@/store'
-import { ISession } from '@/@interfaces/auth'
-import { handleSection } from '@/utils/handleSection'
-
+import type { Module } from "vuex";
+import type { AppState } from "@/store";
+import { ISession } from "@/@interfaces/auth";
+import { handleSection } from "@/utils/handleSection";
 
 export interface IAuthState {
-  session: ISession
+  session: ISession;
 }
 
 export const authMethods = {
   mutations: {
-    setCurrentSession: 'SET_CURRENT_SESSION',
+    setCurrentSession: "SET_CURRENT_SESSION",
   },
   actions: {},
-}
-const mutations = authMethods.mutations
+};
+const mutations = authMethods.mutations;
 
 export const auth: Module<IAuthState, AppState> = {
   state: {
@@ -26,8 +25,8 @@ export const auth: Module<IAuthState, AppState> = {
   },
   mutations: {
     [mutations.setCurrentSession](state) {
-      handleSection(state)
+      handleSection(state);
     },
   },
   actions: {},
-}
+};

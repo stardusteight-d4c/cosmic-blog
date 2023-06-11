@@ -1,26 +1,28 @@
 <script setup lang="ts">
-import { socialNetworks } from '@/utils'
-import { socialLinksStyles as css } from './styles'
-import { computed } from 'vue'
-import { isObjectEmpty } from '@/utils/isObjectEmpty'
+import { isObjectEmpty, socialNetworks } from "@/utils";
+import { socialLinksStyles as css } from "./styles";
+import { computed } from "vue";
 
 const props = defineProps({
   socialLinks: {
     type: Object as any,
   },
-})
+});
 
 const filteredSocialLinks = computed(() => {
-  const socialLinksKeys = Object.keys(props.socialLinks)
+  const socialLinksKeys = Object.keys(props.socialLinks);
   return socialNetworks.filter((network) =>
     socialLinksKeys.includes(network.name.toLowerCase())
-  )
-})
+  );
+});
 </script>
 
 <template>
   <div :class="css.wrapper">
-    <div :class="css.linksWrapper" v-if="socialLinks && !isObjectEmpty(socialLinks)">
+    <div
+      :class="css.linksWrapper"
+      v-if="socialLinks && !isObjectEmpty(socialLinks)"
+    >
       <div v-for="network in filteredSocialLinks">
         <a
           v-if="network.name === 'Email'"

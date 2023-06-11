@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import Send from "@globals/atoms/icons/Send.vue";
 import Btn from "@globals/Btn.vue";
 import { submitCommentStyles as css } from "../styles";

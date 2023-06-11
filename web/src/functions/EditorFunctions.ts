@@ -6,8 +6,7 @@ import { store } from "@/store";
 import { editorMethods } from "@/store/modules/editor";
 import { notificationMethods } from "@/store/modules/notification";
 import { postMethods } from "@/store/modules/post";
-import { handleMarkdown } from "@/utils";
-import { uploadImageToFirebase } from "@/utils/uploadImageToFirebase";
+import { handleMarkdown, uploadImageToFirebase } from "@/utils";
 import ShortUniqueId from "short-unique-id";
 import { ComputedRef, Ref } from "vue";
 

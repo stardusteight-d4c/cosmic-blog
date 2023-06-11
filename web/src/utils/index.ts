@@ -1,9 +1,18 @@
-export { calculateDelay } from './calculateDelay'
-export { chooseAvatars, descriptions, socialNetworks, techs } from './data'
-export type { IAvatars, SocialNetwork, Techs } from './data'
-export { dateFormat } from './dateFormat'
-export { detectClickOutsideElement } from './detectClickOutsideElement'
-export { getAvatarUrlById } from './getAvatarUrlById'
-export { handleMarkdown } from './handleMarkdown'
-export { isEven } from './isEven'
-export { setCookie } from './setCookie'
+export { calculateDelay } from "./calculateDelay";
+export { chooseAvatars, descriptions, socialNetworks, techs } from "./data";
+export type { IAvatars, SocialNetwork, Techs } from "./data";
+export { dateFormat } from "./dateFormat";
+export { detectClickOutsideElement } from "./detectClickOutsideElement";
+export { getAvatarUrlById } from "./getAvatarUrlById";
+export { handleMarkdown } from "./handleMarkdown";
+export { isEven } from "./isEven";
+export { setCookie } from "./setCookie";
+export { getSessionCookie } from "./getSessionCookie";
+export { getSinglePropertyValue } from "./getSinglePropertyValue";
+export { handleNotify } from "./handleNotify";
+export { handleSection } from "./handleSection";
+export { isObjectEmpty } from "./isObjectEmpty";
+export { removeObjEmptyValues } from "./removeObjEmptyValues";
+export { updateCommentInArray } from "./updateCommentInArray";
+export { updateSocialLinks } from "./updateSocialLinks";
+export { uploadImageToFirebase } from "./uploadImageToFirebase";
