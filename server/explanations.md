@@ -52,3 +52,6 @@ Thus, `postBuilderFactory` allows building `Post` objects based on an original `
 The `PostService` class you introduced is responsible for handling post-related operations such as publishing, creating, updating and searching. I will explain each of the methods present in the class:
 
 This `PostService` class encapsulates the business logic related to posts and makes use of other classes, such as `PostPublisher`, `FavoritePostCommand`, `Favorite`, `UserRepository` and `PostRepository`, to perform its operations. It provides convenient methods to perform post publish, create, update and search operations, ensuring that business rules are respected.
+
+psql -U <usuário> -d <banco de dados>
+psql -U root -d test
