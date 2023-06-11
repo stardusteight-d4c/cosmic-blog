@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from "vue";
 
 const props = defineProps({
   percentage: {
     type: Number,
     required: true,
   },
-})
+});
 
-const circleStyle = computed((): { 'stroke-dashoffset': number } => {
-  const circumference = Math.round(2 * 3.14 * 15) // 94,2
-  const fillLength = circumference - (circumference * props.percentage) / 100 // 47
+const circleStyle = computed((): { "stroke-dashoffset": number } => {
+  const circumference = Math.round(2 * 3.14 * 15); // 94,2
+  const fillLength = circumference - (circumference * props.percentage) / 100; // 47
   return {
-    'stroke-dashoffset': fillLength,
-  }
-})
+    "stroke-dashoffset": fillLength,
+  };
+});
 </script>
 
 <template>

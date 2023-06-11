@@ -23,6 +23,7 @@ const slicedAvatars = computed(() => {
 function handleCancel() {
   emit("closedChooseAvatarPopUp");
 }
+
 function handleSelect() {
   emit("selectedChooseAvatarPopUp", { id: selectedAvatar.value });
   emit("closedChooseAvatarPopUp");

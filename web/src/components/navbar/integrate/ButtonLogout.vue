@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { Logout } from '@/components/@globals/atoms/icons'
-import router from '@/router'
-import { useAppStore } from '@/store'
-import { authMethods } from '@/store/modules/auth'
-import Btn from '@globals/Btn.vue'
+import { Logout } from "@/components/@globals/atoms/icons";
+import router from "@/router";
+import { useAppStore } from "@/store";
+import { authMethods } from "@/store/modules/auth";
+import Btn from "@globals/Btn.vue";
 
-const store = useAppStore()
+const store = useAppStore();
 
 function logout() {
   document.cookie =
-    'sessionCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-  store.commit(authMethods.mutations.setCurrentSession)
-  router.push('/')
+    "sessionCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  store.commit(authMethods.mutations.setCurrentSession);
+  router.push("/");
 }
 </script>
 

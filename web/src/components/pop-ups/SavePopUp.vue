@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { BaseLayoutSlot } from ".";
 import { FloppyDisk } from "@/components/@globals/atoms/icons";
-import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from "@/utils";
 import { savePopUpStyles as css } from "./styles";
 
 const emit = defineEmits(["closedSavePopUp"]);
 
 function saveText() {
   const textareaElement: HTMLTextAreaElement = document.getElementById(
-    ids.textareaEditor
+    "textareaEditor"
   ) as HTMLTextAreaElement;
   localStorage.setItem("saveText", textareaElement.value);
   emit("closedSavePopUp");

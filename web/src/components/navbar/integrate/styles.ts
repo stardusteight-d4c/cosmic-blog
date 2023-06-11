@@ -6,9 +6,9 @@ export const profileButtonStyles = {
     spinner1: `spinner1`,
   },
   appLogo: `absolute top-0`,
-}
+};
 
 export const logoStyles = {
   wrapper: `flex items-center`,
   cosmicSpan: `uppercase tracking-widest font-bold text-lg lg:text-3xl`,
-}
+};

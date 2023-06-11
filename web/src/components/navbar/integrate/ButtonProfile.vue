@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import AppLogo from '@globals/atoms/icons/AppLogo.vue'
-import { profileButtonStyles as css } from './styles'
+import AppLogo from "@globals/atoms/icons/AppLogo.vue";
+import { profileButtonStyles as css } from "./styles";
 
 interface IProps {
-  userId: string
+  userId: string;
 }
-defineProps<IProps>()
+defineProps<IProps>();
 </script>
 
 <template>

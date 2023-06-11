@@ -4,4 +4,4 @@ export const styles = {
   logoContainer: `flex cursor-pointer text-transparent bg-gradient-to-t from-blue-500 to-violet-500 bg-clip-text items-center gap-x-1`,
   path: `text-[#F2F2F2] capitalize whitespace-nowrap cursor-default font-medium text-lg`,
   buttonsContainer: `flex items-center gap-x-2`,
-}
+};

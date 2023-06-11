@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AppLogo from '@globals/atoms/icons/AppLogo.vue'
-import { logoStyles as css } from './styles'
+import AppLogo from "@globals/atoms/icons/AppLogo.vue";
+import { logoStyles as css } from "./styles";
 </script>
 
 <template>

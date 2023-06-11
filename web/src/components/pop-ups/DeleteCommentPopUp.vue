@@ -19,13 +19,6 @@ const store = useAppStore();
 const postId = route.params.id;
 
 async function handleDelete() {
-  console.log(props.currentPage);
-
-  console.log({
-    commentId: props.commentId,
-    postId,
-    skip: Number(props.currentPage) * 4,
-  });
   await store.dispatch(postMethods.actions.deleteComment, {
     commentId: props.commentId,
     postId,

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Pen from '@globals/atoms/icons/Pen.vue'
-import Btn from '@globals/Btn.vue'
+import Pen from "@globals/atoms/icons/Pen.vue";
+import Btn from "@globals/Btn.vue";
 </script>
 
 <template>

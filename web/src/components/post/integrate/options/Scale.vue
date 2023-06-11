@@ -1,25 +1,24 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { ArrowsIn, ArrowsOut } from "@/components/@globals/atoms/icons";
-import { HTML_ELEMENT_IDS_POST_PAGE as ids } from "@/utils";
-import { scaleStyles as css } from "./styles";
+import { scaleStyles as css } from "../styles";
 
 const scaleUp = ref(false);
-const marginTopOnScaleUp = ref(0);
 const marginBottomArticleBody = 112;
-let heightIncrease: number;
 
 function handleScale(): void {
-  computedMarginTopOnScaleUp();
   scaleUp.value = !scaleUp.value;
-  const commentsSection = document.getElementById(ids.commentsSection)!;
-  const articleBody = document.getElementById(ids.articleBody)!;
+  const { heightIncrease, marginTopOnScaleUp } = computedMarginTopOnScaleUp();
+  const commentsSection = document.getElementById("comments-section")!;
+  const articleBody = document.getElementById("articleBody")!;
   if (scaleUp.value === true) {
-    commentsSection.style.marginTop = `${marginTopOnScaleUp.value}px`;
-    articleBody.style.transform = "scale(1.2)";
+    commentsSection.style.marginTop = `${marginTopOnScaleUp}px`;
+    articleBody.style.transform = "scale(1.5)";
     articleBody.style.marginTop = "-200px";
     articleBody.style.transformOrigin = "top";
-    articleBody.style.marginBottom = `${112 + heightIncrease}px`;
+    articleBody.style.marginBottom = `${
+      marginBottomArticleBody + heightIncrease
+    }px`;
   } else {
     commentsSection.style.marginTop = "0px";
     articleBody.style.transform = "scale(1)";
@@ -28,13 +27,17 @@ function handleScale(): void {
   }
 }
 
-function computedMarginTopOnScaleUp(): void {
+function computedMarginTopOnScaleUp(): {
+  heightIncrease: number;
+  marginTopOnScaleUp: number;
+} {
   const articleBody = document.getElementById("articleBody")!;
   const originalHeight = articleBody?.clientHeight;
-  const heightOnScaleUp = originalHeight * 1.2; // 20%
-  heightIncrease = heightOnScaleUp - originalHeight;
+  const heightOnScaleUp = originalHeight * 1.5; // 50%
+  const heightIncrease = heightOnScaleUp - originalHeight;
   const marginTop = heightIncrease + marginBottomArticleBody;
-  marginTopOnScaleUp.value = marginTop;
+  const marginTopOnScaleUp = marginTop;
+  return { heightIncrease, marginTopOnScaleUp };
 }
 
 function handleSpanText(): "Scale Up" | "Scale Down" {

@@ -1,13 +1,9 @@
-export { default as BackToTop } from './BackToTop.vue'
-export { default as ProgressBar } from './ProgressBar.vue'
-export { default as Scale } from './Scale.vue'
-export { default as Align } from './Align.vue'
-export { default as Opacity } from './Opacity.vue'
-export { default as SubmitComment } from './SubmitComment.vue'
-export { default as Comment } from './Comment.vue'
-export { default as Pagination } from './Pagination.vue'
-export { default as Options } from './Options.vue'
-export { default as ArticleHeader } from './ArticleHeader.vue'
-export { default as ArticleBody } from './ArticleBody.vue'
-export { default as ArticleFooter } from './ArticleFooter.vue'
+export { default as ArticleHeader } from "./ArticleHeader.vue";
+export { default as ArticleBody } from "./ArticleBody.vue";
+export { default as ArticleFooter } from "./ArticleFooter.vue";
+export { default as Pagination } from "./Pagination.vue";
 
+export { default as SubmitComment } from "./comment/SubmitComment.vue";
+export { default as Comment } from "./comment/Comment.vue";
+
+export { default as Options } from "./options/Options.vue";

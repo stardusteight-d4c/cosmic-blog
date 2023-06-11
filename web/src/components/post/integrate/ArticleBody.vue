@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Calendar } from '@/components/@globals/atoms/icons'
-import * as marked from 'marked'
-import { ArticleFooter } from '.'
-import { articleBodyStyles as css } from './styles'
-import { dateFormat, HTML_ELEMENT_IDS_POST_PAGE } from '@/utils'
+import { Calendar } from "@/components/@globals/atoms/icons";
+import * as marked from "marked";
+import { ArticleFooter } from ".";
+import { articleBodyStyles as css } from "./styles";
+import { dateFormat } from "@/utils";
 
 defineProps({
   showFooter: {
@@ -18,11 +18,9 @@ defineProps({
   },
   body: {
     type: String,
-    default: '',
+    default: "",
   },
-})
-
-const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
+});
 </script>
 
 <template>
@@ -34,11 +32,11 @@ const HTML_ID = HTML_ELEMENT_IDS_POST_PAGE
         }}
       </span>
       <h1 :class="css.title">
-        {{ title === '' ? 'Untitled' : title }}
+        {{ title === "" ? "Untitled" : title }}
       </h1>
       <div :class="css.divider" />
       <div
-        :id="HTML_ID.htmlBody"
+        id="htmlBody"
         v-html="marked.marked(body!)"
         :class="css.articleContent"
       />

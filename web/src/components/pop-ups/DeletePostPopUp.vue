@@ -3,7 +3,6 @@ import { XCircle } from "@/components/@globals/atoms/icons";
 import { BaseLayoutSlot } from ".";
 import { deletePopUpStyles as css } from "./styles";
 import { useAppStore } from "@/store";
-import { useRoute } from "vue-router";
 import { editorMethods } from "@/store/modules/editor";
 
 interface IProps {
@@ -13,7 +12,6 @@ interface IProps {
 const props = defineProps<IProps>();
 
 const emit = defineEmits(["closedDeletePopUp"]);
-const route = useRoute();
 const store = useAppStore();
 
 async function handleDelete() {

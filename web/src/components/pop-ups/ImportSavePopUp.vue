@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { BaseLayoutSlot } from ".";
 import { Download } from "@/components/@globals/atoms/icons";
-import { HTML_ELEMENT_IDS_CREATE_POST_PAGE as ids } from "@/utils";
 import { importSavePopUpStyles as css } from "./styles";
 import useNotificator from "@/hooks/Notificator";
 
@@ -16,7 +15,7 @@ function getSave(): void {
     return;
   }
   const textareaElement: HTMLTextAreaElement = document.getElementById(
-    ids.textareaEditor
+    "textareaEditor"
   ) as HTMLTextAreaElement;
   textareaElement.value = savedText;
   emit("closedImportSavePopUp");
