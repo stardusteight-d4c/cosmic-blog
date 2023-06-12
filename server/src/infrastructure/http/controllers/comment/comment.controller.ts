@@ -1,15 +1,16 @@
 import { CommentUseCases } from "@/application/use-cases/CommentUseCases";
-import { ICommentReflectObject } from "@/domain/src/comment";
-import { appInMemory } from "@/infrastructure";
+import { appInMemory, appPostgreSQL } from "@/infrastructure";
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { errorHandler } from "../../@utils/errorHandler";
+import type { ICommentReflectObject } from "@typings/comment";
 
 @Controller("comment")
 export class CommentController {
   #commentUseCases: CommentUseCases;
 
   constructor() {
-    this.#commentUseCases = appInMemory.getCommentUsesCases();
+    // this.#commentUseCases = appInMemory.getCommentUsesCases();
+    this.#commentUseCases = appPostgreSQL.getCommentUsesCases();
   }
 
   @Post("")

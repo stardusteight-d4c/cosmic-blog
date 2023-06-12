@@ -5,7 +5,7 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('id').primary();
     table.uuid('postId').references('id').inTable('posts');
     table.string('postTitle');
-    table.uuid('ownerId').references('id').inTable('users');
+    table.jsonb('owner').notNullable();
     table.string('content').notNullable();
     table.dateTime('postedAt').notNullable();
     table.timestamps(true, true);

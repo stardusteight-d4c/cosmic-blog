@@ -1,7 +1,7 @@
 ### POST
 POST http://localhost:3000/post
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiODE4OTJjZGEtZDg5Ni00OWZlLWJmNzMtMjdjNThkYmZkMDkyIiwiZW1haWwiOiJqb2huc3NkYWVAZW1haWwuY29tIiwidHlwZSI6ImF1dGhvciIsImlhdCI6MTY4NTk4NjUyOSwiZXhwIjoxNjg2NTkxMzI5fQ.SyOo6poioznoavtPhN46lTZj8qkih0EGClBH86Sld4I
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNlZWVjZjctOTMwNi00Mjg0LTljZTEtYzdiNDYwZDg5NDM2IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODY2MDk4MTEsImV4cCI6MTY4NzIxNDYxMX0.-6kHYogc1BKyERi0R5H5u97hZtjYiR8Xgt0U2xc4ogY
 
 {
  "title": "nest",
@@ -10,7 +10,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiODE4OTJjZGEt
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "dcb63af3-9a4a-425d-8f9d-824823cdd162",
+    "id": "63eeecf7-9306-4284-9ce1-c7b460d89436",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "avatar": "AVATAR01"
@@ -19,13 +19,13 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiODE4OTJjZGEt
 ###
 GET http://localhost:3000/post
 ###
-GET http://localhost:3000/post/874da23e-db86-45d4-ac9c-ca53c668ee68
+GET http://localhost:3000/post/b6028ed9-233d-49a5-85c3-bdd7c8886bf6
 ###
 GET http://localhost:3000/post/pagination?skip=6&pageSize=6
 ###
 GET http://localhost:3000/post/pagination/byUserFavorites?userId=7554275a-21c4-4758-81ad-fc71083876d9&skip=0&pageSize=3
 ###
-GET http://localhost:3000/post/title?equals=Exemplo%20de%20post
+GET http://localhost:3000/post/title?equals=Taaaaaaa
 
 ### USER
 POST http://localhost:3000/user/register

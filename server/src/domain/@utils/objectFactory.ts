@@ -1,7 +1,7 @@
-import { ICommentReflectObject } from "@domain/src/comment";
-import { IFavoriteReflectObject } from "@domain/src/favorite";
-import { IPostReflectObject } from "@domain/src/post/@interfaces";
-import { IUserReflectObject } from "@domain/src/user";
+import { ICommentReflectObject } from "@/@typings/comment";
+import { IFavoriteReflectObject } from "@/@typings/favorite";
+import { IPostReflectObject } from "@/@typings/post";
+import { IUserReflectObject } from "@/@typings/user";
 
 export interface IObjectFactory {
   getUser: () => IUserReflectObject;

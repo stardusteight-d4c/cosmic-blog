@@ -1,4 +1,5 @@
-import { IUserRepository, User } from "@/domain/src/user";
+import type { IUserRepository } from "@typings/user";
+import { User } from "@domain/src/user";
 import { knex } from "../config";
 
 export class UserPostgreSQLRepository implements IUserRepository {
@@ -43,63 +44,84 @@ export class UserPostgreSQLRepository implements IUserRepository {
   }
 
   public async update(updatedUser: User): Promise<User> {
-    const user = await this.replace(updatedUser);
-    return user;
+    try {
+      const user = await this.replace(updatedUser);
+      return user;
+    } catch (error) {
+      throw new Error(`Error updating user : ${error}`);
+    }
   }
 
   public async delete(userId: string): Promise<User> {
-    return await knex.transaction(async (trx) => {
-      const deletedUser = await trx('users')
-        .where('id', userId)
-        .del()
-        .returning('*')
-        .then((result) => result[0]);
-      if (!deletedUser) {
-        throw new Error(`No user found with id: ${userId}`);
-      }
-      return new User(deletedUser);
-    });
+    try {
+      return await knex.transaction(async (trx) => {
+        const deletedUser = await trx('users')
+          .where('id', userId)
+          .del()
+          .returning('*')
+          .then((result) => result[0]);
+        if (!deletedUser) {
+          throw new Error(`No user found with id: ${userId}`);
+        }
+        return new User(deletedUser);
+      });
+    } catch (error) {
+      throw new Error(`Error deleting user by id: ${error}`);
+    }
   }
 
   public async deleteAll(): Promise<void> {
-    return knex.transaction(async (trx) => {
-      await trx('users').del();
-    });
+    try {
+      return knex.transaction(async (trx) => {
+        await trx('users').del();
+      });
+    } catch (error) {
+      throw new Error(`Error deleting all users: ${error}`);
+    }
   }
 
-  public async findById(userId: string): Promise<User> {
+  public async findById(userId: string): Promise<User | undefined> {
     try {
       const user = await knex('users')
         .select('*')
         .where('id', userId)
         .first();
-      return new User(user)
+      if (user) {
+        return new User(user)
+      }
+      return undefined
     } catch (error) {
       throw new Error(`Error searching for user by id: ${error}`);
     }
   }
 
-  public async findByEmail(email: string): Promise<User> {
+  public async findByEmail(email: string): Promise<User | undefined> {
     try {
       const user = await knex('users')
         .select('*')
         .where('email', email)
         .first();
-      return new User(user)
+      if (user) {
+        return new User(user)
+      }
+      return undefined
     } catch (error) {
-      throw new Error(`Error searching for user by email: ${error}`);
+      throw new Error(`Error finding for user by email: ${error}`);
     }
   }
 
-  public async findByUsername(email: string): Promise<User> {
+  public async findByUsername(username: string): Promise<User | undefined> {
     try {
       const user = await knex('users')
         .select('*')
-        .where('email', email)
+        .where('email', username)
         .first();
-      return new User(user)
+      if (user) {
+        return new User(user)
+      }
+      return undefined
     } catch (error) {
-      throw new Error(`Error searching for user by username: ${error}`);
+      throw new Error(`Error finding for user by username: ${error}`);
     }
   }
 
@@ -110,7 +132,7 @@ export class UserPostgreSQLRepository implements IUserRepository {
         .where('username', username);
       return users.map((user) => new User(user))
     } catch (error) {
-      throw new Error(`Error searching for multiple users by username: ${error}`);
+      throw new Error(`Error finding for multiple users by username: ${error}`);
     }
   }
 }

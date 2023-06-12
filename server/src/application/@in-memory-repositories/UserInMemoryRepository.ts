@@ -1,4 +1,5 @@
-import { User, IUserRepository } from "@domain/src/user";
+import type { IUserRepository } from "@/@typings/user";
+import { User } from "@domain/src/user";
 
 export class UserInMemoryRepository implements IUserRepository {
   private static instance: UserInMemoryRepository;

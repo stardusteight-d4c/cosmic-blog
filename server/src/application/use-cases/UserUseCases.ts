@@ -1,4 +1,5 @@
-import { IUserReflectObject, IUserService, User } from "@domain/src/user";
+import type { IUserReflectObject, IUserService } from "@typings/user";
+import {  User } from "@domain/src/user";
 import { SessionTokenAdapter } from "../adapters/SessionTokenAdapter";
 import { SendMailAdapter } from "../adapters/SendMailAdapter";
 import Validators from "@/infrastructure/http/@utils/validators";

@@ -1,4 +1,4 @@
-import { ISocialLinks, TUserRole } from "@/domain/src/user";
+import { ISocialLinks, TUserRole } from "@/@typings/user";
 
 export interface IUserResponse {
   id?: string;

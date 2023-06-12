@@ -1,5 +1,4 @@
-import { IPostReflectObject } from "@/domain/src/post";
-import { IUserReflectObject } from "@/domain/src/user";
+import { IUserReflectObject } from "@/@typings/user"
 
 export interface GetByIdResponse {
   id?: string

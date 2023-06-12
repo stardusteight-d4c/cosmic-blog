@@ -9,9 +9,8 @@ import {
   Put,
   Query,
 } from "@nestjs/common";
-import { appInMemory } from "@infra/index";
+import { appInMemory, appPostgreSQL } from "@infra/index";
 import { UserUseCases } from "@app/use-cases/UserUseCases";
-import { IUserReflectObject } from "@domain/src/user";
 import { errorHandler } from "../../@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
@@ -25,6 +24,7 @@ import { IRegisterResponse, IUserResponse } from "./@dtos";
 import Validators from "../../@utils/validators";
 import { getByIdResponse } from "./@dtos/builders/getByIdResponse";
 import { registerResponse } from "./@dtos/builders/registerResponse";
+import type { IUserReflectObject } from "@typings/user";
 
 @Controller("user")
 export class UserController {
@@ -39,7 +39,8 @@ export class UserController {
     @Inject(CommentController)
     commentController: CommentController,
   ) {
-    this.#userUseCases = appInMemory.getUserUsesCases();
+    // this.#userUseCases = appInMemory.getUserUsesCases();
+    this.#userUseCases = appPostgreSQL.getUserUsesCases()
     this.#favoriteController = favoriteController;
     this.#commentController = commentController;
     this.sessionTokenAdapter = new SessionTokenAdapter(jwt);

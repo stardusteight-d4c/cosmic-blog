@@ -1,4 +1,5 @@
-import { Favorite, IFavoriteService } from "@domain/src/favorite";
+import type { IFavoriteService } from "@typings/favorite";
+import { Favorite } from "@domain/src/favorite";
 
 export class FavoriteUseCases {
   constructor(private favoriteService: IFavoriteService) {}

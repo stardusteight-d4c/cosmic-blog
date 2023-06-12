@@ -1,4 +1,4 @@
-import { TUserRole } from "@/domain/src/user";
+import { TUserRole } from "@/@typings/user";
 
 export interface IUserTokenInfo {
   user_id: string;

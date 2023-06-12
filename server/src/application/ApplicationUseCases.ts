@@ -1,22 +1,16 @@
-import { IPostRepository, IPostService, PostService } from "@domain/src/post";
-import { IUserRepository, IUserService, UserService } from "@domain/src/user";
-import {
-  CommentObserver,
-  CommentService,
-  ICommentRepository,
-  ICommentService,
-} from "@domain/src/comment";
-import {
-  FavoriteObserver,
-  FavoriteService,
-  IFavoriteRepository,
-  IFavoriteService,
-} from "@domain/src/favorite";
+import type { ICommentService, ICommentRepository } from "@typings/comment";
+import type { IFavoriteService, IFavoriteRepository } from "@typings/favorite";
+import type { IPostService, IPostRepository } from "@typings/post";
+import type { IUserService, IUserRepository } from "@typings/user";
 import { Publisher } from "@domain/@utils/Publisher";
 import { UserUseCases } from "./use-cases/UserUseCases";
 import { PostUseCases } from "./use-cases/PostUseCases";
 import { CommentUseCases } from "./use-cases/CommentUseCases";
 import { FavoriteUseCases } from "./use-cases/FavoriteUseCases";
+import { PostService } from "@/domain/src/post";
+import { UserService } from "@/domain/src/user";
+import { CommentService, CommentObserver } from "@/domain/src/comment";
+import { FavoriteService, FavoriteObserver } from "@/domain/src/favorite";
 
 export interface Initialization {
   services: {

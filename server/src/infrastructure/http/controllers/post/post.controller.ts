@@ -11,15 +11,15 @@ import {
   Query,
   UseGuards,
 } from "@nestjs/common";
-import { IPostReflectObject } from "@domain/src/post";
 import { PostUseCases } from "@app/use-cases/PostUseCases";
-import { appInMemory } from "@infra/index";
+import { appInMemory, appPostgreSQL } from "@infra/index";
 import { errorHandler } from "@infra/http/@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
 import { RequireAuthorPermission } from "../../@guards/RequireAuthorPermission";
 import { GetByIdResponse } from "./@dtos";
 import { buildGetByIdResponse } from "./@dtos/buildGetByIdResponse";
+import type { IPostReflectObject } from "@typings/post";
 
 @Controller("post")
 export class PostController {
@@ -33,7 +33,8 @@ export class PostController {
     @Inject(CommentController)
     commentController: CommentController,
   ) {
-    this.#postUseCases = appInMemory.getPostUsesCases();
+    // this.#postUseCases = appInMemory.getPostUsesCases();
+    this.#postUseCases = appPostgreSQL.getPostUsesCases();
     this.#favoriteController = favoriteController;
     this.#commentController = commentController;
   }

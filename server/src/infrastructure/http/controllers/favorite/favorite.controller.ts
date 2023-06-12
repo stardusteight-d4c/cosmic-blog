@@ -1,6 +1,6 @@
-import { appInMemory } from "@infra/index";
-import { FavoriteUseCases } from "@app/use-cases/FavoriteUseCases";
 import { Body, Controller, Get, Put, Query } from "@nestjs/common";
+import { appInMemory, appPostgreSQL } from "@infra/index";
+import { FavoriteUseCases } from "@app/use-cases/FavoriteUseCases";
 import { errorHandler } from "../../@utils/errorHandler";
 import { Favorite } from "@/domain/src/favorite";
 
@@ -9,7 +9,8 @@ export class FavoriteController {
   #favoriteUseCases: FavoriteUseCases;
 
   constructor() {
-    this.#favoriteUseCases = appInMemory.getFavoriteUsesCases();
+    // this.#favoriteUseCases = appInMemory.getFavoriteUsesCases();
+    this.#favoriteUseCases = appPostgreSQL.getFavoriteUsesCases();
   }
 
   @Get()

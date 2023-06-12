@@ -1,4 +1,5 @@
-import { Favorite, IFavoriteRepository } from "@domain/src/favorite";
+import type { IFavoriteRepository } from "@typings/favorite";
+import { Favorite } from "@domain/src/favorite";
 
 export class FavoriteInMemoryRepository implements IFavoriteRepository {
   private static instance: FavoriteInMemoryRepository;
@@ -7,7 +8,7 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
   private constructor() {}
 
   private generateKey(favorite: Favorite): string {
-    return `${favorite.postId}-${favorite.userId}`;
+    return `${favorite.reflect.postId}-${favorite.reflect.userId}`;
   }
 
   private async replace(updatedFavorite: Favorite): Promise<Favorite> {

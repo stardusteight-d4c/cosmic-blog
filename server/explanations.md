@@ -56,6 +56,8 @@ This `PostService` class encapsulates the business logic related to posts and ma
 psql -U <usuário> -d <banco de dados>
 psql -U root -d test
 
+npx knex migrate:latest
+
 Para acessar as tabelas no PostgreSQL CLI, você pode seguir os seguintes passos:
 
 1. Abra o terminal ou prompt de comando.

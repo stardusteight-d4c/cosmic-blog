@@ -9,7 +9,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('coverImage');
     table.dateTime('postedIn').notNullable();
     table.dateTime('lastChange');
-    table.uuid('authorId').references('id').inTable('users');
+    table.jsonb('author').notNullable();
     table.timestamps(true, true);
   });
 }

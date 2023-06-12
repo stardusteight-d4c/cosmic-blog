@@ -1,4 +1,4 @@
-import { ICommentRepository } from "@domain/src/comment/@interfaces/ICommentRepository";
+import type { ICommentRepository } from "@typings/comment";
 import { Comment } from "@domain/src/comment";
 
 export class CommentInMemoryRepository implements ICommentRepository {

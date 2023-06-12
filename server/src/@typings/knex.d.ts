@@ -27,8 +27,28 @@ declare module 'knex/types/tables' {
     updated_at: string;
   }
 
+  interface Comment {
+    id: string;
+    postId: string;
+    postTitle: string;
+    owner: IUserReflectObject;
+    content: string;
+    postedAt: Date;
+    created_at: string;
+    updated_at: string;
+  }
+
+  interface Favorite {
+    userId: string;
+    postId: string;
+    created_at: string;
+    updated_at: string;
+  }
+
   interface Tables {
     users: User;
     posts: Post;
+    comments: Comment;
+    favorites: Favorite;
   }
 }

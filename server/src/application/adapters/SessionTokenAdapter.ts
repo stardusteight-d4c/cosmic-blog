@@ -1,4 +1,3 @@
-import { TUserRole } from "@/domain/src/user";
 import {
   IPluginJWT,
   ISessionTokenAdapter,

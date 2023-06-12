@@ -1,7 +1,7 @@
 import { SessionTokenAdapter } from "@/application/adapters/SessionTokenAdapter";
-import { IPostReflectObject } from "@/domain/src/post";
 import jwt from "jsonwebtoken";
 import { PostController } from "../post.controller";
+import { IPostReflectObject } from "@/@typings/post";
 
 export async function buildGetByIdResponse(request: {
   controller: PostController;

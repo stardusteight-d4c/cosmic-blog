@@ -1,5 +1,3 @@
-import { ICommand, IObserver, IPublisher } from "../@interfaces";
-
 export class Publisher implements IPublisher {
   servicesObservers: IObserver[];
   constructor() {

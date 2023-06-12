@@ -1,4 +1,4 @@
-import { IUserReflectObject } from "@/domain/src/user";
+import { IUserReflectObject } from "@/@typings/user";
 import { IUserResponse } from "..";
 import { UserController } from "../../user.controller";
 

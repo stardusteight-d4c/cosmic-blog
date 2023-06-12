@@ -1,10 +1,11 @@
-import { IPostRepository, Post } from "@domain/src/post";
+import type { IPostRepository } from "@/@typings/post";
+import { Post } from "@domain/src/post";
 
 export class PostInMemoryRepository implements IPostRepository {
   private static instance: PostInMemoryRepository;
   #posts: Map<string, Post> = new Map();
 
-  private constructor() {}
+  private constructor() { }
 
   private async replace(updatedPost: Post): Promise<Post> {
     const existingPost = await this.findById(updatedPost.reflect.id!);

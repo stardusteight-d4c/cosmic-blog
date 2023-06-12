@@ -17,7 +17,7 @@ export interface IUserRepository {
   deleteAll(): Promise<void>;
   findById(userId: string): Promise<User | undefined>;
   findByEmail(email: string): Promise<User | undefined>;
-  findByUsername(email: string): Promise<User | undefined>;
+  findByUsername(username: string): Promise<User | undefined>;
   findManyByUsername(username: string): Promise<User[]>;
 }
 

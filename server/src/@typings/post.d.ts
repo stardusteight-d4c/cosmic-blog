@@ -1,4 +1,5 @@
 import { Post } from "@domain/src/post";
+import { IUserReflectObject } from "./user";
 
 export interface IPostReflectObject {
   id?: string;

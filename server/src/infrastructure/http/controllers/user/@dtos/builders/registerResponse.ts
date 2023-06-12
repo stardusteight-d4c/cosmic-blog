@@ -1,4 +1,4 @@
-import { IUserReflectObject } from "@/domain/src/user";
+import { IUserReflectObject } from "@/@typings/user";
 import { IRegisterResponse, IUserResponse } from "..";
 
 export function registerResponse(request: {
