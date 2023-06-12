@@ -1,15 +1,12 @@
+import type { IPostReflectObject, IPostRepository, IPostService } from "@typings/post";
 import {
   Post,
-  IPostReflectObject,
-  IPostRepository,
-  IPostService,
   postBuilderFactory,
 } from ".";
 import Validators from "@domain/@utils/validators";
-import { IPublisher } from "@domain/@interfaces";
 import DeletePostCommand from "./PostCommands";
-import { IUserRepository } from "../user";
-import { IFavoriteRepository } from "../favorite";
+import { IUserRepository } from "@/@typings/user";
+import { IFavoriteRepository } from "@/@typings/favorite";
 
 export class PostService implements IPostService {
   #postRepository: IPostRepository;

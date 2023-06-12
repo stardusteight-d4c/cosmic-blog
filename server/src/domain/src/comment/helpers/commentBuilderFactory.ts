@@ -1,4 +1,5 @@
-import { Comment, CommentBuilder, ICommentReflectObject } from "..";
+import type { ICommentReflectObject } from "@typings/comment";
+import { Comment, CommentBuilder } from "..";
 
 export function commentBuilderFactory({
   comment,

@@ -1,8 +1,9 @@
+import type { IUserReflectObject } from "@typings/user";
 import { beforeEach, describe, expect, it } from "vitest";
-import { IUserReflectObject, User, UserBuilder } from "../index";
+import { User, UserBuilder } from "../index";
 
 describe("UserBuilder", () => {
-  beforeEach(() => {});
+  beforeEach(() => { });
 
   it("must return an instance of User", () => {
     const newUser: IUserReflectObject = {

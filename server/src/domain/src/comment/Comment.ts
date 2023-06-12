@@ -1,5 +1,5 @@
+import type { ICommentReflectObject } from "@typings/comment";
 import { User } from "@domain/src/user";
-import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
 
 export class Comment {
   #id: string;
@@ -61,7 +61,6 @@ export class Comment {
   public set postTitle(_value: string) {
     throw new Error("Cannot modify postTitle property directly.");
   }
-
 
   public get owner(): string {
     throw new Error(

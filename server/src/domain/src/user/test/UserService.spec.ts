@@ -1,8 +1,6 @@
+import type { ISocialLinks, IUserReflectObject, IUserRepository } from "@typings/user";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  ISocialLinks,
-  IUserReflectObject,
-  IUserRepository,
   User,
   UserService,
 } from "../index";

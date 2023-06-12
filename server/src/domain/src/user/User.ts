@@ -1,4 +1,4 @@
-import { ISocialLinks, IUserReflectObject, TUserRole } from ".";
+import type { ISocialLinks, IUserReflectObject, TUserRole } from "@typings/user";
 
 export class User {
   #id: string;

@@ -1,5 +1,4 @@
-import { ICommentService } from ".";
-import { ICommand, IObserver } from "@domain/@interfaces";
+import type { ICommentService } from "@typings/comment";
 import DeletePostCommand from "../post/PostCommands";
 import DeleteUserCommand from "../user/UserCommands";
 

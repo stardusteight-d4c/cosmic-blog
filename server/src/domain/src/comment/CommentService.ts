@@ -1,10 +1,8 @@
-import { IPostRepository } from "../post";
-import { IUserRepository, User } from "../user";
-import { ICommentRepository } from "./@interfaces";
-import { ICommentReflectObject } from "./@interfaces/ICommentReflectObject";
-import { ICommentService } from "./@interfaces/ICommentService";
+import type { ICommentReflectObject, ICommentRepository, ICommentService } from "@typings/comment";
 import { Comment } from "./Comment";
 import { commentBuilderFactory } from "./helpers";
+import { IPostRepository } from "@/@typings/post";
+import { IUserRepository } from "@/@typings/user";
 
 export class CommentService implements ICommentService {
   #commentRepository: ICommentRepository;

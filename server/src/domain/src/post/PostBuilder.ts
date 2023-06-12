@@ -1,6 +1,6 @@
+import type { IUserReflectObject } from "@typings/user";
 import { randomUUID } from "node:crypto";
 import { Post } from ".";
-import { IUserReflectObject } from "@domain/src/user";
 
 export class PostBuilder {
   #id: string;

@@ -26,7 +26,8 @@
       "@/*": ["src/*"],
       "@domain/*": ["src/domain/*"],
       "@app/*": ["src/application/*"],
-      "@infra/*": ["src/infrastructure/*"]
+      "@infra/*": ["src/infrastructure/*"],
+      "@typings/*": ["src/@typings/*"]
     }
   },
   "ts-node": {

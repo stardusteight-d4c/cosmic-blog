@@ -1,8 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
 import {
-  IUserRepository,
-  IUserService,
   User,
   UserService,
 } from "@domain/src/user";
@@ -12,17 +10,13 @@ import {
   UserInMemoryRepository,
 } from "@app/@in-memory-repositories";
 import {
-  FavoriteService,
-  IFavoriteRepository,
-  IFavoriteService,
-} from "@domain/src/favorite";
-import {
-  IPostReflectObject,
-  IPostRepository,
-  IPostService,
   Post,
   PostService,
 } from "@domain/src/post";
+import { IFavoriteRepository, IFavoriteService } from "@/@typings/favorite";
+import { IUserRepository, IUserService } from "@/@typings/user";
+import { IPostReflectObject, IPostRepository, IPostService } from "@/@typings/post";
+import { FavoriteService } from "../FavoriteService";
 
 let favoriteService: IFavoriteService;
 let userService: IUserService;
@@ -41,6 +35,7 @@ describe("FavoriteService", () => {
     postRepository = PostInMemoryRepository.getInstance();
     favoriteRepository = FavoriteInMemoryRepository.getInstance();
     postService = new PostService({
+      favoriteRepository,
       postRepository,
       userRepository,
     });

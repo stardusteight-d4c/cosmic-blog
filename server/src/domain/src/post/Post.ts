@@ -1,4 +1,4 @@
-import { IPostReflectObject } from ".";
+import type { IPostReflectObject } from "@typings/post";
 import { User } from "@domain/src/user";
 import { Favorite } from "@domain/src/favorite";
 

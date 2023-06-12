@@ -1,5 +1,6 @@
+import type { ISocialLinks, TUserRole } from "@typings/user";
 import { randomUUID } from "node:crypto";
-import { ISocialLinks, User, TUserRole } from ".";
+import { User } from ".";
 import Validators from "@/domain/@utils/validators";
 
 export class UserBuilder {

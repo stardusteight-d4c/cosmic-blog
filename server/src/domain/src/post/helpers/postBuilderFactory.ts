@@ -1,4 +1,4 @@
-import { IPostReflectObject } from "../@interfaces";
+import type { IPostReflectObject } from "@/@typings/post";
 import { Post } from "../Post";
 import { PostBuilder } from "../PostBuilder";
 

@@ -1,5 +1,4 @@
-import { IFavoriteService } from ".";
-import { ICommand, IObserver } from "@domain/@interfaces";
+import type { IFavoriteService } from "@typings/favorite";
 import DeletePostCommand from "../post/PostCommands";
 import DeleteUserCommand from "../user/UserCommands";
 

@@ -1,15 +1,15 @@
-import { ISocialLinks, IUserReflectObject, TUserRole } from '@/domain/src/user';
 import { Knex } from 'knex';
+import { ISocialLinks, IUserReflectObject, TUserRole } from './user';
 
 declare module 'knex/types/tables' {
   interface User {
     id: string;
     email: string;
     username: string;
-    password: string
-    avatar: string
-    socialLinks: ISocialLinks
-    userRole: TUserRole
+    password: string;
+    avatar: string;
+    socialLinks: ISocialLinks;
+    userRole: TUserRole;
     created_at: string;
     updated_at: string;
   }
