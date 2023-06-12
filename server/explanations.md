@@ -55,3 +55,26 @@ This `PostService` class encapsulates the business logic related to posts and ma
 
 psql -U <usuário> -d <banco de dados>
 psql -U root -d test
+
+Para acessar as tabelas no PostgreSQL CLI, você pode seguir os seguintes passos:
+
+1. Abra o terminal ou prompt de comando.
+
+2. Execute o comando `psql -U <username> -d <database>`, substituindo `<username>` pelo nome de usuário e `<database>` pelo nome do banco de dados que você deseja acessar. Por exemplo:
+   ```
+   psql -U myuser -d mydatabase
+   ```
+
+3. Será solicitada a senha do usuário especificado. Insira a senha correta e pressione Enter.
+
+4. Após fazer login, você verá o prompt do PostgreSQL, indicando que você está conectado ao banco de dados. O prompt pode ser semelhante a `mydatabase=>`.
+
+5. Agora você pode executar comandos SQL para acessar as tabelas. Alguns comandos úteis incluem:
+
+   - Listar todas as tabelas: `\dt`
+   - Exibir a estrutura de uma tabela específica: `\d <table_name>`, substituindo `<table_name>` pelo nome da tabela.
+   - Executar consultas SELECT, INSERT, UPDATE, DELETE, etc. diretamente usando SQL.
+
+6. Para sair do PostgreSQL CLI, você pode digitar `\q` e pressionar Enter.
+
+Esses são os passos básicos para acessar tabelas no PostgreSQL CLI. Lembre-se de substituir `<username>` e `<database>` pelos valores corretos de acordo com a sua configuração.
