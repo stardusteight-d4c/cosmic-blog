@@ -9,6 +9,7 @@ import useNotificator from "@/hooks/Notificator";
 import { useAppStore } from "@/store";
 import { getAvatarUrlById } from "@/utils";
 import { loginMethods } from "@/store/modules/login";
+import Loader from "@/components/@globals/Loader.vue";
 
 const emit = defineEmits(["backStep"]);
 
@@ -19,12 +20,15 @@ const proceedToConfirmEmail = ref(false);
 const encryptedCode = ref();
 const selectedAvatar = ref<null | string>(null);
 const signUpData = computed(() => store.state.login.signUp);
+const loading = ref<boolean>(false);
 
 async function handleProceedToConfirmEmail() {
+  loading.value = true;
   encryptedCode.value = await store.dispatch(
     loginMethods.actions.verifyEmail,
     signUpData.value.email
   );
+  loading.value = false;
   notify("SUCCESS", "Code sent to registered email!");
   proceedToConfirmEmail.value = true;
 }
@@ -90,7 +94,8 @@ const avatarUrl = computed((): string | undefined => {
         :disabled="selectedAvatar === null"
         :class="css.createBtn"
       >
-        Create
+        <span v-if="!loading">Create</span>
+        <Loader v-show="loading" />
       </button>
     </div>
   </main>

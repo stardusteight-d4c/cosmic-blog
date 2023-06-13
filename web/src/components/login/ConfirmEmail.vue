@@ -4,6 +4,8 @@ import CodeInput from "./integrate/CodeInput.vue";
 import { useAppStore } from "@/store";
 import { confirmEmailStyles as css } from "./styles";
 import { ConfirmEmailFunctions } from "@/functions/ConfirmEmailFunctions";
+import Loader from "../@globals/Loader.vue";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   encryptedCode: {
@@ -15,6 +17,12 @@ const props = defineProps({
 const store = useAppStore();
 const pastedCode = ref<number[]>([]);
 const signUpData = computed(() => store.state.login.signUp);
+const loading = ref<Boolean>(false);
+const router = useRouter();
+
+const refs = {
+  loading,
+};
 
 const functions = new ConfirmEmailFunctions({
   encryptedCode: props.encryptedCode,
@@ -46,8 +54,12 @@ const functions = new ConfirmEmailFunctions({
         />
       </div>
     </div>
-    <button @click="functions.confirmCode" :class="css.confirmBtn">
-      Confirm
+    <button
+      @click="functions.confirmCode(refs.loading, router)"
+      :class="css.confirmBtn"
+    >
+      <span v-if="!loading">Confirm</span>
+      <Loader v-show="loading" />
     </button>
   </main>
 </template>

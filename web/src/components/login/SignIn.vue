@@ -4,11 +4,14 @@ import { LabelSpan } from "./integrate";
 import { signInStyles as css } from "./styles";
 import { useAppStore } from "@/store";
 import { loginMethods } from "@/store/modules/login";
-import router from "@/router";
+import useNotificator from "@/hooks/Notificator";
+import { useRouter } from "vue-router";
 
 const emit = defineEmits(["changeToSignUp"]);
 
 const store = useAppStore();
+const router = useRouter()
+const { notify } = useNotificator();
 const usernameOrEmailSpan = "Username or Email".split("");
 const passwordSpan = "Password".split("");
 
@@ -18,12 +21,16 @@ const formData = {
 };
 
 async function signIn() {
-  const data = await store.dispatch(loginMethods.actions.sign, {
-    identifier: formData.usernameOrEmail,
-    password: formData.password,
-  });
-  if (data) {
-    router.push(`/profile/${data.user.id}`);
+  try {
+    const data = await store.dispatch(loginMethods.actions.sign, {
+      identifier: formData.usernameOrEmail.toLowerCase(),
+      password: formData.password,
+    });
+    if (data) {
+      router.push(`/profile/${data.user.id}`);
+    }
+  } catch (error) {
+    notify("ERROR", "Incorrect username or password!");
   }
 }
 

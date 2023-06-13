@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { Logout } from "@/components/@globals/atoms/icons";
-import router from "@/router";
 import { useAppStore } from "@/store";
 import { authMethods } from "@/store/modules/auth";
 import Btn from "@globals/Btn.vue";
+import { useRouter } from "vue-router";
 
 const store = useAppStore();
+const router = useRouter()
 
 function logout() {
   document.cookie =

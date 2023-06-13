@@ -9,7 +9,7 @@ export const chooseAvatarFormStyles = {
   backgroundOverlay: `inner-shadow w-[120px] h-[120px] pointer-events-none absolute z-50 bg-[#1a1a1a] rounded-full mx-auto`,
   buttonsContainer: `mx-auto w-fit flex items-center justify-center gap-x-5`,
   backStepBtn: `flex mt-8 items-center justify-center gap-x-2 w-[115px] active:scale-90 rounded-full text-sm md:text-base transition-all duration-300 font-medium py-2 bg-[#f2f2f2]/5`,
-  createBtn: `flex disabled:brightness-75 disabled:cursor-not-allowed mt-8 items-center justify-center gap-x-2 w-[115px] active:scale-90 rounded-full text-sm md:text-base transition-all duration-300 font-medium py-2 bg-blue-500`,
+  createBtn: `flex h-[40px] disabled:brightness-75 disabled:cursor-not-allowed mt-8 items-center justify-center gap-x-2 w-[115px] active:scale-90 rounded-full text-sm md:text-base transition-all duration-300 font-medium py-2 bg-blue-500`,
 };
 
 export const codeInputStyles = {
