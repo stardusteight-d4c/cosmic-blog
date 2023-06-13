@@ -8,13 +8,13 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
   private constructor() { }
 
   private generateKey(favorite: Favorite): string {
-    return `${favorite.reflect.postId}-${favorite.reflect.userId}`;
+    return `${favorite.reflect.postId}+${favorite.reflect.userId}`;
   }
 
   private async replace(updatedFavorite: Favorite): Promise<Favorite> {
     const key = this.generateKey(updatedFavorite);
     try {
-      const [postId, userId] = key.split('-');
+      const [postId, userId] = key.split('+');
       const existingFavorite = await knex('favorites')
         .where({ postId, userId })
         .first();
@@ -40,7 +40,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
   public async create(favorite: Favorite): Promise<Favorite> {
     const key = this.generateKey(favorite);
     try {
-      const [postId, userId] = key.split('-');
+      const [postId, userId] = key.split('+');
       const existingFavorite = await knex('favorites')
         .where({ postId, userId })
         .first();
@@ -48,7 +48,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
         throw new Error("Favorite already exists");
       }
       await knex('favorites')
-        .insert(favorite);
+        .insert({ ...favorite.reflect });
       return favorite;
     } catch (error) {
       throw new Error(`Error creating favorite: ${error}`);
@@ -71,7 +71,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
 
   public async findFavoriteByKey(favoriteKey: string): Promise<Favorite | undefined> {
     try {
-      const [postId, userId] = favoriteKey.split('-');
+      const [postId, userId] = favoriteKey.split('+');
       const favorite = await knex('favorites')
         .where({ postId, userId })
         .first();
@@ -89,7 +89,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
       throw new Error(`Error finding favorites by post ID: ${error}`);
     }
   }
-  
+
   public async findAllByUserId(userId: string): Promise<Favorite[]> {
     try {
       const favorites = await knex('favorites').where({ userId }).select('*');
@@ -98,7 +98,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
       throw new Error(`Error finding favorites by user ID: ${error}`);
     }
   }
-  
+
   public async delete(favorite: Favorite): Promise<Favorite> {
     const key = this.generateKey(favorite);
     const existingFavorite = await this.findFavoriteByKey(key);
@@ -112,7 +112,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
       throw new Error(`Error deleting favorite: ${error}`);
     }
   }
-  
+
   public async deleteAll(): Promise<void> {
     try {
       await knex('favorites').del();
@@ -120,7 +120,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
       throw new Error(`Error deleting all favorites: ${error}`);
     }
   }
-  
+
   public async deleteAllByPostId(postId: string): Promise<void> {
     try {
       await knex('favorites').where({ postId }).del();
@@ -128,7 +128,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
       throw new Error(`Error deleting favorites by post ID: ${error}`);
     }
   }
-  
+
   public async deleteAllByUserId(userId: string): Promise<void> {
     try {
       await knex('favorites').where({ userId }).del();

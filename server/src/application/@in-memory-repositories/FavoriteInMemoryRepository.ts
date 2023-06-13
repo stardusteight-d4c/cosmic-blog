@@ -8,7 +8,7 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
   private constructor() {}
 
   private generateKey(favorite: Favorite): string {
-    return `${favorite.reflect.postId}-${favorite.reflect.userId}`;
+    return `${favorite.reflect.postId}+${favorite.reflect.userId}`;
   }
 
   private async replace(updatedFavorite: Favorite): Promise<Favorite> {

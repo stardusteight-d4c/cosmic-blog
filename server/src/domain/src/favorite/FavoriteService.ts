@@ -30,7 +30,7 @@ export class FavoriteService implements IFavoriteService {
     await this.#userRepository.findById(userId);
     const newFavorite = new Favorite({ postId, userId });
     const favorite = await this.#favoriteRepository.findFavoriteByKey(
-      `${newFavorite.postId}-${newFavorite.userId}`,
+      `${newFavorite.reflect.postId}+${newFavorite.reflect.userId}`,
     );
     if (favorite) {
       await this.#favoriteRepository.delete(newFavorite);

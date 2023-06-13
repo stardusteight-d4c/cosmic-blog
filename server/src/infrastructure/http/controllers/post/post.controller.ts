@@ -12,7 +12,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { PostUseCases } from "@app/use-cases/PostUseCases";
-import { appInMemory, appPostgreSQL } from "@infra/index";
+import { appPostgreSQL } from "@infra/index";
 import { errorHandler } from "@infra/http/@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
@@ -105,7 +105,7 @@ export class PostController {
     }
   }
 
-  @Get("pagination/byUserFavorites")
+  @Get("pagination/userFavorites")
   public async getWithPaginationByUserFavorites(
     @Query() query: { userId: string; skip: number; pageSize: number },
   ): Promise<IPostReflectObject[]> {

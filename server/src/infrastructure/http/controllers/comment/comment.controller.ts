@@ -1,5 +1,5 @@
-import { CommentUseCases } from "@/application/use-cases/CommentUseCases";
-import { appInMemory, appPostgreSQL } from "@/infrastructure";
+import { CommentUseCases } from "@app/use-cases/CommentUseCases";
+import { appPostgreSQL } from "@infra/index";
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { errorHandler } from "../../@utils/errorHandler";
 import type { ICommentReflectObject } from "@typings/comment";
@@ -26,7 +26,7 @@ export class CommentController {
     }
   }
 
-  @Get("")
+  @Get("amout")
   async amount(
     @Query() query: { of: "post" | "user"; id: string },
   ): Promise<number> {

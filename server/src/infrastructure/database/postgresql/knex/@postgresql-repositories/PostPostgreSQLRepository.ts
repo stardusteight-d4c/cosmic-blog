@@ -12,7 +12,11 @@ export class PostPostgreSQLRepository implements IPostRepository {
     if (!existingPost) {
       throw new Error(`No post found with id: ${updatedPost.reflect.id}`);
     }
-    await knex('posts').where('id', updatedPost.reflect.id).update(updatedPost.reflect);
+    await knex('posts').where('id', updatedPost.reflect.id).update({
+      ...updatedPost.reflect, 
+      tags: JSON.stringify(updatedPost.reflect.tags) as any, 
+      author: JSON.stringify(updatedPost.reflect.author) as any
+    });
     return updatedPost;
   }
 
@@ -31,8 +35,11 @@ export class PostPostgreSQLRepository implements IPostRepository {
     try {
       return await knex.transaction(async (trx) => {
         const createdPost = await trx('posts')
-          .insert({ ...post.reflect, tags: JSON.stringify(JSON.stringify(post.reflect.tags)) as any,
-            author: JSON.stringify(cleanAuthor) as any })
+          .insert({ 
+            ...post.reflect, 
+            tags: JSON.stringify(post.reflect.tags) as any,
+            author: JSON.stringify(cleanAuthor) as any 
+          })
           .returning('*')
           .then((result) => result[0]);
         return new Post(createdPost)

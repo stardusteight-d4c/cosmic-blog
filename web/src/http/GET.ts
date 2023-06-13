@@ -18,7 +18,7 @@ export class GET {
     const { userId, skip } = request;
     const favoritedPosts = await api
       .get<IPostResponse[]>(
-        `/post/pagination/byUserFavorites?userId=${userId}&skip=${skip}&pageSize=3`
+        `/post/pagination/userFavorites?userId=${userId}&skip=${skip}&pageSize=3`
       )
       .then((res) => res.data)
       .catch((error) => console.log(error));

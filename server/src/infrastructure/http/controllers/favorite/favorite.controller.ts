@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Put, Query } from "@nestjs/common";
-import { appInMemory, appPostgreSQL } from "@infra/index";
+import { appPostgreSQL } from "@infra/index";
 import { FavoriteUseCases } from "@app/use-cases/FavoriteUseCases";
 import { errorHandler } from "../../@utils/errorHandler";
-import { Favorite } from "@/domain/src/favorite";
+import { Favorite } from "@domain/src/favorite";
 
 @Controller("favorite")
 export class FavoriteController {
@@ -13,7 +13,7 @@ export class FavoriteController {
     this.#favoriteUseCases = appPostgreSQL.getFavoriteUsesCases();
   }
 
-  @Get()
+  @Get("amount")
   public async amount(
     @Query() query: { of: "post" | "user"; id: string },
   ): Promise<number> {

@@ -29,11 +29,6 @@ export class Comment {
     };
   }
 
-  public canEdit(owner: User): boolean {
-    const isAuthor = this.#owner.reflect.id === owner.reflect.id;
-    return isAuthor;
-  }
-
   public get id(): string {
     throw new Error(
       "Cannot access id property directly. Use the reflect object in the Comment instead.",

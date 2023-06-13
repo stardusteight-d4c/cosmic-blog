@@ -10,7 +10,7 @@ export class PUT {
   static async updateUser(updatedUser: IUser) {
     const authorization = getSessionCookie();
     await api
-      .put(`/user/update`, updatedUser, {
+      .put(`/user`, updatedUser, {
         headers: {
           Authorization: authorization,
         },

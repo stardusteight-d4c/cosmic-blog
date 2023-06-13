@@ -9,22 +9,22 @@ import {
   Put,
   Query,
 } from "@nestjs/common";
-import { appInMemory, appPostgreSQL } from "@infra/index";
+import { transporter } from "@infra/lib/nodemailer";
+import { appPostgreSQL } from "@infra/index";
 import { UserUseCases } from "@app/use-cases/UserUseCases";
+import { SessionTokenAdapter } from "@app/adapters/SessionTokenAdapter";
+import { IPluginSendMail } from "@app/adapters/@interfaces";
+import { SendMailAdapter } from "@app/adapters/SendMailAdapter";
 import { errorHandler } from "../../@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
-import jwt from "jsonwebtoken";
-import { SessionTokenAdapter } from "@/application/adapters/SessionTokenAdapter";
-import { transporter } from "@/infrastructure/lib/nodemailer";
-import { SendMailAdapter } from "@/application/adapters/SendMailAdapter";
-import brcypt from "bcrypt";
-import { IPluginSendMail } from "@/application/adapters/@interfaces";
 import { IRegisterResponse, IUserResponse } from "./@dtos";
 import Validators from "../../@utils/validators";
 import { getByIdResponse } from "./@dtos/builders/getByIdResponse";
 import { registerResponse } from "./@dtos/builders/registerResponse";
 import type { IUserReflectObject } from "@typings/user";
+import jwt from "jsonwebtoken";
+import brcypt from "bcrypt";
 
 @Controller("user")
 export class UserController {
@@ -79,8 +79,9 @@ export class UserController {
   }
 
   @Get(":id")
-  public async getById(@Param("id") id: string):
-    Promise<{ user: IUserResponse }> {
+  public async getById(
+    @Param("id") id: string
+  ): Promise<{ user: IUserResponse }> {
     try {
       return this.#userUseCases.getById(id).then(async (user) => {
         return await this.buildGetByIdResponse(user.reflect);
@@ -120,7 +121,7 @@ export class UserController {
     }
   }
 
-  @Put("update")
+  @Put("")
   public async edit(
     @Body() updatedUser: IUserReflectObject,
     @Headers("authorization") authorization: string,

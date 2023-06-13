@@ -10,7 +10,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNlZWVjZjct
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "63eeecf7-9306-4284-9ce1-c7b460d89436",
+    "id": "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
     "email": "johndoe@email.com",
     "username": "johndoe",
     "avatar": "AVATAR01"
@@ -23,11 +23,36 @@ GET http://localhost:3000/post/b6028ed9-233d-49a5-85c3-bdd7c8886bf6
 ###
 GET http://localhost:3000/post/pagination?skip=6&pageSize=6
 ###
-GET http://localhost:3000/post/pagination/byUserFavorites?userId=7554275a-21c4-4758-81ad-fc71083876d9&skip=0&pageSize=3
+GET http://localhost:3000/post/pagination/userFavorites?userId=57efe66a-ec3a-4043-9db9-bc40ce5a6a01&skip=0&pageSize=3
 ###
-GET http://localhost:3000/post/title?equals=Taaaaaaa
+GET http://localhost:3000/post/title?equals=nestjs
+###
+PUT http://localhost:3000/post
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNlZWVjZjctOTMwNi00Mjg0LTljZTEtYzdiNDYwZDg5NDM2IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODY2MDk4MTEsImV4cCI6MTY4NzIxNDYxMX0.-6kHYogc1BKyERi0R5H5u97hZtjYiR8Xgt0U2xc4ogY
+
+{
+ "id": "ad9abe1e-1e95-477b-bea2-4d3d1db82165",
+ "title": "NestJS",
+ "body": "Post atualizado",
+ "tags": ["typescript", "nestjs", "nodejs", "web"],
+ "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
+ "postedIn": "2023-05-30T14:31:44.545Z",
+ "author": {
+    "id": "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
+    "email": "johndoe@email.com",
+    "username": "johndoe",
+    "avatar": "AVATAR01"
+  }
+}
+###
+DELETE http://localhost:3000/post/b79a3953-6621-48f9-9f30-6a1059583da1
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNlZWVjZjctOTMwNi00Mjg0LTljZTEtYzdiNDYwZDg5NDM2IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODY2MDk4MTEsImV4cCI6MTY4NzIxNDYxMX0.-6kHYogc1BKyERi0R5H5u97hZtjYiR8Xgt0U2xc4ogY
+
 
 ### USER
+POST http://localhost:3000/user/verifyEmail/stardusteight.d4cc@gmail.com
+###
 POST http://localhost:3000/user/register
 Content-Type: application/json
 
@@ -39,24 +64,36 @@ Content-Type: application/json
   "userRole": "author"
 }
 ###
-POST http://localhost:3000/user/verifyEmail/stardusteight.d4cc@gmail.com
+GET http://localhost:3000/user/username?equals=xablau
 ###
-GET http://localhost:3000/user/36cec40d-9acc-4322-a94b-12bf58119f4a
-###
-POST http://localhost:3000/user/username?equals=xablau
+GET http://localhost:3000/user/63eeecf7-9306-4284-9ce1-c7b460d89436
 ###
 GET http://localhost:3000/user/signin?identifier=stardusteight.d4cc@gmail.com&password=pa$$word1
 ###
-GET http://localhost:3000/user/search?by=email&value=johndoe@email.com
+PUT http://localhost:3000/user
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNlZWVjZjctOTMwNi00Mjg0LTljZTEtYzdiNDYwZDg5NDM2IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODY2MDk4MTEsImV4cCI6MTY4NzIxNDYxMX0.-6kHYogc1BKyERi0R5H5u97hZtjYiR8Xgt0U2xc4ogY
+
+{
+  "email": "email@email.com",
+  "username": "link",
+  "avatar": "Favatar02",
+  "userRole": "author",
+  "socialLinks": {
+    "github": "https://github.com/stardusteight-d4c"
+  }
+}
 
 
 ### FAVORITE
+GET http://localhost:3000/favorite/amount?post=c9a02a65-7822-4435-be27-77c3eead2275
+###
 PUT http://localhost:3000/favorite/toggle
 Content-Type: application/json
 
 { 
-  "postId": "6ed87f4d-ac83-4815-a6f3-3dc778525122",
-  "userId": "96b4baef-0299-43e9-aaab-2069a3fc9be4" 
+  "postId": "c9a02a65-7822-4435-be27-77c3eead2275",
+  "userId": "57efe66a-ec3a-4043-9db9-bc40ce5a6a01" 
 }
 
 
@@ -72,12 +109,32 @@ Content-Type: application/json
     "email": "johndoe@email.com",
     "username": "johndoe",
     "avatar": "AVATAR01",
-    "userRole": "reader"
   },
   "content": "Great post! I really enjoyed reading it.",
   "postedAt": "2023-05-30T14:31:44.545Z"
 }
 ###
+GET http://localhost:3000/comment/amount?of=user&id=b85d3a17-355f-4735-833c-c5468fecc98c
+###
 GET http://localhost:3000/comment/pagination?by=postId&value=c5d68477-129e-4cc0-8f36-e8ddc9874519&skip=2&pageSize=2
 ###
 GET http://localhost:3000/comment/pagination?by=userId&value=b85d3a17-355f-4735-833c-c5468fecc98c&skip=0&pageSize=3
+###
+PUT http://localhost:3000/comment
+Content-Type: application/json
+
+{
+  "id": "b85d3a17-385f-4747-833c-c5468fecc98c",
+  "postId": "e8dfe910-a5b0-4b71-98e6-555506cfef1d",
+  "postTitle": "Sample Post",
+  "owner": {
+    "id": "51900c55-0dfd-4bbf-a8b4-84f54d9fab07",
+    "email": "johndoe@email.com",
+    "username": "johndoe",
+    "avatar": "AVATAR01",
+  },
+  "content": "Updated comment!",
+  "postedAt": "2023-05-30T14:31:44.545Z"
+}
+###
+DELETE http://localhost:3000/comment/b85d3a17-385f-4747-833c-c5468fecc98c
