@@ -91,6 +91,21 @@ export class UserController {
     }
   }
 
+  @Get("username/:username")
+  public async findUsername(
+    @Param("username") username: string
+  ): Promise<Boolean> {
+    try {
+      return this.#userUseCases
+        .getByUsername(username)
+        .then((user) => {
+          return user?.reflect ? true : false
+        });
+    } catch (error) {
+      errorHandler(error);
+    }
+  }
+
   @Get("username")
   public async getManyByUsername(
     @Query("equals") equals: string,
@@ -99,6 +114,21 @@ export class UserController {
       return this.#userUseCases
         .getManyByUsername(equals)
         .then((users) => users.map((user) => user.reflect));
+    } catch (error) {
+      errorHandler(error);
+    }
+  }
+
+  @Get("email/:email")
+  public async findEmail(
+    @Param("email") email: string
+  ): Promise<Boolean> {
+    try {
+      return this.#userUseCases
+        .getByEmail(email)
+        .then((user) => {
+          return user?.reflect ? true : false
+        });
     } catch (error) {
       errorHandler(error);
     }

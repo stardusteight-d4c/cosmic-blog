@@ -18,11 +18,11 @@ const notifications = computed(() => store.state.notification.notifications);
   >
     <div
       v-for="notification in notifications"
-      :class="`${ctx[notification.type]} animate-notification`"
+      :class="`${ctx[notification.type]} w-[320px] md:w-[500px] animate-notification`"
       :key="notification.id"
     >
       <h2 class="text-xl text-center">{{ notification.title }}</h2>
-      <p class="text-center w-80">{{ notification.content }}</p>
+      <p class="text-center w-full">{{ notification.content }}</p>
     </div>
   </div>
 </template>

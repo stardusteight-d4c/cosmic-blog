@@ -64,6 +64,8 @@ Content-Type: application/json
   "userRole": "author"
 }
 ###
+GET http://localhost:3000/user/username/stardust
+###
 GET http://localhost:3000/user/username?equals=xablau
 ###
 GET http://localhost:3000/user/63eeecf7-9306-4284-9ce1-c7b460d89436

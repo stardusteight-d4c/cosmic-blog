@@ -5,10 +5,13 @@ import { calculateDelay } from "@/utils";
 import { signUpStyles as css } from "./styles";
 import { useAppStore } from "@store/index";
 import { loginMethods } from "@/store/modules/login";
+import useNotificator from "@/hooks/Notificator";
+import { GET } from "@/http";
 
 const emit = defineEmits(["changeToSignIn"]);
 
 const store = useAppStore();
+const { notify } = useNotificator();
 const usernameSpan = "Username".split("");
 const emailSpan = "Email".split("");
 const passwordSpan = "Password".split("");
@@ -26,7 +29,36 @@ function handleBackStep(): void {
   nextStep.value = false;
 }
 
-function handleNextStep(): void {
+async function handleNextStep(): Promise<void> {
+  const usernameRegex = /^(?=.*[a-z])[a-z0-9]{3,}$/;
+  const passwordRegex = /^(?=.*\d).{8,}$/;
+  const isValidUsername = usernameRegex.test(formData.username);
+  if (!isValidUsername) {
+    notify(
+      "ERROR",
+      `The username must contain only lowercase letters, at least 3
+      characters and must not contain special characters.`
+    );
+    return;
+  }
+  const usernameAlreadyExist = await GET.findUsername(formData.username);
+  const emailAlreadyExist = await GET.findEmail(formData.email);
+  if (usernameAlreadyExist) {
+    notify("WARNING", "The username is already in use!");
+    return;
+  }
+  if (emailAlreadyExist) {
+    notify("WARNING", "The email is already in use!");
+    return;
+  }
+  if (formData.password !== formData.confirmPassword) {
+    notify("ERROR", "Passwords do not match!");
+    return;
+  }
+  if (!passwordRegex.test(formData.password)) {
+    notify("ERROR", "Password must be at least 8 characters and a number.");
+    return;
+  }
   store.commit(loginMethods.mutations.setSignUp, formData);
   nextStep.value = true;
 }
@@ -38,7 +70,7 @@ function handleSignIn(): void {
 
 <template>
   <div :class="css.wrapper">
-    <form @submit="handleNextStep" v-if="nextStep === false">
+    <form @submit.prevent="handleNextStep" v-if="nextStep === false">
       <div :class="css.headerContainer">
         <h1 :class="css.title">Sign Up</h1>
         <span :class="css.alreadyHaveAnAccountSpan"
@@ -58,7 +90,7 @@ function handleSignIn(): void {
           </label>
         </div>
         <div :class="css.formControl">
-          <input v-model="formData.email" type="text" required />
+          <input v-model="formData.email" type="email" required />
           <label>
             <LabelSpan
               v-for="(letter, index) in emailSpan"
@@ -70,7 +102,7 @@ function handleSignIn(): void {
       </div>
       <div :class="css.flexCenterGapX4">
         <div :class="css.formControl">
-          <input v-model="formData.password" type="password" required="true" />
+          <input v-model="formData.password" type="password" required />
           <label>
             <LabelSpan
               v-for="(letter, index) in passwordSpan"

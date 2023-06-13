@@ -4,7 +4,23 @@ import api from "@/lib/axios";
 import { setCookie, getSessionCookie } from "@/utils";
 
 export class GET {
-  constructor() {}
+  constructor() { }
+
+  static async findUsername(username: string) {
+    const user = await api
+      .get<Boolean>(`/user/username/${username}`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+    return user;
+  }
+
+  static async findEmail(email: string) {
+    const user = await api
+      .get<Boolean>(`/user/email/${email}`)
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+    return user;
+  }
 
   static async userData(id: string) {
     const user = await api

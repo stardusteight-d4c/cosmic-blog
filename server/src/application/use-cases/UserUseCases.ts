@@ -39,6 +39,14 @@ export class UserUseCases {
     return await this.userService.getUserById(id);
   }
 
+  async getByUsername(username: string): Promise<User | undefined> {
+    return await this.userService.getUserByUsername(username);
+  }
+
+  async getByEmail(email: string): Promise<User | undefined> {
+    return await this.userService.getUserByEmail(email);
+  }
+
   async getManyByUsername(username: string): Promise<User[]> {
     return await this.userService.getUsersByUsername(username);
   }
