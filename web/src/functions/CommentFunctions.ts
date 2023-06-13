@@ -1,6 +1,8 @@
 import { ISession } from "@/@interfaces/auth";
 import { IComment } from "@/@interfaces/comment";
+import { NotificationType } from "@/@interfaces/notification";
 import { store } from "@/store";
+import { notificationMethods } from "@/store/modules/notification";
 import { postMethods } from "@/store/modules/post";
 import { detectClickOutsideElement } from "@/utils";
 import { ComputedRef, Ref, nextTick } from "vue";
@@ -10,6 +12,18 @@ export class SubmitCommentFunctions {
 
   constructor(params: { session: ComputedRef<ISession> }) {
     this.#session = params.session;
+  }
+
+  private notify(
+    type: NotificationType,
+    content: string,
+    title?: string | undefined
+  ) {
+    store.commit(notificationMethods.mutations.notify, {
+      title,
+      content,
+      type,
+    });
   }
 
   async submitComment(request: {
@@ -28,6 +42,10 @@ export class SubmitCommentFunctions {
       handledAvatarString,
       currentMemoji,
     } = request;
+    if (comment.value.length > 500) {
+      this.notify("ERROR", "The comment exceeds the 500 character limit!")
+      return
+    }
     emit("submitComment");
     const session = this.#session.value.decodedToken!;
     const payload: IComment = {
@@ -64,6 +82,18 @@ export class CommentFunctions {
     this.#commentEditableElement = params.commentEditableElement;
   }
 
+  private notify(
+    type: NotificationType,
+    content: string,
+    title?: string | undefined
+  ) {
+    store.commit(notificationMethods.mutations.notify, {
+      title,
+      content,
+      type,
+    });
+  }
+
   adjustTextarea(request: { textareaHeight: Ref<string> }): void {
     const { textareaHeight } = request;
     nextTick(() => {
@@ -86,6 +116,10 @@ export class CommentFunctions {
     const textarea = document.getElementById(
       `textarea-${propsComment.id}`
     )! as HTMLTextAreaElement;
+    if (textarea.value.length > 500) {
+      this.notify("ERROR", "The comment exceeds the 500 character limit!")
+      return
+    }
     const comment = document.getElementById(`comment-${propsComment.id}`)!;
     const editValue = textarea.value;
     comment.innerText = editValue;

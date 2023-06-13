@@ -9,10 +9,6 @@ import { IComment } from "@/@interfaces/comment";
 import { DeleteCommentPopUp } from "@/components/pop-ups";
 import { CommentFunctions } from "@/functions/CommentFunctions";
 
-// Quando o usuário clicar em seu comentário em Profile redirecioanar para o post e seu comentário
-// Inserir dinâmicamente uma propriedade ID no wrapper do comentário com o id do Comentário no Banco de Dados
-// http://localhost:5173/post/455446461/#IDdoComentário
-
 interface IProps {
   comment: IComment;
   currentPage: number;
@@ -134,6 +130,7 @@ function closedDeletePopUp(): void {
         :id="`comment-${comment.id}`"
         v-show="!selectedEditComment"
         :class="css.commentContainer"
+        style="white-space: break-spaces; word-wrap: break-word"
       >
         {{ comment.content }}
       </div>

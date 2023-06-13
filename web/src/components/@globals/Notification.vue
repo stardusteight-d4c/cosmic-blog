@@ -14,7 +14,7 @@ const notifications = computed(() => store.state.notification.notifications);
 
 <template>
   <div
-    class="absolute left-1/2 -translate-x-1/2 bottom-[14px] z-[1000] text-[#F2F2F2]"
+    class="fixed left-1/2 -translate-x-1/2 bottom-[14px] z-[1000] text-[#F2F2F2]"
   >
     <div
       v-for="notification in notifications"

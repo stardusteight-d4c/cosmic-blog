@@ -10,7 +10,7 @@ import { postMethods } from "@store/modules/post";
 const store = useAppStore();
 const posts = computed(() => store.state.post.home);
 const currentPage = ref(0);
-const loading = ref(true);
+const loading = ref(false);
 
 async function handleNextPage() {
   if (posts.value.length === 6) {
@@ -55,6 +55,7 @@ async function handleBackPage() {
   <GalleryHeader />
   <div :class="css.wrapper">
     <PostCard
+      :class="`${loading && 'blur-sm brightness-75 animate-pulse'}`"
       v-for="post in posts"
       :postId="post.id!"
       :title="post.title"

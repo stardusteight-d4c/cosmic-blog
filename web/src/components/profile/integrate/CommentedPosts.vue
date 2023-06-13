@@ -18,7 +18,7 @@ const props = defineProps({
 
 const store = useAppStore();
 const commentedPosts = computed(() => store.state.profile.commentedPosts);
-const loading = ref(true);
+const loading = ref(false);
 const currentPage = ref(0);
 
 onMounted(async () => {
@@ -94,7 +94,8 @@ async function handleBackPage() {
     </div>
     <div :class="css.commentedPostsWrapper">
       <PostComment
-        v-if="commentedPosts && commentedPosts.length > 0 && loading === false"
+        :class="`${loading && 'blur-sm brightness-95 animate-pulse'}`"
+        v-if="commentedPosts && commentedPosts.length > 0"
         v-for="comment in commentedPosts"
         :postId="comment.postId"
         :postedAt="comment.postedAt"
@@ -102,14 +103,6 @@ async function handleBackPage() {
         :username="comment.owner.username"
         :content="comment.content"
       />
-      <div v-if="loading == true" v-for="i in 3" class="blur animate-pulse">
-        <PostComment
-          username="Link"
-          content="The Legend of Zelda is a Nintendo video game series created in 1986 by Shigeru Miyamoto and Takashi Tezuka."
-          title="The Legend of Zelda"
-          :postedAt="new Date('1986-02-21T03:00:00.000Z')"
-        />
-      </div>
     </div>
     <div
       v-if="commentedPosts && commentedPosts.length === 0"

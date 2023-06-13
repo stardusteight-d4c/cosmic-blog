@@ -39,6 +39,7 @@ defineProps({
         id="htmlBody"
         v-html="marked.marked(body!)"
         :class="css.articleContent"
+        style="white-space: break-spaces;"
       />
     </div>
     <ArticleFooter v-if="showFooter" />

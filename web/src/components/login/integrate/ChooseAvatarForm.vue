@@ -23,6 +23,10 @@ const signUpData = computed(() => store.state.login.signUp);
 const loading = ref<boolean>(false);
 
 async function handleProceedToConfirmEmail() {
+  if (selectedAvatar.value === null) {
+    notify("ERROR", "You must select an avatar!");
+    return
+  }
   loading.value = true;
   encryptedCode.value = await store.dispatch(
     loginMethods.actions.verifyEmail,

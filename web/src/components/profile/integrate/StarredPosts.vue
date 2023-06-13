@@ -15,7 +15,7 @@ interface IProps {
 const props = defineProps<IProps>();
 const store = useAppStore();
 const favoritedPosts = computed(() => store.state.profile.favoritedPosts);
-const loading = ref(true);
+const loading = ref(false);
 const currentPage = ref(0);
 
 onMounted(async () => {
@@ -91,7 +91,8 @@ async function handleBackPage() {
     </div>
     <div :class="css.starredPostsWrapper">
       <PostCard
-        v-if="favoritedPosts && favoritedPosts.length > 0 && loading === false"
+        :class="`${loading && 'blur-sm brightness-95 animate-pulse'}`"
+        v-if="favoritedPosts && favoritedPosts.length > 0"
         v-for="post in favoritedPosts"
         :postId="post.id!"
         :isMinimalist="true"
@@ -100,16 +101,6 @@ async function handleBackPage() {
         :content="post.body"
         :tags="post.tags"
       />
-      <div v-if="loading == true" v-for="i in 3" class="blur animate-pulse">
-        <PostCard
-          postId="aaaa"
-          :isMinimalist="true"
-          title="The Legend of Zelda"
-          :postedAt="new Date('1986-02-21T03:00:00.000Z')"
-          content="The Legend of Zelda is a Nintendo video game series created in 1986 by Shigeru Miyamoto and Takashi Tezuka. It is centered around action-adventure video games and some RPG elements."
-          :tags="['game', 'rpg', 'snes', 'zelda']"
-        />
-      </div>
     </div>
     <div
       v-if="favoritedPosts && favoritedPosts.length === 0"
