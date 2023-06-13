@@ -61,7 +61,7 @@ export class FavoriteService implements IFavoriteService {
   }
 
   public async getFavorite(favorite: Favorite): Promise<Favorite> {
-    const favoriteKey = `${favorite.reflect.postId}-${favorite.reflect.userId}`
+    const favoriteKey = `${favorite.reflect.postId}+${favorite.reflect.userId}`
     return await this.#favoriteRepository.findFavoriteByKey(favoriteKey);
   }
 }

@@ -22,7 +22,7 @@ export class UserPostgreSQLRepository implements IUserRepository {
     const updatedUserObj = { ...existingUser, ...copyUpdate };
     const newUser = new User({ ...updatedUserObj })
     await knex('users')
-      .where('id', updatedUser.id)
+      .where('id', updatedUser.reflect.id)
       .update(newUser.reflect);
     return updatedUser
   }
@@ -114,7 +114,7 @@ export class UserPostgreSQLRepository implements IUserRepository {
     try {
       const user = await knex('users')
         .select('*')
-        .where('email', username)
+        .where('username', username)
         .first();
       if (user) {
         return new User(user)
