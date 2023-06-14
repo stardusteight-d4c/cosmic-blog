@@ -9,13 +9,12 @@ export class FavoriteController {
   #favoriteUseCases: FavoriteUseCases;
 
   constructor() {
-    // this.#favoriteUseCases = appInMemory.getFavoriteUsesCases();
     this.#favoriteUseCases = appPostgreSQL.getFavoriteUsesCases();
   }
 
   @Get("amount")
   public async amount(
-    @Query() query: { of: "post" | "user"; id: string },
+    @Query() query: { of: "post" | "user"; id: string }
   ): Promise<number> {
     try {
       const { of, id } = query;
@@ -31,7 +30,7 @@ export class FavoriteController {
 
   @Put("toggle")
   public async toggle(
-    @Body() favorite: { postId: string; userId: string },
+    @Body() favorite: { postId: string; userId: string }
   ): Promise<void> {
     try {
       await this.#favoriteUseCases.toggle(favorite);
@@ -44,7 +43,7 @@ export class FavoriteController {
     userId: string;
     postId: string;
   }): Promise<boolean> {
-    const verifyFavorite = new Favorite(request)
+    const verifyFavorite = new Favorite(request);
     const favorite = await this.#favoriteUseCases.getFavorite(verifyFavorite);
     if (favorite) {
       return true;

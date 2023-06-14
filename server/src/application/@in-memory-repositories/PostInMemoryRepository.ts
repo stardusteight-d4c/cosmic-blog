@@ -5,7 +5,7 @@ export class PostInMemoryRepository implements IPostRepository {
   private static instance: PostInMemoryRepository;
   #posts: Map<string, Post> = new Map();
 
-  private constructor() { }
+  private constructor() {}
 
   private async replace(updatedPost: Post): Promise<Post> {
     const existingPost = await this.findById(updatedPost.reflect.id!);
@@ -55,7 +55,7 @@ export class PostInMemoryRepository implements IPostRepository {
   public async findManyByTitle(postTitle: string): Promise<Post[]> {
     const normalizedPostTitle = postTitle.toLowerCase();
     const postsArray = Array.from(this.#posts.values());
-    const filteredPosts = postsArray.filter(post => {
+    const filteredPosts = postsArray.filter((post) => {
       const normalizedPost = post.reflect.title.toLowerCase();
       return normalizedPost.includes(normalizedPostTitle);
     });

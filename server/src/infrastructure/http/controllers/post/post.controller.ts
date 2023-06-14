@@ -31,9 +31,8 @@ export class PostController {
     @Inject(FavoriteController)
     favoriteController: FavoriteController,
     @Inject(CommentController)
-    commentController: CommentController,
+    commentController: CommentController
   ) {
-    // this.#postUseCases = appInMemory.getPostUsesCases();
     this.#postUseCases = appPostgreSQL.getPostUsesCases();
     this.#favoriteController = favoriteController;
     this.#commentController = commentController;
@@ -42,7 +41,7 @@ export class PostController {
   @Post("")
   @UseGuards(RequireAuthorPermission)
   public async publishPost(
-    @Body() post: IPostReflectObject,
+    @Body() post: IPostReflectObject
   ): Promise<IPostReflectObject> {
     try {
       return this.#postUseCases.create(post).then((post) => post?.reflect);
@@ -65,7 +64,7 @@ export class PostController {
   @Get(":id")
   public async getById(
     @Param("id") id: string,
-    @Headers("authorization") authorization: string,
+    @Headers("authorization") authorization: string
   ): Promise<GetByIdResponse> {
     try {
       return this.#postUseCases.getById(id).then(async (post) => {
@@ -81,7 +80,7 @@ export class PostController {
 
   @Get("title")
   public async getManyByTitle(
-    @Query("equals") equals: string,
+    @Query("equals") equals: string
   ): Promise<IPostReflectObject[]> {
     try {
       return await this.#postUseCases
@@ -94,7 +93,7 @@ export class PostController {
 
   @Get("pagination")
   public async getWithPagination(
-    @Query() query: { skip: number; pageSize: number },
+    @Query() query: { skip: number; pageSize: number }
   ): Promise<IPostReflectObject[]> {
     try {
       return this.#postUseCases
@@ -107,7 +106,7 @@ export class PostController {
 
   @Get("pagination/userFavorites")
   public async getWithPaginationByUserFavorites(
-    @Query() query: { userId: string; skip: number; pageSize: number },
+    @Query() query: { userId: string; skip: number; pageSize: number }
   ): Promise<IPostReflectObject[]> {
     try {
       return this.#postUseCases
@@ -121,7 +120,7 @@ export class PostController {
   @Put("")
   @UseGuards(RequireAuthorPermission)
   public async edit(
-    @Body() updatedPost: IPostReflectObject,
+    @Body() updatedPost: IPostReflectObject
   ): Promise<IPostReflectObject> {
     try {
       return this.#postUseCases

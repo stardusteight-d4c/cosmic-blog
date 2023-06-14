@@ -1,25 +1,16 @@
-import type { ICommentService, ICommentRepository } from "@typings/comment";
-import type { IFavoriteService, IFavoriteRepository } from "@typings/favorite";
-import type { IPostService, IPostRepository } from "@typings/post";
-import type { IUserService, IUserRepository } from "@typings/user";
+import type { ICommentRepository } from "@typings/comment";
+import type { IFavoriteRepository } from "@typings/favorite";
+import type { IPostRepository } from "@typings/post";
+import type { IUserRepository } from "@typings/user";
+import { PostService } from "@domain/src/post";
+import { UserService } from "@domain/src/user";
 import { Publisher } from "@domain/@utils/Publisher";
+import { CommentService, CommentObserver } from "@domain/src/comment";
+import { FavoriteService, FavoriteObserver } from "@domain/src/favorite";
 import { UserUseCases } from "./use-cases/UserUseCases";
 import { PostUseCases } from "./use-cases/PostUseCases";
 import { CommentUseCases } from "./use-cases/CommentUseCases";
 import { FavoriteUseCases } from "./use-cases/FavoriteUseCases";
-import { PostService } from "@/domain/src/post";
-import { UserService } from "@/domain/src/user";
-import { CommentService, CommentObserver } from "@/domain/src/comment";
-import { FavoriteService, FavoriteObserver } from "@/domain/src/favorite";
-
-export interface Initialization {
-  services: {
-    userService: IUserService;
-    postService: IPostService;
-    commentService: ICommentService;
-    favoriteService: IFavoriteService;
-  };
-}
 
 export class ApplicationUseCases {
   #postRepository: IPostRepository;
@@ -67,20 +58,10 @@ export class ApplicationUseCases {
     });
     publisher.register(new CommentObserver(commentService));
     publisher.register(new FavoriteObserver(favoriteService));
-    const init: Initialization = {
-      services: {
-        userService,
-        postService,
-        commentService,
-        favoriteService,
-      },
-    };
-    this.#postUseCases = new PostUseCases(init.services.postService);
-    this.#userUseCases = new UserUseCases(init.services.userService);
-    this.#commentUseCases = new CommentUseCases(init.services.commentService);
-    this.#favoriteUseCases = new FavoriteUseCases(
-      init.services.favoriteService,
-    );
+    this.#postUseCases = new PostUseCases(postService);
+    this.#userUseCases = new UserUseCases(userService);
+    this.#commentUseCases = new CommentUseCases(commentService);
+    this.#favoriteUseCases = new FavoriteUseCases(favoriteService);
   }
 
   public getPostUsesCases(): PostUseCases {

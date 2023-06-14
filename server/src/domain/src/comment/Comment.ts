@@ -31,7 +31,7 @@ export class Comment {
 
   public get id(): string {
     throw new Error(
-      "Cannot access id property directly. Use the reflect object in the Comment instead.",
+      "Cannot access id property directly. Use the reflect object in the Comment instead."
     );
   }
   public set id(_value: string) {
@@ -40,17 +40,16 @@ export class Comment {
 
   public get postId(): string {
     throw new Error(
-      "Cannot access postId property directly. Use the reflect object in the Comment instead.",
+      "Cannot access postId property directly. Use the reflect object in the Comment instead."
     );
   }
   public set postId(_value: string) {
     throw new Error("Cannot modify postId property directly.");
   }
 
-
   public get postTitle(): string {
     throw new Error(
-      "Cannot access postTitle property directly. Use the reflect object in the Comment instead.",
+      "Cannot access postTitle property directly. Use the reflect object in the Comment instead."
     );
   }
   public set postTitle(_value: string) {
@@ -59,7 +58,7 @@ export class Comment {
 
   public get owner(): string {
     throw new Error(
-      "Cannot access owner property directly. Use the reflect object in the Comment instead.",
+      "Cannot access owner property directly. Use the reflect object in the Comment instead."
     );
   }
   public set owner(_value: string) {
@@ -68,7 +67,7 @@ export class Comment {
 
   public get content(): string {
     throw new Error(
-      "Cannot access content property directly. Use the reflect object in the Comment instead.",
+      "Cannot access content property directly. Use the reflect object in the Comment instead."
     );
   }
   public set content(_value: string) {
@@ -77,7 +76,7 @@ export class Comment {
 
   public get postedAt(): string {
     throw new Error(
-      "Cannot access postedAt property directly. Use the reflect object in the Comment instead.",
+      "Cannot access postedAt property directly. Use the reflect object in the Comment instead."
     );
   }
   public set postedAt(_value: string) {

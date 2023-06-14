@@ -1,4 +1,8 @@
-import type { ICommentReflectObject, ICommentRepository, ICommentService } from "@typings/comment";
+import type {
+  ICommentReflectObject,
+  ICommentRepository,
+  ICommentService,
+} from "@typings/comment";
 import { Comment } from "./Comment";
 import { commentBuilderFactory } from "./helpers";
 import { IPostRepository } from "@/@typings/post";
@@ -46,7 +50,7 @@ export class CommentService implements ICommentService {
   }
 
   public async updateComment(
-    updatedComment: ICommentReflectObject,
+    updatedComment: ICommentReflectObject
   ): Promise<Comment | undefined> {
     const commentInstance = commentBuilderFactory({ comment: updatedComment });
     await this.#commentRepository.update(commentInstance);
@@ -64,7 +68,7 @@ export class CommentService implements ICommentService {
     pageSize: number;
   }): Promise<Comment[]> {
     const comments = await this.#commentRepository.findByPostIdWithPagination(
-      request,
+      request
     );
     return comments;
   }
@@ -75,7 +79,7 @@ export class CommentService implements ICommentService {
     pageSize: number;
   }): Promise<Comment[]> {
     const comments = await this.#commentRepository.findByUserIdWithPagination(
-      request,
+      request
     );
     return comments;
   }

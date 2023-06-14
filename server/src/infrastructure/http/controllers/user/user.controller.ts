@@ -9,12 +9,12 @@ import {
   Put,
   Query,
 } from "@nestjs/common";
-import { transporter } from "@infra/lib/nodemailer";
+import {
+  NodemailerSendMailAdapter,
+  JWTSessionTokenAdapter,
+} from "@infra/adapters";
 import { appPostgreSQL } from "@infra/index";
 import { UserUseCases } from "@app/use-cases/UserUseCases";
-import { SessionTokenAdapter } from "@app/adapters/SessionTokenAdapter";
-import { IPluginSendMail } from "@app/adapters/@interfaces";
-import { SendMailAdapter } from "@app/adapters/SendMailAdapter";
 import { errorHandler } from "../../@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
@@ -23,7 +23,6 @@ import Validators from "../../@utils/validators";
 import { getByIdResponse } from "./@dtos/builders/getByIdResponse";
 import { registerResponse } from "./@dtos/builders/registerResponse";
 import type { IUserReflectObject } from "@typings/user";
-import jwt from "jsonwebtoken";
 import brcypt from "bcrypt";
 
 @Controller("user")
@@ -31,27 +30,24 @@ export class UserController {
   #userUseCases: UserUseCases;
   #favoriteController: FavoriteController;
   #commentController: CommentController;
-  sessionTokenAdapter: SessionTokenAdapter;
 
   constructor(
     @Inject(FavoriteController)
     favoriteController: FavoriteController,
     @Inject(CommentController)
-    commentController: CommentController,
+    commentController: CommentController
   ) {
-    // this.#userUseCases = appInMemory.getUserUsesCases();
-    this.#userUseCases = appPostgreSQL.getUserUsesCases()
+    this.#userUseCases = appPostgreSQL.getUserUsesCases();
     this.#favoriteController = favoriteController;
     this.#commentController = commentController;
-    this.sessionTokenAdapter = new SessionTokenAdapter(jwt);
   }
 
   @Post("register")
   public async register(
-    @Body() user: IUserReflectObject,
+    @Body() user: IUserReflectObject
   ): Promise<IRegisterResponse> {
     try {
-      const sessionTokenAdapter = this.sessionTokenAdapter;
+      const sessionTokenAdapter = new JWTSessionTokenAdapter();
       return this.#userUseCases
         .register({ user, sessionTokenAdapter })
         .then(({ user, sessionToken }) => {
@@ -65,9 +61,7 @@ export class UserController {
   @Post("verifyEmail/:email")
   public async verifyEmail(@Param("email") email: string) {
     try {
-      const sendMailAdapter = new SendMailAdapter(
-        transporter as unknown as IPluginSendMail,
-      );
+      const sendMailAdapter = new NodemailerSendMailAdapter();
       return this.#userUseCases
         .verifyEmail({ email, sendMailAdapter })
         .then(async (code) => {
@@ -96,11 +90,9 @@ export class UserController {
     @Param("username") username: string
   ): Promise<Boolean> {
     try {
-      return this.#userUseCases
-        .getByUsername(username)
-        .then((user) => {
-          return user?.reflect ? true : false
-        });
+      return this.#userUseCases.getByUsername(username).then((user) => {
+        return user?.reflect ? true : false;
+      });
     } catch (error) {
       errorHandler(error);
     }
@@ -108,7 +100,7 @@ export class UserController {
 
   @Get("username")
   public async getManyByUsername(
-    @Query("equals") equals: string,
+    @Query("equals") equals: string
   ): Promise<IUserReflectObject[]> {
     try {
       return this.#userUseCases
@@ -120,15 +112,11 @@ export class UserController {
   }
 
   @Get("email/:email")
-  public async findEmail(
-    @Param("email") email: string
-  ): Promise<Boolean> {
+  public async findEmail(@Param("email") email: string): Promise<Boolean> {
     try {
-      return this.#userUseCases
-        .getByEmail(email)
-        .then((user) => {
-          return user?.reflect ? true : false
-        });
+      return this.#userUseCases.getByEmail(email).then((user) => {
+        return user?.reflect ? true : false;
+      });
     } catch (error) {
       errorHandler(error);
     }
@@ -136,11 +124,11 @@ export class UserController {
 
   @Get("signin")
   public async signin(
-    @Query() query: { identifier: string; password: string },
+    @Query() query: { identifier: string; password: string }
   ) {
     try {
       const { identifier, password } = query;
-      const sessionTokenAdapter = this.sessionTokenAdapter;
+      const sessionTokenAdapter = new JWTSessionTokenAdapter();
       return await this.#userUseCases
         .signin({ identifier, password, sessionTokenAdapter })
         .then(({ user, sessionToken }) => {
@@ -154,7 +142,7 @@ export class UserController {
   @Put("")
   public async edit(
     @Body() updatedUser: IUserReflectObject,
-    @Headers("authorization") authorization: string,
+    @Headers("authorization") authorization: string
   ): Promise<IUserReflectObject> {
     try {
       Validators.isSameUser({
@@ -186,7 +174,7 @@ export class UserController {
   }
 
   private async buildGetByIdResponse(
-    user: IUserReflectObject,
+    user: IUserReflectObject
   ): Promise<{ user: IUserResponse }> {
     return await getByIdResponse({ controller: this, user });
   }

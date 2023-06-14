@@ -10,9 +10,9 @@ export async function getByIdResponse(request: {
   delete user.password;
   return {
     user: {
-      ...user as IUserResponse,
+      ...(user as IUserResponse),
       favoriteAmount: await controller.getFavoriteAmount(user.id),
       commentAmount: await controller.getCommentAmount(user.id),
-    }
+    },
   };
 }

@@ -19,7 +19,7 @@ export function userBuilderFactory({
     .setAvatar(user.avatar ?? undefined)
     .setUserRole(user.userRole ?? "reader")
     .setSocialLinks(
-      update?.field === "socialLinks" ? update.newData : user.socialLinks,
+      update?.field === "socialLinks" ? update.newData : user.socialLinks
     )
     .build();
   return updatedUserInstance;

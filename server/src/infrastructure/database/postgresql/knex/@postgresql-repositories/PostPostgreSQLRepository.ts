@@ -5,18 +5,22 @@ import { knex } from "../config";
 export class PostPostgreSQLRepository implements IPostRepository {
   private static instance: PostPostgreSQLRepository;
 
-  private constructor() { }
+  private constructor() {}
 
   private async replace(updatedPost: Post): Promise<Post> {
-    const existingPost = await knex('posts').where('id', updatedPost.reflect.id).first();
+    const existingPost = await knex("posts")
+      .where("id", updatedPost.reflect.id)
+      .first();
     if (!existingPost) {
       throw new Error(`No post found with id: ${updatedPost.reflect.id}`);
     }
-    await knex('posts').where('id', updatedPost.reflect.id).update({
-      ...updatedPost.reflect, 
-      tags: JSON.stringify(updatedPost.reflect.tags) as any, 
-      author: JSON.stringify(updatedPost.reflect.author) as any
-    });
+    await knex("posts")
+      .where("id", updatedPost.reflect.id)
+      .update({
+        ...updatedPost.reflect,
+        tags: JSON.stringify(updatedPost.reflect.tags) as any,
+        author: JSON.stringify(updatedPost.reflect.author) as any,
+      });
     return updatedPost;
   }
 
@@ -30,19 +34,21 @@ export class PostPostgreSQLRepository implements IPostRepository {
   public async create(post: Post): Promise<Post> {
     // jsonb não aceita campos undefined
     const cleanAuthor = Object.fromEntries(
-      Object.entries(post.reflect.author).filter(([key, value]) => value !== undefined)
+      Object.entries(post.reflect.author).filter(
+        ([key, value]) => value !== undefined
+      )
     );
     try {
       return await knex.transaction(async (trx) => {
-        const createdPost = await trx('posts')
-          .insert({ 
-            ...post.reflect, 
+        const createdPost = await trx("posts")
+          .insert({
+            ...post.reflect,
             tags: JSON.stringify(post.reflect.tags) as any,
-            author: JSON.stringify(cleanAuthor) as any 
+            author: JSON.stringify(cleanAuthor) as any,
           })
-          .returning('*')
+          .returning("*")
           .then((result) => result[0]);
-        return new Post(createdPost)
+        return new Post(createdPost);
       });
     } catch (error) {
       throw new Error(`Error creating post: ${error}`);
@@ -61,7 +67,7 @@ export class PostPostgreSQLRepository implements IPostRepository {
   public async delete(postId: string): Promise<Post> {
     try {
       const post = await this.findById(postId);
-      await knex('posts').where({ id: postId }).delete();
+      await knex("posts").where({ id: postId }).delete();
       return post;
     } catch (error) {
       throw new Error(`Error deleting post: ${error}`);
@@ -70,7 +76,7 @@ export class PostPostgreSQLRepository implements IPostRepository {
 
   public async deleteAll(): Promise<void> {
     try {
-      await knex('posts').del();
+      await knex("posts").del();
     } catch (error) {
       throw new Error(`Error deleting all posts: ${error}`);
     }
@@ -78,7 +84,7 @@ export class PostPostgreSQLRepository implements IPostRepository {
 
   public async findById(postId: string): Promise<Post | undefined> {
     try {
-      const post = await knex('posts').where({ id: postId }).first();
+      const post = await knex("posts").where({ id: postId }).first();
       if (!post) {
         throw new Error(`No post found with id: ${postId}`);
       }
@@ -91,8 +97,8 @@ export class PostPostgreSQLRepository implements IPostRepository {
   public async findManyByTitle(postTitle: string): Promise<Post[]> {
     try {
       const normalizedPostTitle = postTitle.toLowerCase();
-      const posts = await knex('posts')
-        .whereRaw('LOWER(title) LIKE ?', `%${normalizedPostTitle}%`)
+      const posts = await knex("posts")
+        .whereRaw("LOWER(title) LIKE ?", `%${normalizedPostTitle}%`)
         .limit(6);
       return posts.map((post) => new Post(post));
     } catch (error) {
@@ -102,18 +108,21 @@ export class PostPostgreSQLRepository implements IPostRepository {
 
   public async findAll(): Promise<Post[]> {
     try {
-      const posts = await knex('posts');
+      const posts = await knex("posts");
       return posts.map((post) => new Post(post));
     } catch (error) {
       throw new Error(`Error finding all posts: ${error}`);
     }
   }
 
-  public async findWithPagination(request: { skip: number; pageSize: number }): Promise<Post[]> {
+  public async findWithPagination(request: {
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[]> {
     try {
       const { skip, pageSize } = request;
-      const posts = await knex('posts')
-        .orderBy('postedIn', 'desc')
+      const posts = await knex("posts")
+        .orderBy("postedIn", "desc")
         .limit(pageSize)
         .offset(skip);
       return posts.map((post) => new Post(post));
@@ -124,7 +133,7 @@ export class PostPostgreSQLRepository implements IPostRepository {
 
   public async findByIds(postIds: string[]): Promise<Post[]> {
     try {
-      const posts = await knex('posts').whereIn('id', postIds);
+      const posts = await knex("posts").whereIn("id", postIds);
       return posts.map((post) => new Post(post));
     } catch (error) {
       throw new Error(`Error finding posts by ids: ${error}`);
@@ -133,7 +142,10 @@ export class PostPostgreSQLRepository implements IPostRepository {
 
   public async findPostTitleById(postId: string): Promise<string> {
     try {
-      const post = await knex('posts').select('title').where({ id: postId }).first();
+      const post = await knex("posts")
+        .select("title")
+        .where({ id: postId })
+        .first();
       if (post) {
         return post.title;
       } else {

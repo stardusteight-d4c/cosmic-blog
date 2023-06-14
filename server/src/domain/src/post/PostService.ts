@@ -1,8 +1,9 @@
-import type { IPostReflectObject, IPostRepository, IPostService } from "@typings/post";
-import {
-  Post,
-  postBuilderFactory,
-} from ".";
+import type {
+  IPostReflectObject,
+  IPostRepository,
+  IPostService,
+} from "@typings/post";
+import { Post, postBuilderFactory } from ".";
 import Validators from "@domain/@utils/validators";
 import DeletePostCommand from "./PostCommands";
 import { IUserRepository } from "@/@typings/user";
@@ -89,7 +90,7 @@ export class PostService implements IPostService {
     const favoritedPosts = await this.#postRepository.findByIds(postIds);
     const paginatedPosts = favoritedPosts.slice(
       Number(skip),
-      Number(skip) + Number(pageSize),
+      Number(skip) + Number(pageSize)
     );
     return paginatedPosts;
   }

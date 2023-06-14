@@ -1,8 +1,7 @@
 import type { IUserReflectObject, IUserService } from "@typings/user";
-import {  User } from "@domain/src/user";
-import { SessionTokenAdapter } from "../adapters/SessionTokenAdapter";
-import { SendMailAdapter } from "../adapters/SendMailAdapter";
+import { User } from "@domain/src/user";
 import Validators from "@/infrastructure/http/@utils/validators";
+import { ISessionTokenAdapter, ISendMailAdapter } from "../adapters";
 
 type RegisterUserResult = { user: User; sessionToken: string };
 
@@ -11,7 +10,7 @@ export class UserUseCases {
 
   async register(request: {
     user: IUserReflectObject;
-    sessionTokenAdapter: SessionTokenAdapter;
+    sessionTokenAdapter: ISessionTokenAdapter;
   }): Promise<RegisterUserResult> {
     const { user, sessionTokenAdapter } = request;
     const userInstance = await this.userService.createUser(user);
@@ -27,7 +26,7 @@ export class UserUseCases {
 
   async verifyEmail(request: {
     email: string;
-    sendMailAdapter: SendMailAdapter;
+    sendMailAdapter: ISendMailAdapter;
   }): Promise<number> {
     const { email, sendMailAdapter } = request;
     const randomSixDigitCode = Math.floor(100000 + Math.random() * 900000);
@@ -58,7 +57,7 @@ export class UserUseCases {
   async signin(request: {
     identifier: string;
     password: string;
-    sessionTokenAdapter: SessionTokenAdapter;
+    sessionTokenAdapter: ISessionTokenAdapter;
   }): Promise<RegisterUserResult> {
     const { identifier, password, sessionTokenAdapter } = request;
     let user: User;

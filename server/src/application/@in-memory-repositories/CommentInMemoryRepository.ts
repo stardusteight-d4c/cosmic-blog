@@ -81,7 +81,7 @@ export class CommentInMemoryRepository implements ICommentRepository {
     const { postId, skip, pageSize } = request;
     const comments = Array.from(this.#comments.values());
     const commentsByPostId = comments.filter(
-      (comment) => comment.reflect.postId === postId,
+      (comment) => comment.reflect.postId === postId
     );
     const sortedComments = commentsByPostId.sort((a, b) => {
       const aPostedAt = new Date(a.reflect.postedAt);
@@ -90,7 +90,7 @@ export class CommentInMemoryRepository implements ICommentRepository {
     });
     const paginatedComments = sortedComments.slice(
       Number(skip),
-      Number(skip) + Number(pageSize),
+      Number(skip) + Number(pageSize)
     );
     return paginatedComments;
   }
@@ -103,7 +103,7 @@ export class CommentInMemoryRepository implements ICommentRepository {
     const { userId, skip, pageSize } = request;
     const comments = Array.from(this.#comments.values());
     const commentsByUserId = comments.filter(
-      (comment) => comment.reflect.owner.id === userId,
+      (comment) => comment.reflect.owner.id === userId
     );
     const sortedComments = commentsByUserId.sort((a, b) => {
       const aPostedAt = new Date(a.reflect.postedAt);
@@ -112,7 +112,7 @@ export class CommentInMemoryRepository implements ICommentRepository {
     });
     const paginatedComments = sortedComments.slice(
       Number(skip),
-      Number(skip) + Number(pageSize),
+      Number(skip) + Number(pageSize)
     );
     return paginatedComments;
   }

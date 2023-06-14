@@ -1,4 +1,8 @@
-import type { ISocialLinks, IUserReflectObject, TUserRole } from "@typings/user";
+import type {
+  ISocialLinks,
+  IUserReflectObject,
+  TUserRole,
+} from "@typings/user";
 
 export class User {
   #id: string;
@@ -32,13 +36,13 @@ export class User {
   }
   public set reflect(_values: IUserReflectObject) {
     throw new Error(
-      "Cannot modify reflect object directly. Use the UserService methods instead.",
+      "Cannot modify reflect object directly. Use the UserService methods instead."
     );
   }
 
   public get id(): string {
     throw new Error(
-      "Cannot access id property directly. Use the reflect object in the User instead.",
+      "Cannot access id property directly. Use the reflect object in the User instead."
     );
   }
   public set id(_value: string) {
@@ -47,56 +51,56 @@ export class User {
 
   public get type(): string {
     throw new Error(
-      "Cannot access type property directly. Use the reflect object in the User instead.",
+      "Cannot access type property directly. Use the reflect object in the User instead."
     );
   }
   public set type(_value: string) {
     throw new Error(
-      "Cannot modify user type property directly. Use the UserService instead.",
+      "Cannot modify user type property directly. Use the UserService instead."
     );
   }
 
   public get email(): string {
     throw new Error(
-      "Cannot access email property directly. Use the reflect object in the User instead.",
+      "Cannot access email property directly. Use the reflect object in the User instead."
     );
   }
   public set email(_value: string) {
     throw new Error(
-      "Cannot modify email property directly. Use the UserService instead.",
+      "Cannot modify email property directly. Use the UserService instead."
     );
   }
 
   public get username(): string {
     throw new Error(
-      "Cannot access username property directly. Use the reflect object in the User instead.",
+      "Cannot access username property directly. Use the reflect object in the User instead."
     );
   }
   public set username(_value: string) {
     throw new Error(
-      "Cannot modify username property directly. Use the UserService instead.",
+      "Cannot modify username property directly. Use the UserService instead."
     );
   }
 
   public get password(): string {
     throw new Error(
-      "Cannot access password property directly. Use the reflect object in the User instead.",
+      "Cannot access password property directly. Use the reflect object in the User instead."
     );
   }
   public set password(_value: string) {
     throw new Error(
-      "Cannot modify password property directly. Use the UserService instead.",
+      "Cannot modify password property directly. Use the UserService instead."
     );
   }
 
   public get socialLinks(): Object[] {
     throw new Error(
-      "Cannot access socialLinks property directly. Use the reflect object in the User instead.",
+      "Cannot access socialLinks property directly. Use the reflect object in the User instead."
     );
   }
   public set socialLinks(_value: Object[]) {
     throw new Error(
-      "Cannot modify socialLinks property directly. Use the UserService instead.",
+      "Cannot modify socialLinks property directly. Use the UserService instead."
     );
   }
 }

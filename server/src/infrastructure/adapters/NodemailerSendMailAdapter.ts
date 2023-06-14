@@ -1,18 +1,15 @@
-import { IPluginSendMail, ISendMailAdapter } from "./@interfaces";
+import { ISendMailAdapter } from "@app/adapters/ISendMailAdapter";
+import { transporter } from "@infra/lib/nodemailer";
 
-export class SendMailAdapter implements ISendMailAdapter {
-  #pluginSendEmail: IPluginSendMail;
-
-  constructor(pluginSendEmail: IPluginSendMail) {
-    this.#pluginSendEmail = pluginSendEmail;
-  }
+export class NodemailerSendMailAdapter implements ISendMailAdapter {
+  constructor() {}
 
   async verifyEmail(request: {
     email: string;
     randomSixDigitCode: number;
   }): Promise<void> {
     const { email, randomSixDigitCode } = request;
-    await this.#pluginSendEmail.sendMail({
+    await transporter.sendMail({
       subject: "Confirmation Code",
       from: '"Cosmic Blog" <stardusteight.d4cc@gmail.com>',
       to: email,

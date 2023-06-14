@@ -1,5 +1,5 @@
 import type { IPostReflectObject, IPostService } from "@typings/post";
-import {  Post } from "@domain/src/post";
+import { Post } from "@domain/src/post";
 
 export class PostUseCases {
   constructor(private postService: IPostService) {}

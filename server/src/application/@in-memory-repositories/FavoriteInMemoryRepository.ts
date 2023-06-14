@@ -39,7 +39,7 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
   }
 
   public async findFavoriteByKey(
-    favoriteKey: string,
+    favoriteKey: string
   ): Promise<Favorite | undefined> {
     for (const favorite of this.#favorites.values()) {
       if (this.generateKey(favorite) === favoriteKey) {
@@ -52,7 +52,7 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
   public async findFavoriteByUserId(userId: string): Promise<Favorite> {
     const favoritesArray = Array.from(this.#favorites.values());
     return favoritesArray.find(
-      (favorite) => favorite.reflect.userId === userId,
+      (favorite) => favorite.reflect.userId === userId
     );
   }
 

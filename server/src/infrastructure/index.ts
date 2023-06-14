@@ -1,16 +1,16 @@
-import { ApplicationUseCases } from "@app/ApplicationUseCases";
 import {
   CommentInMemoryRepository,
   FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
 } from "@app/@in-memory-repositories";
-import { 
-  PostPostgreSQLRepository, 
-  UserPostgreSQLRepository, 
-  CommentPostgreSQLRepository, 
-  FavoritePostgreSQLRepository 
+import {
+  PostPostgreSQLRepository,
+  UserPostgreSQLRepository,
+  CommentPostgreSQLRepository,
+  FavoritePostgreSQLRepository,
 } from "./database/postgresql/knex/@postgresql-repositories";
+import { ApplicationUseCases } from "@app/ApplicationUseCases";
 
 export const appInMemory = new ApplicationUseCases({
   postRepository: PostInMemoryRepository.getInstance(),
@@ -24,4 +24,4 @@ export const appPostgreSQL = new ApplicationUseCases({
   userRepository: UserPostgreSQLRepository.getInstance(),
   commentRepository: CommentPostgreSQLRepository.getInstance(),
   favoriteRepository: FavoritePostgreSQLRepository.getInstance(),
-})
+});

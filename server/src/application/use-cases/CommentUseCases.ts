@@ -1,7 +1,7 @@
 import type { ICommentReflectObject, ICommentService } from "@typings/comment";
 
 export class CommentUseCases {
-  constructor(private commentService: ICommentService) { }
+  constructor(private commentService: ICommentService) {}
 
   async create(comment: ICommentReflectObject) {
     return await this.commentService.createComment(comment);
@@ -34,7 +34,6 @@ export class CommentUseCases {
         skip,
         pageSize,
       });
-
     }
   }
 

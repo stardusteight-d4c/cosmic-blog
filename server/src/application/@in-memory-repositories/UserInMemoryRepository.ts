@@ -5,19 +5,19 @@ export class UserInMemoryRepository implements IUserRepository {
   private static instance: UserInMemoryRepository;
   #users: Map<string, User> = new Map();
 
-  private constructor() { }
+  private constructor() {}
 
   private async replace(updatedUser: User): Promise<User> {
-    const copyUpdate = updatedUser.reflect
+    const copyUpdate = updatedUser.reflect;
     const existingUser = await this.findById(updatedUser.reflect.id!);
     if (!existingUser) {
       throw new Error(`No user found with id: ${updatedUser.reflect.id}`);
     }
     if (copyUpdate.password === undefined) {
-      delete copyUpdate.password
+      delete copyUpdate.password;
     }
     const updatedUserObj = { ...existingUser.reflect, ...copyUpdate };
-    const newUser = new User({ ...updatedUserObj })
+    const newUser = new User({ ...updatedUserObj });
     this.#users.delete(existingUser.reflect.id!);
     this.#users.set(newUser.reflect.id!, newUser);
     return newUser;
@@ -55,13 +55,13 @@ export class UserInMemoryRepository implements IUserRepository {
 
   public async findByEmail(email: string): Promise<User | undefined> {
     return Array.from(this.#users.values()).find(
-      (user) => user.reflect.email === email,
+      (user) => user.reflect.email === email
     );
   }
 
   public async findByUsername(username: string): Promise<User | undefined> {
     return Array.from(this.#users.values()).find(
-      (user) => user.reflect.username === username,
+      (user) => user.reflect.username === username
     );
   }
 

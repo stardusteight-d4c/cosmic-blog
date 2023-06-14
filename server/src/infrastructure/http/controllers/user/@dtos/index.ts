@@ -7,13 +7,11 @@ export interface IUserResponse {
   avatar: string;
   userRole: TUserRole;
   socialLinks?: ISocialLinks | undefined;
-  favoriteAmount?: number
-  commentAmount?: number
+  favoriteAmount?: number;
+  commentAmount?: number;
 }
 
 export interface IRegisterResponse {
   user: IUserResponse;
   sessionToken: string;
 }
-
-

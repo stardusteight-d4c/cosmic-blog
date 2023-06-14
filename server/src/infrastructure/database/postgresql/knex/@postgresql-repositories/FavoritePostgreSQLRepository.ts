@@ -5,7 +5,7 @@ import { knex } from "../config";
 export class FavoritePostgreSQLRepository implements IFavoriteRepository {
   private static instance: FavoritePostgreSQLRepository;
 
-  private constructor() { }
+  private constructor() {}
 
   private generateKey(favorite: Favorite): string {
     return `${favorite.reflect.postId}+${favorite.reflect.userId}`;
@@ -14,14 +14,14 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
   private async replace(updatedFavorite: Favorite): Promise<Favorite> {
     const key = this.generateKey(updatedFavorite);
     try {
-      const [postId, userId] = key.split('+');
-      const existingFavorite = await knex('favorites')
+      const [postId, userId] = key.split("+");
+      const existingFavorite = await knex("favorites")
         .where({ postId, userId })
         .first();
       if (!existingFavorite) {
         throw new Error(`No favorite found with key: ${key}`);
       }
-      await knex('favorites')
+      await knex("favorites")
         .where({ postId, userId })
         .update(updatedFavorite.reflect);
       return updatedFavorite;
@@ -32,7 +32,8 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
 
   public static getInstance(): FavoritePostgreSQLRepository {
     if (!FavoritePostgreSQLRepository.instance) {
-      FavoritePostgreSQLRepository.instance = new FavoritePostgreSQLRepository();
+      FavoritePostgreSQLRepository.instance =
+        new FavoritePostgreSQLRepository();
     }
     return FavoritePostgreSQLRepository.instance;
   }
@@ -40,15 +41,14 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
   public async create(favorite: Favorite): Promise<Favorite> {
     const key = this.generateKey(favorite);
     try {
-      const [postId, userId] = key.split('+');
-      const existingFavorite = await knex('favorites')
+      const [postId, userId] = key.split("+");
+      const existingFavorite = await knex("favorites")
         .where({ postId, userId })
         .first();
       if (existingFavorite) {
         throw new Error("Favorite already exists");
       }
-      await knex('favorites')
-        .insert({ ...favorite.reflect });
+      await knex("favorites").insert({ ...favorite.reflect });
       return favorite;
     } catch (error) {
       throw new Error(`Error creating favorite: ${error}`);
@@ -62,17 +62,19 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
 
   public async findAll(): Promise<Favorite[]> {
     try {
-      const favorites = await knex('favorites').select('*');
+      const favorites = await knex("favorites").select("*");
       return favorites.map((favorite) => new Favorite(favorite));
     } catch (error) {
       throw new Error(`Error finding favorites: ${error}`);
     }
   }
 
-  public async findFavoriteByKey(favoriteKey: string): Promise<Favorite | undefined> {
+  public async findFavoriteByKey(
+    favoriteKey: string
+  ): Promise<Favorite | undefined> {
     try {
-      const [postId, userId] = favoriteKey.split('+');
-      const favorite = await knex('favorites')
+      const [postId, userId] = favoriteKey.split("+");
+      const favorite = await knex("favorites")
         .where({ postId, userId })
         .first();
       return favorite ? new Favorite(favorite) : undefined;
@@ -83,7 +85,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
 
   public async findAllByPostId(postId: string): Promise<Favorite[]> {
     try {
-      const favorites = await knex('favorites').where({ postId }).select('*');
+      const favorites = await knex("favorites").where({ postId }).select("*");
       return favorites.map((favorite) => new Favorite(favorite));
     } catch (error) {
       throw new Error(`Error finding favorites by post ID: ${error}`);
@@ -92,7 +94,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
 
   public async findAllByUserId(userId: string): Promise<Favorite[]> {
     try {
-      const favorites = await knex('favorites').where({ userId }).select('*');
+      const favorites = await knex("favorites").where({ userId }).select("*");
       return favorites.map((favorite) => new Favorite(favorite));
     } catch (error) {
       throw new Error(`Error finding favorites by user ID: ${error}`);
@@ -106,7 +108,9 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
       throw new Error("Favorite not found");
     }
     try {
-      await knex('favorites').where({ postId: favorite.postId, userId: favorite.userId }).del();
+      await knex("favorites")
+        .where({ postId: favorite.postId, userId: favorite.userId })
+        .del();
       return existingFavorite;
     } catch (error) {
       throw new Error(`Error deleting favorite: ${error}`);
@@ -115,7 +119,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
 
   public async deleteAll(): Promise<void> {
     try {
-      await knex('favorites').del();
+      await knex("favorites").del();
     } catch (error) {
       throw new Error(`Error deleting all favorites: ${error}`);
     }
@@ -123,7 +127,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
 
   public async deleteAllByPostId(postId: string): Promise<void> {
     try {
-      await knex('favorites').where({ postId }).del();
+      await knex("favorites").where({ postId }).del();
     } catch (error) {
       throw new Error(`Error deleting favorites by post ID: ${error}`);
     }
@@ -131,7 +135,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
 
   public async deleteAllByUserId(userId: string): Promise<void> {
     try {
-      await knex('favorites').where({ userId }).del();
+      await knex("favorites").where({ userId }).del();
     } catch (error) {
       throw new Error(`Error deleting favorites by user ID: ${error}`);
     }

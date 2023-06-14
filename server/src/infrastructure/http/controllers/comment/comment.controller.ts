@@ -1,6 +1,15 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from "@nestjs/common";
 import { CommentUseCases } from "@app/use-cases/CommentUseCases";
 import { appPostgreSQL } from "@infra/index";
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { errorHandler } from "../../@utils/errorHandler";
 import type { ICommentReflectObject } from "@typings/comment";
 
@@ -9,13 +18,12 @@ export class CommentController {
   #commentUseCases: CommentUseCases;
 
   constructor() {
-    // this.#commentUseCases = appInMemory.getCommentUsesCases();
     this.#commentUseCases = appPostgreSQL.getCommentUsesCases();
   }
 
   @Post("")
   async comment(
-    @Body() comment: ICommentReflectObject,
+    @Body() comment: ICommentReflectObject
   ): Promise<ICommentReflectObject> {
     try {
       return await this.#commentUseCases
@@ -28,7 +36,7 @@ export class CommentController {
 
   @Get("amout")
   async amount(
-    @Query() query: { of: "post" | "user"; id: string },
+    @Query() query: { of: "post" | "user"; id: string }
   ): Promise<number> {
     try {
       const { of, id } = query;
@@ -50,7 +58,7 @@ export class CommentController {
       value: string;
       skip: number;
       pageSize: number;
-    },
+    }
   ): Promise<ICommentReflectObject[]> {
     try {
       return await this.#commentUseCases
@@ -63,7 +71,7 @@ export class CommentController {
 
   @Put("")
   async edit(
-    @Body() updatedComment: ICommentReflectObject,
+    @Body() updatedComment: ICommentReflectObject
   ): Promise<ICommentReflectObject> {
     try {
       return await this.#commentUseCases
@@ -77,9 +85,9 @@ export class CommentController {
   @Delete(":commentId")
   async delete(@Param("commentId") commentId: string): Promise<void> {
     try {
-      await this.#commentUseCases.delete(commentId)
+      await this.#commentUseCases.delete(commentId);
     } catch (error) {
-      errorHandler(error)
+      errorHandler(error);
     }
   }
 }

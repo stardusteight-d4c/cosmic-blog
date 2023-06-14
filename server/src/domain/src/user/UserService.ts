@@ -1,8 +1,9 @@
-import type { IUserReflectObject, IUserRepository, IUserService } from "@typings/user";
-import {
-  User,
-  userBuilderFactory,
-} from ".";
+import type {
+  IUserReflectObject,
+  IUserRepository,
+  IUserService,
+} from "@typings/user";
+import { User, userBuilderFactory } from ".";
 import Validators from "@/domain/@utils/validators";
 import DeleteUserCommand from "./UserCommands";
 
@@ -23,10 +24,10 @@ export class UserService implements IUserService {
   public async createUser(user: IUserReflectObject): Promise<User> {
     const newUser = userBuilderFactory({ user });
     const emailAlreadyExists = await this.#userRepository.findByEmail(
-      user.email,
+      user.email
     );
     const usernameAlreadyExists = await this.#userRepository.findByUsername(
-      user.username,
+      user.username
     );
     if (emailAlreadyExists) {
       throw new Error("Email already exists");
@@ -92,7 +93,7 @@ export class UserService implements IUserService {
         update: { field: "email", newData: data.newEmail },
       });
       const changedUser = await this.#userRepository.update(
-        updatedUserInstance,
+        updatedUserInstance
       );
       return changedUser;
     }
@@ -117,7 +118,7 @@ export class UserService implements IUserService {
         update: { field: "password", newData: data.newPassword },
       });
       const changedUser = await this.#userRepository.update(
-        updatedUserInstance,
+        updatedUserInstance
       );
       return changedUser;
     }

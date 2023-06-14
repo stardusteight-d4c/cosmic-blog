@@ -30,7 +30,7 @@ export class FavoriteService implements IFavoriteService {
     await this.#userRepository.findById(userId);
     const newFavorite = new Favorite({ postId, userId });
     const favorite = await this.#favoriteRepository.findFavoriteByKey(
-      `${newFavorite.reflect.postId}+${newFavorite.reflect.userId}`,
+      `${newFavorite.reflect.postId}+${newFavorite.reflect.userId}`
     );
     if (favorite) {
       await this.#favoriteRepository.delete(newFavorite);
@@ -61,7 +61,7 @@ export class FavoriteService implements IFavoriteService {
   }
 
   public async getFavorite(favorite: Favorite): Promise<Favorite> {
-    const favoriteKey = `${favorite.reflect.postId}+${favorite.reflect.userId}`
+    const favoriteKey = `${favorite.reflect.postId}+${favorite.reflect.userId}`;
     return await this.#favoriteRepository.findFavoriteByKey(favoriteKey);
   }
 }
