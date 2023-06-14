@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Headers,
   Query,
 } from "@nestjs/common";
 import { CommentUseCases } from "@app/use-cases/CommentUseCases";
@@ -23,7 +24,8 @@ export class CommentController {
 
   @Post("")
   async comment(
-    @Body() comment: ICommentReflectObject
+    @Body() comment: ICommentReflectObject,
+    @Headers("authorization") authorization: string
   ): Promise<ICommentReflectObject> {
     try {
       return await this.#commentUseCases

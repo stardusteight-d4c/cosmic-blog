@@ -1,4 +1,4 @@
-import { SessionTokenAdapter } from "@/application/adapters/SessionTokenAdapter";
+import { JWTSessionTokenAdapter } from "@/infrastructure/adapters";
 import {
   Injectable,
   CanActivate,
@@ -6,23 +6,21 @@ import {
   UnauthorizedException,
   ForbiddenException,
 } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import jwt from "jsonwebtoken";
 
 @Injectable()
 export class RequireAuthorPermission implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor() {}
   canActivate(context: ExecutionContext): boolean {
     const authorization = context.switchToHttp().getRequest()
       .headers.authorization;
     if (!authorization) {
       throw new UnauthorizedException("missing authorization header");
     }
-    const sessionTokenAdapter = new SessionTokenAdapter(jwt);
+    const sessionTokenAdapter = new JWTSessionTokenAdapter();
     const decoded = sessionTokenAdapter.verifySessionToken(authorization);
     if (decoded && decoded.type === "reader") {
       throw new ForbiddenException(
-        "type (reader) users are not authorized to publish posts",
+        "type (reader) users are not authorized to publish posts"
       );
     }
     return true;

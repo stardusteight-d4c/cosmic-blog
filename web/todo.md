@@ -6,3 +6,4 @@
  + Servidor, reduzir uso de estruturas condicionais como if e else
  - Adicionar headers de autorização para publicar e editar comentários (reduzir falhas de segurança)
  - Adicionar headers de autorização para favoritos
+ - Adicionar mais validações nos serviços para garantir robustez e confiabilidade nos dados
