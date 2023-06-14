@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Navbar } from '@/components/navbar'
-import { baseLayoutStyles as css } from './styles'
-import { useAppStore } from '@/store'
-import { computed } from 'vue'
+import { Navbar } from "@/components/navbar";
+import { baseLayoutStyles as css } from "./styles";
+import { useAppStore } from "@/store";
+import { computed } from "vue";
 
-const store = useAppStore()
-const username = computed(() => store.state.profile.user.username)
+const store = useAppStore();
+const username = computed(() => store.state.profile.user.username);
 </script>
 
 <template>

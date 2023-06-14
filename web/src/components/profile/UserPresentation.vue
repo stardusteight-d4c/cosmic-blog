@@ -11,6 +11,6 @@ const handledAvatarString = userAvatar?.replace(/-\d+\.png$/, "-")!;
 </script>
 
 <template>
-  <Header :avatarUrl="handledAvatarString" :username="userData.username" />
+  <Header  :avatarUrl="handledAvatarString" :username="userData.username" />
   <SocialLinks :socialLinks="userData.socialLinks" />
 </template>

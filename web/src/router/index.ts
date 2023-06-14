@@ -9,27 +9,27 @@ import NotFoundVue from "@/components/@globals/NotFound.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "Home",
+    name: "home",
     component: Home,
   },
   {
     path: "/create-post",
-    name: "CreatePost",
+    name: "create-post",
     component: CreatePost,
   },
   {
     path: "/post/:slug",
-    name: "Post",
+    name: "post",
     component: Post,
   },
   {
     path: "/login",
-    name: "Login",
+    name: "login",
     component: Login,
   },
   {
     path: "/profile/:username",
-    name: "Profile",
+    name: "profile",
     component: Profile,
   },
   {

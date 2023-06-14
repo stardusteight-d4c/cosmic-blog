@@ -9,7 +9,10 @@ defineProps<IProps>();
 </script>
 
 <template>
-  <router-link :to="`/profile/${username}`" :class="css.wrapper">
+  <router-link
+    :to="{ name: 'profile', params: { username } }"
+    :class="css.wrapper"
+  >
     <div :class="css.innerContainer">
       <div :class="css.animations.spinner">
         <div :class="css.animations.spinner1" />

@@ -7,12 +7,18 @@ import { computed, onMounted, ref, watch } from "vue";
 
 const store = useAppStore();
 const id = computed(() => store.state.post.post?.id);
-onMounted(() => {
-  watch(id, async (newId) => {
-    await store.dispatch(postMethods.actions.getComments, {
-      postId: newId,
-      skip: 0,
-    });
+
+onMounted(async () => {
+  await store.dispatch(postMethods.actions.getComments, {
+    postId: id.value,
+    skip: 0,
+  });
+})
+
+watch(id, async (newId) => {
+  await store.dispatch(postMethods.actions.getComments, {
+    postId: newId,
+    skip: 0,
   });
 });
 const comments = computed(() => store.state.post.comments);

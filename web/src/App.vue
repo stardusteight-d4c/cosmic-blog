@@ -5,5 +5,5 @@ import Notification from "@globals/Notification.vue";
 
 <template>
   <Notification />
-  <RouterView />
+  <RouterView :key="$route.fullPath" />
 </template>
