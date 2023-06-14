@@ -1,30 +1,28 @@
-import { UserController } from "../controllers/user/user.controller";
+import { ISessionTokenAdapter } from "@/application/adapters";
 
 namespace Validators {
   export function isSameUser(request: {
-    controller: UserController;
+    sessionTokenAdapter: ISessionTokenAdapter;
     authToken: string;
     userId: string;
   }): void {
-    const { controller, authToken, userId } = request;
-    const decoded =
-      controller.sessionTokenAdapter.verifySessionToken(authToken);
+    const { sessionTokenAdapter, authToken, userId } = request;
+    const decoded = sessionTokenAdapter.verifySessionToken(authToken);
     if (decoded && decoded.user_id != userId) {
       throw new Error(
-        `the session user is different from the user being updated`,
+        `Authentication does not match this user!`
       );
     }
   }
 
   export function isEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return false
+      return false;
     } else {
-      return true
+      return true;
     }
   }
-
 }
 
 export default Validators;

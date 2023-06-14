@@ -8,6 +8,7 @@ import { useRoute } from "vue-router";
 
 interface IProps {
   commentId: string;
+  ownerId: string;
   currentPage: number;
 }
 
@@ -21,6 +22,7 @@ const postId = route.params.id;
 async function handleDelete() {
   await store.dispatch(postMethods.actions.deleteComment, {
     commentId: props.commentId,
+    ownerId: props.ownerId,
     postId,
     skip: props.currentPage * 4,
   });

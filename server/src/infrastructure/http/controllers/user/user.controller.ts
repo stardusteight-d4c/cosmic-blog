@@ -146,7 +146,7 @@ export class UserController {
   ): Promise<IUserReflectObject> {
     try {
       Validators.isSameUser({
-        controller: this,
+        sessionTokenAdapter: new JWTSessionTokenAdapter(),
         authToken: authorization,
         userId: updatedUser.id,
       });

@@ -4,7 +4,7 @@ import api from "@/lib/axios";
 import { setCookie, getSessionCookie } from "@/utils";
 
 export class GET {
-  constructor() { }
+  constructor() {}
 
   static async findUsername(username: string) {
     const user = await api

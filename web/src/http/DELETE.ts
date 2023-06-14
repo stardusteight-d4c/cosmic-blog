@@ -16,9 +16,14 @@ export class DELETE {
       .catch((error) => console.log(error));
   }
 
-  static async deleteComment(commentId: string) {
+  static async deleteComment(request: { commentId: string; ownerId: string }) {
+    const authorization = getSessionCookie();
     await api
-      .delete(`/comment/${commentId}`)
+      .delete(`/comment/${request.commentId}?ownerId=${request.ownerId}`, {
+        headers: {
+          Authorization: authorization,
+        },
+      })
       .catch((error) => console.log(error));
   }
 }

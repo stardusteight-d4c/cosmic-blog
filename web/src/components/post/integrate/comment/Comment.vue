@@ -93,6 +93,7 @@ function closedDeletePopUp(): void {
           />
           <DeleteCommentPopUp
             :commentId="comment.id!"
+            :ownerId="comment.owner.id"
             :currentPage="currentPage"
             v-if="proceedToDelete"
             @closedDeletePopUp="closedDeletePopUp"

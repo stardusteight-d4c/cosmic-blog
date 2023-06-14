@@ -102,6 +102,7 @@ Content-Type: application/json
 ### COMMENT
 POST http://localhost:3000/comment
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNlZWVjZjctOTMwNi00Mjg0LTljZTEtYzdiNDYwZDg5NDM2IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODY2MDk4MTEsImV4cCI6MTY4NzIxNDYxMX0.-6kHYogc1BKyERi0R5H5u97hZtjYiR8Xgt0U2xc4ogY
 
 {
   "postId": "e8dfe910-a5b0-4b71-98e6-555506cfef1d",
@@ -124,6 +125,8 @@ GET http://localhost:3000/comment/pagination?by=userId&value=b85d3a17-355f-4735-
 ###
 PUT http://localhost:3000/comment
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNlZWVjZjctOTMwNi00Mjg0LTljZTEtYzdiNDYwZDg5NDM2IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODY2MDk4MTEsImV4cCI6MTY4NzIxNDYxMX0.-6kHYogc1BKyERi0R5H5u97hZtjYiR8Xgt0U2xc4ogY
+
 
 {
   "id": "b85d3a17-385f-4747-833c-c5468fecc98c",
@@ -139,4 +142,6 @@ Content-Type: application/json
   "postedAt": "2023-05-30T14:31:44.545Z"
 }
 ###
-DELETE http://localhost:3000/comment/b85d3a17-385f-4747-833c-c5468fecc98c
+DELETE http://localhost:3000/comment/b85d3a17-385f-4747-833c-c5468fecc98c?ownerId=51900c55-0dfd-4bbf-a8b4-84f54d9fab07
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNlZWVjZjctOTMwNi00Mjg0LTljZTEtYzdiNDYwZDg5NDM2IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODY2MDk4MTEsImV4cCI6MTY4NzIxNDYxMX0.-6kHYogc1BKyERi0R5H5u97hZtjYiR8Xgt0U2xc4ogY
+

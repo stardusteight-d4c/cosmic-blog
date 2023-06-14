@@ -37,6 +37,13 @@ export class POST {
   }
 
   static async leaveComment(comment: IComment) {
-    await api.post("/comment", comment).catch((error) => console.log(error));
+    const authorization = getSessionCookie();
+    await api
+      .post("/comment", comment, {
+        headers: {
+          Authorization: authorization,
+        },
+      })
+      .catch((error) => console.log(error));
   }
 }

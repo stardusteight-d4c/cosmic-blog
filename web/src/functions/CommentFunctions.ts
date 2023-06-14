@@ -43,8 +43,8 @@ export class SubmitCommentFunctions {
       currentMemoji,
     } = request;
     if (comment.value.length > 500) {
-      this.notify("ERROR", "The comment exceeds the 500 character limit!")
-      return
+      this.notify("ERROR", "The comment exceeds the 500 character limit!");
+      return;
     }
     emit("submitComment");
     const session = this.#session.value.decodedToken!;
@@ -117,8 +117,8 @@ export class CommentFunctions {
       `textarea-${propsComment.id}`
     )! as HTMLTextAreaElement;
     if (textarea.value.length > 500) {
-      this.notify("ERROR", "The comment exceeds the 500 character limit!")
-      return
+      this.notify("ERROR", "The comment exceeds the 500 character limit!");
+      return;
     }
     const comment = document.getElementById(`comment-${propsComment.id}`)!;
     const editValue = textarea.value;

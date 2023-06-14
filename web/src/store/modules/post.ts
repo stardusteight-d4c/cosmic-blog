@@ -114,10 +114,15 @@ export const post: Module<IPostState, AppState> = {
 
     async [actions.deleteComment](
       { dispatch },
-      payload: { commentId: string; postId: string; skip: number }
+      payload: {
+        commentId: string;
+        ownerId: string;
+        postId: string;
+        skip: number;
+      }
     ) {
-      const { commentId, postId, skip } = payload;
-      await DELETE.deleteComment(commentId);
+      const { commentId, ownerId, postId, skip } = payload;
+      await DELETE.deleteComment({ commentId, ownerId });
       dispatch(actions.getComments, { postId, skip });
     },
 

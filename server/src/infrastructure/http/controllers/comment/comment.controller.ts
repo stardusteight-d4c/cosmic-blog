@@ -13,6 +13,8 @@ import { CommentUseCases } from "@app/use-cases/CommentUseCases";
 import { appPostgreSQL } from "@infra/index";
 import { errorHandler } from "../../@utils/errorHandler";
 import type { ICommentReflectObject } from "@typings/comment";
+import Validators from "../../@utils/validators";
+import { JWTSessionTokenAdapter } from "@/infrastructure/adapters";
 
 @Controller("comment")
 export class CommentController {
@@ -28,6 +30,11 @@ export class CommentController {
     @Headers("authorization") authorization: string
   ): Promise<ICommentReflectObject> {
     try {
+      Validators.isSameUser({
+        sessionTokenAdapter: new JWTSessionTokenAdapter(),
+        authToken: authorization,
+        userId: comment.owner.id,
+      });
       return await this.#commentUseCases
         .create(comment)
         .then((comment) => comment.reflect);
@@ -73,8 +80,14 @@ export class CommentController {
 
   @Put("")
   async edit(
-    @Body() updatedComment: ICommentReflectObject
+    @Body() updatedComment: ICommentReflectObject,
+    @Headers("authorization") authorization: string
   ): Promise<ICommentReflectObject> {
+    Validators.isSameUser({
+      sessionTokenAdapter: new JWTSessionTokenAdapter(),
+      authToken: authorization,
+      userId: updatedComment.owner.id,
+    });
     try {
       return await this.#commentUseCases
         .edit(updatedComment)
@@ -85,8 +98,17 @@ export class CommentController {
   }
 
   @Delete(":commentId")
-  async delete(@Param("commentId") commentId: string): Promise<void> {
+  async delete(
+    @Param("commentId") commentId: string,
+    @Query("ownerId") ownerId: string,
+    @Headers("authorization") authorization: string
+  ): Promise<void> {
     try {
+      Validators.isSameUser({
+        sessionTokenAdapter: new JWTSessionTokenAdapter(),
+        authToken: authorization,
+        userId: ownerId,
+      });
       await this.#commentUseCases.delete(commentId);
     } catch (error) {
       errorHandler(error);

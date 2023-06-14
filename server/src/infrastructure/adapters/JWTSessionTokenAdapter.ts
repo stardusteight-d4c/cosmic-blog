@@ -21,7 +21,7 @@ export class JWTSessionTokenAdapter implements ISessionTokenAdapter {
         return decoded as IUserTokenInfo;
       }
     } catch (error) {
-      console.error("Erro na validação do token:", error);
+      console.error("Token validation error:", error);
     }
     return false;
   }

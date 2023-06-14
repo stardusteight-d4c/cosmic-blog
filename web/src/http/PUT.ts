@@ -35,6 +35,11 @@ export class PUT {
   }
 
   static async updateComment(updatedComment: IComment) {
-    await api.put("/comment", updatedComment);
+    const authorization = getSessionCookie();
+    await api.put("/comment", updatedComment, {
+      headers: {
+        Authorization: authorization,
+      },
+    });
   }
 }

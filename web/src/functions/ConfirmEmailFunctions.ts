@@ -67,7 +67,7 @@ export class ConfirmEmailFunctions {
   }
 
   async confirmCode(loading: Ref<Boolean>, router: Router) {
-    loading.value = true
+    loading.value = true;
     const code = this.getCombinedInputValue();
     const isCodeValid = bcryptjs.compareSync(code, this.#encryptedCode);
     if (isCodeValid) {
@@ -82,13 +82,13 @@ export class ConfirmEmailFunctions {
         loginMethods.actions.registerUser,
         registerData
       );
-      loading.value = false
+      loading.value = false;
       if (data) {
         router.push(`/profile/${data.user.id}`);
-        window.location.reload()
+        window.location.reload();
       }
     } else {
-      loading.value = false
+      loading.value = false;
       this.notify("ERROR", "The code does not match the code sent!");
     }
   }
