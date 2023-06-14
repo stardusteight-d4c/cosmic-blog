@@ -4,6 +4,7 @@ import Home from "../pages/Home.vue";
 import Post from "../pages/Post.vue";
 import Profile from "../pages/Profile.vue";
 import Login from "../pages/Login.vue";
+import NotFoundVue from "@/components/@globals/NotFound.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/profile/:username",
     name: "Profile",
     component: Profile,
+  },
+  {
+    path: "/:catchAll(.*)",
+    name: "404",
+    component: NotFoundVue,
   },
 ];
 

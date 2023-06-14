@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import NotFound from "@/components/@globals/NotFound.vue";
 import {
   InteractionsWithPosts,
   UserPresentation,
@@ -13,10 +14,16 @@ const loading = ref(true);
 const route = useRoute();
 const username = route.params.username;
 const store = useAppStore();
+const notFound = ref(false);
 
 onMounted(async () => {
   try {
-    await store.dispatch(profileMethods.actions.getUserData, { username });
+    const user = await store.dispatch(profileMethods.actions.getUserData, {
+      username,
+    });
+    if (!user.id) {
+      notFound.value = true;
+    }
     loading.value = false;
   } catch (error) {
     console.error("Error loading user data:", error);
@@ -26,10 +33,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BaseLayoutSlot v-if="!loading">
+  <BaseLayoutSlot v-if="!loading && !notFound">
     <template #main>
       <UserPresentation />
       <InteractionsWithPosts />
     </template>
   </BaseLayoutSlot>
+  <NotFound v-if="notFound" />
 </template>
