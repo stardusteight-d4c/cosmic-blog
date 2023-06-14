@@ -1,16 +1,16 @@
 import { IUserReflectObject } from "@/@typings/user";
-import { IUserResponse } from "..";
+import { IGetUserResponse } from "..";
 import { UserController } from "../../user.controller";
 
-export async function getByIdResponse(request: {
+export async function getUserResponse(request: {
   controller: UserController;
   user: IUserReflectObject;
-}): Promise<{ user: IUserResponse }> {
+}): Promise<{ user: IGetUserResponse }> {
   const { controller, user } = request;
   delete user.password;
   return {
     user: {
-      ...(user as IUserResponse),
+      ...(user as IGetUserResponse),
       favoriteAmount: await controller.getFavoriteAmount(user.id),
       commentAmount: await controller.getCommentAmount(user.id),
     },

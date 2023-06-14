@@ -11,12 +11,12 @@ import { useRoute } from "vue-router";
 
 const loading = ref(true);
 const route = useRoute();
-const id = route.params.id;
+const username = route.params.username;
 const store = useAppStore();
 
 onMounted(async () => {
   try {
-    await store.dispatch(profileMethods.actions.getUserData, { id });
+    await store.dispatch(profileMethods.actions.getUserData, { username });
     loading.value = false;
   } catch (error) {
     console.error("Error loading user data:", error);

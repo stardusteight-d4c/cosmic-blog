@@ -4,7 +4,6 @@ import { EditProfileSocialLinksPopUp } from "@/components/pop-ups";
 import { PencilLine } from "@/components/@globals/atoms/icons";
 import { headerStyles as css } from "./styles";
 import { useAppStore } from "@/store";
-import { useRoute } from "vue-router";
 import { authMethods } from "@/store/modules/auth";
 
 defineProps({
@@ -21,8 +20,7 @@ defineProps({
 const editSocialLinks = ref(false);
 let currentMemoji = ref(1);
 
-const route = useRoute();
-const userId = route.params.id;
+const userId = computed(() => store.state.profile.user.id);
 
 const store = useAppStore();
 store.commit(authMethods.mutations.setCurrentSession);

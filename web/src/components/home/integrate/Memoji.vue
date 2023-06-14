@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import myMemoji01 from '@/assets/my-memoji01.png'
-import myMemoji02 from '@/assets/my-memoji02.png'
-import myMemoji03 from '@/assets/my-memoji03.png'
-import { memojiStyles as css } from './styles'
+import { ref } from "vue";
+import myMemoji01 from "@/assets/my-memoji01.png";
+import myMemoji02 from "@/assets/my-memoji02.png";
+import myMemoji03 from "@/assets/my-memoji03.png";
+import { memojiStyles as css } from "./styles";
 
-const memojis: string[] = [myMemoji01, myMemoji02, myMemoji03]
-const currentMemoji = ref(0)
+const memojis: string[] = [myMemoji01, myMemoji02, myMemoji03];
+const currentMemoji = ref(0);
 
 function handleMemoji(): void {
-  const penultimateItemIndex = memojis.length - 2
-  const lastItemIndex = memojis.length
+  const penultimateItemIndex = memojis.length - 2;
+  const lastItemIndex = memojis.length;
   if (currentMemoji.value <= penultimateItemIndex) {
-    currentMemoji.value++
+    currentMemoji.value++;
   } else if (currentMemoji.value === lastItemIndex - 1) {
-    currentMemoji.value = 0
+    currentMemoji.value = 0;
   }
 }
 </script>

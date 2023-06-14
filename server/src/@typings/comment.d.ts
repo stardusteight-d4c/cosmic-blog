@@ -3,9 +3,12 @@ import { IUserReflectObject } from "./user";
 
 export interface ICommentReflectObject {
   id?: string;
-  postId: string;
-  postTitle: string;
   owner: IUserReflectObject;
+  post: {
+    id: string;
+    title: string;
+    slug: string;
+  };
   content: string;
   postedAt: Date;
 }
@@ -40,7 +43,7 @@ export interface ICommentService {
   deleteAllCommentsByUserId(userId: string): Promise<void>;
   getCommentById(commentId: string): Promise<Comment | undefined>;
   updateComment(
-    updatedComment: ICommentReflectObject,
+    updatedComment: ICommentReflectObject
   ): Promise<Comment | undefined>;
   getAllComments(): Promise<Comment[] | undefined>;
   getCommentsByPostIdWithPagination(request: {

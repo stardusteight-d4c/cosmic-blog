@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 import {
   MagnifyingGlass,
   X,
   Note,
   User,
-} from '@/components/@globals/atoms/icons'
-import { searchBarStyles as css } from './styles'
-import { useAppStore } from '@/store'
-import { postMethods } from '@/store/modules/post'
+} from "@/components/@globals/atoms/icons";
+import { searchBarStyles as css } from "./styles";
+import { useAppStore } from "@/store";
+import { postMethods } from "@/store/modules/post";
 
-const setSearch = ref(false)
-const term = ref('')
-const store = useAppStore()
+const setSearch = ref(false);
+const term = ref("");
+const store = useAppStore();
 
 async function handleExit() {
-  term.value = ''
-  const currentPageElement = document.getElementById('home-current-page')
-  const currentPageValue = currentPageElement?.innerText
+  term.value = "";
+  const currentPageElement = document.getElementById("home-current-page");
+  const currentPageValue = currentPageElement?.innerText;
   await store.dispatch(postMethods.actions.getHomePosts, {
     skip: Number(currentPageValue) * 6,
-  })
+  });
 }
 
 async function search() {
   if (term.value.length > 3) {
     const posts = await store.dispatch(postMethods.actions.searchByTitle, {
       title: term.value,
-    })
-    store.commit(postMethods.mutations.setHomePosts, posts)
+    });
+    store.commit(postMethods.mutations.setHomePosts, posts);
   }
 }
 </script>

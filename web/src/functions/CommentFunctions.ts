@@ -31,14 +31,16 @@ export class SubmitCommentFunctions {
     comment: Ref<string>;
     postId: ComputedRef<string | undefined>;
     postTitle: ComputedRef<string>;
+    postSlug: ComputedRef<string>;
     handledAvatarString: string;
-    currentMemoji: number;
+    currentMemoji: Ref<number>;
   }) {
     const {
       emit,
       comment,
       postId,
       postTitle,
+      postSlug,
       handledAvatarString,
       currentMemoji,
     } = request;
@@ -51,11 +53,14 @@ export class SubmitCommentFunctions {
     const payload: IComment = {
       content: comment.value,
       postedAt: new Date(),
-      postId: postId.value ?? "",
-      postTitle: postTitle.value,
+      post: {
+        id: postId.value!,
+        title: postTitle.value,
+        slug: postSlug.value,
+      },
       owner: {
         id: session.user_id,
-        avatar: `${handledAvatarString}${currentMemoji}.png`,
+        avatar: `${handledAvatarString}${currentMemoji.value}.png`,
         username: session.username,
       },
     };
@@ -111,8 +116,8 @@ export class CommentFunctions {
     this.#commentEditableElement.value!.style.minHeight = `${commentDivHeight}px`;
   }
 
-  async editComment(request: { propsComment: IComment }) {
-    const { propsComment } = request;
+  async editComment(request: { propsComment: IComment; edit: Ref<any> }) {
+    const { propsComment, edit } = request;
     const textarea = document.getElementById(
       `textarea-${propsComment.id}`
     )! as HTMLTextAreaElement;
@@ -123,6 +128,7 @@ export class CommentFunctions {
     const comment = document.getElementById(`comment-${propsComment.id}`)!;
     const editValue = textarea.value;
     comment.innerText = editValue;
+    edit.value = editValue;
     this.#selectedEditComment.value = false;
     const updatedComment: IComment = {
       ...propsComment,
@@ -136,13 +142,15 @@ export class CommentFunctions {
       event,
       this.#commentId
     );
-    const elementToExclude = this.#commentEditableElement.value;
-    if (
-      clickedOutside &&
-      this.#selectedEditComment.value === true &&
-      elementCliked !== elementToExclude
-    ) {
-      this.#selectedEditComment.value = false;
+    if (clickedOutside && elementCliked) {
+      const elementToExclude = this.#commentEditableElement.value;
+      if (
+        clickedOutside &&
+        this.#selectedEditComment.value === true &&
+        elementCliked !== elementToExclude
+      ) {
+        this.#selectedEditComment.value = false;
+      }
     }
   }
 }

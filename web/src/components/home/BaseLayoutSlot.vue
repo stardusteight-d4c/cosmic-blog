@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Navbar } from '@/components/navbar'
-import { baseLayoutSlotStyles as css } from './styles'
+import { Navbar } from "@/components/navbar";
+import { baseLayoutSlotStyles as css } from "./styles";
 </script>
 
 <template>

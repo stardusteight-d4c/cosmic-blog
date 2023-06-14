@@ -5,6 +5,7 @@ import { deletePopUpStyles as css } from "./styles";
 import { useAppStore } from "@/store";
 import { post, postMethods } from "@/store/modules/post";
 import { useRoute } from "vue-router";
+import { computed } from "vue";
 
 interface IProps {
   commentId: string;
@@ -15,15 +16,14 @@ interface IProps {
 const props = defineProps<IProps>();
 
 const emit = defineEmits(["closedDeletePopUp"]);
-const route = useRoute();
 const store = useAppStore();
-const postId = route.params.id;
+const id = computed(() => store.state.post.post?.id);
 
 async function handleDelete() {
   await store.dispatch(postMethods.actions.deleteComment, {
     commentId: props.commentId,
     ownerId: props.ownerId,
-    postId,
+    postId: id.value,
     skip: props.currentPage * 4,
   });
   emit("closedDeletePopUp");

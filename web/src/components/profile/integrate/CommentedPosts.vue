@@ -18,13 +18,14 @@ const props = defineProps({
 
 const store = useAppStore();
 const commentedPosts = computed(() => store.state.profile.commentedPosts);
+const user = computed(() => store.state.profile.user);
 const loading = ref(false);
 const currentPage = ref(0);
 
 onMounted(async () => {
   try {
     await store.dispatch(profileMethods.actions.getCommentedPosts, {
-      userId: props.userId,
+      userId: user.value.id,
       skip: 0,
     });
     loading.value = false;
@@ -39,7 +40,7 @@ async function handleNextPage() {
     loading.value = true;
     currentPage.value++;
     await store.dispatch(profileMethods.actions.getCommentedPosts, {
-      userId: props.userId,
+      userId: user.value.id,
       skip: currentPage.value * 3,
     });
     setTimeout(() => {
@@ -53,7 +54,7 @@ async function handleBackPage() {
     loading.value = true;
     currentPage.value--;
     await store.dispatch(profileMethods.actions.getCommentedPosts, {
-      userId: props.userId,
+      userId: user.value.id,
       skip: currentPage.value * 3,
     });
     setTimeout(() => {
@@ -97,9 +98,9 @@ async function handleBackPage() {
         :class="`${loading && 'blur-sm brightness-95 animate-pulse'}`"
         v-if="commentedPosts && commentedPosts.length > 0"
         v-for="comment in commentedPosts"
-        :postId="comment.postId"
+        :slug="comment.post.slug"
+        :title="comment.post.title"
         :postedAt="comment.postedAt"
-        :title="comment.postTitle"
         :username="comment.owner.username"
         :content="comment.content"
       />

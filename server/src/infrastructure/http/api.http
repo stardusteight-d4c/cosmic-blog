@@ -1,25 +1,27 @@
 ### POST
 POST http://localhost:3000/post
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNlZWVjZjctOTMwNi00Mjg0LTljZTEtYzdiNDYwZDg5NDM2IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODY2MDk4MTEsImV4cCI6MTY4NzIxNDYxMX0.-6kHYogc1BKyERi0R5H5u97hZtjYiR8Xgt0U2xc4ogY
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOWM5Mzc4ODItYjg3MC00ZGU4LTg2NjYtYzgzYTdmODkyYzhhIiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODY3NTE3NDMsImV4cCI6MTY4NzM1NjU0M30.gsKJedzI0Ry8P98cRHQx3tBTVEfD8sAfqpdN0b42dL0
 
 {
- "title": "Design Patterns",
+ "title": "Post massa",
  "body": "Taaaaaaa",
  "tags": ["typescript", "typescript", "typescript", "web"],
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedIn": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
-    "email": "johndoe@email.com",
-    "username": "johndoe",
-    "avatar": "AVATAR01"
+    "id": "9c937882-b870-4de8-8666-c83a7f892c8a",
+    "email": "email@email.com",
+    "username": "link",
+    "avatar": "Favatar02"
   }
 }
 ###
 GET http://localhost:3000/post
 ###
 GET http://localhost:3000/post/b6028ed9-233d-49a5-85c3-bdd7c8886bf6
+###
+GET http://localhost:3000/post/slug/meu-post
 ###
 GET http://localhost:3000/post/pagination?skip=6&pageSize=6
 ###

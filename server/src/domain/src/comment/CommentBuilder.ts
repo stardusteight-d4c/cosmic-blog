@@ -4,8 +4,7 @@ import { Comment } from ".";
 
 export class CommentBuilder {
   #id: string;
-  #postId: string;
-  #postTitle: string;
+  #post: { id: string; title: string; slug: string };
   #owner: IUserReflectObject;
   #content: string;
   #postedAt: Date;
@@ -15,13 +14,12 @@ export class CommentBuilder {
     return this;
   }
 
-  public setPostId(postId: string): CommentBuilder {
-    this.#postId = postId;
-    return this;
-  }
-
-  public setPostTitle(postTitle: string): CommentBuilder {
-    this.#postTitle = postTitle;
+  public setPost(post: {
+    id: string;
+    title: string;
+    slug: string;
+  }): CommentBuilder {
+    this.#post = post;
     return this;
   }
 
@@ -41,7 +39,7 @@ export class CommentBuilder {
   }
 
   public build(): Comment {
-    if (!this.#postId) {
+    if (!this.#post.id) {
       throw new Error("postId is required");
     }
     if (!this.#owner) {
@@ -56,8 +54,7 @@ export class CommentBuilder {
 
     return new Comment({
       id: this.#id || randomUUID(),
-      postId: this.#postId,
-      postTitle: this.#postTitle,
+      post: this.#post,
       owner: this.#owner,
       content: this.#content,
       postedAt: this.#postedAt,

@@ -20,6 +20,10 @@ export class PostUseCases {
     return await this.postService.getPostById(postId);
   }
 
+  async getBySlug(slug: string): Promise<Post | undefined> {
+    return await this.postService.getPostBySlug(slug);
+  }
+
   async getManyByTitle(title: string): Promise<Post[]> {
     return await this.postService.getPostsByTitle(title);
   }

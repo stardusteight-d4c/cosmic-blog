@@ -1,6 +1,6 @@
 import { IUserReflectObject } from "@/@typings/user";
 
-export interface GetByIdResponse {
+export interface IGetPostResponse {
   id?: string;
   title: string;
   body: string;
@@ -12,4 +12,6 @@ export interface GetByIdResponse {
   isAuthor?: boolean;
   isGuest?: boolean;
   isFavorited?: boolean;
+  favoriteAmount: number
+  commentAmount: number
 }

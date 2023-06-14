@@ -7,13 +7,13 @@ import { useAppStore } from "@/store";
 
 const route = useRoute();
 const store = useAppStore();
-const id = route.params.id;
+const slug = route.params.slug;
 const post = computed(() => store.state.post.post);
 const loading = ref(true);
 
 onMounted(async () => {
   try {
-    await store.dispatch(postMethods.actions.getPost, { postId: id });
+    await store.dispatch(postMethods.actions.getPostBySlug, { slug });
     loading.value = false;
   } catch (error) {
     console.error("Error loading post data:", error);

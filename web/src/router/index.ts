@@ -17,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     component: CreatePost,
   },
   {
-    path: "/post/:id",
+    path: "/post/:slug",
     name: "Post",
     component: Post,
   },
@@ -27,7 +27,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Login,
   },
   {
-    path: "/profile/:id",
+    path: "/profile/:username",
     name: "Profile",
     component: Profile,
   },

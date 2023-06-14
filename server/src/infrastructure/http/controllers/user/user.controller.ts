@@ -12,18 +12,19 @@ import {
 import {
   NodemailerSendMailAdapter,
   JWTSessionTokenAdapter,
+  BcryptEncryptPasswordAdapter,
 } from "@infra/adapters";
 import { appPostgreSQL } from "@infra/index";
 import { UserUseCases } from "@app/use-cases/UserUseCases";
 import { errorHandler } from "../../@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
-import { IRegisterResponse, IUserResponse } from "./@dtos";
+import { IGetUserResponse, IRegisterResponse } from "./@dtos";
 import Validators from "../../@utils/validators";
-import { getByIdResponse } from "./@dtos/builders/getByIdResponse";
+import { getUserResponse } from "./@dtos/builders/getResponse";
 import { registerResponse } from "./@dtos/builders/registerResponse";
 import type { IUserReflectObject } from "@typings/user";
-import brcypt from "bcrypt";
+import bcrypt from "bcrypt";
 
 @Controller("user")
 export class UserController {
@@ -48,8 +49,9 @@ export class UserController {
   ): Promise<IRegisterResponse> {
     try {
       const sessionTokenAdapter = new JWTSessionTokenAdapter();
+      const encryptPasswordAdapter = new BcryptEncryptPasswordAdapter();
       return this.#userUseCases
-        .register({ user, sessionTokenAdapter })
+        .register({ user, sessionTokenAdapter, encryptPasswordAdapter })
         .then(({ user, sessionToken }) => {
           return this.buildRegisterResponse(user.reflect, sessionToken);
         });
@@ -65,7 +67,7 @@ export class UserController {
       return this.#userUseCases
         .verifyEmail({ email, sendMailAdapter })
         .then(async (code) => {
-          return await brcypt.hash(String(code), 10);
+          return await bcrypt.hash(String(code), 10);
         });
     } catch (error) {
       errorHandler(error);
@@ -75,10 +77,10 @@ export class UserController {
   @Get(":id")
   public async getById(
     @Param("id") id: string
-  ): Promise<{ user: IUserResponse }> {
+  ): Promise<{ user: IGetUserResponse }> {
     try {
       return this.#userUseCases.getById(id).then(async (user) => {
-        return await this.buildGetByIdResponse(user.reflect);
+        return await this.buildGetUserResponse(user.reflect);
       });
     } catch (error) {
       errorHandler(error);
@@ -88,10 +90,12 @@ export class UserController {
   @Get("username/:username")
   public async findUsername(
     @Param("username") username: string
-  ): Promise<Boolean> {
+  ): Promise<{ user: IGetUserResponse }> {
     try {
       return this.#userUseCases.getByUsername(username).then((user) => {
-        return user?.reflect ? true : false;
+        return user?.reflect
+          ? this.buildGetUserResponse(user.reflect)
+          : { user: {} as IGetUserResponse };
       });
     } catch (error) {
       errorHandler(error);
@@ -129,8 +133,14 @@ export class UserController {
     try {
       const { identifier, password } = query;
       const sessionTokenAdapter = new JWTSessionTokenAdapter();
+      const encryptPasswordAdapter = new BcryptEncryptPasswordAdapter();
       return await this.#userUseCases
-        .signin({ identifier, password, sessionTokenAdapter })
+        .signin({
+          identifier,
+          password,
+          sessionTokenAdapter,
+          encryptPasswordAdapter,
+        })
         .then(({ user, sessionToken }) => {
           return { user: user.reflect, sessionToken };
         });
@@ -173,9 +183,9 @@ export class UserController {
     return registerResponse({ user, sessionToken });
   }
 
-  private async buildGetByIdResponse(
+  private async buildGetUserResponse(
     user: IUserReflectObject
-  ): Promise<{ user: IUserResponse }> {
-    return await getByIdResponse({ controller: this, user });
+  ): Promise<{ user: IGetUserResponse }> {
+    return await getUserResponse({ controller: this, user });
   }
 }

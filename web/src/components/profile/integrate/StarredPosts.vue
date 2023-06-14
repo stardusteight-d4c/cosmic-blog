@@ -15,13 +15,14 @@ interface IProps {
 const props = defineProps<IProps>();
 const store = useAppStore();
 const favoritedPosts = computed(() => store.state.profile.favoritedPosts);
+const user = computed(() => store.state.profile.user)
 const loading = ref(false);
 const currentPage = ref(0);
 
 onMounted(async () => {
   try {
     await store.dispatch(profileMethods.actions.getFavoritedPosts, {
-      userId: props.userId,
+      userId: user.value.id,
       skip: 0,
     });
     loading.value = false;
@@ -36,7 +37,7 @@ async function handleNextPage() {
     loading.value = true;
     currentPage.value++;
     await store.dispatch(profileMethods.actions.getFavoritedPosts, {
-      userId: props.userId,
+      userId: user.value.id,
       skip: currentPage.value * 3,
     });
     setTimeout(() => {
@@ -50,7 +51,7 @@ async function handleBackPage() {
     loading.value = true;
     currentPage.value--;
     await store.dispatch(profileMethods.actions.getFavoritedPosts, {
-      userId: props.userId,
+      userId: user.value.id,
       skip: currentPage.value * 3,
     });
     setTimeout(() => {
@@ -95,6 +96,7 @@ async function handleBackPage() {
         v-if="favoritedPosts && favoritedPosts.length > 0"
         v-for="post in favoritedPosts"
         :postId="post.id!"
+        :slug="post.slug!"
         :isMinimalist="true"
         :title="post.title"
         :postedAt="post.postedIn"

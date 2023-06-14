@@ -41,9 +41,9 @@ async function handleNextStep(): Promise<void> {
     );
     return;
   }
-  const usernameAlreadyExist = await GET.findUsername(formData.username);
+  const usernameAlreadyExist = await GET.findByUsername(formData.username);
   const emailAlreadyExist = await GET.findEmail(formData.email);
-  if (usernameAlreadyExist) {
+  if (usernameAlreadyExist.user.id) {
     notify("WARNING", "The username is already in use!");
     return;
   }

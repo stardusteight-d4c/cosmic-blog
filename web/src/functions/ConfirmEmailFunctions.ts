@@ -84,7 +84,7 @@ export class ConfirmEmailFunctions {
       );
       loading.value = false;
       if (data) {
-        router.push(`/profile/${data.user.id}`);
+        router.push(`/profile/${data.user.username}`);
         window.location.reload();
       }
     } else {

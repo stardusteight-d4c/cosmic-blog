@@ -1,18 +1,18 @@
-import { SessionTokenAdapter } from "@/application/adapters/SessionTokenAdapter";
-import jwt from "jsonwebtoken";
 import { PostController } from "../post.controller";
 import { IPostReflectObject } from "@/@typings/post";
+import { JWTSessionTokenAdapter } from "@/infrastructure/adapters";
+import { IGetPostResponse } from ".";
 
-export async function buildGetByIdResponse(request: {
+export async function getPostResponse(request: {
   controller: PostController;
   authToken: string;
   post: IPostReflectObject;
-}) {
+}): Promise<IGetPostResponse> {
   const { controller, authToken, post } = request;
   let isAuthor: boolean;
   let isGuest: boolean;
   let isFavorited: boolean;
-  const sessionTokenAdapter = new SessionTokenAdapter(jwt);
+  const sessionTokenAdapter = new JWTSessionTokenAdapter();
   const decoded = sessionTokenAdapter.verifySessionToken(authToken);
   isAuthor = false;
   isGuest = true;

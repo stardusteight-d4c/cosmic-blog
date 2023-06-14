@@ -4,6 +4,7 @@ import { IUserReflectObject } from "./user";
 export interface IPostReflectObject {
   id?: string;
   title: string;
+  slug?: string;
   body: string;
   tags: string[];
   coverImage: string;
@@ -18,6 +19,7 @@ export interface IPostRepository {
   delete(postId: string): Promise<Post | undefined>;
   deleteAll(): Promise<void>;
   findById(postId: string): Promise<Post | undefined>;
+  findBySlug(slug: string): Promise<Post | undefined>;
   findManyByTitle(postTitle: string): Promise<Post[] | undefined>;
   findAll(): Promise<Post[]>;
   findWithPagination(request: {
@@ -33,6 +35,7 @@ export interface IPostService {
   updatePost(post: IPostReflectObject): Promise<Post>;
   deletePost(postId: string): Promise<void>;
   getPostById(postId: string): Promise<Post | undefined>;
+  getPostBySlug(slug: string): Promise<Post | undefined>;
   getPostsByTitle(postTitle: string): Promise<Post[] | undefined>;
   getPosts(): Promise<Post[]>;
   getPostsByPagination(request: {

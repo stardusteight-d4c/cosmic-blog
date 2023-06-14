@@ -3,13 +3,13 @@ import AppLogo from "@globals/atoms/icons/AppLogo.vue";
 import { profileButtonStyles as css } from "./styles";
 
 interface IProps {
-  userId: string;
+  username: string;
 }
 defineProps<IProps>();
 </script>
 
 <template>
-  <router-link :to="`/profile/${userId}`" :class="css.wrapper">
+  <router-link :to="`/profile/${username}`" :class="css.wrapper">
     <div :class="css.innerContainer">
       <div :class="css.animations.spinner">
         <div :class="css.animations.spinner1" />

@@ -51,7 +51,7 @@ export class CommentInMemoryRepository implements ICommentRepository {
 
   public async deleteAllByPostId(postId: string): Promise<void> {
     for (const [commentId, comment] of this.#comments.entries()) {
-      if (comment.reflect.postId === postId) {
+      if (comment.reflect.post.id === postId) {
         this.#comments.delete(commentId);
       }
     }
@@ -81,7 +81,7 @@ export class CommentInMemoryRepository implements ICommentRepository {
     const { postId, skip, pageSize } = request;
     const comments = Array.from(this.#comments.values());
     const commentsByPostId = comments.filter(
-      (comment) => comment.reflect.postId === postId
+      (comment) => comment.reflect.post.id === postId
     );
     const sortedComments = commentsByPostId.sort((a, b) => {
       const aPostedAt = new Date(a.reflect.postedAt);
@@ -120,7 +120,7 @@ export class CommentInMemoryRepository implements ICommentRepository {
   public async findAllByPostId(postId: string): Promise<Comment[]> {
     const comments: Comment[] = [];
     for (const comment of this.#comments.values()) {
-      if (comment.reflect.postId === postId) {
+      if (comment.reflect.post.id === postId) {
         comments.push(comment);
       }
     }

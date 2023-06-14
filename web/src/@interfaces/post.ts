@@ -4,6 +4,7 @@ export interface IPostResponse {
   [x: string]: any;
   id?: string;
   title: string;
+  slug?: string;
   body: string;
   tags: string[];
   coverImage: string;

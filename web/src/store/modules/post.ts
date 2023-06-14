@@ -23,6 +23,7 @@ export const postMethods = {
   actions: {
     getHomePosts: "GET_HOME_POSTS",
     getPost: "GET_POST_DATA",
+    getPostBySlug: "GET_POST_DATA_BY_SLUG",
     getComments: "GET_COMMENTS",
     searchByTitle: "SEARCH_BY_TITLE",
     toggleFavorite: "TOGGLE_FAVORITE",
@@ -87,6 +88,12 @@ export const post: Module<IPostState, AppState> = {
       return post;
     },
 
+    async [actions.getPostBySlug]({ commit }, payload: { slug: string }) {
+      const post = await GET.postBySlug(payload.slug);
+      commit(mutations.setPost, post);
+      return post;
+    },
+
     async [actions.searchByTitle](_, payload: { title: string }) {
       const posts = await GET.searchByTitle(payload.title);
       return posts;
@@ -109,7 +116,7 @@ export const post: Module<IPostState, AppState> = {
 
     async [actions.leaveComment]({ dispatch }, payload: IComment) {
       await POST.leaveComment(payload);
-      await dispatch(actions.getComments, { postId: payload.postId, skip: 0 });
+      await dispatch(actions.getComments, { postId: payload.post.id, skip: 0 });
     },
 
     async [actions.deleteComment](

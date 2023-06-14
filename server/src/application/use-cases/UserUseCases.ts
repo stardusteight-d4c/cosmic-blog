@@ -1,7 +1,11 @@
 import type { IUserReflectObject, IUserService } from "@typings/user";
 import { User } from "@domain/src/user";
 import Validators from "@/infrastructure/http/@utils/validators";
-import { ISessionTokenAdapter, ISendMailAdapter } from "../adapters";
+import {
+  ISessionTokenAdapter,
+  ISendMailAdapter,
+  IEncryptPasswordAdapter,
+} from "../adapters";
 
 type RegisterUserResult = { user: User; sessionToken: string };
 
@@ -11,9 +15,16 @@ export class UserUseCases {
   async register(request: {
     user: IUserReflectObject;
     sessionTokenAdapter: ISessionTokenAdapter;
+    encryptPasswordAdapter: IEncryptPasswordAdapter;
   }): Promise<RegisterUserResult> {
-    const { user, sessionTokenAdapter } = request;
-    const userInstance = await this.userService.createUser(user);
+    const { user, sessionTokenAdapter, encryptPasswordAdapter } = request;
+    const encryptedPassword = await encryptPasswordAdapter.encrypt(
+      user.password
+    );
+    const userInstance = await this.userService.createUser({
+      ...user,
+      password: encryptedPassword,
+    });
     const sessionToken = sessionTokenAdapter.createSessionToken({
       user_id: userInstance.reflect.id!,
       email: userInstance.reflect.email,
@@ -58,8 +69,14 @@ export class UserUseCases {
     identifier: string;
     password: string;
     sessionTokenAdapter: ISessionTokenAdapter;
+    encryptPasswordAdapter: IEncryptPasswordAdapter;
   }): Promise<RegisterUserResult> {
-    const { identifier, password, sessionTokenAdapter } = request;
+    const {
+      identifier,
+      password,
+      sessionTokenAdapter,
+      encryptPasswordAdapter,
+    } = request;
     let user: User;
     if (Validators.isEmail(identifier)) {
       user = await this.userService.getUserByEmail(identifier);
@@ -72,8 +89,10 @@ export class UserUseCases {
         throw new Error("Username does not exist");
       }
     }
-    // encriptografar senha
-    const isValidPassword = password === user.reflect.password;
+    const isValidPassword = await encryptPasswordAdapter.compare({
+      plainPassword: password,
+      hashedPassword: user.reflect.password,
+    });
     if (!isValidPassword) {
       throw new Error("Invalid password");
     }

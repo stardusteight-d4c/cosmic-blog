@@ -2,8 +2,11 @@ import { TUserRole } from "./login";
 
 export interface ICommentResponse {
   id: string;
-  postId: string;
-  postTitle: string;
+  post: {
+    id: string;
+    title: string;
+    slug: string;
+  };
   owner: {
     id: string;
     email: string;
@@ -17,8 +20,11 @@ export interface ICommentResponse {
 
 export interface IComment {
   id?: string;
-  postId: string;
-  postTitle: string;
+  post: {
+    id: string;
+    title: string;
+    slug: string;
+  };
   owner: {
     id: string;
     username: string;

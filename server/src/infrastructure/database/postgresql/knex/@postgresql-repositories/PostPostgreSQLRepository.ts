@@ -32,7 +32,7 @@ export class PostPostgreSQLRepository implements IPostRepository {
   }
 
   public async create(post: Post): Promise<Post> {
-    // jsonb não aceita campos undefined
+    // jsonb does not accept undefined fields
     const cleanAuthor = Object.fromEntries(
       Object.entries(post.reflect.author).filter(
         ([key, value]) => value !== undefined
@@ -91,6 +91,18 @@ export class PostPostgreSQLRepository implements IPostRepository {
       return new Post(post);
     } catch (error) {
       throw new Error(`Error finding post by id: ${error}`);
+    }
+  }
+
+  public async findBySlug(slug: string): Promise<Post | undefined> {
+    try {
+      const post = await knex("posts").where({ slug }).first();
+      if (!post) {
+        throw new Error(`No post found with slug: ${slug}`);
+      }
+      return new Post(post);
+    } catch (error) {
+      throw new Error(`Error finding post by slug: ${error}`);
     }
   }
 

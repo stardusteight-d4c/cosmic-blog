@@ -33,6 +33,7 @@ const functions = new CommentFunctions({
 });
 const refs = {
   textareaHeight,
+  edit,
 };
 
 onMounted((): void => {
@@ -66,7 +67,7 @@ function closedDeletePopUp(): void {
       <div :class="css.header">
         <div :class="css.authorInfosContainer">
           <RouterLink
-            :to="`/profile/${comment.owner.id}`"
+            :to="`/profile/${comment.owner.username}`"
             :class="css.profileLinkContainer"
           >
             <img :src="comment.owner.avatar" :class="css.authorImage" />
@@ -116,6 +117,7 @@ function closedDeletePopUp(): void {
         @click="
           functions.editComment({
             propsComment: comment,
+            edit: refs.edit,
           })
         "
         title="Update"

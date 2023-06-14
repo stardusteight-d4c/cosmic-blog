@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 interface IProps {
   isMinimalist?: boolean;
   cover?: string;
+  slug: string;
   postId: string;
   title: string;
   postedAt: Date;
@@ -18,7 +19,7 @@ defineProps<IProps>();
 </script>
 
 <template>
-  <router-link :to="`/post/${postId}`" :class="css.wrapper">
+  <router-link :to="`/post/${slug}`" :class="css.wrapper">
     <img v-if="!isMinimalist" :src="cover" :class="css.cover" />
     <div :class="css.infosContainer">
       <h2 :class="css.title">

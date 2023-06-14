@@ -5,7 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 interface IProps {
-  postId: string;
+  slug: string
   postedAt: Date;
   title: string;
   username: string;
@@ -16,7 +16,7 @@ defineProps<IProps>();
 </script>
 
 <template>
-  <router-link :to="`/post/${postId}`" :class="css.wrapper">
+  <router-link :to="`/post/${slug}`" :class="css.wrapper">
     <span :class="css.dateSpan">{{ dayjs(postedAt).fromNow() }}</span>
     <h2 :class="css.postTitle">
       {{ title }}

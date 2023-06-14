@@ -21,8 +21,9 @@ const store = useAppStore();
 const session = computed(() => store.state.auth.session);
 const userAvatar = getAvatarUrlById(session.value.decodedToken?.avatarId ?? "");
 const handledAvatarString = userAvatar?.replace(/-\d+\.png$/, "-")!;
-const postId = computed(() => store.state.post.post!.id);
-const postTitle = computed(() => store.state.post.post!.title);
+const postId = computed(() => store.state.post.post!.id!);
+const postTitle = computed(() => store.state.post.post!.title!);
+const postSlug = computed(() => store.state.post.post!.slug!);
 let currentMemoji = ref(1);
 
 function handleMemoji(): void {
@@ -39,8 +40,9 @@ const refs = {
   comment,
   postId,
   postTitle,
+  postSlug,
   handledAvatarString,
-  currentMemoji: currentMemoji.value,
+  currentMemoji,
 };
 </script>
 

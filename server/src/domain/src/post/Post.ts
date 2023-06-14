@@ -1,9 +1,11 @@
 import type { IPostReflectObject } from "@typings/post";
 import { User } from "@domain/src/user";
 import { Favorite } from "@domain/src/favorite";
+import { getDate } from "./helpers/getDate";
 
 export class Post {
   #id: string;
+  #slug: string;
   #title: string;
   #body: string;
   #tags: string[];
@@ -15,6 +17,7 @@ export class Post {
   constructor(properties: IPostReflectObject) {
     this.#id = properties.id!;
     this.#title = properties.title;
+    this.#slug = this.generateSlug();
     this.#body = properties.body;
     this.#tags = properties.tags;
     this.#coverImage = properties.coverImage;
@@ -23,10 +26,19 @@ export class Post {
     this.#author = new User(properties.author);
   }
 
+  private generateSlug(): string {
+    const sanitizedTitle = this.#title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    return `${sanitizedTitle}-${getDate()}`;
+  }
+
   public get reflect(): IPostReflectObject {
     return {
       id: this.#id,
       title: this.#title,
+      slug: this.#slug,
       body: this.#body,
       tags: this.#tags,
       coverImage: this.#coverImage,

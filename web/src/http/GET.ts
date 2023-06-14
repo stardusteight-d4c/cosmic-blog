@@ -6,10 +6,10 @@ import { setCookie, getSessionCookie } from "@/utils";
 export class GET {
   constructor() {}
 
-  static async findUsername(username: string) {
+  static async findByUsername(username: string) {
     const user = await api
-      .get<Boolean>(`/user/username/${username}`)
-      .then((res) => res.data)
+      .get(`/user/username/${username}`)
+      .then((res) => res.data.user)
       .catch((error) => console.log(error));
     return user;
   }
@@ -74,6 +74,19 @@ export class GET {
     const authorization = getSessionCookie();
     const post = await api
       .get<IPostResponse>(`/post/${postId}`, {
+        headers: {
+          Authorization: authorization,
+        },
+      })
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+    return post;
+  }
+
+  static async postBySlug(slug: string) {
+    const authorization = getSessionCookie();
+    const post = await api
+      .get<IPostResponse>(`/post/slug/${slug}`, {
         headers: {
           Authorization: authorization,
         },

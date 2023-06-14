@@ -70,7 +70,7 @@ export class CommentPostgreSQLRepository implements ICommentRepository {
 
   public async deleteAllByPostId(postId: string): Promise<void> {
     try {
-      await knex("comments").where({ postId }).delete();
+      await knex("comments").whereRaw("post->>'id' = ?", [postId]).delete();
     } catch (error) {
       throw new Error(`Error deleting comments by post ID: ${error}`);
     }
@@ -107,7 +107,9 @@ export class CommentPostgreSQLRepository implements ICommentRepository {
 
   public async findAllByPostId(postId: string): Promise<Comment[]> {
     try {
-      const comments = await knex("comments").where({ postId }).select("*");
+      const comments = await knex("comments")
+        .whereRaw("post->>'id' = ?", [postId])
+        .select("*");
       return comments.map((comment) => new Comment(comment));
     } catch (error) {
       throw new Error(`Error finding comments by post ID: ${error}`);
@@ -133,7 +135,7 @@ export class CommentPostgreSQLRepository implements ICommentRepository {
     try {
       const { postId, skip, pageSize } = request;
       const comments = await knex("comments")
-        .where({ postId })
+        .whereRaw("post->>'id' = ?", [postId])
         .orderBy("postedAt", "desc")
         .offset(skip)
         .limit(pageSize)

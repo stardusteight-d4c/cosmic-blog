@@ -32,7 +32,7 @@ const session = computed(() => store.state.auth.session);
           <ButtonLogout v-if="session.activeSession === true" />
           <ButtonProfile
             v-if="session.activeSession === true"
-            :userId="session.decodedToken!.user_id"
+            :username="session.decodedToken!.username"
           />
         </div>
       </div>

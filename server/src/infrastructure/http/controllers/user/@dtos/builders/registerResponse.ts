@@ -1,5 +1,5 @@
 import { IUserReflectObject } from "@/@typings/user";
-import { IRegisterResponse, IUserResponse } from "..";
+import { IRegisterResponse, IGetUserResponse } from "..";
 
 export function registerResponse(request: {
   user: IUserReflectObject;
@@ -8,7 +8,7 @@ export function registerResponse(request: {
   const { sessionToken, user } = request;
   delete user.password;
   return {
-    user: user as IUserResponse,
+    user: user as IGetUserResponse,
     sessionToken,
   };
 }

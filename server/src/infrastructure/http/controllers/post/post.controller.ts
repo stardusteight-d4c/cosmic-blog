@@ -17,8 +17,8 @@ import { errorHandler } from "@infra/http/@utils/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
 import { RequireAuthorPermission } from "../../@guards/RequireAuthorPermission";
-import { GetByIdResponse } from "./@dtos";
-import { buildGetByIdResponse } from "./@dtos/buildGetByIdResponse";
+import { IGetPostResponse } from "./@dtos";
+import { getPostResponse } from "./@dtos/getPostResponse";
 import type { IPostReflectObject } from "@typings/post";
 
 @Controller("post")
@@ -65,10 +65,27 @@ export class PostController {
   public async getById(
     @Param("id") id: string,
     @Headers("authorization") authorization: string
-  ): Promise<GetByIdResponse> {
+  ): Promise<IGetPostResponse> {
     try {
       return this.#postUseCases.getById(id).then(async (post) => {
-        return await this.buildResponse({
+        return await this.buildGetPostResponse({
+          post: post.reflect,
+          authToken: authorization,
+        });
+      });
+    } catch (error) {
+      errorHandler(error);
+    }
+  }
+
+  @Get("slug/:slug")
+  public async getBySlug(
+    @Param("slug") slug: string,
+    @Headers("authorization") authorization: string
+  ): Promise<IGetPostResponse> {
+    try {
+      return this.#postUseCases.getBySlug(slug).then(async (post) => {
+        return await this.buildGetPostResponse({
           post: post.reflect,
           authToken: authorization,
         });
@@ -156,11 +173,11 @@ export class PostController {
     return this.#favoriteController.isFavorited(request);
   }
 
-  private async buildResponse(request: {
+  private async buildGetPostResponse(request: {
     post: IPostReflectObject;
     authToken: string;
-  }): Promise<GetByIdResponse> {
+  }): Promise<IGetPostResponse> {
     const { post, authToken } = request;
-    return await buildGetByIdResponse({ controller: this, authToken, post });
+    return await getPostResponse({ controller: this, authToken, post });
   }
 }

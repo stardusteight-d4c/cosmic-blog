@@ -24,8 +24,11 @@ export class CommentService implements ICommentService {
   }
 
   public async createComment(comment: ICommentReflectObject): Promise<Comment> {
+    if (comment.content.length > 500) {
+      throw new Error("The comment exceeds the 500 character limit!");
+    }
     await this.#userRepository.findById(comment.owner.id);
-    await this.#postRepository.findById(comment.postId);
+    await this.#postRepository.findById(comment.post.id);
     const newComment = commentBuilderFactory({ comment });
     const commentInstance = await this.#commentRepository.create(newComment);
     return commentInstance;

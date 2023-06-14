@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import { SubmitComment, Comment, Pagination } from "./integrate";
 import { commentsStyles as css } from "./styles";
-import { useRoute } from "vue-router";
 import { useAppStore } from "@/store";
 import { postMethods } from "@/store/modules/post";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 
-const route = useRoute();
 const store = useAppStore();
-const id = route.params.id;
-onMounted(async () => {
-  await store.dispatch(postMethods.actions.getComments, {
-    postId: id,
-    skip: 0,
+const id = computed(() => store.state.post.post?.id);
+onMounted(() => {
+  watch(id, async (newId) => {
+    await store.dispatch(postMethods.actions.getComments, {
+      postId: newId,
+      skip: 0,
+    });
   });
 });
 const comments = computed(() => store.state.post.comments);
 const currentPage = ref(0);
-const loading = ref(true);
+const loading = ref(false);
 
 function onSubmitComment() {
   currentPage.value = 0;
@@ -28,7 +28,7 @@ async function handleNextPage() {
     loading.value = true;
     currentPage.value++;
     await store.dispatch(postMethods.actions.getComments, {
-      postId: id,
+      postId: id.value,
       skip: currentPage.value * 4,
     });
     setTimeout(() => {
@@ -48,7 +48,7 @@ async function handleBackPage() {
     loading.value = true;
     currentPage.value--;
     await store.dispatch(postMethods.actions.getComments, {
-      postId: id,
+      postId: id.value,
       skip: currentPage.value * 4,
     });
     setTimeout(() => {
@@ -71,6 +71,7 @@ async function handleBackPage() {
     <div id="comments">
       <div v-for="comment in comments">
         <Comment
+          :class="`${loading && 'blur-sm brightness-75 animate-pulse'}`"
           v-if="comment !== undefined"
           v-bind:key="String(comment.id)"
           v-bind:comment="comment"

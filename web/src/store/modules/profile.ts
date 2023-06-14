@@ -58,8 +58,8 @@ export const profile: Module<IProfileState, AppState> = {
     },
   },
   actions: {
-    async [actions.getUserData]({ commit }, payload: { id: string }) {
-      const user = await GET.userData(payload.id);
+    async [actions.getUserData]({ commit }, payload: { username: string }) {
+      const user = await GET.findByUsername(payload.username);
       commit(mutations.setUser, { ...user });
       return user;
     },

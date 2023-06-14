@@ -27,7 +27,7 @@ async function signIn() {
       password: formData.password,
     });
     if (data) {
-      router.push(`/profile/${data.user.id}`);
+      router.push(`/profile/${data.user.username}`);
     }
   } catch (error) {
     notify("ERROR", "Incorrect username or password!");

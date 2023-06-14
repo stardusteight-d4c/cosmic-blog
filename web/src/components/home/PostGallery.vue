@@ -57,6 +57,7 @@ async function handleBackPage() {
     <PostCard
       :class="`${loading && 'blur-sm brightness-75 animate-pulse'}`"
       v-for="post in posts"
+      :slug="post.slug!"
       :postId="post.id!"
       :title="post.title"
       :cover="post.coverImage"

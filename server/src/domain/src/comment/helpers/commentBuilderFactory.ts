@@ -13,8 +13,7 @@ export function commentBuilderFactory({
 }): Comment {
   const updatedCommentInstance = new CommentBuilder()
     .setId(comment.id!)
-    .setPostId(comment.postId)
-    .setPostTitle(comment.postTitle)
+    .setPost(comment.post)
     .setOwner(comment.owner)
     .setContent(update?.field === "content" ? update.newData : comment.content)
     .setpostedAt(comment.postedAt)

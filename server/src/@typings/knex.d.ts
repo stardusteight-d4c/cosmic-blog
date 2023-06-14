@@ -1,7 +1,7 @@
-import { Knex } from 'knex';
-import { ISocialLinks, IUserReflectObject, TUserRole } from './user';
+import { Knex } from "knex";
+import { ISocialLinks, IUserReflectObject, TUserRole } from "./user";
 
-declare module 'knex/types/tables' {
+declare module "knex/types/tables" {
   interface User {
     id: string;
     email: string;
@@ -18,6 +18,7 @@ declare module 'knex/types/tables' {
     id?: string;
     title: string;
     body: string;
+    slug: string
     tags: string[];
     coverImage: string;
     postedIn: Date;
@@ -29,10 +30,13 @@ declare module 'knex/types/tables' {
 
   interface Comment {
     id: string;
-    postId: string;
-    postTitle: string;
-    owner: IUserReflectObject;
     content: string;
+    post: {
+      id: string;
+      title: string;
+      slug: string;
+    };
+    owner: IUserReflectObject;
     postedAt: Date;
     created_at: string;
     updated_at: string;

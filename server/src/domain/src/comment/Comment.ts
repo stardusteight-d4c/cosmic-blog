@@ -3,16 +3,18 @@ import { User } from "@domain/src/user";
 
 export class Comment {
   #id: string;
-  #postId: string;
-  #postTitle: string;
+  #post: {
+    id: string
+    title: string
+    slug: string
+  }
   #owner: User;
   #content: string;
   #postedAt: Date;
 
   constructor(properties: ICommentReflectObject) {
     this.#id = properties.id!;
-    this.#postTitle = properties.postTitle;
-    this.#postId = properties.postId;
+    this.#post = properties.post
     this.#owner = new User(properties.owner);
     this.#content = properties.content;
     this.#postedAt = properties.postedAt;
@@ -21,8 +23,7 @@ export class Comment {
   public get reflect(): ICommentReflectObject {
     return {
       id: this.#id,
-      postId: this.#postId,
-      postTitle: this.#postTitle,
+      post: this.#post,
       owner: this.#owner.reflect,
       content: this.#content,
       postedAt: this.#postedAt,

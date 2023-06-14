@@ -26,6 +26,7 @@ export class PostInMemoryRepository implements IPostRepository {
 
   public async create(post: Post): Promise<Post> {
     this.#posts.set(post.reflect.id!, post);
+    this.#posts.set(post.reflect.slug, post);
     return post;
   }
 
@@ -48,6 +49,14 @@ export class PostInMemoryRepository implements IPostRepository {
     const post = this.#posts.get(postId);
     if (!post) {
       throw new Error(`No post found with id: ${postId}`);
+    }
+    return post;
+  }
+
+  public async findBySlug(slug: string): Promise<Post | undefined> {
+    const post = this.#posts.get(slug);
+    if (!post) {
+      throw new Error(`No post found with slug: ${slug}`);
     }
     return post;
   }
