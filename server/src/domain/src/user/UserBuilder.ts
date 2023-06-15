@@ -30,10 +30,8 @@ export class UserBuilder {
   }
 
   public setPassword(password: string): UserBuilder {
-    if (password) {
-      Validators.validatePassword(password);
-      this.#password = password;
-    }
+    Validators.validatePassword(password);
+    this.#password = password;
     return this;
   }
 

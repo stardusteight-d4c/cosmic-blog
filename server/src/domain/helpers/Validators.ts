@@ -24,6 +24,9 @@ namespace Validators {
   }
 
   export function validatePassword(password: string): void {
+    if (!password) {
+      throw new Error(err.passwordRequired);
+    }
     const passwordRegex = /^(?=.*\d).{8,}$/;
     if (!passwordRegex.test(password)) {
       throw new Error(err.invalidPassword);

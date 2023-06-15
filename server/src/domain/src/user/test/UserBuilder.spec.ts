@@ -55,6 +55,14 @@ describe("UserBuilder", () => {
     }).toThrowError(err.usernameRequired);
   });
 
+  it("password must be required", () => {
+    const user = factory.getUser();
+    delete user.password;
+    expect(() => {
+      userBuilderFactory({ user });
+    }).toThrow(err.passwordRequired);
+  });
+
   it("password must be at least 8 characters and a number", () => {
     const user = factory.getUser({ password: "secret7" });
     expect(() => {

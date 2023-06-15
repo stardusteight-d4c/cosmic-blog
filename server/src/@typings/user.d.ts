@@ -12,8 +12,8 @@ export interface IUserReflectObject {
 
 export interface IUserService {
   createUser(user: IUserReflectObject): Promise<User>;
-  updateUser(user: IUserReflectObject): Promise<User>;
-  deleteUser(userId: string): Promise<User | undefined>;
+  updateUser(updatedUser: IUserReflectObject): Promise<User>;
+  deleteUser(userId: string): Promise<void>;
   getUserById(userId: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;

@@ -21,7 +21,7 @@ describe("UserService", () => {
     await userInMemoryRepository.deleteAll();
   });
 
-  it("must be able ceate an instance of User", async () => {
+  it("must be able create an instance of User", async () => {
     const user = factory.getUser();
     expect(await userService.createUser(user)).toBeInstanceOf(User);
   });
@@ -56,19 +56,55 @@ describe("UserService", () => {
     );
   });
 
-  it("must be able to update a user", async () => {
+  it("must be mandatory to use the id when updating a user", async () => {
     const user = factory.getUser();
-    const userInstance = await userService.createUser(user);
     const newSocialLinks: ISocialLinks = {
       email: "email@example.com",
       github: "https://github.com/stardusteight-d4c",
     };
+    await expect(
+      userService.updateUser({
+        ...user,
+        socialLinks: newSocialLinks,
+      })
+    ).rejects.toThrowError(err.userNotFoundWithId("undefined"));
+  });
+
+  it("must be able to update a user partially", async () => {
+    const user = factory.getUser();
+    const userInstance = await userService.createUser(user);
+    const userId = userInstance.reflect.id;
+    const newSocialLinks: ISocialLinks = {
+      email: "email@example.com",
+      github: "https://github.com/stardusteight-d4c",
+    };
+    delete user.password;
+    delete user.username;
+    delete user.email;
+    delete user.avatar;
+    delete user.userRole;
     const updatedUser = await userService.updateUser({
-      ...userInstance.reflect,
+      ...user,
+      id: userId,
       socialLinks: newSocialLinks,
     });
+    delete user.socialLinks;
+    const newUpdatedUser = await userService.updateUser({
+      ...user,
+      id: userId,
+    });
+    const finalUserState = await userService.getUserById(userId);
+    const initialState = userInstance.reflect;
+    const finalState = finalUserState.reflect;
     expect(updatedUser.reflect.socialLinks).toStrictEqual(newSocialLinks);
     expect(updatedUser.reflect.id).toStrictEqual(userInstance.reflect.id);
+    expect(finalState["id"]).toStrictEqual(initialState["id"]);
+    expect(finalState["password"]).toStrictEqual(initialState["password"]);
+    expect(finalState["username"]).toStrictEqual(initialState["username"]);
+    expect(finalState["email"]).toStrictEqual(initialState["email"]);
+    expect(finalState["avatar"]).toStrictEqual(initialState["avatar"]);
+    expect(finalState["userRole"]).toStrictEqual(initialState["userRole"]);
+    expect(newUpdatedUser.reflect["socialLinks"]).toStrictEqual(finalState["socialLinks"]);
   });
 
   it("must be able to delete a user", async () => {
@@ -77,7 +113,7 @@ describe("UserService", () => {
     const userId = userInstance.reflect.id;
     await userService.deleteUser(userId);
     await expect(userService.getUserById(userId)).rejects.toThrowError(
-      `No user found with id: ${userId}`
+      err.userNotFoundWithId(userId)
     );
   });
 });

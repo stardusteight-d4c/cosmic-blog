@@ -4,9 +4,7 @@ import type {
   IUserService,
 } from "@typings/user";
 import { User, userBuilderFactory } from ".";
-import Validators from "@domain/helpers/Validators";
 import DeleteUserCommand from "./UserCommands";
-import ServiceValidators from "./helpers/ServiceValidators";
 
 export class UserService implements IUserService {
   #userRepository: IUserRepository;
@@ -24,51 +22,39 @@ export class UserService implements IUserService {
 
   public async createUser(user: IUserReflectObject): Promise<User> {
     const newUser = userBuilderFactory({ user });
-    const validatorData = { userRepository: this.#userRepository, user };
-    await ServiceValidators.findEmail(validatorData);
-    await ServiceValidators.findUsername(validatorData);
+    
     return this.#userRepository.create(newUser).then((user) => user);
   }
 
-  public async deleteUser(userId: string): Promise<User | undefined> {
-    Validators.checkPrimitiveType({ validating: userId, type: "string" });
-    const user = await this.#userRepository.findById(userId);
-    if (user) {
-      const deletedUser = await this.#userRepository.delete(userId);
-      if (this.#publisher) {
-        const deleteUserCommand = new DeleteUserCommand(userId);
-        await this.#publisher.emit(deleteUserCommand);
-      }
-      return deletedUser;
+  public async updateUser(updatedUser: IUserReflectObject): Promise<User> {
+    return this.#userRepository
+      .update(new User(updatedUser))
+      .then((user) => user);
+  }
+
+  public async deleteUser(userId: string): Promise<void> {
+    await this.#userRepository.delete(userId);
+    if (this.#publisher) {
+      const deleteUserCommand = new DeleteUserCommand(userId);
+      await this.#publisher.emit(deleteUserCommand);
     }
-    throw new Error(`The user with ID: ${userId} was not found.`);
   }
 
   public async getUserById(userId: string): Promise<User | undefined> {
-    Validators.checkPrimitiveType({ validating: userId, type: "string" });
-    const user = await this.#userRepository.findById(userId);
-    return user;
+    return this.#userRepository.findById(userId).then((user) => user);
   }
 
   public async getUserByEmail(userEmail: string): Promise<User | undefined> {
-    Validators.checkPrimitiveType({ validating: userEmail, type: "string" });
-    Validators.validateEmail(userEmail);
-    return await this.#userRepository.findByEmail(userEmail);
+    return this.#userRepository.findByEmail(userEmail).then((user) => user);
   }
 
   public async getUserByUsername(username: string): Promise<User> {
-    Validators.checkPrimitiveType({ validating: username, type: "string" });
-    return await this.#userRepository.findByUsername(username);
+    return this.#userRepository.findByUsername(username).then((user) => user);
   }
 
   public async getUsersByUsername(username: string): Promise<User[]> {
-    const users = await this.#userRepository.findManyByUsername(username);
-    return users;
-  }
-
-  public async updateUser(user: IUserReflectObject): Promise<User> {
-    const updatedUser = userBuilderFactory({ user });
-    const updatedUserInstance = await this.#userRepository.update(updatedUser);
-    return updatedUserInstance;
+    return this.#userRepository
+      .findManyByUsername(username)
+      .then((user) => user);
   }
 }
