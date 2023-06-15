@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<void> {
     table.text("body").notNullable();
     table.jsonb("tags");
     table.string("coverImage");
-    table.dateTime("postedIn").notNullable();
+    table.dateTime("postedAt").notNullable();
     table.dateTime("lastChange");
     table.jsonb("author").notNullable();
     table.timestamps(true, true);

@@ -14,7 +14,7 @@ export function postBuilderFactory({
     .setTitle(post.title)
     .setTags(post.tags)
     .setBody(post.body)
-    .setPostedIn(post.postedIn)
+    .setPostedAt(post.postedAt)
     .setLastChange(post.lastChange)
     .build();
   return updatedPostInstance;

@@ -3,17 +3,9 @@ import { IFavoriteReflectObject } from "@/@typings/favorite";
 import { IPostReflectObject } from "@/@typings/post";
 import { IUserReflectObject, TUserRole } from "@/@typings/user";
 
-type userParams = {
-  username?: string;
-  email?: string;
-  password?: string;
-  avatar?: string;
-  userRole?: TUserRole;
-};
-
 export interface IObjectFactory {
-  getUser: (params?: userParams) => IUserReflectObject;
-  // getPost: () => IPostReflectObject;
+  getUser: (params?: IUserReflectObject) => IUserReflectObject;
+  getPost: (params?: IPostReflectObject) => IPostReflectObject;
   // getComment: (data: {
   //   postId: string;
   //   postTitle?: string;
@@ -27,8 +19,9 @@ export interface IObjectFactory {
 }
 
 export function objectFactory(): IObjectFactory {
-  const user = (params?: userParams): IUserReflectObject => {
+  const user = (params?: IUserReflectObject): IUserReflectObject => {
     return {
+      id: params?.id && params.id,
       username: params?.username ?? "link",
       email: params?.email ?? "email@email.com",
       password: params?.password ?? "password07",
@@ -37,14 +30,21 @@ export function objectFactory(): IObjectFactory {
     };
   };
 
-  // const post: IPostReflectObject = {
-  //   title: "Sample Post",
-  //   body: "This is the content of the post.",
-  //   tags: ["tag1", "tag2", "tag3"],
-  //   coverImage: "https://example.com/cover-image.jpg",
-  //   postedIn: new Date(),
-  //   author: user,
-  // };
+  const post = (params?: IPostReflectObject): IPostReflectObject => {
+    return {
+      title: params?.title ?? "Sample Post",
+      body: params?.body ?? "This is the content of the post.",
+      tags: params?.tags ?? ["tag1", "tag2", "tag3"],
+      coverImage: params?.coverImage ?? "https://example.com/cover-image.jpg",
+      postedAt: params?.postedAt ?? new Date(),
+      author:
+        params?.author ??
+        user({
+          id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
+          userRole: "author",
+        }),
+    };
+  };
 
   // const comment = (data: {
   //   postId: string;
@@ -72,12 +72,12 @@ export function objectFactory(): IObjectFactory {
   // };
 
   return {
-    getUser: (params?: userParams) => {
+    getUser: (params?: IUserReflectObject) => {
       return user(params);
     },
-    // getPost: () => {
-    //   return post;
-    // },
+    getPost: (params?: IPostReflectObject) => {
+      return post(params);
+    },
     // getComment: (data: {
     //   postId: string;
     //   postTitle?: string;

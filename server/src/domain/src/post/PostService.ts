@@ -4,7 +4,6 @@ import type {
   IPostService,
 } from "@typings/post";
 import { Post, postBuilderFactory } from ".";
-import Validators from "@domain/@utils/validators";
 import DeletePostCommand from "./PostCommands";
 import { IUserRepository } from "@/@typings/user";
 import { IFavoriteRepository } from "@/@typings/favorite";
@@ -51,19 +50,16 @@ export class PostService implements IPostService {
   }
 
   public async getPostById(postId: string): Promise<Post | undefined> {
-    Validators.checkPrimitiveType({ validating: postId, type: "string" });
     const post = await this.#postRepository.findById(postId);
     return post;
   }
 
   public async getPostBySlug(slug: string): Promise<Post | undefined> {
-    Validators.checkPrimitiveType({ validating: slug, type: "string" });
     const post = await this.#postRepository.findBySlug(slug);
     return post;
   }
 
   public async getPostsByTitle(postTitle: string): Promise<Post[]> {
-    Validators.checkPrimitiveType({ validating: postTitle, type: "string" });
     const posts = await this.#postRepository.findManyByTitle(postTitle);
     return posts;
   }

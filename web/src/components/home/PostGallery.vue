@@ -61,7 +61,7 @@ async function handleBackPage() {
       :postId="post.id!"
       :title="post.title"
       :cover="post.coverImage"
-      :postedAt="post.postedIn"
+      :postedAt="post.postedAt"
       :content="post.body"
       :tags="post.tags"
       :full="true"

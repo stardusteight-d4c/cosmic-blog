@@ -3,14 +3,14 @@ import { IUserReflectObject } from "./user";
 
 export interface IPostReflectObject {
   id?: string;
-  title: string;
+  title?: string;
   slug?: string;
-  body: string;
-  tags: string[];
-  coverImage: string;
-  postedIn: Date;
+  body?: string;
+  tags?: string[];
+  coverImage?: string;
+  postedAt?: Date;
   lastChange?: Date;
-  author: IUserReflectObject;
+  author?: IUserReflectObject;
 }
 
 export interface IPostService {

@@ -23,11 +23,11 @@ export class UserService implements IUserService {
 
   public async createUser(user: IUserReflectObject): Promise<User> {
     const newUser = userBuilderFactory({ user });
-    await ServiceHandlers.findEmailOrThrowError({
+    await ServiceHandlers.findEmailAndThrowError({
       userRepository: this.#userRepository,
       email: user.email,
     });
-    await ServiceHandlers.findUsernameOrThrowError({
+    await ServiceHandlers.findUsernameAndThrowError({
       userRepository: this.#userRepository,
       username: user.username,
     });

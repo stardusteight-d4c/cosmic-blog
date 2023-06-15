@@ -134,7 +134,7 @@ export class PostPostgreSQLRepository implements IPostRepository {
     try {
       const { skip, pageSize } = request;
       const posts = await knex("posts")
-        .orderBy("postedIn", "desc")
+        .orderBy("postedAt", "desc")
         .limit(pageSize)
         .offset(skip);
       return posts.map((post) => new Post(post));

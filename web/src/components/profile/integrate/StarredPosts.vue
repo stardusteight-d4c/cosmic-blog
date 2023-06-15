@@ -99,7 +99,7 @@ async function handleBackPage() {
         :slug="post.slug!"
         :isMinimalist="true"
         :title="post.title"
-        :postedAt="post.postedIn"
+        :postedAt="post.postedAt"
         :content="post.body"
         :tags="post.tags"
       />

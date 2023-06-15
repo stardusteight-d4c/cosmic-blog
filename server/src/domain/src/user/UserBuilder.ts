@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { User } from ".";
 import type { ISocialLinks, TUserRole } from "@typings/user";
-import Validators from "@/domain/helpers/Validators";
+import Validators from "./helpers/Validators";
 
 export class UserBuilder {
   #id: string;

@@ -8,7 +8,7 @@ export interface IPostResponse {
   body: string;
   tags: string[];
   coverImage: string;
-  postedIn: Date;
+  postedAt: Date;
   lastChange?: Date;
   author: IUserObject;
   isAuthor?: boolean;

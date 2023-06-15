@@ -1,5 +1,5 @@
 import { TUserRole } from "@/@typings/user";
-import { err } from "../src/user/helpers/errors";
+import { err } from "./errors";
 
 namespace Validators {
   export function validateEmail(email: string): void {
@@ -33,18 +33,18 @@ namespace Validators {
     }
   }
 
-  export function validateUserRole(role: TUserRole): void {
-    if (role != "reader" && role != "author") {
-      throw new Error(err.invalidUserRole);
-    }
-  }
-
   export function compareCurrentPassword(data: {
     inputPassword: string;
     currentPassword: string;
   }): void {
     if (data.inputPassword !== data.currentPassword) {
       throw new Error("Incorrect current password.");
+    }
+  }
+
+  export function validateUserRole(role: TUserRole): void {
+    if (role != "reader" && role != "author") {
+      throw new Error(err.invalidUserRole);
     }
   }
 

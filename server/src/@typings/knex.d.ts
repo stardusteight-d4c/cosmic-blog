@@ -21,7 +21,7 @@ declare module "knex/types/tables" {
     slug: string
     tags: string[];
     coverImage: string;
-    postedIn: Date;
+    postedAt: Date;
     lastChange?: Date;
     author: IUserReflectObject;
     created_at: string;

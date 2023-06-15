@@ -4,7 +4,7 @@ import { objectFactory } from "@/domain/helpers/objectFactory";
 
 const factory = objectFactory();
 
-describe("UserService", () => {
+describe("User", () => {
   it("must be not able to access the attributes directly", async () => {
     const user = factory.getUser();
     const userInstance = new User(user);
@@ -35,8 +35,8 @@ describe("UserService", () => {
   it("must be able to access the attributes via the <reflect> object", async () => {
     const user = factory.getUser();
     const userInstance = new User(user);
-    expect(userInstance.reflect.username).toBe(user.username);
-    expect(userInstance.reflect.email).toBe(user.email);
-    expect(userInstance.reflect.password).toBe(user.password);
+    expect(userInstance.reflect.username).toStrictEqual(user.username);
+    expect(userInstance.reflect.email).toStrictEqual(user.email);
+    expect(userInstance.reflect.password).toStrictEqual(user.password);
   });
 });

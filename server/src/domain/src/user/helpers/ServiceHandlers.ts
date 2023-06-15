@@ -1,8 +1,8 @@
-import { IUserReflectObject, IUserRepository } from "@/@typings/user";
+import { IUserRepository } from "@typings/user";
 import { err } from "./errors";
 
 namespace ServiceHandlers {
-  export async function findEmailOrThrowError(params: {
+  export async function findEmailAndThrowError(params: {
     userRepository: IUserRepository;
     email: string;
   }) {
@@ -13,7 +13,7 @@ namespace ServiceHandlers {
     }
   }
 
-  export async function findUsernameOrThrowError(params: {
+  export async function findUsernameAndThrowError(params: {
     userRepository: IUserRepository;
     username: string;
   }) {

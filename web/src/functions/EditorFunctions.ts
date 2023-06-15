@@ -118,7 +118,7 @@ export class HeaderFunctions {
     this.#editorData.value.title = post.title;
     this.#editorData.value.tags = post.tags;
     this.#editorData.value.coverImage = post.coverImage;
-    this.#editorData.value.date = new Date(post.postedIn);
+    this.#editorData.value.date = new Date(post.postedAt);
     this.#editorData.value.body = post.body;
     store.commit(
       editorMethods.mutations.setRichTextEditor,
@@ -163,7 +163,7 @@ export class RichTextEditorFunctions {
       title: this.#editorData.value.title,
       body: this.#editorData.value.body,
       tags: this.#editorData.value.tags,
-      postedIn: new Date(),
+      postedAt: new Date(),
       coverImage: publicImageURL,
       author: {
         id: this.#session.decodedToken!.user_id,
@@ -240,7 +240,7 @@ export class EditModeButtonsFunctions {
       title: this.#editorData.value.title,
       body: this.#editorData.value.body,
       tags: this.#editorData.value.tags,
-      postedIn: this.#editorData.value.date,
+      postedAt: this.#editorData.value.date,
       coverImage: coverImage,
       author: {
         id: this.#session.decodedToken!.user_id,

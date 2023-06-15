@@ -6,7 +6,7 @@ export interface IGetPostResponse {
   body: string;
   tags: string[];
   coverImage: string;
-  postedIn: Date;
+  postedAt: Date;
   lastChange?: Date;
   author: IUserReflectObject;
   isAuthor?: boolean;

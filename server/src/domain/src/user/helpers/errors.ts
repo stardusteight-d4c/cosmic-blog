@@ -7,7 +7,7 @@ export const err = {
   usernameAlreadyExists: "username already exists",
   usernameRequired: "username is required",
   invalidPassword: "password must be at least 8 characters and a number",
-  passwordRequired: 'password is required',
+  passwordRequired: "password is required",
   invalidUserRole: "user role is invalid",
-  userNotFoundWithId: (id: string) => `No user found with id: ${id}`
+  userNotFoundWithId: (id: string) => `no user found with id: ${id}`,
 };
