@@ -4,8 +4,9 @@ import type {
   IUserService,
 } from "@typings/user";
 import { User, userBuilderFactory } from ".";
-import Validators from "@/domain/@utils/validators";
+import Validators from "@domain/helpers/Validators";
 import DeleteUserCommand from "./UserCommands";
+import ServiceValidators from "./helpers/ServiceValidators";
 
 export class UserService implements IUserService {
   #userRepository: IUserRepository;
@@ -23,20 +24,10 @@ export class UserService implements IUserService {
 
   public async createUser(user: IUserReflectObject): Promise<User> {
     const newUser = userBuilderFactory({ user });
-    const emailAlreadyExists = await this.#userRepository.findByEmail(
-      user.email
-    );
-    const usernameAlreadyExists = await this.#userRepository.findByUsername(
-      user.username
-    );
-    if (emailAlreadyExists) {
-      throw new Error("Email already exists");
-    }
-    if (usernameAlreadyExists) {
-      throw new Error("Username already exists");
-    }
-    const userInstance = await this.#userRepository.create(newUser);
-    return userInstance;
+    const validatorData = { userRepository: this.#userRepository, user };
+    await ServiceValidators.findEmail(validatorData);
+    await ServiceValidators.findUsername(validatorData);
+    return this.#userRepository.create(newUser).then((user) => user);
   }
 
   public async deleteUser(userId: string): Promise<User | undefined> {
@@ -73,56 +64,6 @@ export class UserService implements IUserService {
   public async getUsersByUsername(username: string): Promise<User[]> {
     const users = await this.#userRepository.findManyByUsername(username);
     return users;
-  }
-
-  public async changeEmail(data: {
-    userId: string;
-    confirmationPassword: string;
-    newEmail: string;
-  }): Promise<User | undefined> {
-    Validators.checkPrimitiveType({ validating: data.userId, type: "string" });
-    Validators.validateEmail(data.newEmail);
-    const user = await this.#userRepository.findById(data.userId);
-    if (user) {
-      Validators.compareCurrentPassword({
-        inputPassword: data.confirmationPassword,
-        currentPassword: user.reflect.password,
-      });
-      const updatedUserInstance = userBuilderFactory({
-        user: user.reflect,
-        update: { field: "email", newData: data.newEmail },
-      });
-      const changedUser = await this.#userRepository.update(
-        updatedUserInstance
-      );
-      return changedUser;
-    }
-    throw new Error(`The user with ID: ${data.userId} was not found.`);
-  }
-
-  public async changePassword(data: {
-    userId: string;
-    confirmationPassword: string;
-    newPassword: string;
-  }): Promise<User | undefined> {
-    Validators.checkPrimitiveType({ validating: data.userId, type: "string" });
-    Validators.validatePassword(data.newPassword);
-    const user = await this.#userRepository.findById(data.userId);
-    if (user) {
-      Validators.compareCurrentPassword({
-        inputPassword: data.confirmationPassword,
-        currentPassword: user.password,
-      });
-      const updatedUserInstance = userBuilderFactory({
-        user: user.reflect,
-        update: { field: "password", newData: data.newPassword },
-      });
-      const changedUser = await this.#userRepository.update(
-        updatedUserInstance
-      );
-      return changedUser;
-    }
-    throw new Error(`The user with ID: ${data.userId} was not found.`);
   }
 
   public async updateUser(user: IUserReflectObject): Promise<User> {

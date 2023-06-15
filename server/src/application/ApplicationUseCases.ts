@@ -4,7 +4,7 @@ import type { IPostRepository } from "@typings/post";
 import type { IUserRepository } from "@typings/user";
 import { PostService } from "@domain/src/post";
 import { UserService } from "@domain/src/user";
-import { Publisher } from "@domain/@utils/Publisher";
+import { Publisher } from "@/domain/helpers/Publisher";
 import { CommentService, CommentObserver } from "@domain/src/comment";
 import { FavoriteService, FavoriteObserver } from "@domain/src/favorite";
 import { UserUseCases } from "./use-cases/UserUseCases";

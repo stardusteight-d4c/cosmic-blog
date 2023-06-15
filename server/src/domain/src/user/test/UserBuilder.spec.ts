@@ -1,88 +1,71 @@
-import type { IUserReflectObject } from "@typings/user";
-import { beforeEach, describe, expect, it } from "vitest";
-import { User, UserBuilder } from "../index";
+import { describe, expect, it } from "vitest";
+import { User, userBuilderFactory } from "../index";
+import { objectFactory } from "@/domain/helpers/objectFactory";
+import { err } from "../helpers/errors";
+
+const factory = objectFactory();
 
 describe("UserBuilder", () => {
-  beforeEach(() => { });
-
-  it("must return an instance of User", () => {
-    const newUser: IUserReflectObject = {
-      username: "johndoe",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
-    expect(
-      new UserBuilder()
-        .setEmail(newUser.email)
-        .setUsername(newUser.username)
-        .setPassword(newUser.password)
-        .setAvatar(newUser.avatar ? newUser.avatar : "")
-        .build(),
-    ).toBeInstanceOf(User);
+  it("must be return an instance of User", () => {
+    const user = factory.getUser();
+    expect(userBuilderFactory({ user })).toBeInstanceOf(User);
   });
 
-  it("it should not be possible to enter fake email addresses", () => {
-    const newUser: IUserReflectObject = {
-      username: "johndoe",
-      email: "johndexample.com",
-      password: "pa$$word1",
-    };
+  it("must be not be possible to enter a invalid email address", () => {
+    const user = factory.getUser({ email: "invalidemail@email" });
     expect(() => {
-      new UserBuilder()
-        .setEmail(newUser.email)
-        .setUsername(newUser.username)
-        .setPassword(newUser.password)
-        .setAvatar(newUser.avatar ? newUser.avatar : "")
-        .build();
-    }).toThrow("A valid email address was not entered.");
+      userBuilderFactory({ user });
+    }).toThrowError(err.invalidEmail);
   });
 
-  it("username must contain only lowercase letters, at least 3 characters and must not contain special characters", () => {
-    const newUser1: IUserReflectObject = {
-      username: "jj",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
-    const newUser2: IUserReflectObject = {
-      username: "jjj*",
-      email: "johndoe@example.com",
-      password: "pa$$word1",
-    };
+  it("email must be required", () => {
+    const user = factory.getUser();
+    delete user.email;
     expect(() => {
-      new UserBuilder()
-        .setEmail(newUser1.email)
-        .setUsername(newUser1.username)
-        .setPassword(newUser1.password)
-        .setAvatar(newUser1.avatar ? newUser1.avatar : "")
-        .build();
-    }).toThrow(
-      "The username must contain only lowercase letters, at least 3 characters and must not contain special characters.",
-    );
+      userBuilderFactory({ user });
+    }).toThrowError(err.emailRequired);
+  });
+
+  it("username must be contain only lowercase letters", () => {
+    const user = factory.getUser({ username: "Stark" });
     expect(() => {
-      new UserBuilder()
-        .setEmail(newUser2.email)
-        .setUsername(newUser2.username)
-        .setPassword(newUser2.password)
-        .setAvatar(newUser2.avatar ? newUser2.avatar : "")
-        .build();
-    }).toThrow(
-      "The username must contain only lowercase letters, at least 3 characters and must not contain special characters.",
-    );
+      userBuilderFactory({ user });
+    }).toThrowError(err.invalidUsername);
+  });
+
+  it("username must be contain at least three characters", () => {
+    const user = factory.getUser({ username: "lu" });
+    expect(() => {
+      userBuilderFactory({ user });
+    }).toThrowError(err.invalidUsername);
+  });
+
+  it("username must be not contain special characters", () => {
+    const user = factory.getUser({ username: "xablau%$" });
+    expect(() => {
+      userBuilderFactory({ user });
+    }).toThrowError(err.invalidUsername);
+  });
+
+  it("username must be required", () => {
+    const user = factory.getUser();
+    delete user.username;
+    expect(() => {
+      userBuilderFactory({ user });
+    }).toThrowError(err.usernameRequired);
   });
 
   it("password must be at least 8 characters and a number", () => {
-    const newUser: IUserReflectObject = {
-      username: "johndoe",
-      email: "johndoe@example.com",
-      password: "wo1",
-    };
+    const user = factory.getUser({ password: "secret7" });
     expect(() => {
-      new UserBuilder()
-        .setEmail(newUser.email)
-        .setUsername(newUser.username)
-        .setPassword(newUser.password)
-        .setAvatar(newUser.avatar ? newUser.avatar : "")
-        .build();
-    }).toThrow("Password must be at least 8 characters and a number.");
+      userBuilderFactory({ user });
+    }).toThrow(err.invalidPassword);
+  });
+
+  it("user role must be 'author' or 'reader'", () => {
+    const user = factory.getUser({ userRole: "admin" as any });
+    expect(() => {
+      userBuilderFactory({ user });
+    }).toThrow(err.invalidUserRole);
   });
 });

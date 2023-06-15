@@ -1,17 +1,13 @@
-import type { ISocialLinks, IUserReflectObject, IUserRepository } from "@typings/user";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import {
-  User,
-  UserService,
-} from "../index";
-import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
+import { User, UserService } from "../index";
+import { objectFactory } from "@/domain/helpers/objectFactory";
 import { UserInMemoryRepository } from "@app/@in-memory-repositories";
+import type { ISocialLinks, IUserRepository } from "@typings/user";
+import { err } from "../helpers/errors";
 
-let userInstance: User;
 let userService: UserService;
 let userInMemoryRepository: IUserRepository;
-let user: IUserReflectObject;
-let factory: IObjectFactory;
+const factory = objectFactory();
 
 describe("UserService", () => {
   beforeEach(async () => {
@@ -19,40 +15,50 @@ describe("UserService", () => {
     userService = new UserService({
       userRepository: userInMemoryRepository,
     });
-    factory = objectFactory();
-    user = factory.getUser();
-    userInstance = await userService.createUser(user);
   });
+
   afterEach(async () => {
     await userInMemoryRepository.deleteAll();
   });
 
-  it("must be able to create a user", async () => {
-    expect(userInstance).toBeInstanceOf(User);
+  it("must be able ceate an instance of User", async () => {
+    const user = factory.getUser();
+    expect(await userService.createUser(user)).toBeInstanceOf(User);
   });
 
-  it("must be not able to access the attributes directly", async () => {
-    expect(() => userInstance.id).toThrowError(
-      "Cannot access id property directly. Use the reflect object in the User instead.",
-    );
-    expect(() => userInstance.username).toThrowError(
-      "Cannot access username property directly. Use the reflect object in the User instead.",
-    );
-    expect(() => userInstance.email).toThrowError(
-      "Cannot access email property directly. Use the reflect object in the User instead.",
-    );
-    expect(() => userInstance.password).toThrowError(
-      "Cannot access password property directly. Use the reflect object in the User instead.",
+  it("must be not able to create a user with an email already existing in the repository", async () => {
+    const user1 = factory.getUser({
+      username: "link",
+      email: "example@email.com",
+    });
+    const user2 = factory.getUser({
+      username: "zelda",
+      email: "example@email.com",
+    });
+    expect(await userService.createUser(user1)).toBeInstanceOf(User);
+    await expect(userService.createUser(user2)).rejects.toThrowError(
+      err.emailAlreadyExists
     );
   });
 
-  it("must be able to access the attributes via the <reflect> object", async () => {
-    expect(userInstance.reflect.username).toBe(user.username);
-    expect(userInstance.reflect.email).toBe(user.email);
-    expect(userInstance.reflect.password).toBe(user.password);
+  it("must be not able to create a user with an username already existing in the repository", async () => {
+    const user1 = factory.getUser({
+      username: "gameboy",
+      email: "satoshitajiri@email.com",
+    });
+    const user2 = factory.getUser({
+      username: "gameboy",
+      email: "pokemoncompany@email.com",
+    });
+    expect(await userService.createUser(user1)).toBeInstanceOf(User);
+    await expect(userService.createUser(user2)).rejects.toThrowError(
+      err.usernameAlreadyExists
+    );
   });
 
-  it("must be able to change socialLinks", async () => {
+  it("must be able to update a user", async () => {
+    const user = factory.getUser();
+    const userInstance = await userService.createUser(user);
     const newSocialLinks: ISocialLinks = {
       email: "email@example.com",
       github: "https://github.com/stardusteight-d4c",
@@ -61,6 +67,17 @@ describe("UserService", () => {
       ...userInstance.reflect,
       socialLinks: newSocialLinks,
     });
-    expect(updatedUser!.reflect.socialLinks).toBe(newSocialLinks);
+    expect(updatedUser.reflect.socialLinks).toStrictEqual(newSocialLinks);
+    expect(updatedUser.reflect.id).toStrictEqual(userInstance.reflect.id);
+  });
+
+  it("must be able to delete a user", async () => {
+    const user = factory.getUser();
+    const userInstance = await userService.createUser(user);
+    const userId = userInstance.reflect.id;
+    await userService.deleteUser(userId);
+    await expect(userService.getUserById(userId)).rejects.toThrowError(
+      `No user found with id: ${userId}`
+    );
   });
 });

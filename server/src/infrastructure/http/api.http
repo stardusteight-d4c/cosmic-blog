@@ -61,7 +61,7 @@ Content-Type: application/json
 {
   "email": "email@email.com",
   "username": "link",
-  "password": "password08",
+  "password": "password07",
   "avatar": "Favatar02",
   "userRole": "author"
 }

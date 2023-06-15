@@ -4,14 +4,14 @@ import {
   UserService,
 } from "@domain/src/user";
 import { Post, PostService } from "..";
-import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
+import { IObjectFactory, objectFactory } from "@/domain/helpers/objectFactory";
 import {
   CommentInMemoryRepository,
   FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
 } from "@app/@in-memory-repositories";
-import { Publisher } from "@/domain/@utils/Publisher";
+import { Publisher } from "@/domain/helpers/Publisher";
 import {
   FavoriteObserver,
   FavoriteService,

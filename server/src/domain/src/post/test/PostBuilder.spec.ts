@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { IUserRepository, User, UserService } from "@domain/src/user";
 import { Post, IPostReflectObject, postBuilderFactory } from "..";
-import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
+import { IObjectFactory, objectFactory } from "@/domain/helpers/objectFactory";
 import { UserInMemoryRepository } from "@app/@in-memory-repositories";
 
 let factory: IObjectFactory;

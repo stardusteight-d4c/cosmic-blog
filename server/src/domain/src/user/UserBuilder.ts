@@ -1,7 +1,7 @@
-import type { ISocialLinks, TUserRole } from "@typings/user";
 import { randomUUID } from "node:crypto";
 import { User } from ".";
-import Validators from "@/domain/@utils/validators";
+import type { ISocialLinks, TUserRole } from "@typings/user";
+import Validators from "@/domain/helpers/Validators";
 
 export class UserBuilder {
   #id: string;
@@ -43,6 +43,7 @@ export class UserBuilder {
   }
 
   public setUserRole(userRole: TUserRole): UserBuilder {
+    Validators.validateUserRole(userRole);
     this.#userRole = userRole;
     return this;
   }
@@ -53,18 +54,12 @@ export class UserBuilder {
   }
 
   public build(): User {
-    if (!this.#email) {
-      throw new Error("Email is required.");
-    }
-    if (!this.#username) {
-      throw new Error("Username is required.");
-    }
     return new User({
-      id: this.#id || randomUUID(),
+      id: this.#id ?? randomUUID(),
       email: this.#email,
       username: this.#username,
       password: this.#password,
-      avatar: this.#avatar ?? "AVATAR01",
+      avatar: this.#avatar ?? "Favatar02",
       userRole: this.#userRole ?? "reader",
       socialLinks: this.#socialLinks,
     });

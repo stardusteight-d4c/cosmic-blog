@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { IObjectFactory, objectFactory } from "@domain/@utils/objectFactory";
+import { IObjectFactory, objectFactory } from "@/domain/helpers/objectFactory";
 import {
   User,
   UserService,

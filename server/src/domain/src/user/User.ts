@@ -14,12 +14,12 @@ export class User {
   #socialLinks: ISocialLinks | undefined;
 
   constructor(properties: IUserReflectObject) {
-    this.#id = properties.id!;
+    this.#id = properties.id;
     this.#email = properties.email;
     this.#username = properties.username;
     this.#password = properties.password;
-    this.#avatar = properties.avatar!;
-    this.#userRole = properties.userRole!;
+    this.#avatar = properties.avatar;
+    this.#userRole = properties.userRole;
     this.#socialLinks = properties.socialLinks;
   }
 
