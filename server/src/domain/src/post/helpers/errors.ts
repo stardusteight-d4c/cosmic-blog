@@ -11,4 +11,6 @@ export const err = {
   authorAvatarRequired: "author avatar is required",
   authorEmailRequired: "author email is required",
   authorRoleRequired: "author role is required",
+  userNotFoundWithId: (id: string) => `no user found with id: ${id}`,
+  postNotFoundWithId: (id: string) => `no post found with id: ${id}`,
 };

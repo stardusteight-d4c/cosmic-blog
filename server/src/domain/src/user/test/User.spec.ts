@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { User } from "../index";
-import { objectFactory } from "@/domain/helpers/objectFactory";
+import { objectFactory } from "@domain/helpers/objectFactory";
 
 const factory = objectFactory();
 

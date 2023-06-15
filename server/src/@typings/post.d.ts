@@ -34,7 +34,7 @@ export interface IPostService {
 
 export interface IPostRepository {
   create(post: Post): Promise<Post>;
-  update(updatedPost: Post): Promise<Post>;
+  update(updatedPost: Post, existingPost: Post): Promise<Post>;
   delete(postId: string): Promise<Post | undefined>;
   deleteAll(): Promise<void>;
   findById(postId: string): Promise<Post | undefined>;

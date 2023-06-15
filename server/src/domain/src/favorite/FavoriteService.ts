@@ -2,7 +2,7 @@ import type { IFavoriteRepository, IFavoriteService } from "@typings/favorite";
 import type { IPostRepository } from "@typings/post";
 import type { IUserRepository } from "@typings/user";
 import { Favorite } from ".";
-import Validators from "@/domain/@utils/validators";
+import Validators from "../user/helpers/Validators";
 
 export class FavoriteService implements IFavoriteService {
   #favoriteRepository: IFavoriteRepository;

@@ -1,4 +1,4 @@
-import type { IUserRepository } from "@/@typings/user";
+import type { IUserReflectObject, IUserRepository } from "@typings/user";
 import { User } from "@domain/src/user";
 
 export class UserInMemoryRepository implements IUserRepository {
@@ -7,7 +7,7 @@ export class UserInMemoryRepository implements IUserRepository {
 
   private constructor() {}
 
-  private deleteUndefinedFields(copyUpdate: any): void {
+  private deleteUndefinedFields(copyUpdate: IUserReflectObject): void {
     const fieldsToDelete = [
       "password",
       "username",

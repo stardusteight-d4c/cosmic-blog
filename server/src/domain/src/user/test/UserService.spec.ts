@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { User, UserService } from "../index";
-import { objectFactory } from "@/domain/helpers/objectFactory";
+import { objectFactory } from "@domain/helpers/objectFactory";
 import { UserInMemoryRepository } from "@app/@in-memory-repositories";
 import type { ISocialLinks, IUserRepository } from "@typings/user";
 import { err } from "../helpers/errors";
@@ -67,7 +67,7 @@ describe("UserService", () => {
         ...user,
         socialLinks: newSocialLinks,
       })
-    ).rejects.toThrowError(err.userNotFoundWithId("undefined"));
+    ).rejects.toThrowError(err.userNotFoundWithId(undefined));
   });
 
   it("must be able to update a user partially", async () => {

@@ -7,6 +7,7 @@ import { Post, postBuilderFactory } from ".";
 import DeletePostCommand from "./PostCommands";
 import { IUserRepository } from "@/@typings/user";
 import { IFavoriteRepository } from "@/@typings/favorite";
+import ServiceHandlers from "./helpers/ServiceHandlers";
 
 export class PostService implements IPostService {
   #postRepository: IPostRepository;
@@ -29,16 +30,21 @@ export class PostService implements IPostService {
   }
 
   public async createPost(post: IPostReflectObject): Promise<Post> {
-    await this.#userRepository.findById(post.author.id);
-    const newPost = postBuilderFactory({ post });
-    const postInstance = await this.#postRepository.create(newPost);
-    return postInstance;
+    await ServiceHandlers.findUserIdOrThrowError({
+      userRepository: this.#userRepository,
+      id: post.author.id,
+    });
+    return await this.#postRepository.create(postBuilderFactory({ post }));
   }
 
   public async updatePost(post: IPostReflectObject): Promise<Post> {
-    const updatedPost = postBuilderFactory({ post });
-    const updatedPostInstance = await this.#postRepository.update(updatedPost);
-    return updatedPostInstance;
+    const existingPost = await ServiceHandlers.findPostIdOrThrowError({
+      postRepository: this.#postRepository,
+      id: post.id,
+    });
+    return this.#postRepository
+      .update(new Post(post), existingPost)
+      .then((post) => post);
   }
 
   public async deletePost(postId: string): Promise<void> {
@@ -50,23 +56,19 @@ export class PostService implements IPostService {
   }
 
   public async getPostById(postId: string): Promise<Post | undefined> {
-    const post = await this.#postRepository.findById(postId);
-    return post;
+    return this.#postRepository.findById(postId).then((post) => post);
   }
 
   public async getPostBySlug(slug: string): Promise<Post | undefined> {
-    const post = await this.#postRepository.findBySlug(slug);
-    return post;
+    return this.#postRepository.findBySlug(slug).then((post) => post);
   }
 
   public async getPostsByTitle(postTitle: string): Promise<Post[]> {
-    const posts = await this.#postRepository.findManyByTitle(postTitle);
-    return posts;
+    return this.#postRepository.findManyByTitle(postTitle).then((post) => post);
   }
 
   public async getPosts(): Promise<Post[]> {
-    const posts = await this.#postRepository.findAll();
-    return posts;
+    return this.#postRepository.findAll().then((post) => post);
   }
 
   public async getPostsByPagination(request: {
@@ -74,11 +76,10 @@ export class PostService implements IPostService {
     pageSize: number;
   }): Promise<Post[]> {
     const { skip, pageSize } = request;
-    const posts = await this.#postRepository.findWithPagination({
+    return await this.#postRepository.findWithPagination({
       skip,
       pageSize,
     });
-    return posts;
   }
 
   public async getUserFavoritePostsByPagination(request: {
@@ -90,10 +91,6 @@ export class PostService implements IPostService {
     const favorites = await this.#favoriteRepository.findAllByUserId(userId);
     const postIds = favorites.map((favorite) => favorite.reflect.postId);
     const favoritedPosts = await this.#postRepository.findByIds(postIds);
-    const paginatedPosts = favoritedPosts.slice(
-      Number(skip),
-      Number(skip) + Number(pageSize)
-    );
-    return paginatedPosts;
+    return favoritedPosts.slice(Number(skip), Number(skip) + Number(pageSize));
   }
 }

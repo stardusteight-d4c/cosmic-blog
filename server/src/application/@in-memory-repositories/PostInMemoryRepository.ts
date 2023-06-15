@@ -1,4 +1,4 @@
-import type { IPostRepository } from "@/@typings/post";
+import type { IPostReflectObject, IPostRepository } from "@typings/post";
 import { Post } from "@domain/src/post";
 
 export class PostInMemoryRepository implements IPostRepository {
@@ -7,14 +7,32 @@ export class PostInMemoryRepository implements IPostRepository {
 
   private constructor() {}
 
-  private async replace(updatedPost: Post): Promise<Post> {
-    const existingPost = await this.findById(updatedPost.reflect.id!);
-    if (!existingPost) {
-      throw new Error(`No post found with id: ${updatedPost.reflect.id}`);
+  private deleteUndefinedFields(copyUpdate: IPostReflectObject): void {
+    const fieldsToDelete = [
+      "title",
+      "slug",
+      "body",
+      "tags",
+      "coverImage",
+      "postedAt",
+      "lastChange",
+      "author",
+    ];
+    for (const field of fieldsToDelete) {
+      if (copyUpdate[field] === undefined) {
+        delete copyUpdate[field];
+      }
     }
+  }
+
+  private async replace(updatedPost: Post, existingPost: Post): Promise<Post> {
+    const copyUpdate = updatedPost.reflect;
+    this.deleteUndefinedFields(copyUpdate);
+    const updatedPostObj = { ...existingPost.reflect, ...copyUpdate };
+    const newPost = new Post({ ...updatedPostObj });
     this.#posts.delete(existingPost.reflect.id!);
-    this.#posts.set(updatedPost.reflect.id!, updatedPost);
-    return updatedPost;
+    this.#posts.set(newPost.reflect.id!, newPost);
+    return newPost;
   }
 
   public static getInstance(): PostInMemoryRepository {
@@ -30,8 +48,8 @@ export class PostInMemoryRepository implements IPostRepository {
     return post;
   }
 
-  public async update(updatedPost: Post): Promise<Post> {
-    const post = await this.replace(updatedPost);
+  public async update(updatedPost: Post, existingPost: Post): Promise<Post> {
+    const post = await this.replace(updatedPost, existingPost);
     return post;
   }
 
@@ -46,19 +64,11 @@ export class PostInMemoryRepository implements IPostRepository {
   }
 
   public async findById(postId: string): Promise<Post | undefined> {
-    const post = this.#posts.get(postId);
-    if (!post) {
-      throw new Error(`No post found with id: ${postId}`);
-    }
-    return post;
+    return this.#posts.get(postId);
   }
 
   public async findBySlug(slug: string): Promise<Post | undefined> {
-    const post = this.#posts.get(slug);
-    if (!post) {
-      throw new Error(`No post found with slug: ${slug}`);
-    }
-    return post;
+    return this.#posts.get(slug);
   }
 
   public async findManyByTitle(postTitle: string): Promise<Post[]> {

@@ -1,6 +1,6 @@
 import type { IPostReflectObject } from "@typings/post";
-import { User } from "@domain/src/user";
 import { getDate } from "./helpers/getDate";
+import { IUserReflectObject } from "@/@typings/user";
 
 export class Post {
   #id: string;
@@ -10,11 +10,11 @@ export class Post {
   #tags: string[];
   #coverImage: string;
   #postedAt: Date;
-  #lastChange?: Date | undefined;
-  #author: User;
+  #lastChange: Date | undefined;
+  #author: IUserReflectObject;
 
   constructor(properties: IPostReflectObject) {
-    this.#id = properties.id!;
+    this.#id = properties.id;
     this.#title = properties.title;
     this.#slug = this.generateSlug();
     this.#body = properties.body;
@@ -22,15 +22,19 @@ export class Post {
     this.#coverImage = properties.coverImage;
     this.#postedAt = properties.postedAt;
     this.#lastChange = properties.lastChange;
-    this.#author = new User(properties.author);
+    this.#author = properties.author;
   }
 
-  private generateSlug(): string {
-    const sanitizedTitle = this.#title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "");
-    return `${sanitizedTitle}-${getDate()}`;
+  private generateSlug(): string | undefined {
+    if (this.#title) {
+      const sanitizedTitle = this.#title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+      return `${sanitizedTitle}-${getDate()}`;
+    } else {
+      return undefined;
+    }
   }
 
   public get reflect(): IPostReflectObject {
@@ -43,7 +47,7 @@ export class Post {
       coverImage: this.#coverImage,
       postedAt: this.#postedAt,
       lastChange: this.#lastChange,
-      author: this.#author.reflect,
+      author: this.#author,
     };
   }
 
