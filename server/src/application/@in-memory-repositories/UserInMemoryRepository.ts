@@ -1,5 +1,4 @@
 import type { IUserRepository } from "@/@typings/user";
-import { err } from "@domain/src/user/helpers/errors";
 import { User } from "@domain/src/user";
 
 export class UserInMemoryRepository implements IUserRepository {
@@ -8,30 +7,40 @@ export class UserInMemoryRepository implements IUserRepository {
 
   private constructor() {}
 
-  private async replace(updatedUser: User): Promise<User> {
+  private deleteUndefinedFields(copyUpdate: any): void {
+    const fieldsToDelete = [
+      "password",
+      "username",
+      "email",
+      "avatar",
+      "userRole",
+      "socialLinks",
+    ];
+    for (const field of fieldsToDelete) {
+      if (copyUpdate[field] === undefined) {
+        delete copyUpdate[field];
+      }
+    }
+  }
+
+  private normalizeUsername(username: string): string {
+    return username.toLowerCase();
+  }
+
+  private filterUsersByUsername(username: string, limit: number): User[] {
+    const normalizedUsername = this.normalizeUsername(username);
+    const usersArray = Array.from(this.#users.values());
+    const filteredUsers = usersArray.filter((user) => {
+      const normalizedUser = this.normalizeUsername(user.reflect.username);
+      return normalizedUser.includes(normalizedUsername);
+    });
+    const limitedUsers = filteredUsers.slice(0, limit);
+    return limitedUsers;
+  }
+
+  private async replace(updatedUser: User, existingUser: User): Promise<User> {
     const copyUpdate = updatedUser.reflect;
-    const existingUser = await this.findById(updatedUser.reflect.id!);
-    if (!existingUser) {
-      throw new Error(err.userNotFoundWithId(updatedUser.reflect.id));
-    }
-    if (copyUpdate.password === undefined) {
-      delete copyUpdate.password;
-    }
-    if (copyUpdate.username === undefined) {
-      delete copyUpdate.username;
-    }
-    if (copyUpdate.email === undefined) {
-      delete copyUpdate.email;
-    }
-    if (copyUpdate.avatar === undefined) {
-      delete copyUpdate.avatar;
-    }
-    if (copyUpdate.userRole === undefined) {
-      delete copyUpdate.userRole;
-    }
-    if (copyUpdate.socialLinks === undefined) {
-      delete copyUpdate.socialLinks;
-    }
+    this.deleteUndefinedFields(copyUpdate);
     const updatedUserObj = { ...existingUser.reflect, ...copyUpdate };
     const newUser = new User({ ...updatedUserObj });
     this.#users.delete(existingUser.reflect.id!);
@@ -47,22 +56,16 @@ export class UserInMemoryRepository implements IUserRepository {
   }
 
   public async create(user: User): Promise<User> {
-    const emailAlreadyExists = await this.findByEmail(user.reflect.email);
-    if (emailAlreadyExists) {
-      throw new Error(err.emailAlreadyExists);
-    }
-    const usernameAlreadyExists = await this.findByUsername(user.reflect.username);
-    if (usernameAlreadyExists) {
-      throw new Error(err.usernameAlreadyExists);
-    }
     this.#users.set(user.reflect.id!, user);
     return user;
   }
 
-  public async delete(userId: string): Promise<User> {
-    const user = await this.findById(userId);
+  public async update(updatedUser: User, existingUser: User): Promise<User> {
+    return await this.replace(updatedUser, existingUser);
+  }
+
+  public async delete(userId: string): Promise<void> {
     this.#users.delete(userId);
-    return user!;
   }
 
   public async deleteAll(): Promise<void> {
@@ -70,11 +73,7 @@ export class UserInMemoryRepository implements IUserRepository {
   }
 
   public async findById(userId: string): Promise<User | undefined> {
-    const user = this.#users.get(userId);
-    if (!user) {
-      throw new Error(`No user found with id: ${userId}`);
-    }
-    return user;
+    return this.#users.get(userId);
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
@@ -89,20 +88,11 @@ export class UserInMemoryRepository implements IUserRepository {
     );
   }
 
-  public async findManyByUsername(username: string): Promise<User[]> {
-    const normalizedUsername = username.toLowerCase();
-    const usersArray = Array.from(this.#users.values());
-    const filteredUsers = usersArray.filter((user) => {
-      const normalizedUser = user.reflect.username.toLowerCase();
-      return normalizedUser.includes(normalizedUsername);
-    });
-    const limitedUsers = filteredUsers.slice(0, 6);
-    return limitedUsers;
-  }
-
-  public async update(updatedUser: User): Promise<User> {
-    const user = await this.replace(updatedUser);
-    return user;
+  public async findManyByUsername(
+    username: string,
+    limit: number
+  ): Promise<User[]> {
+    return this.filterUsersByUsername(username, limit);
   }
 
   public get users() {

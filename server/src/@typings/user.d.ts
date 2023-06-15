@@ -22,13 +22,13 @@ export interface IUserService {
 
 export interface IUserRepository {
   create(user: User): Promise<User>;
-  update(updatedUser: User): Promise<User>;
-  delete(userId: string): Promise<User>;
+  update(updatedUser: User, existingUser: User): Promise<User>;
+  delete(userId: string): Promise<void>;
   deleteAll(): Promise<void>;
   findById(userId: string): Promise<User | undefined>;
   findByEmail(email: string): Promise<User | undefined>;
   findByUsername(username: string): Promise<User | undefined>;
-  findManyByUsername(username: string): Promise<User[]>;
+  findManyByUsername(username: string, limit: number): Promise<User[]>;
 }
 
 export interface ISocialLinks {

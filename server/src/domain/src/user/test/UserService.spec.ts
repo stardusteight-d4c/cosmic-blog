@@ -104,7 +104,9 @@ describe("UserService", () => {
     expect(finalState["email"]).toStrictEqual(initialState["email"]);
     expect(finalState["avatar"]).toStrictEqual(initialState["avatar"]);
     expect(finalState["userRole"]).toStrictEqual(initialState["userRole"]);
-    expect(newUpdatedUser.reflect["socialLinks"]).toStrictEqual(finalState["socialLinks"]);
+    expect(newUpdatedUser.reflect["socialLinks"]).toStrictEqual(
+      finalState["socialLinks"]
+    );
   });
 
   it("must be able to delete a user", async () => {
@@ -112,8 +114,50 @@ describe("UserService", () => {
     const userInstance = await userService.createUser(user);
     const userId = userInstance.reflect.id;
     await userService.deleteUser(userId);
-    await expect(userService.getUserById(userId)).rejects.toThrowError(
-      err.userNotFoundWithId(userId)
+    expect(await userService.getUserById(userId)).toStrictEqual(undefined);
+  });
+
+  it("must be able get a user by id", async () => {
+    const user = factory.getUser();
+    const userInstance = await userService.createUser(user);
+    const userId = userInstance.reflect.id;
+    expect(await userService.getUserById(userId)).toStrictEqual(userInstance);
+  });
+
+  it("must be able get a user by email", async () => {
+    const user = factory.getUser();
+    const userInstance = await userService.createUser(user);
+    const userEmail = userInstance.reflect.email;
+    expect(await userService.getUserByEmail(userEmail)).toStrictEqual(
+      userInstance
     );
+  });
+
+  it("must be able get a user by username", async () => {
+    const user = factory.getUser();
+    const userInstance = await userService.createUser(user);
+    const username = userInstance.reflect.username;
+    expect(await userService.getUserByUsername(username)).toStrictEqual(
+      userInstance
+    );
+  });
+
+  it("must be able get a users by username", async () => {
+    const user1 = factory.getUser({
+      username: "browser",
+      email: "supermario@email.com",
+    });
+    const user2 = factory.getUser({
+      username: "browsernavigator",
+      email: "firefox@email.com",
+    });
+    const user3 = factory.getUser({
+      username: "crash",
+      email: "crashbandicoot@email.com",
+    });
+    await userService.createUser(user1);
+    await userService.createUser(user2);
+    await userService.createUser(user3);
+    expect(await userService.getUsersByUsername("browser")).toHaveLength(2);
   });
 });

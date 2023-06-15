@@ -7,18 +7,25 @@ export class UserPostgreSQLRepository implements IUserRepository {
 
   private constructor() {}
 
-  private async replace(updatedUser: User): Promise<User> {
+  private deleteUndefinedFields(copyUpdate: any): void {
+    const fieldsToDelete = [
+      "password",
+      "username",
+      "email",
+      "avatar",
+      "userRole",
+      "socialLinks",
+    ];
+    for (const field of fieldsToDelete) {
+      if (copyUpdate[field] === undefined) {
+        delete copyUpdate[field];
+      }
+    }
+  }
+
+  private async replace(updatedUser: User, existingUser: User): Promise<User> {
     const copyUpdate = updatedUser.reflect;
-    const existingUser = await knex("users")
-      .select("*")
-      .where("id", updatedUser.reflect.id)
-      .first();
-    if (!existingUser) {
-      throw new Error(`No user found with id: ${updatedUser.reflect.id}`);
-    }
-    if (copyUpdate.password === undefined) {
-      delete copyUpdate.password;
-    }
+    this.deleteUndefinedFields(copyUpdate);
     const updatedUserObj = { ...existingUser, ...copyUpdate };
     const newUser = new User({ ...updatedUserObj });
     await knex("users")
@@ -45,27 +52,19 @@ export class UserPostgreSQLRepository implements IUserRepository {
     }
   }
 
-  public async update(updatedUser: User): Promise<User> {
+  public async update(updatedUser: User, existingUser: User): Promise<User> {
     try {
-      const user = await this.replace(updatedUser);
+      const user = await this.replace(updatedUser, existingUser);
       return user;
     } catch (error) {
       throw new Error(`Error updating user : ${error}`);
     }
   }
 
-  public async delete(userId: string): Promise<User> {
+  public async delete(userId: string): Promise<void> {
     try {
-      return await knex.transaction(async (trx) => {
-        const deletedUser = await trx("users")
-          .where("id", userId)
-          .del()
-          .returning("*")
-          .then((result) => result[0]);
-        if (!deletedUser) {
-          throw new Error(`No user found with id: ${userId}`);
-        }
-        return new User(deletedUser);
+      await knex.transaction(async (trx) => {
+        await trx("users").where("id", userId).del().returning("*");
       });
     } catch (error) {
       throw new Error(`Error deleting user by id: ${error}`);
@@ -124,9 +123,15 @@ export class UserPostgreSQLRepository implements IUserRepository {
     }
   }
 
-  public async findManyByUsername(username: string): Promise<User[]> {
+  public async findManyByUsername(
+    username: string,
+    limit: number
+  ): Promise<User[]> {
     try {
-      const users = await knex("users").select("*").where("username", username);
+      const users = await knex("users")
+        .select("*")
+        .where("username", username)
+        .limit(limit);
       return users.map((user) => new User(user));
     } catch (error) {
       throw new Error(`Error finding for multiple users by username: ${error}`);
