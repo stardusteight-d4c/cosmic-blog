@@ -1,6 +1,6 @@
 import type { IPostReflectObject } from "@typings/post";
-import { getDate } from "./helpers/getDate";
-import { IUserReflectObject } from "@/@typings/user";
+import type { IUserReflectObject } from "@typings/user";
+import { getDate } from "./helpers";
 
 export class Post {
   #id: string;

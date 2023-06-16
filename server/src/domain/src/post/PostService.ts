@@ -3,12 +3,11 @@ import type {
   IPostRepository,
   IPostService,
 } from "@typings/post";
+import type { IUserRepository } from "@typings/user";
+import type { IFavoriteRepository } from "@typings/favorite";
 import { Post, postBuilderFactory } from ".";
 import DeletePostCommand from "./PostCommands";
-import { IUserRepository } from "@/@typings/user";
-import { IFavoriteRepository } from "@/@typings/favorite";
-import ServiceHandlers from "./helpers/ServiceHandlers";
-let i = 0;
+import { ServiceHandlers } from "./helpers";
 
 export class PostService implements IPostService {
   #postRepository: IPostRepository;
@@ -94,9 +93,12 @@ export class PostService implements IPostService {
     pageSize: number;
   }): Promise<Post[]> {
     const { userId, skip, pageSize } = request;
-    const favorites = await this.#favoriteRepository.findAllByUserId(userId);
-    const postIds = favorites.map((favorite) => favorite.reflect.postId);
-    const favoritedPosts = await this.#postRepository.findByIds(postIds);
-    return favoritedPosts.slice(Number(skip), Number(skip) + Number(pageSize));
+    return ServiceHandlers.getAllUserFavoritedPosts({
+      favoriteRepository: this.#favoriteRepository,
+      postRepository: this.#postRepository,
+      userId,
+    }).then((favoritedPosts) =>
+      favoritedPosts.slice(Number(skip), Number(skip) + Number(pageSize))
+    );
   }
 }

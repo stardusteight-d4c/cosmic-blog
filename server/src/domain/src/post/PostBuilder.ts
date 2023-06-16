@@ -1,7 +1,7 @@
 import type { IUserReflectObject } from "@typings/user";
 import { randomUUID } from "node:crypto";
 import { Post } from ".";
-import Validators from "./helpers/Validators";
+import { Validators } from "./helpers";
 
 export class PostBuilder {
   #id: string;

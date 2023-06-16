@@ -1,10 +1,11 @@
 import type { IUserReflectObject } from "@typings/user";
 import { randomUUID } from "node:crypto";
 import { Comment } from ".";
+import { PostMetadata } from "@/@typings/comment";
 
 export class CommentBuilder {
   #id: string;
-  #post: { id: string; title: string; slug: string };
+  #post: PostMetadata;
   #owner: IUserReflectObject;
   #content: string;
   #postedAt: Date;
@@ -14,11 +15,7 @@ export class CommentBuilder {
     return this;
   }
 
-  public setPost(post: {
-    id: string;
-    title: string;
-    slug: string;
-  }): CommentBuilder {
+  public setPost(post: PostMetadata): CommentBuilder {
     this.#post = post;
     return this;
   }

@@ -1,6 +1,7 @@
 import { IUserRepository } from "@typings/user";
 import { err } from "./errors";
 import { IPostRepository } from "@/@typings/post";
+import { IFavoriteRepository } from "@/@typings/favorite";
 
 namespace ServiceHandlers {
   export async function findSlugAndThrowError(params: {
@@ -36,6 +37,17 @@ namespace ServiceHandlers {
       throw new Error(err.postNotFoundWithId(id));
     }
     return existingPost;
+  }
+
+  export async function getAllUserFavoritedPosts(params: {
+    favoriteRepository: IFavoriteRepository;
+    postRepository: IPostRepository;
+    userId: string;
+  }) {
+    const { favoriteRepository, postRepository, userId } = params;
+    const favorites = await favoriteRepository.findAllByUserId(userId);
+    const postIds = favorites.map((favorite) => favorite.reflect.postId);
+    return await postRepository.findByIds(postIds);
   }
 }
 

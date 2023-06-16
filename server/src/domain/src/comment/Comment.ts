@@ -9,7 +9,7 @@ export class Comment {
   #postedAt: Date;
 
   constructor(properties: ICommentReflectObject) {
-    this.#id = properties.id!;
+    this.#id = properties.id;
     this.#post = properties.post;
     this.#owner = properties.owner;
     this.#content = properties.content;
