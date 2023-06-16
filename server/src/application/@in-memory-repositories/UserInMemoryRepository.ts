@@ -43,8 +43,8 @@ export class UserInMemoryRepository implements IUserRepository {
     this.deleteUndefinedFields(copyUpdate);
     const updatedUserObj = { ...existingUser.reflect, ...copyUpdate };
     const newUser = new User({ ...updatedUserObj });
-    this.#users.delete(existingUser.reflect.id!);
-    this.#users.set(newUser.reflect.id!, newUser);
+    this.#users.delete(existingUser.reflect.id);
+    this.#users.set(newUser.reflect.id, newUser);
     return newUser;
   }
 

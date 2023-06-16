@@ -1,5 +1,5 @@
-import type { OwnerMetadata, PostMetadata } from "@typings/comment";
 import { randomUUID } from "node:crypto";
+import type { OwnerMetadata, PostMetadata } from "@typings/comment";
 import { Comment } from ".";
 import { Validators } from "./helpers";
 

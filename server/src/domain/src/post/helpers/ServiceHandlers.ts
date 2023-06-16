@@ -1,11 +1,10 @@
 import type { IPostRepository } from "@typings/post";
-import type { IFavoriteRepository } from "@typings/favorite";
-import { err } from "./errors";
-import { UserSubscriber } from "../../user/UserSubscriber";
 import {
   FindAllFavoritesByUserIdCommand,
   FindByIdCommand,
 } from "@domain/globalsCommands";
+import { err } from "./errors";
+import { UserSubscriber } from "../../user";
 import { Favorite, FavoriteSubscriber } from "../../favorite";
 
 namespace ServiceHandlers {

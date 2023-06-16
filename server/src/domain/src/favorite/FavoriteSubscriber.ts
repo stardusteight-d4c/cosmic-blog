@@ -1,7 +1,7 @@
 import type { IFavoriteService } from "@typings/favorite";
+import { FindAllFavoritesByUserIdCommand } from "@domain/globalsCommands";
 import { DeletePostCommand } from "../post/PostCommands";
 import { DeleteUserCommand } from "../user/UserCommands";
-import { FindAllFavoritesByUserIdCommand } from "@domain/globalsCommands";
 
 export class FavoriteSubscriber implements ISubscriber {
   signing: string[] = [

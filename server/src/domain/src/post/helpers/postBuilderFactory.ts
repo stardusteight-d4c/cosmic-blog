@@ -1,6 +1,5 @@
 import type { IPostReflectObject } from "@typings/post";
-import { Post } from "../Post";
-import { PostBuilder } from "../PostBuilder";
+import { Post, PostBuilder } from "../";
 
 export function postBuilderFactory({
   post,

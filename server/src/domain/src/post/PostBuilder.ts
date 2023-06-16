@@ -1,8 +1,7 @@
-import type { IUserReflectObject } from "@typings/user";
 import { randomUUID } from "node:crypto";
+import { AuthorMetadata } from "@typings/post";
 import { Post } from ".";
 import { Validators } from "./helpers";
-import { AuthorMetadata } from "@/@typings/post";
 
 export class PostBuilder {
   #id: string;

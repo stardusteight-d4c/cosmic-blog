@@ -11,13 +11,11 @@ export interface ICommentReflectObject {
 
 export interface ICommentService {
   createComment(comment: ICommentReflectObject): Promise<Comment>;
+  updateComment(updatedComment: ICommentReflectObject): Promise<Comment>;
   deleteComment(commentId: string): Promise<void>;
   deleteAllCommentsByPostId(postId: string): Promise<void>;
   deleteAllCommentsByUserId(userId: string): Promise<void>;
   getCommentById(commentId: string): Promise<Comment | undefined>;
-  updateComment(
-    updatedComment: ICommentReflectObject
-  ): Promise<Comment | undefined>;
   getAllComments(): Promise<Comment[] | undefined>;
   getCommentsByPostIdWithPagination(request: {
     postId: string;
@@ -35,8 +33,8 @@ export interface ICommentService {
 
 export interface ICommentRepository {
   create(comment: Comment): Promise<Comment>;
-  update(updatedComment: Comment): Promise<Comment>;
-  delete(commentId: string): Promise<Comment>;
+  update(updatedComment: Comment, existingComment: Comment): Promise<Comment>;
+  delete(commentId: string): Promise<void>;
   deleteAll(): Promise<void>;
   deleteAllByPostId(postId: string): Promise<void>;
   deleteAllByUserId(userId: string): Promise<void>;

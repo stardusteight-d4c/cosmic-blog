@@ -1,5 +1,5 @@
-import { err } from "./errors";
 import { AuthorMetadata } from "@typings/post";
+import { err } from "./errors";
 
 namespace Validators {
   export function validateTitle(title: string): void {

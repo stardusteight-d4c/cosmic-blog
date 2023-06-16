@@ -3,47 +3,59 @@ import type {
   ICommentRepository,
   ICommentService,
 } from "@typings/comment";
-import type { IPostRepository } from "@typings/post";
-import type { IUserRepository } from "@typings/user";
 import { Comment } from "./Comment";
 import { commentBuilderFactory } from "./helpers";
+import ServiceHandlers from "./helpers/ServiceHandlers";
 
 export class CommentService implements ICommentService {
   #commentRepository: ICommentRepository;
-  #postRepository: IPostRepository;
-  #userRepository: IUserRepository;
-  #publisher?: IPublisher;
+  #publisher: IPublisher;
 
   constructor(implementations: {
     commentRepository: ICommentRepository;
-    userRepository: IUserRepository;
-    postRepository: IPostRepository;
-    publisher?: IPublisher;
+    publisher: IPublisher;
   }) {
     this.#commentRepository = implementations.commentRepository;
-    this.#postRepository = implementations.postRepository;
-    this.#userRepository = implementations.userRepository;
     this.#publisher = implementations.publisher;
   }
 
+  private async validateCommentOwner(ownerId: string): Promise<void> {
+    await ServiceHandlers.findUserIdOrThrowError({
+      id: ownerId,
+      publisher: this.#publisher,
+    });
+  }
+
+  private async validateCommentPost(postId: string): Promise<void> {
+    await ServiceHandlers.findPostIdOrThrowError({
+      id: postId,
+      publisher: this.#publisher,
+    });
+  }
+
   public async createComment(comment: ICommentReflectObject): Promise<Comment> {
- 
-    await this.#userRepository.findById(comment.owner.id);
-    await this.#postRepository.findById(comment.post.id);
-
-    // if (this.#publisher) {
-    //   const findUserCommand = new FindByIdCommand(comment.owner.id);
-    //   await this.#publisher.emit(findUserCommand, targetObserver: UserObserver);
-    // }
-
+    await this.validateCommentOwner(comment.owner.id);
+    await this.validateCommentPost(comment.post.id);
     const newComment = commentBuilderFactory({ comment });
-    const commentInstance = await this.#commentRepository.create(newComment);
-    return commentInstance;
+    return await this.#commentRepository
+      .create(newComment)
+      .then((comment) => comment);
+  }
+
+  public async updateComment(
+    updatedComment: ICommentReflectObject
+  ): Promise<Comment | undefined> {
+    const existingComment = await ServiceHandlers.findCommentIdOrThrowError({
+      id: updatedComment.id,
+      commentRepository: this.#commentRepository,
+    });
+    return this.#commentRepository
+      .update(new Comment(updatedComment), existingComment)
+      .then((comment) => comment);
   }
 
   public async deleteComment(commentId: string): Promise<void> {
-    await this.#commentRepository.delete(commentId);
-    return;
+    return this.#commentRepository.delete(commentId);
   }
 
   public async deleteAllCommentsByPostId(postId: string): Promise<void> {
@@ -55,21 +67,11 @@ export class CommentService implements ICommentService {
   }
 
   public async getCommentById(commentId: string): Promise<Comment | undefined> {
-    const comment = await this.#commentRepository.findById(commentId);
-    return comment;
-  }
-
-  public async updateComment(
-    updatedComment: ICommentReflectObject
-  ): Promise<Comment | undefined> {
-    const commentInstance = commentBuilderFactory({ comment: updatedComment });
-    await this.#commentRepository.update(commentInstance);
-    return commentInstance;
+    return await this.#commentRepository.findById(commentId);
   }
 
   public async getAllComments(): Promise<Comment[] | undefined> {
-    const comments = await this.#commentRepository.findAll();
-    return comments;
+    return await this.#commentRepository.findAll();
   }
 
   public async getCommentsByPostIdWithPagination(request: {
@@ -77,10 +79,7 @@ export class CommentService implements ICommentService {
     skip: number;
     pageSize: number;
   }): Promise<Comment[]> {
-    const comments = await this.#commentRepository.findByPostIdWithPagination(
-      request
-    );
-    return comments;
+    return await this.#commentRepository.findByPostIdWithPagination(request);
   }
 
   public async getCommentsByUserIdWithPagination(request: {
@@ -88,10 +87,7 @@ export class CommentService implements ICommentService {
     skip: number;
     pageSize: number;
   }): Promise<Comment[]> {
-    const comments = await this.#commentRepository.findByUserIdWithPagination(
-      request
-    );
-    return comments;
+    return await this.#commentRepository.findByUserIdWithPagination(request);
   }
 
   public async getPostCommentAmount(postId: string): Promise<number> {

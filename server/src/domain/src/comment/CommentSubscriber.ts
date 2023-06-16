@@ -1,9 +1,10 @@
 import type { ICommentService } from "@typings/comment";
+import { FindByIdCommand } from "@domain/globalsCommands";
 import { DeletePostCommand } from "../post/PostCommands";
 import { DeleteUserCommand } from "../user/UserCommands";
 
 export class CommentSubscriber implements ISubscriber {
-  signing: string[] = ["delete_post", "delete_user"];
+  signing: string[] = ["delete_post", "delete_user", "find_by_id"];
   private static instance: CommentSubscriber;
   private readonly commentService: ICommentService;
 
@@ -34,6 +35,11 @@ export class CommentSubscriber implements ISubscriber {
     if (command.operation === "delete_user") {
       const { userId } = command as DeleteUserCommand;
       await this.commentService.deleteAllCommentsByUserId(userId);
+    }
+
+    if (command.operation === "find_by_id") {
+      const { id } = command as FindByIdCommand;
+      await this.commentService.getCommentById(id);
     }
   }
 }

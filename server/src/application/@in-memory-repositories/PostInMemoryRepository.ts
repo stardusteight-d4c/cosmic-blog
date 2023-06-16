@@ -54,8 +54,8 @@ export class PostInMemoryRepository implements IPostRepository {
     this.deleteUndefinedFields(copyUpdate);
     const updatedPostObj = { ...existingPost.reflect, ...copyUpdate };
     const newPost = new Post({ ...updatedPostObj });
-    this.#posts.delete(existingPost.reflect.id!);
-    this.#posts.set(newPost.reflect.id!, newPost);
+    this.#posts.delete(existingPost.reflect.id);
+    this.#posts.set(newPost.reflect.id, newPost);
     return newPost;
   }
 

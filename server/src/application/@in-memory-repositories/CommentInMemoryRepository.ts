@@ -1,4 +1,7 @@
-import type { ICommentRepository } from "@typings/comment";
+import type {
+  ICommentReflectObject,
+  ICommentRepository,
+} from "@typings/comment";
 import { Comment } from "@domain/src/comment";
 
 export class CommentInMemoryRepository implements ICommentRepository {
@@ -7,14 +10,26 @@ export class CommentInMemoryRepository implements ICommentRepository {
 
   private constructor() {}
 
-  private async replace(updatedComment: Comment): Promise<Comment> {
-    const existingComment = await this.findById(updatedComment.reflect.id!);
-    if (!existingComment) {
-      throw new Error(`No comment found with id: ${updatedComment.reflect.id}`);
+  private deleteUndefinedFields(copyUpdate: ICommentReflectObject): void {
+    const fieldsToDelete = ["post", "owner", "content", "postedAt"];
+    for (const field of fieldsToDelete) {
+      if (copyUpdate[field] === undefined) {
+        delete copyUpdate[field];
+      }
     }
-    this.#comments.delete(existingComment.reflect.id!);
-    this.#comments.set(updatedComment.reflect.id!, updatedComment);
-    return updatedComment;
+  }
+
+  private async replace(
+    updatedComment: Comment,
+    existingComment: Comment
+  ): Promise<Comment> {
+    const copyUpdate = updatedComment.reflect;
+    this.deleteUndefinedFields(copyUpdate);
+    const updateCommentObj = { ...existingComment.reflect, ...copyUpdate };
+    const newComment = new Comment({ ...updateCommentObj });
+    this.#comments.delete(existingComment.reflect.id);
+    this.#comments.set(newComment.reflect.id!, newComment);
+    return newComment;
   }
 
   public static getInstance(): CommentInMemoryRepository {
@@ -29,20 +44,19 @@ export class CommentInMemoryRepository implements ICommentRepository {
     return comment;
   }
 
-  public async update(updatedComment: Comment): Promise<Comment> {
-    const comment = await this.replace(updatedComment);
-    return comment;
+  public async update(
+    updatedComment: Comment,
+    existingComment: Comment
+  ): Promise<Comment> {
+    return await this.replace(updatedComment, existingComment);
   }
 
   public async findAll(): Promise<Comment[]> {
-    const comments: Comment[] = Array.from(this.#comments.values());
-    return comments;
+    return Array.from(this.#comments.values());
   }
 
-  public async delete(commentId: string): Promise<Comment> {
-    const comment = await this.findById(commentId);
+  public async delete(commentId: string): Promise<void> {
     this.#comments.delete(commentId);
-    return comment!;
   }
 
   public async deleteAll(): Promise<void> {

@@ -19,24 +19,37 @@ export class PostService implements IPostService {
     this.#publisher = implementations.publisher;
   }
 
-  public async createPost(post: IPostReflectObject): Promise<Post> {
+  private async validatePostAuthor(authorId: string): Promise<void> {
     await ServiceHandlers.findUserIdOrThrowError({
-      id: post.author.id,
+      id: authorId,
       publisher: this.#publisher,
     });
-    const postInstance = postBuilderFactory({ post });
+  }
+
+  private async validatePostSlug(slug: string): Promise<void> {
     await ServiceHandlers.findSlugAndThrowError({
       postRepository: this.#postRepository,
-      slug: postInstance.reflect.slug,
+      slug,
     });
+  }
+
+  private async findExistingPost(postId: string): Promise<Post> {
+    const existingPost = await ServiceHandlers.findPostIdOrThrowError({
+      postRepository: this.#postRepository,
+      id: postId,
+    });
+    return existingPost;
+  }
+
+  public async createPost(post: IPostReflectObject): Promise<Post> {
+    await this.validatePostAuthor(post.author.id);
+    const postInstance = postBuilderFactory({ post });
+    await this.validatePostSlug(postInstance.reflect.slug);
     return this.#postRepository.create(postInstance).then((post) => post);
   }
 
   public async updatePost(post: IPostReflectObject): Promise<Post> {
-    const existingPost = await ServiceHandlers.findPostIdOrThrowError({
-      postRepository: this.#postRepository,
-      id: post.id,
-    });
+    const existingPost = await this.findExistingPost(post.id);
     return this.#postRepository
       .update(new Post(post), existingPost)
       .then((post) => post);
@@ -68,11 +81,7 @@ export class PostService implements IPostService {
     skip: number;
     pageSize: number;
   }): Promise<Post[]> {
-    const { skip, pageSize } = request;
-    return await this.#postRepository.findWithPagination({
-      skip,
-      pageSize,
-    });
+    return await this.#postRepository.findWithPagination(request);
   }
 
   public async getUserFavoritePostsByPagination(request: {

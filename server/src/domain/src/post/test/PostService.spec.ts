@@ -1,37 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type {
-  AuthorMetadata,
-  IPostRepository,
-  IPostService,
-} from "@typings/post";
-import type { IUserRepository, IUserService } from "@typings/user";
-import type { IFavoriteRepository, IFavoriteService } from "@typings/favorite";
-import type {
-  ICommentRepository,
-  ICommentService,
-  OwnerMetadata,
-} from "@typings/comment";
+import type { AuthorMetadata } from "@typings/post";
+import type { OwnerMetadata } from "@typings/comment";
+import {
+  initializeInMemoryServices,
+  type IRepositories,
+  type IServices,
+} from "@domain/helpers/initializeServices";
 import { objectFactory } from "@domain/helpers/objectFactory";
-import { err, initializeInMemoryServices } from "../helpers";
+import { err } from "../helpers";
 import { Post } from "../Post";
-
-interface IRepositories {
-  post: IPostRepository;
-  user: IUserRepository;
-  comment: ICommentRepository;
-  favorite: IFavoriteRepository;
-}
-
-interface IServices {
-  post: IPostService;
-  user: IUserService;
-  comment: ICommentService;
-  favorite: IFavoriteService;
-}
 
 let repositories: IRepositories;
 let services: IServices;
-
 const factory = objectFactory();
 
 describe("PostService", () => {

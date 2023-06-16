@@ -1,5 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { IObjectFactory, objectFactory } from "@/domain/helpers/objectFactory";
+import { IObjectFactory, objectFactory } from "@domain/helpers/objectFactory";
+import { IFavoriteRepository, IFavoriteService } from "@typings/favorite";
+import { IUserRepository, IUserService } from "@typings/user";
+import { IPostReflectObject, IPostRepository, IPostService } from "@typings/post";
 import {
   User,
   UserService,
@@ -13,9 +16,6 @@ import {
   Post,
   PostService,
 } from "@domain/src/post";
-import { IFavoriteRepository, IFavoriteService } from "@/@typings/favorite";
-import { IUserRepository, IUserService } from "@/@typings/user";
-import { IPostReflectObject, IPostRepository, IPostService } from "@/@typings/post";
 import { FavoriteService } from "../FavoriteService";
 
 let favoriteService: IFavoriteService;
