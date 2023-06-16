@@ -1,8 +1,13 @@
-import type { IFavoriteRepository, IFavoriteService } from "@typings/favorite";
-import type { IPostRepository } from "@typings/post";
-import type { IUserRepository } from "@typings/user";
+import type {
+  IFavoriteReflectObject,
+  IFavoriteRepository,
+  IFavoriteService,
+} from "@typings/favorite";
+import type { IPostRepository } from "@/@typings/post";
+import type { IUserRepository } from "@/@typings/user";
 import { Favorite } from ".";
 import Validators from "../user/helpers/Validators";
+import { favoriteBuilderFactory } from "./helpers";
 
 export class FavoriteService implements IFavoriteService {
   #favoriteRepository: IFavoriteRepository;
@@ -19,21 +24,17 @@ export class FavoriteService implements IFavoriteService {
     this.#userRepository = implementations.userRepository;
   }
 
+  public async toggleFavoritePost(
+    favorite: IFavoriteReflectObject
+  ): Promise<Favorite | undefined> {
+    // await this.#postRepository.findById(postId);
+    // await this.#userRepository.findById(userId);
 
-  public async toggleFavoritePost(request: {
-    postId: string;
-    userId: string;
-  }): Promise<Favorite | undefined> {
-    const { postId, userId } = request;
-    Validators.checkPrimitiveType({ validating: userId, type: "string" });
-    Validators.checkPrimitiveType({ validating: postId, type: "string" });
-    await this.#postRepository.findById(postId);
-    await this.#userRepository.findById(userId);
-    const newFavorite = new Favorite({ postId, userId });
-    const favorite = await this.#favoriteRepository.findFavoriteByKey(
+    const newFavorite = favoriteBuilderFactory({ favorite });
+    const favorites = await this.#favoriteRepository.findFavoriteByKey(
       `${newFavorite.reflect.postId}+${newFavorite.reflect.userId}`
     );
-    if (favorite) {
+    if (favorites) {
       await this.#favoriteRepository.delete(newFavorite);
     } else {
       await this.#favoriteRepository.create(newFavorite);

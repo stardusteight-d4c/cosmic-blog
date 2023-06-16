@@ -242,7 +242,6 @@ describe("PostService", () => {
     expect(paginatedPosts).toStrictEqual(allPosts.slice(skip, pageSize + skip));
   });
 
-  // delete Post with FavoriteObserver and CommentObserver
   it("must be able delete a post", async () => {
     const user = factory.getUser();
     const userInstance = await services.user.createUser(user);

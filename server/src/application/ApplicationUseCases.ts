@@ -1,7 +1,7 @@
-import type { ICommentRepository } from "@typings/comment";
-import type { IFavoriteRepository } from "@typings/favorite";
-import type { IPostRepository } from "@typings/post";
-import type { IUserRepository } from "@typings/user";
+import type { ICommentRepository } from "@/@typings/comment";
+import type { IFavoriteRepository } from "@/@typings/favorite";
+import type { IPostRepository } from "@/@typings/post";
+import type { IUserRepository } from "@/@typings/user";
 import { PostService } from "@domain/src/post";
 import { UserService } from "@domain/src/user";
 import { Publisher } from "@/domain/helpers/Publisher";

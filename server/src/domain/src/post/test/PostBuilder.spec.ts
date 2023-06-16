@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { Post, postBuilderFactory } from "..";
 import { objectFactory } from "@domain/helpers/objectFactory";
 import { err } from "../helpers";
-import { AuthorMetadata } from "@typings/post";
+import { AuthorMetadata } from "@/@typings/post";
 
 const factory = objectFactory();
 

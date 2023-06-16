@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Put, Query } from "@nestjs/common";
 import { appPostgreSQL } from "@infra/index";
 import { FavoriteUseCases } from "@app/use-cases/FavoriteUseCases";
-import { errorHandler } from "../../@utils/errorHandler";
+import { errorHandler } from "../../helpers/errorHandler";
 import { Favorite } from "@domain/src/favorite";
 
 @Controller("favorite")

@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { User, UserService } from "../index";
-import { objectFactory } from "@domain/helpers/objectFactory";
-import { UserInMemoryRepository } from "@app/@in-memory-repositories";
 import type { ISocialLinks, IUserRepository } from "@typings/user";
-import { err } from "../helpers";
+import { objectFactory } from "@domain/helpers/objectFactory";
+import { UserInMemoryRepository } from "@app/in-memory-repositories";
 import { Publisher } from "@domain/Publisher";
+import { User, UserService } from "../index";
+import { err } from "../helpers";
 
 let userService: UserService;
 let userInMemoryRepository: IUserRepository;

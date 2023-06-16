@@ -1,4 +1,4 @@
-import type { IFavoriteRepository } from "@typings/favorite";
+import type { IFavoriteRepository } from "@/@typings/favorite";
 import { Favorite } from "@domain/src/favorite";
 import { knex } from "../config";
 

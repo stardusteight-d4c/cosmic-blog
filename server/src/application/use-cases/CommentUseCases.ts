@@ -1,4 +1,4 @@
-import type { ICommentReflectObject, ICommentService } from "@typings/comment";
+import type { ICommentReflectObject, ICommentService } from "@/@typings/comment";
 
 export class CommentUseCases {
   constructor(private commentService: ICommentService) {}

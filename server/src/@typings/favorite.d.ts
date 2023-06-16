@@ -6,10 +6,9 @@ export interface IFavoriteReflectObject {
 }
 
 export interface IFavoriteService {
-  toggleFavoritePost(request: {
-    postId: string;
-    userId: string;
-  }): Promise<Favorite | undefined>;
+  toggleFavoritePost(
+    favorite: IFavoriteReflectObject
+  ): Promise<Favorite | undefined>;
   getAllFavoritesByPostId(postId: string): Promise<Favorite[]>;
   getAllFavoritesByUserId(userId: string): Promise<Favorite[]>;
   getFavorite(favorite: Favorite): Promise<Favorite>;

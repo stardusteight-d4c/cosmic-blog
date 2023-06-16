@@ -1,4 +1,4 @@
-import type { IFavoriteReflectObject } from "@typings/favorite";
+import type { IFavoriteReflectObject } from "@/@typings/favorite";
 
 export class Favorite {
   #postId: string;

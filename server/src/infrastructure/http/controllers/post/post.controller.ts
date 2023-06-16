@@ -13,13 +13,13 @@ import {
 } from "@nestjs/common";
 import { PostUseCases } from "@app/use-cases/PostUseCases";
 import { appPostgreSQL } from "@infra/index";
-import { errorHandler } from "@infra/http/@utils/errorHandler";
+import { errorHandler } from "@infra/http/helpers/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
-import { RequireAuthorPermission } from "../../@guards/RequireAuthorPermission";
+import { RequireAuthorPermission } from "../../guards/RequireAuthorPermission";
 import { IGetPostResponse } from "./@dtos";
 import { getPostResponse } from "./@dtos/getPostResponse";
-import type { IPostReflectObject } from "@typings/post";
+import type { IPostReflectObject } from "@/@typings/post";
 
 @Controller("post")
 export class PostController {

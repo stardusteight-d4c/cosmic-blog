@@ -11,9 +11,9 @@ import {
 } from "@nestjs/common";
 import { CommentUseCases } from "@app/use-cases/CommentUseCases";
 import { appPostgreSQL } from "@infra/index";
-import { errorHandler } from "../../@utils/errorHandler";
-import type { ICommentReflectObject } from "@typings/comment";
-import Validators from "../../@utils/validators";
+import { errorHandler } from "../../helpers/errorHandler";
+import type { ICommentReflectObject } from "@/@typings/comment";
+import Validators from "../../helpers/validators";
 import { JWTSessionTokenAdapter } from "@/infrastructure/adapters";
 
 @Controller("comment")

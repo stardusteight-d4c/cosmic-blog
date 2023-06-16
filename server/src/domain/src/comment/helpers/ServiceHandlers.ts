@@ -1,9 +1,8 @@
 import { FindByIdCommand } from "@/domain/globalsCommands";
+import { ICommentRepository } from "@typings/comment";
+import { PostSubscriber } from "../../post";
 import { UserSubscriber } from "../../user";
 import { err } from "./errors";
-import { PostSubscriber } from "../../post";
-import { CommentSubscriber } from "../CommentSubscriber";
-import { ICommentRepository } from "@/@typings/comment";
 
 namespace ServiceHandlers {
   export async function findUserIdOrThrowError(params: {

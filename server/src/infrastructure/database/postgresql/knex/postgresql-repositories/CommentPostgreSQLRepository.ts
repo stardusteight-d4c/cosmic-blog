@@ -1,4 +1,4 @@
-import type { ICommentRepository } from "@typings/comment";
+import type { ICommentRepository } from "@/@typings/comment";
 import { Comment } from "@domain/src/comment";
 import { knex } from "../config";
 

@@ -1,6 +1,6 @@
 import type { IUserReflectObject, IUserService } from "@typings/user";
 import { User } from "@domain/src/user";
-import Validators from "@/infrastructure/http/@utils/validators";
+import Validators from "@infra/http/helpers/validators";
 import {
   ISessionTokenAdapter,
   ISendMailAdapter,
