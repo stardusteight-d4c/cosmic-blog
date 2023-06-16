@@ -98,7 +98,7 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
   public async findAllByPostId(postId: string): Promise<Favorite[]> {
     const favorites: Favorite[] = [];
     for (const favorite of this.#favorites.values()) {
-      if (favorite.postId === postId) {
+      if (favorite.reflect.postId === postId) {
         favorites.push(favorite);
       }
     }
@@ -108,7 +108,7 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
   public async findAllByUserId(userId: string): Promise<Favorite[]> {
     const favorites: Favorite[] = [];
     for (const favorite of this.#favorites.values()) {
-      if (favorite.userId === userId) {
+      if (favorite.reflect.userId === userId) {
         favorites.push(favorite);
       }
     }

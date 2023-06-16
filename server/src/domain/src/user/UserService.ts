@@ -44,24 +44,24 @@ export class UserService implements IUserService {
       .then((user) => user);
   }
 
-  public async deleteUser(userId: string): Promise<void> {
+  public async deleteUser(id: string): Promise<void> {
     ServiceHandlers.findIdOrThrowError({
       userRepository: this.#userRepository,
-      id: userId,
+      id,
     });
-    await this.#userRepository.delete(userId);
+    await this.#userRepository.delete(id);
     if (this.#publisher) {
-      const deleteUserCommand = new DeleteUserCommand(userId);
+      const deleteUserCommand = new DeleteUserCommand(id);
       await this.#publisher.emit(deleteUserCommand);
     }
   }
 
-  public async getUserById(userId: string): Promise<User | undefined> {
-    return this.#userRepository.findById(userId).then((user) => user);
+  public async getUserById(id: string): Promise<User | undefined> {
+    return this.#userRepository.findById(id).then((user) => user);
   }
 
-  public async getUserByEmail(userEmail: string): Promise<User | undefined> {
-    return this.#userRepository.findByEmail(userEmail).then((user) => user);
+  public async getUserByEmail(email: string): Promise<User | undefined> {
+    return this.#userRepository.findByEmail(email).then((user) => user);
   }
 
   public async getUserByUsername(username: string): Promise<User> {

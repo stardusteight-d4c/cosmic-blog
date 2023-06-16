@@ -1,21 +1,13 @@
-import { ICommentReflectObject } from "@/@typings/comment";
-import { IFavoriteReflectObject } from "@/@typings/favorite";
-import { IPostReflectObject } from "@/@typings/post";
-import { IUserReflectObject, TUserRole } from "@/@typings/user";
+import { ICommentReflectObject } from "@typings/comment";
+import { IFavoriteReflectObject } from "@typings/favorite";
+import { IPostReflectObject } from "@typings/post";
+import { IUserReflectObject } from "@typings/user";
 
 export interface IObjectFactory {
   getUser: (params?: IUserReflectObject) => IUserReflectObject;
   getPost: (params?: IPostReflectObject) => IPostReflectObject;
-  // getComment: (data: {
-  //   postId: string;
-  //   postTitle?: string;
-  //   owner?: IUserReflectObject;
-  //   content?: string;
-  // }) => ICommentReflectObject;
-  // getFavorite: (data: {
-  //   userId: string;
-  //   postId: string;
-  // }) => IFavoriteReflectObject;
+  getComment: (params?: ICommentReflectObject) => ICommentReflectObject;
+  getFavorite: (params?: IFavoriteReflectObject) => IFavoriteReflectObject;
 }
 
 export function objectFactory(): IObjectFactory {
@@ -32,6 +24,7 @@ export function objectFactory(): IObjectFactory {
 
   const post = (params?: IPostReflectObject): IPostReflectObject => {
     return {
+      id: params?.id && params.id,
       title: params?.title ?? "Sample Post",
       body: params?.body ?? "This is the content of the post.",
       tags: params?.tags ?? ["tag1", "tag2", "tag3"],
@@ -46,30 +39,28 @@ export function objectFactory(): IObjectFactory {
     };
   };
 
-  // const comment = (data: {
-  //   postId: string;
-  //   postTitle?: string;
-  //   owner?: IUserReflectObject;
-  //   content?: string;
-  // }): ICommentReflectObject => {
-  //   return {
-  //     postId: data.postId,
-  //     postTitle: data.postTitle ?? "Fake title",
-  //     owner: data.owner ?? user,
-  //     content: data.content ?? "Great post! I really enjoyed reading it.",
-  //     postedAt: new Date(),
-  //   };
-  // };
+  const comment = (params?: ICommentReflectObject): ICommentReflectObject => {
+    return {
+      id: params?.id && params.id,
+      post: params?.post ?? {
+        id: params?.post?.id && params?.post?.id,
+        slug: "sample-post",
+        title: "Sample Post",
+      },
+      owner: params?.owner ?? user(),
+      content: params?.content ?? "Great post! I really enjoyed reading it.",
+      postedAt: params?.postedAt ?? new Date(),
+    };
+  };
 
-  // const favorite = (data: {
-  //   userId: string;
-  //   postId: string;
-  // }): IFavoriteReflectObject => {
-  //   return {
-  //     userId: data.userId,
-  //     postId: data.postId,
-  //   };
-  // };
+  const favorite = (
+    params?: IFavoriteReflectObject
+  ): IFavoriteReflectObject => {
+    return {
+      postId: params?.postId && params?.postId,
+      userId: params?.userId && params?.userId,
+    };
+  };
 
   return {
     getUser: (params?: IUserReflectObject) => {
@@ -78,21 +69,11 @@ export function objectFactory(): IObjectFactory {
     getPost: (params?: IPostReflectObject) => {
       return post(params);
     },
-    // getComment: (data: {
-    //   postId: string;
-    //   postTitle?: string;
-    //   owner?: IUserReflectObject;
-    //   content?: string;
-    // }) => {
-    //   return comment({
-    //     postId: data.postId,
-    //     postTitle: data.postTitle,
-    //     owner: data?.owner,
-    //     content: data?.content,
-    //   });
-    // },
-    // getFavorite: (data: { userId: string; postId: string }) => {
-    //   return favorite({ userId: data.userId, postId: data.postId });
-    // },
+    getComment: (params?: ICommentReflectObject) => {
+      return comment(params);
+    },
+    getFavorite: (params?: IFavoriteReflectObject) => {
+      return favorite(params);
+    },
   };
 }

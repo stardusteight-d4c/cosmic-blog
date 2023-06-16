@@ -1,8 +1,8 @@
 import { Favorite } from "@domain/src/favorite";
 
 export interface IFavoriteReflectObject {
-  userId: string;
   postId: string;
+  userId: string;
 }
 
 export interface IFavoriteService {

@@ -1,21 +1,17 @@
-import type { ICommentReflectObject } from "@typings/comment";
-import { User } from "@domain/src/user";
+import type { ICommentReflectObject, PostMetadata } from "@typings/comment";
+import { IUserReflectObject } from "@typings/user";
 
 export class Comment {
   #id: string;
-  #post: {
-    id: string
-    title: string
-    slug: string
-  }
-  #owner: User;
+  #post: PostMetadata;
   #content: string;
+  #owner: IUserReflectObject;
   #postedAt: Date;
 
   constructor(properties: ICommentReflectObject) {
     this.#id = properties.id!;
-    this.#post = properties.post
-    this.#owner = new User(properties.owner);
+    this.#post = properties.post;
+    this.#owner = properties.owner;
     this.#content = properties.content;
     this.#postedAt = properties.postedAt;
   }
@@ -24,63 +20,9 @@ export class Comment {
     return {
       id: this.#id,
       post: this.#post,
-      owner: this.#owner.reflect,
+      owner: this.#owner,
       content: this.#content,
       postedAt: this.#postedAt,
     };
-  }
-
-  public get id(): string {
-    throw new Error(
-      "Cannot access id property directly. Use the reflect object in the Comment instead."
-    );
-  }
-  public set id(_value: string) {
-    throw new Error("Cannot modify id property directly.");
-  }
-
-  public get postId(): string {
-    throw new Error(
-      "Cannot access postId property directly. Use the reflect object in the Comment instead."
-    );
-  }
-  public set postId(_value: string) {
-    throw new Error("Cannot modify postId property directly.");
-  }
-
-  public get postTitle(): string {
-    throw new Error(
-      "Cannot access postTitle property directly. Use the reflect object in the Comment instead."
-    );
-  }
-  public set postTitle(_value: string) {
-    throw new Error("Cannot modify postTitle property directly.");
-  }
-
-  public get owner(): string {
-    throw new Error(
-      "Cannot access owner property directly. Use the reflect object in the Comment instead."
-    );
-  }
-  public set owner(_value: string) {
-    throw new Error("Cannot modify owner property directly.");
-  }
-
-  public get content(): string {
-    throw new Error(
-      "Cannot access content property directly. Use the reflect object in the Comment instead."
-    );
-  }
-  public set content(_value: string) {
-    throw new Error("Cannot modify content property directly.");
-  }
-
-  public get postedAt(): string {
-    throw new Error(
-      "Cannot access postedAt property directly. Use the reflect object in the Comment instead."
-    );
-  }
-  public set postedAt(_value: string) {
-    throw new Error("Cannot modify postedAt property directly.");
   }
 }

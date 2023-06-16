@@ -13,8 +13,8 @@ export interface IUserReflectObject {
 export interface IUserService {
   createUser(user: IUserReflectObject): Promise<User>;
   updateUser(updatedUser: IUserReflectObject): Promise<User>;
-  deleteUser(userId: string): Promise<void>;
-  getUserById(userId: string): Promise<User | undefined>;
+  deleteUser(id: string): Promise<void>;
+  getUserById(id: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   getUsersByUsername(username: string): Promise<User[]>;
@@ -23,9 +23,9 @@ export interface IUserService {
 export interface IUserRepository {
   create(user: User): Promise<User>;
   update(updatedUser: User, existingUser: User): Promise<User>;
-  delete(userId: string): Promise<void>;
+  delete(id: string): Promise<void>;
   deleteAll(): Promise<void>;
-  findById(userId: string): Promise<User | undefined>;
+  findById(id: string): Promise<User | undefined>;
   findByEmail(email: string): Promise<User | undefined>;
   findByUsername(username: string): Promise<User | undefined>;
   findManyByUsername(username: string, limit: number): Promise<User[]>;

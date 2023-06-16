@@ -16,10 +16,10 @@ export interface IPostReflectObject {
 export interface IPostService {
   createPost(post: IPostReflectObject): Promise<Post>;
   updatePost(post: IPostReflectObject): Promise<Post>;
-  deletePost(postId: string): Promise<void>;
-  getPostById(postId: string): Promise<Post | undefined>;
+  deletePost(id: string): Promise<void>;
+  getPostById(id: string): Promise<Post | undefined>;
   getPostBySlug(slug: string): Promise<Post | undefined>;
-  getPostsByTitle(postTitle: string): Promise<Post[] | undefined>;
+  getPostsByTitle(title: string): Promise<Post[] | undefined>;
   getPosts(): Promise<Post[]>;
   getPostsByPagination(request: {
     skip: number;
@@ -35,16 +35,16 @@ export interface IPostService {
 export interface IPostRepository {
   create(post: Post): Promise<Post>;
   update(updatedPost: Post, existingPost: Post): Promise<Post>;
-  delete(postId: string): Promise<Post | undefined>;
+  delete(id: string): Promise<Post | undefined>;
   deleteAll(): Promise<void>;
-  findById(postId: string): Promise<Post | undefined>;
+  findById(id: string): Promise<Post | undefined>;
   findBySlug(slug: string): Promise<Post | undefined>;
-  findManyByTitle(postTitle: string): Promise<Post[] | undefined>;
+  findManyByTitle(title: string, limit: number): Promise<Post[] | undefined>;
   findAll(): Promise<Post[]>;
   findWithPagination(request: {
     skip: number;
     pageSize: number;
   }): Promise<Post[]>;
-  findByIds(postIds: string[]): Promise<Post[]>;
-  findPostTitleById(postId: string): Promise<string>;
+  findByIds(ids: string[]): Promise<Post[]>;
+  findPostTitleById(id: string): Promise<string>;
 }

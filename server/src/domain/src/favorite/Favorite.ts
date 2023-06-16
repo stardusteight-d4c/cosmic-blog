@@ -1,32 +1,18 @@
-import type { IFavoriteReflectObject } from "@/@typings/favorite";
+import type { IFavoriteReflectObject } from "@typings/favorite";
 
 export class Favorite {
-  #userId: string;
   #postId: string;
+  #userId: string;
 
   constructor(properties: IFavoriteReflectObject) {
-    this.#userId = properties.userId;
     this.#postId = properties.postId;
+    this.#userId = properties.userId;
   }
 
   public get reflect(): IFavoriteReflectObject {
     return {
-      userId: this.#userId,
       postId: this.#postId,
+      userId: this.#userId,
     };
-  }
-
-  public get userId(): string {
-    return this.#userId;
-  }
-  public set userId(_value: string) {
-    throw new Error("Value object properties cannot be changed.");
-  }
-
-  public get postId(): string {
-    return this.#postId;
-  }
-  public set postId(_value: string) {
-    throw new Error("Value object properties cannot be changed.");
   }
 }

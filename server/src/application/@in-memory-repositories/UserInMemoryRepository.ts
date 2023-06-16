@@ -64,8 +64,8 @@ export class UserInMemoryRepository implements IUserRepository {
     return await this.replace(updatedUser, existingUser);
   }
 
-  public async delete(userId: string): Promise<void> {
-    this.#users.delete(userId);
+  public async delete(id: string): Promise<void> {
+    this.#users.delete(id);
   }
 
   public async deleteAll(): Promise<void> {

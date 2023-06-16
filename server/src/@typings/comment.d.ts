@@ -3,14 +3,10 @@ import { IUserReflectObject } from "./user";
 
 export interface ICommentReflectObject {
   id?: string;
-  owner: IUserReflectObject;
-  post: {
-    id: string;
-    title: string;
-    slug: string;
-  };
-  content: string;
-  postedAt: Date;
+  owner?: IUserReflectObject;
+  post?: PostMetadata;
+  content?: string;
+  postedAt?: Date;
 }
 
 export interface ICommentService {
@@ -59,3 +55,9 @@ export interface ICommentRepository {
     pageSize: number;
   }): Promise<Comment[]>;
 }
+
+export type PostMetadata = {
+  id: string;
+  title: string;
+  slug: string;
+};

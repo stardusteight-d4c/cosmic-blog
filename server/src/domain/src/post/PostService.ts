@@ -8,6 +8,7 @@ import DeletePostCommand from "./PostCommands";
 import { IUserRepository } from "@/@typings/user";
 import { IFavoriteRepository } from "@/@typings/favorite";
 import ServiceHandlers from "./helpers/ServiceHandlers";
+let i = 0;
 
 export class PostService implements IPostService {
   #postRepository: IPostRepository;
@@ -34,7 +35,12 @@ export class PostService implements IPostService {
       userRepository: this.#userRepository,
       id: post.author.id,
     });
-    return await this.#postRepository.create(postBuilderFactory({ post }));
+    const postInstance = postBuilderFactory({ post });
+    await ServiceHandlers.findSlugAndThrowError({
+      postRepository: this.#postRepository,
+      slug: postInstance.reflect.slug,
+    });
+    return await this.#postRepository.create(postInstance);
   }
 
   public async updatePost(post: IPostReflectObject): Promise<Post> {
@@ -47,24 +53,24 @@ export class PostService implements IPostService {
       .then((post) => post);
   }
 
-  public async deletePost(postId: string): Promise<void> {
-    await this.#postRepository.delete(postId);
+  public async deletePost(id: string): Promise<void> {
+    await this.#postRepository.delete(id);
     if (this.#publisher) {
-      const deletePostCommand = new DeletePostCommand(postId);
+      const deletePostCommand = new DeletePostCommand(id);
       await this.#publisher.emit(deletePostCommand);
     }
   }
 
-  public async getPostById(postId: string): Promise<Post | undefined> {
-    return this.#postRepository.findById(postId).then((post) => post);
+  public async getPostById(id: string): Promise<Post | undefined> {
+    return this.#postRepository.findById(id).then((post) => post);
   }
 
   public async getPostBySlug(slug: string): Promise<Post | undefined> {
     return this.#postRepository.findBySlug(slug).then((post) => post);
   }
 
-  public async getPostsByTitle(postTitle: string): Promise<Post[]> {
-    return this.#postRepository.findManyByTitle(postTitle).then((post) => post);
+  public async getPostsByTitle(title: string): Promise<Post[]> {
+    return this.#postRepository.findManyByTitle(title, 6).then((post) => post);
   }
 
   public async getPosts(): Promise<Post[]> {

@@ -3,6 +3,17 @@ import { err } from "./errors";
 import { IPostRepository } from "@/@typings/post";
 
 namespace ServiceHandlers {
+  export async function findSlugAndThrowError(params: {
+    postRepository: IPostRepository;
+    slug: string;
+  }) {
+    const { postRepository, slug } = params;
+    const slugFound = await postRepository.findBySlug(slug);
+    if (slugFound) {
+      throw new Error(err.slugAlreadyExists(slug));
+    }
+  }
+
   export async function findUserIdOrThrowError(params: {
     userRepository: IUserRepository;
     id: string;
