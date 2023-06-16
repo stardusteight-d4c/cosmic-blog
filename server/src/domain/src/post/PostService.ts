@@ -4,22 +4,18 @@ import type {
   IPostService,
 } from "@typings/post";
 import { Post, postBuilderFactory } from ".";
-import DeletePostCommand from "./PostCommands";
+import { DeletePostCommand } from "./PostCommands";
 import { ServiceHandlers } from "./helpers";
-import { IFavoriteRepository } from "@typings/favorite";
 
 export class PostService implements IPostService {
   #postRepository: IPostRepository;
-  #favoriteRepository: IFavoriteRepository
   #publisher: IPublisher;
 
   constructor(implementations: {
     postRepository: IPostRepository;
-    favoriteRepository: IFavoriteRepository
     publisher: IPublisher;
   }) {
     this.#postRepository = implementations.postRepository;
-    this.#favoriteRepository = implementations.favoriteRepository;
     this.#publisher = implementations.publisher;
   }
 
@@ -33,7 +29,7 @@ export class PostService implements IPostService {
       postRepository: this.#postRepository,
       slug: postInstance.reflect.slug,
     });
-    return await this.#postRepository.create(postInstance);
+    return this.#postRepository.create(postInstance).then((post) => post);
   }
 
   public async updatePost(post: IPostReflectObject): Promise<Post> {
@@ -86,8 +82,8 @@ export class PostService implements IPostService {
   }): Promise<Post[]> {
     const { userId, skip, pageSize } = request;
     return ServiceHandlers.getAllUserFavoritedPosts({
-      favoriteRepository: this.#favoriteRepository,
       postRepository: this.#postRepository,
+      publisher: this.#publisher,
       userId,
     }).then((favoritedPosts) =>
       favoritedPosts.slice(Number(skip), Number(skip) + Number(pageSize))

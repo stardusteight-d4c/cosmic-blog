@@ -1,15 +1,14 @@
 import { Publisher } from "@domain/Publisher";
-import { CommentObserver, CommentService } from "../../comment";
-import { FavoriteObserver, FavoriteService } from "../../favorite";
-import { UserService } from "../../user";
-import { PostService } from "../PostService";
+import { CommentService, CommentSubscriber } from "../../comment";
+import { FavoriteService, FavoriteSubscriber } from "../../favorite";
+import { UserService, UserSubscriber } from "../../user";
+import { PostService, PostSubscriber } from "../";
 import {
   CommentInMemoryRepository,
   FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
 } from "@app/@in-memory-repositories";
-import { UserObserver } from "../../user/UserObserver";
 
 export function initializeInMemoryServices() {
   const postRepository = PostInMemoryRepository.getInstance();
@@ -19,28 +18,26 @@ export function initializeInMemoryServices() {
   const publisher = Publisher.getInstance();
   const postService = new PostService({
     postRepository,
-    favoriteRepository,
     publisher,
   });
   const userService = new UserService({
     userRepository,
     publisher,
   });
-  const favoriteService = new FavoriteService({
-    favoriteRepository,
-    postRepository,
-    userRepository,
-  });
   const commentService = new CommentService({
     commentRepository,
     postRepository,
     userRepository,
   });
-  publisher.register(new FavoriteObserver(favoriteService));
-  publisher.register(new CommentObserver(commentService));
-  console.log('UserObserver');
-  
-  publisher.register(UserObserver.getInstance(userService));
+  const favoriteService = new FavoriteService({
+    favoriteRepository,
+    postRepository,
+    userRepository,
+  });
+  publisher.register(UserSubscriber.getInstance(userService));
+  publisher.register(PostSubscriber.getInstance(postService));
+  publisher.register(CommentSubscriber.getInstance(commentService));
+  publisher.register(FavoriteSubscriber.getInstance(favoriteService));
   return {
     services: {
       post: postService,

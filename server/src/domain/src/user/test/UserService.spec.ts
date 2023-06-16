@@ -4,6 +4,7 @@ import { objectFactory } from "@domain/helpers/objectFactory";
 import { UserInMemoryRepository } from "@app/@in-memory-repositories";
 import type { ISocialLinks, IUserRepository } from "@typings/user";
 import { err } from "../helpers";
+import { Publisher } from "@domain/Publisher";
 
 let userService: UserService;
 let userInMemoryRepository: IUserRepository;
@@ -11,9 +12,11 @@ const factory = objectFactory();
 
 describe("UserService", () => {
   beforeEach(async () => {
+    const publisher = Publisher.getInstance();
     userInMemoryRepository = UserInMemoryRepository.getInstance();
     userService = new UserService({
       userRepository: userInMemoryRepository,
+      publisher,
     });
   });
 

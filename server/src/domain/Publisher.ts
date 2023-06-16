@@ -1,9 +1,9 @@
 export class Publisher implements IPublisher {
   private static instance: Publisher;
-  private servicesObservers: IObserver[];
+  private subscriberServices: ISubscriber[];
 
   private constructor() {
-    this.servicesObservers = [];
+    this.subscriberServices = [];
   }
 
   public static getInstance(): Publisher {
@@ -13,26 +13,26 @@ export class Publisher implements IPublisher {
     return Publisher.instance;
   }
 
-  public register(observer: IObserver) {
-    if (!this.servicesObservers.includes(observer)) {
-      this.servicesObservers.push(observer);
+  public register(subscriber: ISubscriber) {
+    if (!this.subscriberServices.includes(subscriber)) {
+      this.subscriberServices.push(subscriber);
     }
   }
 
   public async publish(request: {
     command: ICommand;
-    targetObserver?: IObserver;
+    targetSubscriber?: ISubscriber;
   }): Promise<{ responses: any[]; uniqueResponse: any }> {
-    const { command, targetObserver } = request;
+    const { command, targetSubscriber } = request;
     const responses: any[] = [];
     let uniqueResponse: any;
-    if (targetObserver) {
-      if (targetObserver.watching.includes(command.operation)) {
-        const response = await targetObserver.notifyService(command);
-        uniqueResponse = response
+    if (targetSubscriber) {
+      if (targetSubscriber.signing.includes(command.operation)) {
+        const response = await targetSubscriber.notifyService(command);
+        uniqueResponse = response;
       }
     } else {
-      for (const observer of this.servicesObservers) {
+      for (const observer of this.subscriberServices) {
         const response = await observer.notifyService(command);
         responses.push(response);
       }

@@ -7,8 +7,6 @@ import type { IPostRepository } from "@typings/post";
 import type { IUserRepository } from "@typings/user";
 import { Comment } from "./Comment";
 import { commentBuilderFactory } from "./helpers";
-import FindByIdCommand from "@/domain/GlobalsCommand";
-import { UserObserver } from "../user/UserObserver";
 
 export class CommentService implements ICommentService {
   #commentRepository: ICommentRepository;

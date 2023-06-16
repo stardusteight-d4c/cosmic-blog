@@ -4,21 +4,19 @@ import type {
   IUserService,
 } from "@typings/user";
 import { User, userBuilderFactory } from ".";
-import DeleteUserCommand from "./UserCommands";
+import { DeleteUserCommand } from "./UserCommands";
 import { ServiceHandlers } from "./helpers";
 
 export class UserService implements IUserService {
   #userRepository: IUserRepository;
-  #publisher?: IPublisher;
+  #publisher: IPublisher;
 
   constructor(implementations: {
     userRepository: IUserRepository;
-    publisher?: IPublisher;
+    publisher: IPublisher;
   }) {
     this.#userRepository = implementations.userRepository;
-    if (implementations.publisher) {
-      this.#publisher = implementations.publisher;
-    }
+    this.#publisher = implementations.publisher;
   }
 
   public async createUser(user: IUserReflectObject): Promise<User> {
@@ -50,10 +48,8 @@ export class UserService implements IUserService {
       id,
     });
     await this.#userRepository.delete(id);
-    if (this.#publisher) {
-      const deleteUserCommand = new DeleteUserCommand(id);
-      await this.#publisher.publish({ command: deleteUserCommand });
-    }
+    const deleteUserCommand = new DeleteUserCommand(id);
+    await this.#publisher.publish({ command: deleteUserCommand });
   }
 
   public async getUserById(id: string): Promise<User | undefined> {

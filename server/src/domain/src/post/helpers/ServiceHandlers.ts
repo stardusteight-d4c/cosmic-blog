@@ -1,9 +1,12 @@
-import type { IUserRepository } from "@typings/user";
 import type { IPostRepository } from "@typings/post";
 import type { IFavoriteRepository } from "@typings/favorite";
 import { err } from "./errors";
-import FindByIdCommand from "@/domain/GlobalsCommand";
-import { UserObserver } from "../../user/UserObserver";
+import { UserSubscriber } from "../../user/UserSubscriber";
+import {
+  FindAllFavoritesByUserIdCommand,
+  FindByIdCommand,
+} from "@domain/globalsCommands";
+import { Favorite, FavoriteSubscriber } from "../../favorite";
 
 namespace ServiceHandlers {
   export async function findSlugAndThrowError(params: {
@@ -23,10 +26,10 @@ namespace ServiceHandlers {
   }) {
     const { id, publisher } = params;
     const command = new FindByIdCommand(id);
-    const targetObserver = UserObserver.getInstance();
+    const targetSubscriber = UserSubscriber.getInstance();
     const { uniqueResponse: existingUser } = await publisher.publish({
       command,
-      targetObserver,
+      targetSubscriber,
     });
     if (!existingUser) {
       throw new Error(err.userNotFoundWithId(id));
@@ -47,12 +50,18 @@ namespace ServiceHandlers {
   }
 
   export async function getAllUserFavoritedPosts(params: {
-    favoriteRepository: IFavoriteRepository;
     postRepository: IPostRepository;
     userId: string;
+    publisher: IPublisher;
   }) {
-    const { favoriteRepository, postRepository, userId } = params;
-    const favorites = await favoriteRepository.findAllByUserId(userId);
+    const { postRepository, userId, publisher } = params;
+    const command = new FindAllFavoritesByUserIdCommand(userId);
+    const targetSubscriber = FavoriteSubscriber.getInstance();
+    const { uniqueResponse: favorites }: { uniqueResponse: Favorite[] } =
+      await publisher.publish({
+        command,
+        targetSubscriber,
+      });
     const postIds = favorites.map((favorite) => favorite.reflect.postId);
     return await postRepository.findByIds(postIds);
   }

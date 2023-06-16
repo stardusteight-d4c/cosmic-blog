@@ -19,6 +19,7 @@ export class FavoriteService implements IFavoriteService {
     this.#userRepository = implementations.userRepository;
   }
 
+
   public async toggleFavoritePost(request: {
     postId: string;
     userId: string;
@@ -58,6 +59,10 @@ export class FavoriteService implements IFavoriteService {
 
   public async getAllFavoritesByPostId(postId: string): Promise<Favorite[]> {
     return await this.#favoriteRepository.findAllByPostId(postId);
+  }
+
+  public async getAllFavoritesByUserId(userId: string): Promise<Favorite[]> {
+    return await this.#favoriteRepository.findAllByUserId(userId);
   }
 
   public async getFavorite(favorite: Favorite): Promise<Favorite> {

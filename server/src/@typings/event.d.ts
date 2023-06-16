@@ -2,15 +2,15 @@ interface ICommand {
   operation: string;
 }
 
-interface IObserver {
-  watching: string[];
-  notifyService(event: ICommand): Promise<any>;
+interface ISubscriber {
+  signing: string[];
+  notifyService(command: ICommand): Promise<any>;
 }
 
 interface IPublisher {
-  register(observer: IObserver): void;
+  register(subscriber: ISubscribe): void;
   publish(request: {
     command: ICommand;
-    targetObserver?: IObserver;
+    targetSubscriber?: ISubscribe;
   }): Promise<{ responses: any; uniqueResponse: any }>;
 }
