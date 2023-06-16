@@ -1,7 +1,7 @@
-import { IUserRepository } from "@typings/user";
+import type { IUserRepository } from "@typings/user";
+import type { IPostRepository } from "@typings/post";
+import type { IFavoriteRepository } from "@typings/favorite";
 import { err } from "./errors";
-import { IPostRepository } from "@/@typings/post";
-import { IFavoriteRepository } from "@/@typings/favorite";
 
 namespace ServiceHandlers {
   export async function findSlugAndThrowError(params: {

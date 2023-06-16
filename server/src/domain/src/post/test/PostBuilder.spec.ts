@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { Post, postBuilderFactory } from "..";
 import { objectFactory } from "@domain/helpers/objectFactory";
-import { err } from "../helpers/errors";
+import { err } from "../helpers";
+import { AuthorMetadata } from "@typings/post";
 
 const factory = objectFactory();
 
@@ -44,7 +45,7 @@ describe("PostBuilder", () => {
   });
 
   it("must be not able to create a post with a author without id", () => {
-    const user = factory.getUser({ userRole: "author" });
+    const user = factory.getUser({ userRole: "author" }) as AuthorMetadata;
     const post = factory.getPost({ author: user });
     expect(() => postBuilderFactory({ post })).toThrowError(
       err.authorIdRequired
@@ -55,7 +56,10 @@ describe("PostBuilder", () => {
     const user = factory.getUser({ userRole: "author" });
     delete user.username;
     const post = factory.getPost({
-      author: { ...user, id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01" },
+      author: {
+        ...user,
+        id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
+      } as AuthorMetadata,
     });
     expect(() => postBuilderFactory({ post })).toThrowError(
       err.authorUsernameRequired
@@ -66,7 +70,10 @@ describe("PostBuilder", () => {
     const user = factory.getUser({ userRole: "author" });
     delete user.email;
     const post = factory.getPost({
-      author: { ...user, id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01" },
+      author: {
+        ...user,
+        id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
+      } as AuthorMetadata,
     });
     expect(() => postBuilderFactory({ post })).toThrowError(
       err.authorEmailRequired
@@ -77,7 +84,10 @@ describe("PostBuilder", () => {
     const user = factory.getUser({ userRole: "author" });
     delete user.avatar;
     const post = factory.getPost({
-      author: { ...user, id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01" },
+      author: {
+        ...user,
+        id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
+      } as AuthorMetadata,
     });
     expect(() => postBuilderFactory({ post })).toThrowError(
       err.authorAvatarRequired
@@ -87,7 +97,10 @@ describe("PostBuilder", () => {
   it("must be not able to create a post with a author without author role", () => {
     const user = factory.getUser({ userRole: "reader" });
     const post = factory.getPost({
-      author: { ...user, id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01" },
+      author: {
+        ...user,
+        id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
+      } as AuthorMetadata,
     });
     expect(() => postBuilderFactory({ post })).toThrowError(
       err.authorRoleRequired

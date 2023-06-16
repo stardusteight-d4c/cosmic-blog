@@ -1,8 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { IPostRepository, IPostService } from "@typings/post";
+import type {
+  AuthorMetadata,
+  IPostRepository,
+  IPostService,
+} from "@typings/post";
 import type { IUserRepository, IUserService } from "@typings/user";
 import type { IFavoriteRepository, IFavoriteService } from "@typings/favorite";
-import type { ICommentRepository, ICommentService } from "@typings/comment";
+import type {
+  ICommentRepository,
+  ICommentService,
+  OwnerMetadata,
+} from "@typings/comment";
 import { objectFactory } from "@domain/helpers/objectFactory";
 import { err, initializeInMemoryServices } from "../helpers";
 import { Post } from "../Post";
@@ -51,7 +59,7 @@ describe("PostService", () => {
         ...user,
         id: userInstance.reflect.id,
         userRole: "author",
-      },
+      } as AuthorMetadata,
     });
     expect(await services.post.createPost(post)).toBeInstanceOf(Post);
   });
@@ -65,7 +73,7 @@ describe("PostService", () => {
         ...user,
         id: userInstance.reflect.id,
         userRole: "author",
-      },
+      } as AuthorMetadata,
     });
     const postInstance = await services.post.createPost(post);
     await expect(services.post.createPost(post)).rejects.toThrowError(
@@ -79,7 +87,7 @@ describe("PostService", () => {
       author: {
         ...user,
         userRole: "author",
-      },
+      } as AuthorMetadata,
     });
     await expect(services.post.createPost(post)).rejects.toThrowError(
       err.userNotFoundWithId(undefined)
@@ -105,7 +113,7 @@ describe("PostService", () => {
         ...user,
         id: userInstance.reflect.id,
         userRole: "author",
-      },
+      } as AuthorMetadata,
     });
     const postInstance = await services.post.createPost(post);
     const postId = postInstance.reflect.id;
@@ -151,7 +159,7 @@ describe("PostService", () => {
         ...user,
         id: userInstance.reflect.id,
         userRole: "author",
-      },
+      } as AuthorMetadata,
     });
     const postInstance = await services.post.createPost(post);
     const postFound = await services.post.getPostById(postInstance.reflect.id);
@@ -167,7 +175,7 @@ describe("PostService", () => {
         ...user,
         id: userInstance.reflect.id,
         userRole: "author",
-      },
+      } as AuthorMetadata,
     });
     const postInstance = await services.post.createPost(post);
     const postFound = await services.post.getPostById(
@@ -184,7 +192,7 @@ describe("PostService", () => {
         ...user,
         id: userInstance.reflect.id,
         userRole: "author",
-      },
+      } as AuthorMetadata,
     });
     const postInstance = await services.post.createPost(post);
     const postFound = await services.post.getPostBySlug(
@@ -204,7 +212,7 @@ describe("PostService", () => {
           ...user,
           id: userInstance.reflect.id,
           userRole: "author",
-        },
+        } as AuthorMetadata,
       });
       await services.post.createPost(post);
     }
@@ -221,7 +229,7 @@ describe("PostService", () => {
           ...user,
           id: userInstance.reflect.id,
           userRole: "author",
-        },
+        } as AuthorMetadata,
       });
       await services.post.createPost(post);
     }
@@ -239,7 +247,7 @@ describe("PostService", () => {
           ...user,
           id: userInstance.reflect.id,
           userRole: "author",
-        },
+        } as AuthorMetadata,
       });
       await services.post.createPost(post);
     }
@@ -254,7 +262,7 @@ describe("PostService", () => {
     expect(paginatedPosts).toStrictEqual(allPosts.slice(skip, pageSize + skip));
   });
 
-  // delete Post with FavoriteObserver and CommentObserver (ignore this!)
+  // delete Post with FavoriteObserver and CommentObserver
   it("must be able delete a post", async () => {
     const user = factory.getUser();
     const userInstance = await services.user.createUser(user);
@@ -263,7 +271,7 @@ describe("PostService", () => {
         ...user,
         id: userInstance.reflect.id,
         userRole: "author",
-      },
+      } as AuthorMetadata,
     });
     const postInstance = await services.post.createPost(post);
     const favorite = factory.getFavorite({
@@ -283,7 +291,7 @@ describe("PostService", () => {
         slug: postInstance.reflect.slug!,
         title: postInstance.reflect.title!,
       },
-      owner: userInstance.reflect,
+      owner: userInstance.reflect as OwnerMetadata,
     });
     await services.comment.createComment(comment);
     const postCommentAmount = await services.comment.getPostCommentAmount(

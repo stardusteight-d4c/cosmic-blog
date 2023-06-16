@@ -7,12 +7,12 @@ export class CommentObserver implements IObserver {
   constructor(readonly commentService: ICommentService) {}
 
   async notifyService(command: ICommand) {
-    if (command.operation === this.watching[0]) {
+    if (command.operation === "delete_post") {
       const { postId } = command as DeletePostCommand;
       await this.commentService.deleteAllCommentsByPostId(postId);
     }
 
-    if (command.operation === this.watching[1]) {
+    if (command.operation === "delete_user") {
       const { userId } = command as DeleteUserCommand;
       await this.commentService.deleteAllCommentsByUserId(userId);
     }

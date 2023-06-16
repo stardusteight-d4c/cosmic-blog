@@ -1,4 +1,4 @@
-import { TUserRole } from "@/@typings/user";
+import type { TUserRole } from "@typings/user";
 import { err } from "./errors";
 
 namespace Validators {

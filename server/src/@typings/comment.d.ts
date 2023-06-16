@@ -3,8 +3,8 @@ import { IUserReflectObject } from "./user";
 
 export interface ICommentReflectObject {
   id?: string;
-  owner?: IUserReflectObject;
   post?: PostMetadata;
+  owner?: OwnerMetadata;
   content?: string;
   postedAt?: Date;
 }
@@ -60,4 +60,10 @@ export type PostMetadata = {
   id: string;
   title: string;
   slug: string;
+};
+
+export type OwnerMetadata = {
+  id: string;
+  username: string;
+  avatar: string;
 };

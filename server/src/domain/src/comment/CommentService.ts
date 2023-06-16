@@ -3,32 +3,34 @@ import type {
   ICommentRepository,
   ICommentService,
 } from "@typings/comment";
+import type { IPostRepository } from "@typings/post";
+import type { IUserRepository } from "@typings/user";
 import { Comment } from "./Comment";
 import { commentBuilderFactory } from "./helpers";
-import { IPostRepository } from "@/@typings/post";
-import { IUserRepository } from "@/@typings/user";
 
 export class CommentService implements ICommentService {
   #commentRepository: ICommentRepository;
   #postRepository: IPostRepository;
   #userRepository: IUserRepository;
+  #publisher?: IPublisher;
 
   constructor(implementations: {
     commentRepository: ICommentRepository;
     userRepository: IUserRepository;
     postRepository: IPostRepository;
+    publisher?: IPublisher;
   }) {
     this.#commentRepository = implementations.commentRepository;
     this.#postRepository = implementations.postRepository;
     this.#userRepository = implementations.userRepository;
+    this.#publisher = implementations.publisher;
   }
 
   public async createComment(comment: ICommentReflectObject): Promise<Comment> {
-    if (comment.content.length > 500) {
-      throw new Error("The comment exceeds the 500 character limit!");
-    }
+ 
     await this.#userRepository.findById(comment.owner.id);
     await this.#postRepository.findById(comment.post.id);
+
     const newComment = commentBuilderFactory({ comment });
     const commentInstance = await this.#commentRepository.create(newComment);
     return commentInstance;

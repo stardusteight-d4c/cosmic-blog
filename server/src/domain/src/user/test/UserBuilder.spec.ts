@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { User, userBuilderFactory } from "../index";
 import { objectFactory } from "@domain/helpers/objectFactory";
-import { err } from "../helpers/errors";
+import { err } from "../helpers";
 
 const factory = objectFactory();
 

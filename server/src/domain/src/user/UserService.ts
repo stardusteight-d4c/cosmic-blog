@@ -5,7 +5,7 @@ import type {
 } from "@typings/user";
 import { User, userBuilderFactory } from ".";
 import DeleteUserCommand from "./UserCommands";
-import ServiceHandlers from "./helpers/ServiceHandlers";
+import { ServiceHandlers } from "./helpers";
 
 export class UserService implements IUserService {
   #userRepository: IUserRepository;

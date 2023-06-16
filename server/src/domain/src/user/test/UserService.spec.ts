@@ -3,7 +3,7 @@ import { User, UserService } from "../index";
 import { objectFactory } from "@domain/helpers/objectFactory";
 import { UserInMemoryRepository } from "@app/@in-memory-repositories";
 import type { ISocialLinks, IUserRepository } from "@typings/user";
-import { err } from "../helpers/errors";
+import { err } from "../helpers";
 
 let userService: UserService;
 let userInMemoryRepository: IUserRepository;

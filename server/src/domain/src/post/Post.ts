@@ -1,5 +1,4 @@
-import type { IPostReflectObject } from "@typings/post";
-import type { IUserReflectObject } from "@typings/user";
+import type { AuthorMetadata, IPostReflectObject } from "@typings/post";
 import { getDate } from "./helpers";
 
 export class Post {
@@ -11,7 +10,7 @@ export class Post {
   #coverImage: string;
   #postedAt: Date;
   #lastChange: Date | undefined;
-  #author: IUserReflectObject;
+  #author: AuthorMetadata;
 
   constructor(properties: IPostReflectObject) {
     this.#id = properties.id;

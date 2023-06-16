@@ -1,4 +1,4 @@
-import { IUserRepository } from "@typings/user";
+import type { IUserRepository } from "@typings/user";
 import { err } from "./errors";
 
 namespace ServiceHandlers {

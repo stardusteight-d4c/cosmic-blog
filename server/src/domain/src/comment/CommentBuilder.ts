@@ -1,12 +1,12 @@
-import type { IUserReflectObject } from "@typings/user";
+import type { OwnerMetadata, PostMetadata } from "@typings/comment";
 import { randomUUID } from "node:crypto";
 import { Comment } from ".";
-import { PostMetadata } from "@/@typings/comment";
+import { Validators } from "./helpers";
 
 export class CommentBuilder {
   #id: string;
   #post: PostMetadata;
-  #owner: IUserReflectObject;
+  #owner: OwnerMetadata;
   #content: string;
   #postedAt: Date;
 
@@ -16,39 +16,30 @@ export class CommentBuilder {
   }
 
   public setPost(post: PostMetadata): CommentBuilder {
+    Validators.validatePost(post);
     this.#post = post;
     return this;
   }
 
-  public setOwner(owner: IUserReflectObject): CommentBuilder {
+  public setOwner(owner: OwnerMetadata): CommentBuilder {
+    Validators.validateOwner(owner);
     this.#owner = owner;
     return this;
   }
 
   public setContent(content: string): CommentBuilder {
+    Validators.validateContent(content);
     this.#content = content;
     return this;
   }
 
-  public setpostedAt(postedAt: Date): CommentBuilder {
+  public setPostedAt(postedAt: Date): CommentBuilder {
+    Validators.validatePostedAt(postedAt);
     this.#postedAt = postedAt;
     return this;
   }
 
   public build(): Comment {
-    if (!this.#post.id) {
-      throw new Error("postId is required");
-    }
-    if (!this.#owner) {
-      throw new Error("owner is required");
-    }
-    if (!this.#content) {
-      throw new Error("content is required");
-    }
-    if (!this.#postedAt) {
-      throw new Error("postedAt is required");
-    }
-
     return new Comment({
       id: this.#id || randomUUID(),
       post: this.#post,

@@ -1,6 +1,7 @@
 import { Knex } from "knex";
 import { ISocialLinks, IUserReflectObject, TUserRole } from "./user";
-import { PostMetadata } from "./comment";
+import { OwnerMetadata, PostMetadata } from "./comment";
+import { AuthorMetadata } from "./post";
 
 declare module "knex/types/tables" {
   interface User {
@@ -24,7 +25,7 @@ declare module "knex/types/tables" {
     coverImage: string;
     postedAt: Date;
     lastChange: Date;
-    author: IUserReflectObject;
+    author: AuthorMetadata;
     created_at: string;
     updated_at: string;
   }
@@ -33,7 +34,7 @@ declare module "knex/types/tables" {
     id: string;
     content: string;
     post: PostMetadata;
-    owner: IUserReflectObject;
+    owner: OwnerMetadata;
     postedAt: Date;
     created_at: string;
     updated_at: string;

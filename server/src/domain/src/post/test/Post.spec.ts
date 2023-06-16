@@ -32,6 +32,12 @@ describe("Post", () => {
     expect(postInstance.reflect.title).toStrictEqual(post.title);
   });
 
+  it("must be create a slug when creating a post", async () => {
+    const post = factory.getPost({ title: "example" });
+    const postInstance = new Post(post);
+    expect(postInstance.reflect.slug).contains('example');
+  });
+
   it("must be able to access the attributes via the <reflect> object", async () => {
     const post = factory.getPost();
     const postInstance = new Post(post);

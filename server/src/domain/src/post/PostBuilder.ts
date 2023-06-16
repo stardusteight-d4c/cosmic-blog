@@ -2,6 +2,7 @@ import type { IUserReflectObject } from "@typings/user";
 import { randomUUID } from "node:crypto";
 import { Post } from ".";
 import { Validators } from "./helpers";
+import { AuthorMetadata } from "@/@typings/post";
 
 export class PostBuilder {
   #id: string;
@@ -11,7 +12,7 @@ export class PostBuilder {
   #coverImage: string;
   #postedAt: Date;
   #lastChange?: Date;
-  #author: IUserReflectObject;
+  #author: AuthorMetadata;
 
   public setId(id: string) {
     this.#id = id;
@@ -53,7 +54,7 @@ export class PostBuilder {
     return this;
   }
 
-  public setAuthor(author: IUserReflectObject): PostBuilder {
+  public setAuthor(author: AuthorMetadata): PostBuilder {
     Validators.validateAuthor(author);
     this.#author = author;
     return this;

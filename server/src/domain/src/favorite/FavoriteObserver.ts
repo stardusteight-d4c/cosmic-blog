@@ -7,12 +7,12 @@ export class FavoriteObserver implements IObserver {
   constructor(readonly favoriteService: IFavoriteService) {}
 
   async notifyService(command: ICommand) {
-    if (command.operation === this.watching[0]) {
+    if (command.operation === "delete_post") {
       const { postId } = command as DeletePostCommand;
       await this.favoriteService.deleteAllFavoritesByPostId(postId);
     }
 
-    if (command.operation === this.watching[1]) {
+    if (command.operation === "delete_user") {
       const { userId } = command as DeleteUserCommand;
       await this.favoriteService.deleteAllFavoritesByUserId(userId);
     }

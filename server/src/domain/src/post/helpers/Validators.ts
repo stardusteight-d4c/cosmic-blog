@@ -1,5 +1,5 @@
-import { IUserReflectObject } from "@/@typings/user";
 import { err } from "./errors";
+import { AuthorMetadata } from "@typings/post";
 
 namespace Validators {
   export function validateTitle(title: string): void {
@@ -35,7 +35,7 @@ namespace Validators {
     }
   }
 
-  export function validateAuthor(author: IUserReflectObject): void {
+  export function validateAuthor(author: AuthorMetadata): void {
     if (!author) {
       throw new Error(err.authorRequired);
     }

@@ -10,7 +10,7 @@ export interface IPostReflectObject {
   coverImage?: string;
   postedAt?: Date;
   lastChange?: Date;
-  author?: IUserReflectObject;
+  author?: AuthorMetadata;
 }
 
 export interface IPostService {
@@ -48,3 +48,11 @@ export interface IPostRepository {
   findByIds(ids: string[]): Promise<Post[]>;
   findPostTitleById(id: string): Promise<string>;
 }
+
+export type AuthorMetadata = {
+  id: string;
+  email: string;
+  username: string;
+  avatar: string;
+  userRole: TUserRole;
+};

@@ -1,11 +1,14 @@
-import type { ICommentReflectObject, PostMetadata } from "@typings/comment";
-import { IUserReflectObject } from "@typings/user";
+import type {
+  ICommentReflectObject,
+  OwnerMetadata,
+  PostMetadata,
+} from "@typings/comment";
 
 export class Comment {
   #id: string;
   #post: PostMetadata;
+  #owner: OwnerMetadata;
   #content: string;
-  #owner: IUserReflectObject;
   #postedAt: Date;
 
   constructor(properties: ICommentReflectObject) {

@@ -1,6 +1,6 @@
-import { ICommentReflectObject } from "@typings/comment";
+import { ICommentReflectObject, OwnerMetadata } from "@typings/comment";
 import { IFavoriteReflectObject } from "@typings/favorite";
-import { IPostReflectObject } from "@typings/post";
+import { AuthorMetadata, IPostReflectObject } from "@typings/post";
 import { IUserReflectObject } from "@typings/user";
 
 export interface IObjectFactory {
@@ -32,10 +32,10 @@ export function objectFactory(): IObjectFactory {
       postedAt: params?.postedAt ?? new Date(),
       author:
         params?.author ??
-        user({
+        (user({
           id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
           userRole: "author",
-        }),
+        }) as AuthorMetadata),
     };
   };
 
@@ -43,11 +43,15 @@ export function objectFactory(): IObjectFactory {
     return {
       id: params?.id && params.id,
       post: params?.post ?? {
-        id: params?.post?.id && params?.post?.id,
+        id: params?.post?.id
+          ? params?.post?.id
+          : "e8dfe910-a5b0-4b71-98e6-555506cfef1d",
         slug: "sample-post",
         title: "Sample Post",
       },
-      owner: params?.owner ?? user(),
+      owner:
+        params?.owner ??
+        (user({ id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01" }) as OwnerMetadata),
       content: params?.content ?? "Great post! I really enjoyed reading it.",
       postedAt: params?.postedAt ?? new Date(),
     };

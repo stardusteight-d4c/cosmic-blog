@@ -1,4 +1,4 @@
-import { Publisher } from "@/domain/Publisher";
+import { Publisher } from "@domain/Publisher";
 import { CommentObserver, CommentService } from "../../comment";
 import { FavoriteObserver, FavoriteService } from "../../favorite";
 import { UserService } from "../../user";
@@ -8,7 +8,7 @@ import {
   FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
-} from "@/application/@in-memory-repositories";
+} from "@app/@in-memory-repositories";
 
 export function initializeInMemoryServices() {
   const postRepository = PostInMemoryRepository.getInstance();

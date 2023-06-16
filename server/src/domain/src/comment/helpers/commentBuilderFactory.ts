@@ -7,16 +7,16 @@ export function commentBuilderFactory({
 }: {
   comment: ICommentReflectObject;
   update?: {
-    field: "content";
+    field: "content" | "postedAt";
     newData: any;
   };
 }): Comment {
   const updatedCommentInstance = new CommentBuilder()
-    .setId(comment.id!)
+    .setId(comment.id)
     .setPost(comment.post)
     .setOwner(comment.owner)
     .setContent(update?.field === "content" ? update.newData : comment.content)
-    .setpostedAt(comment.postedAt)
+    .setPostedAt(comment.postedAt)
     .build();
   return updatedCommentInstance;
 }
