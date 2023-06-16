@@ -3,36 +3,30 @@ import type {
   IPostRepository,
   IPostService,
 } from "@typings/post";
-import type { IUserRepository } from "@typings/user";
-import type { IFavoriteRepository } from "@typings/favorite";
 import { Post, postBuilderFactory } from ".";
 import DeletePostCommand from "./PostCommands";
 import { ServiceHandlers } from "./helpers";
+import { IFavoriteRepository } from "@typings/favorite";
 
 export class PostService implements IPostService {
   #postRepository: IPostRepository;
-  #userRepository: IUserRepository;
-  #favoriteRepository: IFavoriteRepository;
-  #publisher?: IPublisher;
+  #favoriteRepository: IFavoriteRepository
+  #publisher: IPublisher;
 
   constructor(implementations: {
     postRepository: IPostRepository;
-    userRepository: IUserRepository;
-    favoriteRepository: IFavoriteRepository;
-    publisher?: IPublisher;
+    favoriteRepository: IFavoriteRepository
+    publisher: IPublisher;
   }) {
     this.#postRepository = implementations.postRepository;
-    this.#userRepository = implementations.userRepository;
     this.#favoriteRepository = implementations.favoriteRepository;
-    if (implementations.publisher) {
-      this.#publisher = implementations.publisher;
-    }
+    this.#publisher = implementations.publisher;
   }
 
   public async createPost(post: IPostReflectObject): Promise<Post> {
     await ServiceHandlers.findUserIdOrThrowError({
-      userRepository: this.#userRepository,
       id: post.author.id,
+      publisher: this.#publisher,
     });
     const postInstance = postBuilderFactory({ post });
     await ServiceHandlers.findSlugAndThrowError({
@@ -54,10 +48,8 @@ export class PostService implements IPostService {
 
   public async deletePost(id: string): Promise<void> {
     await this.#postRepository.delete(id);
-    if (this.#publisher) {
-      const deletePostCommand = new DeletePostCommand(id);
-      await this.#publisher.emit(deletePostCommand);
-    }
+    const deletePostCommand = new DeletePostCommand(id);
+    await this.#publisher.publish({ command: deletePostCommand });
   }
 
   public async getPostById(id: string): Promise<Post | undefined> {

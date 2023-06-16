@@ -52,7 +52,7 @@ export class UserService implements IUserService {
     await this.#userRepository.delete(id);
     if (this.#publisher) {
       const deleteUserCommand = new DeleteUserCommand(id);
-      await this.#publisher.emit(deleteUserCommand);
+      await this.#publisher.publish({ command: deleteUserCommand });
     }
   }
 

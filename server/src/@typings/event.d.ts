@@ -4,10 +4,13 @@ interface ICommand {
 
 interface IObserver {
   watching: string[];
-  notifyService(event: ICommand): any;
+  notifyService(event: ICommand): Promise<any>;
 }
 
 interface IPublisher {
   register(observer: IObserver): void;
-  emit(event: ICommand): Promise<any[]>;
+  publish(request: {
+    command: ICommand;
+    targetObserver?: IObserver;
+  }): Promise<{ responses: any; uniqueResponse: any }>;
 }

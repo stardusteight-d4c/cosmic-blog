@@ -7,6 +7,8 @@ import type { IPostRepository } from "@typings/post";
 import type { IUserRepository } from "@typings/user";
 import { Comment } from "./Comment";
 import { commentBuilderFactory } from "./helpers";
+import FindByIdCommand from "@/domain/GlobalsCommand";
+import { UserObserver } from "../user/UserObserver";
 
 export class CommentService implements ICommentService {
   #commentRepository: ICommentRepository;
@@ -30,6 +32,11 @@ export class CommentService implements ICommentService {
  
     await this.#userRepository.findById(comment.owner.id);
     await this.#postRepository.findById(comment.post.id);
+
+    // if (this.#publisher) {
+    //   const findUserCommand = new FindByIdCommand(comment.owner.id);
+    //   await this.#publisher.emit(findUserCommand, targetObserver: UserObserver);
+    // }
 
     const newComment = commentBuilderFactory({ comment });
     const commentInstance = await this.#commentRepository.create(newComment);

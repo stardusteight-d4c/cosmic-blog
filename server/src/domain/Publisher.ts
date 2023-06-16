@@ -1,19 +1,42 @@
 export class Publisher implements IPublisher {
-  servicesObservers: IObserver[];
-  constructor() {
+  private static instance: Publisher;
+  private servicesObservers: IObserver[];
+
+  private constructor() {
     this.servicesObservers = [];
   }
-  register(observer: IObserver) {
-    this.servicesObservers.push(observer);
+
+  public static getInstance(): Publisher {
+    if (!Publisher.instance) {
+      Publisher.instance = new Publisher();
+    }
+    return Publisher.instance;
   }
-  async emit(command: ICommand) {
-    const responses = [];
-    for (const observer of this.servicesObservers) {
-      if (observer.watching.includes(command.operation)) {
+
+  public register(observer: IObserver) {
+    if (!this.servicesObservers.includes(observer)) {
+      this.servicesObservers.push(observer);
+    }
+  }
+
+  public async publish(request: {
+    command: ICommand;
+    targetObserver?: IObserver;
+  }): Promise<{ responses: any[]; uniqueResponse: any }> {
+    const { command, targetObserver } = request;
+    const responses: any[] = [];
+    let uniqueResponse: any;
+    if (targetObserver) {
+      if (targetObserver.watching.includes(command.operation)) {
+        const response = await targetObserver.notifyService(command);
+        uniqueResponse = response
+      }
+    } else {
+      for (const observer of this.servicesObservers) {
         const response = await observer.notifyService(command);
         responses.push(response);
       }
     }
-    return responses;
+    return { responses, uniqueResponse };
   }
 }

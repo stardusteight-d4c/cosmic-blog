@@ -2,6 +2,8 @@ import type { IUserRepository } from "@typings/user";
 import type { IPostRepository } from "@typings/post";
 import type { IFavoriteRepository } from "@typings/favorite";
 import { err } from "./errors";
+import FindByIdCommand from "@/domain/GlobalsCommand";
+import { UserObserver } from "../../user/UserObserver";
 
 namespace ServiceHandlers {
   export async function findSlugAndThrowError(params: {
@@ -16,11 +18,16 @@ namespace ServiceHandlers {
   }
 
   export async function findUserIdOrThrowError(params: {
-    userRepository: IUserRepository;
     id: string;
+    publisher: IPublisher;
   }) {
-    const { userRepository, id } = params;
-    const existingUser = await userRepository.findById(id);
+    const { id, publisher } = params;
+    const command = new FindByIdCommand(id);
+    const targetObserver = UserObserver.getInstance();
+    const { uniqueResponse: existingUser } = await publisher.publish({
+      command,
+      targetObserver,
+    });
     if (!existingUser) {
       throw new Error(err.userNotFoundWithId(id));
     }

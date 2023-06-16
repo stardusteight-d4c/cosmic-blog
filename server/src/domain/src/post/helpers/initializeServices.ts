@@ -9,16 +9,16 @@ import {
   PostInMemoryRepository,
   UserInMemoryRepository,
 } from "@app/@in-memory-repositories";
+import { UserObserver } from "../../user/UserObserver";
 
 export function initializeInMemoryServices() {
   const postRepository = PostInMemoryRepository.getInstance();
   const userRepository = UserInMemoryRepository.getInstance();
   const favoriteRepository = FavoriteInMemoryRepository.getInstance();
   const commentRepository = CommentInMemoryRepository.getInstance();
-  const publisher = new Publisher();
+  const publisher = Publisher.getInstance();
   const postService = new PostService({
     postRepository,
-    userRepository,
     favoriteRepository,
     publisher,
   });
@@ -38,6 +38,9 @@ export function initializeInMemoryServices() {
   });
   publisher.register(new FavoriteObserver(favoriteService));
   publisher.register(new CommentObserver(commentService));
+  console.log('UserObserver');
+  
+  publisher.register(UserObserver.getInstance(userService));
   return {
     services: {
       post: postService,
