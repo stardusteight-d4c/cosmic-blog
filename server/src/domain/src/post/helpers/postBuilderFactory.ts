@@ -1,11 +1,7 @@
 import type { IPostReflectObject } from "@typings/post";
 import { Post, PostBuilder } from "../";
 
-export function postBuilderFactory({
-  post,
-}: {
-  post: IPostReflectObject;
-}): Post {
+export function postBuilderFactory(post: IPostReflectObject): Post {
   const updatedPostInstance = new PostBuilder()
     .setId(post.id)
     .setAuthor(post.author)

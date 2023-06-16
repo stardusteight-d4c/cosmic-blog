@@ -9,34 +9,30 @@ import ServiceHandlers from "./helpers/ServiceHandlers";
 
 export class CommentService implements ICommentService {
   #commentRepository: ICommentRepository;
-  #publisher: IPublisher;
 
-  constructor(implementations: {
-    commentRepository: ICommentRepository;
-    publisher: IPublisher;
-  }) {
+  constructor(implementations: { commentRepository: ICommentRepository }) {
     this.#commentRepository = implementations.commentRepository;
-    this.#publisher = implementations.publisher;
   }
 
-  private async validateCommentOwner(ownerId: string): Promise<void> {
-    await ServiceHandlers.findUserIdOrThrowError({
-      id: ownerId,
-      publisher: this.#publisher,
-    });
+  private async validateCommentOwnerId(ownerId: string): Promise<void> {
+    return await ServiceHandlers.findUserIdOrThrowError(ownerId);
   }
 
-  private async validateCommentPost(postId: string): Promise<void> {
-    await ServiceHandlers.findPostIdOrThrowError({
-      id: postId,
-      publisher: this.#publisher,
+  private async validateCommentPostId(postId: string): Promise<void> {
+    return await ServiceHandlers.findPostIdOrThrowError(postId);
+  }
+
+  private async findExistingComment(commentId: string): Promise<Comment> {
+    return await ServiceHandlers.findCommentIdOrThrowError({
+      id: commentId,
+      commentRepository: this.#commentRepository,
     });
   }
 
   public async createComment(comment: ICommentReflectObject): Promise<Comment> {
-    await this.validateCommentOwner(comment.owner.id);
-    await this.validateCommentPost(comment.post.id);
-    const newComment = commentBuilderFactory({ comment });
+    await this.validateCommentOwnerId(comment.owner.id);
+    await this.validateCommentPostId(comment.post.id);
+    const newComment = commentBuilderFactory(comment);
     return await this.#commentRepository
       .create(newComment)
       .then((comment) => comment);
@@ -45,10 +41,7 @@ export class CommentService implements ICommentService {
   public async updateComment(
     updatedComment: ICommentReflectObject
   ): Promise<Comment | undefined> {
-    const existingComment = await ServiceHandlers.findCommentIdOrThrowError({
-      id: updatedComment.id,
-      commentRepository: this.#commentRepository,
-    });
+    const existingComment = await this.findExistingComment(updatedComment.id);
     return this.#commentRepository
       .update(new Comment(updatedComment), existingComment)
       .then((comment) => comment);

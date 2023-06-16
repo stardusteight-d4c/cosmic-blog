@@ -1,5 +1,5 @@
 import type { IUserRepository } from "@typings/user";
-import { err } from "./errors";
+import { userErrors } from "./errors";
 
 namespace ServiceHandlers {
   export async function findEmailAndThrowError(params: {
@@ -9,7 +9,7 @@ namespace ServiceHandlers {
     const { userRepository, email } = params;
     const emailAlreadyExists = await userRepository.findByEmail(email);
     if (emailAlreadyExists) {
-      throw new Error(err.emailAlreadyExists);
+      throw new Error(userErrors.emailAlreadyExists);
     }
   }
 
@@ -20,7 +20,7 @@ namespace ServiceHandlers {
     const { userRepository, username } = params;
     const usernameAlreadyExists = await userRepository.findByUsername(username);
     if (usernameAlreadyExists) {
-      throw new Error(err.usernameAlreadyExists);
+      throw new Error(userErrors.usernameAlreadyExists);
     }
   }
 
@@ -31,7 +31,7 @@ namespace ServiceHandlers {
     const { userRepository, id } = params;
     const existingUser = await userRepository.findById(id);
     if (!existingUser) {
-      throw new Error(err.userNotFoundWithId(id));
+      throw new Error(userErrors.userNotFoundWithId(id));
     }
     return existingUser;
   }

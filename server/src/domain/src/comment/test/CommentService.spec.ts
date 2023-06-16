@@ -9,7 +9,8 @@ import {
 } from "@domain/helpers/initializeServices";
 import { Comment } from "../Comment";
 import { Post } from "../../post";
-import { err } from "../helpers";
+import { userErrors } from "../../user/helpers";
+import { postErrors } from "../../post/helpers";
 
 let repositories: IRepositories;
 let services: IServices;
@@ -69,7 +70,7 @@ describe("CommentService", () => {
       post: postMetadata,
     });
     await expect(services.comment.createComment(comment)).rejects.toThrowError(
-      err.userNotFoundWithId(comment.owner.id)
+      userErrors.userNotFoundWithId(comment.owner.id)
     );
   });
 
@@ -78,7 +79,7 @@ describe("CommentService", () => {
       owner: ownerMetadata,
     });
     await expect(services.comment.createComment(comment)).rejects.toThrowError(
-      err.postNotFoundWithId(comment.post.id)
+      postErrors.postNotFoundWithId(comment.post.id)
     );
   });
 

@@ -5,7 +5,7 @@ import { Favorite } from "../Favorite";
 const factory = objectFactory();
 
 describe("Comment", () => {
-  it("must be not able to access the attributes directly", async () => {
+  it("must be not able to access the attributes directly", () => {
     const favorite = factory.getFavorite();
     const favoriteInstance = new Favorite(favorite);
     // @ts-ignore
@@ -14,7 +14,7 @@ describe("Comment", () => {
     expect(favoriteInstance.userId).toBeUndefined();
   });
 
-  it("must be not able to modify the attributes directly", async () => {
+  it("must be not able to modify the attributes directly", () => {
     const favorite = factory.getFavorite();
     const favoriteInstance = new Favorite(favorite);
     // @ts-ignore
@@ -22,7 +22,7 @@ describe("Comment", () => {
     expect(favoriteInstance.reflect.postId).toStrictEqual(favorite.postId);
   });
 
-  it("must be able to access the attributes via the <reflect> object", async () => {
+  it("must be able to access the attributes via the <reflect> object", () => {
     const favorite = factory.getFavorite();
     const favoriteInstance = new Favorite(favorite);
     expect(favoriteInstance.reflect.postId).toStrictEqual(favorite.postId);

@@ -4,7 +4,7 @@ import { objectFactory } from "@domain/helpers/objectFactory";
 import { UserInMemoryRepository } from "@app/in-memory-repositories";
 import { Publisher } from "@domain/Publisher";
 import { User, UserService } from "../index";
-import { err } from "../helpers";
+import { userErrors } from "../helpers";
 
 let userService: UserService;
 let userInMemoryRepository: IUserRepository;
@@ -40,7 +40,7 @@ describe("UserService", () => {
     });
     expect(await userService.createUser(user1)).toBeInstanceOf(User);
     await expect(userService.createUser(user2)).rejects.toThrowError(
-      err.emailAlreadyExists
+      userErrors.emailAlreadyExists
     );
   });
 
@@ -55,7 +55,7 @@ describe("UserService", () => {
     });
     expect(await userService.createUser(user1)).toBeInstanceOf(User);
     await expect(userService.createUser(user2)).rejects.toThrowError(
-      err.usernameAlreadyExists
+      userErrors.usernameAlreadyExists
     );
   });
 
@@ -70,7 +70,7 @@ describe("UserService", () => {
         ...user,
         socialLinks: newSocialLinks,
       })
-    ).rejects.toThrowError(err.userNotFoundWithId(undefined));
+    ).rejects.toThrowError(userErrors.userNotFoundWithId(undefined));
   });
 
   it("must be able to update a user partially", async () => {

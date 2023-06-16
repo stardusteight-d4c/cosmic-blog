@@ -5,7 +5,7 @@ import { Comment } from "../Comment";
 const factory = objectFactory();
 
 describe("Comment", () => {
-  it("must be not able to access the attributes directly", async () => {
+  it("must be not able to access the attributes directly", () => {
     const comment = factory.getComment();
     const commentInstance = new Comment(comment);
     // @ts-ignore
@@ -18,7 +18,7 @@ describe("Comment", () => {
     expect(commentInstance.postedAt).toBeUndefined();
   });
 
-  it("must be not able to modify the attributes directly", async () => {
+  it("must be not able to modify the attributes directly", () => {
     const comment = factory.getComment();
     const commentInstance = new Comment(comment);
     // @ts-ignore
@@ -26,7 +26,7 @@ describe("Comment", () => {
     expect(commentInstance.reflect.content).toStrictEqual(comment.content);
   });
 
-  it("must be able to access the attributes via the <reflect> object", async () => {
+  it("must be able to access the attributes via the <reflect> object", () => {
     const comment = factory.getComment();
     const commentInstance = new Comment(comment);
     expect(commentInstance.reflect.owner).toStrictEqual(comment.owner);

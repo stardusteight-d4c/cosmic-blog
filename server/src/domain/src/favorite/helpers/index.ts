@@ -1,3 +1,4 @@
 export { favoriteBuilderFactory } from "./favoriteBuilderFactory";
-export { err } from "./errors";
+export { favoriteErrors } from "./errors";
 export { default as Validators } from "./Validators";
+export { default as ServiceHandlers } from "./ServiceHandlers";

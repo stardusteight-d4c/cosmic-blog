@@ -43,7 +43,7 @@ export class PostService implements IPostService {
 
   public async createPost(post: IPostReflectObject): Promise<Post> {
     await this.validatePostAuthor(post.author.id);
-    const postInstance = postBuilderFactory({ post });
+    const postInstance = postBuilderFactory(post);
     await this.validatePostSlug(postInstance.reflect.slug);
     return this.#postRepository.create(postInstance).then((post) => post);
   }

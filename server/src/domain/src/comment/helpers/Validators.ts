@@ -1,49 +1,49 @@
 import { OwnerMetadata, PostMetadata } from "@typings/comment";
-import { err } from "./errors";
+import { commentErrors } from "./errors";
 
 namespace Validators {
   export function validatePost(post: PostMetadata): void {
     if (!post) {
-      throw new Error(err.postRequired);
+      throw new Error(commentErrors.postRequired);
     }
     if (!post.slug) {
-      throw new Error(err.postSlugRequired);
+      throw new Error(commentErrors.postSlugRequired);
     }
     if (!post.title) {
-      throw new Error(err.postTitleRequired);
+      throw new Error(commentErrors.postTitleRequired);
     }
     if (!post.id) {
-      throw new Error(err.postIdRequired);
+      throw new Error(commentErrors.postIdRequired);
     }
   }
 
   export function validateOwner(owner: OwnerMetadata): void {
     if (!owner) {
-      throw new Error(err.ownerRequired);
+      throw new Error(commentErrors.ownerRequired);
     }
     if (!owner.id) {
-      throw new Error(err.ownerIdRequired);
+      throw new Error(commentErrors.ownerIdRequired);
     }
     if (!owner.username) {
-      throw new Error(err.ownerUsernameRequired);
+      throw new Error(commentErrors.ownerUsernameRequired);
     }
     if (!owner.avatar) {
-      throw new Error(err.ownerAvatarRequired);
+      throw new Error(commentErrors.ownerAvatarRequired);
     }
   }
 
   export function validateContent(content: string): void {
     if (!content) {
-      throw new Error(err.contentRequired);
+      throw new Error(commentErrors.contentRequired);
     }
     if (content.length > 500) {
-      throw new Error(err.charactersLimitExceed);
+      throw new Error(commentErrors.charactersLimitExceed);
     }
   }
 
   export function validatePostedAt(postedAt: Date): void {
     if (!postedAt) {
-      throw new Error(err.postedAtRequired);
+      throw new Error(commentErrors.postedAtRequired);
     }
   }
 }

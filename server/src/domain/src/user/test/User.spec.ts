@@ -5,7 +5,7 @@ import { objectFactory } from "@domain/helpers/objectFactory";
 const factory = objectFactory();
 
 describe("User", () => {
-  it("must be not able to access the attributes directly", async () => {
+  it("must be not able to access the attributes directly", () => {
     const user = factory.getUser();
     const userInstance = new User(user);
     // @ts-ignore
@@ -24,7 +24,7 @@ describe("User", () => {
     expect(userInstance.userRole).toBeUndefined();
   });
 
-  it("must be not able to modify the attributes directly", async () => {
+  it("must be not able to modify the attributes directly", () => {
     const user = factory.getUser();
     const userInstance = new User(user);
     // @ts-ignore
@@ -32,7 +32,7 @@ describe("User", () => {
     expect(userInstance.reflect.username).toStrictEqual(user.username);
   });
 
-  it("must be able to access the attributes via the <reflect> object", async () => {
+  it("must be able to access the attributes via the <reflect> object", () => {
     const user = factory.getUser();
     const userInstance = new User(user);
     expect(userInstance.reflect.username).toStrictEqual(user.username);

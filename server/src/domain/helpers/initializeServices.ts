@@ -28,6 +28,8 @@ export interface IServices {
   favorite: IFavoriteService;
 }
 
+export const publisher = Publisher.getInstance();
+
 export function initializeInMemoryServices(): {
   services: IServices;
   repositories: IRepositories;
@@ -36,7 +38,7 @@ export function initializeInMemoryServices(): {
   const userRepository = UserInMemoryRepository.getInstance();
   const favoriteRepository = FavoriteInMemoryRepository.getInstance();
   const commentRepository = CommentInMemoryRepository.getInstance();
-  const publisher = Publisher.getInstance();
+
   const postService = new PostService({
     postRepository,
     publisher,
@@ -47,13 +49,8 @@ export function initializeInMemoryServices(): {
   });
   const commentService = new CommentService({
     commentRepository,
-    publisher,
   });
-  const favoriteService = new FavoriteService({
-    favoriteRepository,
-    postRepository,
-    userRepository,
-  });
+  const favoriteService = new FavoriteService(favoriteRepository);
   publisher.register(UserSubscriber.getInstance(userService));
   publisher.register(PostSubscriber.getInstance(postService));
   publisher.register(CommentSubscriber.getInstance(commentService));

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Post, postBuilderFactory } from "..";
 import { objectFactory } from "@domain/helpers/objectFactory";
-import { err } from "../helpers";
+import { postErrors } from "../helpers";
 import { AuthorMetadata } from "@/@typings/post";
 
 const factory = objectFactory();
@@ -9,46 +9,54 @@ const factory = objectFactory();
 describe("PostBuilder", () => {
   it("must be able create an instance of Post", () => {
     const post = factory.getPost();
-    expect(postBuilderFactory({ post })).toBeInstanceOf(Post);
+    expect(postBuilderFactory(post)).toBeInstanceOf(Post);
   });
 
   it("must be not able to create a post without a title", () => {
     const post = factory.getPost();
     delete post.title;
-    expect(() => postBuilderFactory({ post })).toThrowError(err.titleRequired);
+    expect(() => postBuilderFactory(post)).toThrowError(
+      postErrors.titleRequired
+    );
   });
 
   it("must be not able to create a post without a body", () => {
     const post = factory.getPost();
     delete post.body;
-    expect(() => postBuilderFactory({ post })).toThrowError(err.bodyRequired);
+    expect(() => postBuilderFactory(post)).toThrowError(
+      postErrors.bodyRequired
+    );
   });
 
   it("must be not able to create a post without a tags", () => {
     const post = factory.getPost();
     delete post.tags;
-    expect(() => postBuilderFactory({ post })).toThrowError(err.tagsRequired);
+    expect(() => postBuilderFactory(post)).toThrowError(
+      postErrors.tagsRequired
+    );
   });
 
   it("must be not able to create a post without a coverImage", () => {
     const post = factory.getPost();
     delete post.coverImage;
-    expect(() => postBuilderFactory({ post })).toThrowError(
-      err.coverImageRequired
+    expect(() => postBuilderFactory(post)).toThrowError(
+      postErrors.coverImageRequired
     );
   });
 
   it("must be not able to create a post without a author", () => {
     const post = factory.getPost();
     delete post.author;
-    expect(() => postBuilderFactory({ post })).toThrowError(err.authorRequired);
+    expect(() => postBuilderFactory(post)).toThrowError(
+      postErrors.authorRequired
+    );
   });
 
   it("must be not able to create a post with a author without id", () => {
     const user = factory.getUser({ userRole: "author" }) as AuthorMetadata;
     const post = factory.getPost({ author: user });
-    expect(() => postBuilderFactory({ post })).toThrowError(
-      err.authorIdRequired
+    expect(() => postBuilderFactory(post)).toThrowError(
+      postErrors.authorIdRequired
     );
   });
 
@@ -61,8 +69,8 @@ describe("PostBuilder", () => {
         id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
       } as AuthorMetadata,
     });
-    expect(() => postBuilderFactory({ post })).toThrowError(
-      err.authorUsernameRequired
+    expect(() => postBuilderFactory(post)).toThrowError(
+      postErrors.authorUsernameRequired
     );
   });
 
@@ -75,8 +83,8 @@ describe("PostBuilder", () => {
         id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
       } as AuthorMetadata,
     });
-    expect(() => postBuilderFactory({ post })).toThrowError(
-      err.authorEmailRequired
+    expect(() => postBuilderFactory(post)).toThrowError(
+      postErrors.authorEmailRequired
     );
   });
 
@@ -89,8 +97,8 @@ describe("PostBuilder", () => {
         id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
       } as AuthorMetadata,
     });
-    expect(() => postBuilderFactory({ post })).toThrowError(
-      err.authorAvatarRequired
+    expect(() => postBuilderFactory(post)).toThrowError(
+      postErrors.authorAvatarRequired
     );
   });
 
@@ -102,8 +110,8 @@ describe("PostBuilder", () => {
         id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
       } as AuthorMetadata,
     });
-    expect(() => postBuilderFactory({ post })).toThrowError(
-      err.authorRoleRequired
+    expect(() => postBuilderFactory(post)).toThrowError(
+      postErrors.authorRoleRequired
     );
   });
 });

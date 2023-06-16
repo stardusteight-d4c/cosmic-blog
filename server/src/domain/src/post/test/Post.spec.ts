@@ -5,7 +5,7 @@ import { Post } from "../Post";
 const factory = objectFactory();
 
 describe("Post", () => {
-  it("must be not able to access the attributes directly", async () => {
+  it("must be not able to access the attributes directly", () => {
     const post = factory.getPost();
     const postInstance = new Post(post);
     // @ts-ignore
@@ -24,7 +24,7 @@ describe("Post", () => {
     expect(postInstance.postedAt).toBeUndefined();
   });
 
-  it("must be not able to modify the attributes directly", async () => {
+  it("must be not able to modify the attributes directly", () => {
     const post = factory.getPost();
     const postInstance = new Post(post);
     // @ts-ignore
@@ -32,13 +32,13 @@ describe("Post", () => {
     expect(postInstance.reflect.title).toStrictEqual(post.title);
   });
 
-  it("must be create a slug when creating a post", async () => {
+  it("must be create a slug when creating a post", () => {
     const post = factory.getPost({ title: "example" });
     const postInstance = new Post(post);
-    expect(postInstance.reflect.slug).contains('example');
+    expect(postInstance.reflect.slug).contains("example");
   });
 
-  it("must be able to access the attributes via the <reflect> object", async () => {
+  it("must be able to access the attributes via the <reflect> object", () => {
     const post = factory.getPost();
     const postInstance = new Post(post);
     expect(postInstance.reflect.title).toStrictEqual(post.title);

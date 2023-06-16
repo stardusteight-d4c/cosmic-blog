@@ -1,11 +1,7 @@
 import type { IUserReflectObject } from "@typings/user";
 import { User, UserBuilder } from "@domain/src/user";
 
-export function userBuilderFactory({
-  user,
-}: {
-  user: IUserReflectObject;
-}): User {
+export function userBuilderFactory(user: IUserReflectObject): User {
   const updatedUserInstance = new UserBuilder()
     .setId(user.id)
     .setEmail(user.email)

@@ -3,9 +3,10 @@ import {
   FindAllFavoritesByUserIdCommand,
   FindByIdCommand,
 } from "@domain/globalsCommands";
-import { err } from "./errors";
+import { postErrors } from "./errors";
 import { UserSubscriber } from "../../user";
 import { Favorite, FavoriteSubscriber } from "../../favorite";
+import { userErrors } from "../../user/helpers";
 
 namespace ServiceHandlers {
   export async function findSlugAndThrowError(params: {
@@ -15,7 +16,7 @@ namespace ServiceHandlers {
     const { postRepository, slug } = params;
     const slugFound = await postRepository.findBySlug(slug);
     if (slugFound) {
-      throw new Error(err.slugAlreadyExists(slug));
+      throw new Error(postErrors.slugAlreadyExists(slug));
     }
   }
 
@@ -31,7 +32,7 @@ namespace ServiceHandlers {
       targetSubscriber,
     });
     if (!existingUser) {
-      throw new Error(err.userNotFoundWithId(id));
+      throw new Error(userErrors.userNotFoundWithId(id));
     }
     return existingUser;
   }
@@ -43,7 +44,7 @@ namespace ServiceHandlers {
     const { postRepository, id } = params;
     const existingPost = await postRepository.findById(id);
     if (!existingPost) {
-      throw new Error(err.postNotFoundWithId(id));
+      throw new Error(postErrors.postNotFoundWithId(id));
     }
     return existingPost;
   }

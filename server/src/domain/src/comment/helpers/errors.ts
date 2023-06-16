@@ -1,4 +1,4 @@
-export const err = {
+export const commentErrors = {
   postRequired: "post is required",
   ownerRequired: "owner is required",
   contentRequired: "content is required",
@@ -10,7 +10,5 @@ export const err = {
   ownerUsernameRequired: "username in owner metadata is required",
   ownerAvatarRequired: "avatar in owner metadata is required",
   charactersLimitExceed: "the comment exceeds the 500 character limit",
-  userNotFoundWithId: (id: string) => `no user found with id: ${id}`,
-  postNotFoundWithId: (id: string) => `no post found with id: ${id}`,
   commentNotFoundWithId: (id: string) => `no comment found with id: ${id}`,
 };

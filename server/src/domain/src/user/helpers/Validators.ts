@@ -1,35 +1,35 @@
 import type { TUserRole } from "@typings/user";
-import { err } from "./errors";
+import { userErrors } from "./errors";
 
 namespace Validators {
   export function validateEmail(email: string): void {
     if (!email) {
-      throw new Error(err.emailRequired);
+      throw new Error(userErrors.emailRequired);
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      throw new Error(err.invalidEmail);
+      throw new Error(userErrors.invalidEmail);
     }
   }
 
   export function validateUsername(username: string): void {
     if (!username) {
-      throw new Error(err.usernameRequired);
+      throw new Error(userErrors.usernameRequired);
     }
     const regex = /^(?=.*[a-z])[a-z0-9]{3,}$/;
     const isValidUsername = regex.test(username);
     if (!isValidUsername) {
-      throw new Error(err.invalidUsername);
+      throw new Error(userErrors.invalidUsername);
     }
   }
 
   export function validatePassword(password: string): void {
     if (!password) {
-      throw new Error(err.passwordRequired);
+      throw new Error(userErrors.passwordRequired);
     }
     const passwordRegex = /^(?=.*\d).{8,}$/;
     if (!passwordRegex.test(password)) {
-      throw new Error(err.invalidPassword);
+      throw new Error(userErrors.invalidPassword);
     }
   }
 
@@ -44,13 +44,7 @@ namespace Validators {
 
   export function validateUserRole(role: TUserRole): void {
     if (role != "reader" && role != "author") {
-      throw new Error(err.invalidUserRole);
-    }
-  }
-
-  export function checkPrimitiveType(data: { validating: any; type: string }) {
-    if (typeof data.validating !== data.type) {
-      throw new Error(`The validating is not of type ${data.type}.`);
+      throw new Error(userErrors.invalidUserRole);
     }
   }
 }

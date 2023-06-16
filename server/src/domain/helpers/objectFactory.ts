@@ -61,8 +61,12 @@ export function objectFactory(): IObjectFactory {
     params?: IFavoriteReflectObject
   ): IFavoriteReflectObject => {
     return {
-      postId: params?.postId && params?.postId,
-      userId: params?.userId && params?.userId,
+      postId: params?.postId
+        ? params?.postId
+        : "e8dfe910-a5b0-4b71-98e6-555506cfef1d",
+      userId: params?.userId
+        ? params?.userId
+        : "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
     };
   };
 

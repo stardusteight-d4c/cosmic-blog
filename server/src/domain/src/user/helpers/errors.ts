@@ -1,4 +1,4 @@
-export const err = {
+export const userErrors = {
   invalidEmail: "a valid email address was not entered",
   emailAlreadyExists: "email already exists",
   emailRequired: "email is required",

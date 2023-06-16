@@ -7,8 +7,9 @@ import {
   type IServices,
 } from "@domain/helpers/initializeServices";
 import { objectFactory } from "@domain/helpers/objectFactory";
-import { err } from "../helpers";
+import { postErrors } from "../helpers";
 import { Post } from "../Post";
+import { userErrors } from "../../user/helpers";
 
 let repositories: IRepositories;
 let services: IServices;
@@ -57,7 +58,7 @@ describe("PostService", () => {
     });
     const postInstance = await services.post.createPost(post);
     await expect(services.post.createPost(post)).rejects.toThrowError(
-      err.slugAlreadyExists(postInstance.reflect.slug)
+      postErrors.slugAlreadyExists(postInstance.reflect.slug)
     );
   });
 
@@ -70,7 +71,7 @@ describe("PostService", () => {
       } as AuthorMetadata,
     });
     await expect(services.post.createPost(post)).rejects.toThrowError(
-      err.userNotFoundWithId(undefined)
+      userErrors.userNotFoundWithId(undefined)
     );
   });
 
@@ -82,7 +83,7 @@ describe("PostService", () => {
         ...post,
         title: newTitle,
       })
-    ).rejects.toThrowError(err.postNotFoundWithId(undefined));
+    ).rejects.toThrowError(postErrors.postNotFoundWithId(undefined));
   });
 
   it("must be able to update a post partially", async () => {

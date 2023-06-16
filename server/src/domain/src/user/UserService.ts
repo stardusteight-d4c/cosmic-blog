@@ -20,7 +20,7 @@ export class UserService implements IUserService {
   }
 
   public async createUser(user: IUserReflectObject): Promise<User> {
-    const newUser = userBuilderFactory({ user });
+    const newUser = userBuilderFactory(user);
     await ServiceHandlers.findEmailAndThrowError({
       userRepository: this.#userRepository,
       email: user.email,

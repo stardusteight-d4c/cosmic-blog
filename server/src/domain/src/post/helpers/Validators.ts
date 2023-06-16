@@ -1,58 +1,58 @@
 import { AuthorMetadata } from "@typings/post";
-import { err } from "./errors";
+import { postErrors } from "./errors";
 
 namespace Validators {
   export function validateTitle(title: string): void {
     if (!title) {
-      throw new Error(err.titleRequired);
+      throw new Error(postErrors.titleRequired);
     }
   }
 
   export function validateTags(tags: string[]): void {
     if (!tags) {
-      throw new Error(err.tagsRequired);
+      throw new Error(postErrors.tagsRequired);
     }
     if (tags && tags.length > 4) {
-      throw new Error(err.maxTags);
+      throw new Error(postErrors.maxTags);
     }
   }
 
   export function validateBody(body: string): void {
     if (!body) {
-      throw new Error(err.bodyRequired);
+      throw new Error(postErrors.bodyRequired);
     }
   }
 
   export function validateCoverImage(coverImage: string): void {
     if (!coverImage) {
-      throw new Error(err.coverImageRequired);
+      throw new Error(postErrors.coverImageRequired);
     }
   }
 
   export function validatePostedAt(postedAt: Date): void {
     if (!postedAt) {
-      throw new Error(err.postedAtRequired);
+      throw new Error(postErrors.postedAtRequired);
     }
   }
 
   export function validateAuthor(author: AuthorMetadata): void {
     if (!author) {
-      throw new Error(err.authorRequired);
+      throw new Error(postErrors.authorRequired);
     }
     if (!author.id) {
-      throw new Error(err.authorIdRequired);
+      throw new Error(postErrors.authorIdRequired);
     }
     if (!author.email) {
-      throw new Error(err.authorEmailRequired);
+      throw new Error(postErrors.authorEmailRequired);
     }
     if (!author.username) {
-      throw new Error(err.authorUsernameRequired);
+      throw new Error(postErrors.authorUsernameRequired);
     }
     if (!author.avatar) {
-      throw new Error(err.authorAvatarRequired);
+      throw new Error(postErrors.authorAvatarRequired);
     }
     if (author.userRole !== "author") {
-      throw new Error(err.authorRoleRequired);
+      throw new Error(postErrors.authorRoleRequired);
     }
   }
 }

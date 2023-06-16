@@ -1,131 +1,172 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { IObjectFactory, objectFactory } from "@domain/helpers/objectFactory";
-import { IFavoriteRepository, IFavoriteService } from "@/@typings/favorite";
-import { IUserRepository, IUserService } from "@/@typings/user";
-import { IPostReflectObject, IPostRepository, IPostService } from "@/@typings/post";
-import {
-  User,
-  UserService,
-} from "@domain/src/user";
-import {
-  FavoriteInMemoryRepository,
-  PostInMemoryRepository,
-  UserInMemoryRepository,
-} from "@/application/in-memory-repositories";
-import {
-  Post,
-  PostService,
-} from "@domain/src/post";
-import { FavoriteService } from "../FavoriteService";
+import type { AuthorMetadata } from "@typings/post";
+import { objectFactory } from "@domain/helpers/objectFactory";
+import { initializeInMemoryServices } from "@domain/helpers";
+import { IRepositories, IServices } from "@domain/helpers/initializeServices";
+import { Post } from "@domain/src/post";
+import { User } from "../../user";
+import { favoriteErrors } from "../helpers";
+import { postErrors } from "../../post/helpers";
+import { userErrors } from "../../user/helpers";
 
-let favoriteService: IFavoriteService;
-let userService: IUserService;
-let postService: IPostService;
-let newPost: IPostReflectObject;
+let repositories: IRepositories;
+let services: IServices;
 let userInstance: User;
 let postInstance: Post;
-let factory: IObjectFactory;
-let postRepository: IPostRepository;
-let favoriteRepository: IFavoriteRepository;
-let userRepository: IUserRepository;
+const factory = objectFactory();
 
-describe.skip("FavoriteService", () => {
-  // beforeEach(async () => {
-  //   userRepository = UserInMemoryRepository.getInstance();
-  //   postRepository = PostInMemoryRepository.getInstance();
-  //   favoriteRepository = FavoriteInMemoryRepository.getInstance();
-  //   postService = new PostService({
-  //     favoriteRepository,
-  //     postRepository,
-  //     userRepository,
-  //   });
-  //   userService = new UserService({
-  //     userRepository,
-  //   });
-  //   favoriteService = new FavoriteService({
-  //     favoriteRepository,
-  //     postRepository,
-  //     userRepository,
-  //   });
-  //   factory = objectFactory();
-  //   const user = factory.getUser();
-  //   const post = factory.getPost();
-  //   userInstance = await userService.createUser(user);
-  //   newPost = {
-  //     ...post,
-  //     author: userInstance.reflect,
-  //   };
-  //   postInstance = await postService.createPost(newPost);
-  // });
-  // afterEach(async () => {
-  //   await postRepository.deleteAll();
-  //   await favoriteRepository.deleteAll();
-  //   await userRepository.deleteAll();
-  // });
+describe("FavoriteService", () => {
+  beforeEach(async () => {
+    const data: { services: IServices; repositories: IRepositories } =
+      initializeInMemoryServices();
+    services = data.services;
+    repositories = data.repositories;
+    const user = factory.getUser();
+    userInstance = await services.user.createUser(user);
+    const post = factory.getPost({
+      author: {
+        ...user,
+        id: userInstance.reflect.id,
+        userRole: "author",
+      } as AuthorMetadata,
+    });
+    postInstance = await services.post.createPost(post);
+  });
+  afterEach(async () => {
+    for (const repositoryKey in repositories) {
+      if (repositories.hasOwnProperty(repositoryKey)) {
+        const repository = repositories[repositoryKey];
+        await repository.deleteAll();
+      }
+    }
+  });
 
-  // it("must be able to favorite a post", async () => {
-  //   const postInstanceId = postInstance.reflect.id!;
-  //   const userInstanceId = userInstance.reflect.id!;
-  //   const favorite = factory.getFavorite({
-  //     userId: userInstanceId,
-  //     postId: postInstanceId,
-  //   });
-  //   await favoriteService.toggleFavoritePost(favorite);
-  //   const postFavoriteAmount = await favoriteService.getPostFavoriteAmount(
-  //     postInstanceId,
-  //   );
-  //   const userFavorites = await favoriteService.getUserFavoriteAmount(
-  //     userInstanceId,
-  //   );
-  //   expect(postFavoriteAmount).toStrictEqual(1);
-  //   expect(userFavorites).toStrictEqual(1);
-  //   await favoriteService.toggleFavoritePost(favorite);
-  //   const updatedPostFavoriteAmount =
-  //     await favoriteService.getPostFavoriteAmount(postInstanceId);
-  //   const updatedUserFavorites = await favoriteService.getUserFavoriteAmount(
-  //     userInstanceId,
-  //   );
-  //   expect(updatedPostFavoriteAmount).toStrictEqual(0);
-  //   expect(updatedUserFavorites).toStrictEqual(0);
-  // });
+  it("must be able to favorite a post", async () => {
+    const favorite = factory.getFavorite({
+      postId: postInstance.reflect.id,
+      userId: userInstance.reflect.id,
+    });
+    await services.favorite.toggleFavoritePost(favorite);
+    const postFavorites = await services.favorite.getAllFavoritesByPostId(
+      postInstance.reflect.id
+    );
+    expect(postFavorites).toHaveLength(1);
+  });
 
-  // it("must be able delete all favorites by postId", async () => {
-  //   const postInstanceId = postInstance.reflect.id!;
-  //   const userInstanceId = userInstance.reflect.id!;
-  //   const user = factory.getUser();
-  //   const post = factory.getPost();
-  //   const secondUserInstance = await userService.createUser({
-  //     ...user,
-  //     email: "newemail@email.com",
-  //     username: "newusername",
-  //   });
-  //   const newPost = {
-  //     ...post,
-  //     author: secondUserInstance.reflect,
-  //   };
-  //   const thirdPostInstance = await postService.createPost(newPost);
-  //   const firstFavorite = factory.getFavorite({
-  //     userId: userInstanceId,
-  //     postId: postInstanceId,
-  //   });
-  //   const secondFavorite = factory.getFavorite({
-  //     userId: secondUserInstance.reflect.id,
-  //     postId: postInstanceId,
-  //   });
-  //   const thirdFavorite = factory.getFavorite({
-  //     userId: userInstanceId,
-  //     postId: thirdPostInstance.reflect.id,
-  //   });
-  //   await favoriteService.toggleFavoritePost(firstFavorite);
-  //   await favoriteService.toggleFavoritePost(secondFavorite);
-  //   await favoriteService.toggleFavoritePost(thirdFavorite);
-  //   const favoritesFromPost = await favoriteService.getAllFavoritesByPostId(
-  //     postInstanceId,
-  //   );
-  //   expect(favoritesFromPost.length).toStrictEqual(2);
-  //   await favoriteService.deleteAllFavoritesByPostId(postInstanceId);
-  //   const updatedFavoritesFromPost =
-  //     await favoriteService.getAllFavoritesByPostId(postInstanceId);
-  //   expect(updatedFavoritesFromPost.length).toStrictEqual(0);
-  // });
+  it("must be able to remove favorite from a post", async () => {
+    const favorite = factory.getFavorite({
+      postId: postInstance.reflect.id,
+      userId: userInstance.reflect.id,
+    });
+    await services.favorite.toggleFavoritePost(favorite);
+    expect(
+      await services.favorite.getAllFavoritesByPostId(postInstance.reflect.id)
+    ).toHaveLength(1);
+    await services.favorite.toggleFavoritePost(favorite);
+    expect(
+      await services.favorite.getAllFavoritesByPostId(postInstance.reflect.id)
+    ).toHaveLength(0);
+  });
+
+  it("must be able to throw an error if postId does not exist in the repository", async () => {
+    const favorite = factory.getFavorite({
+      postId: "e8dfe910-a5b0-4b71-98e6-555506cfef1d-123",
+      userId: userInstance.reflect.id,
+    });
+    await expect(
+      services.favorite.toggleFavoritePost(favorite)
+    ).rejects.toThrowError(postErrors.postNotFoundWithId(favorite.postId));
+  });
+
+  it("must be able to throw an error if userId does not exist in the repository", async () => {
+    const favorite = factory.getFavorite({
+      postId: postInstance.reflect.id,
+      userId: "e8dfe910-a5b0-4b71-98e6-555506cfef1d-123",
+    });
+    await expect(
+      services.favorite.toggleFavoritePost(favorite)
+    ).rejects.toThrowError(userErrors.userNotFoundWithId(favorite.userId));
+  });
+
+  it("must be able to get the amount of favorites of a post", async () => {
+    for (let i = 0; i < 6; i++) {
+      const user = factory.getUser({
+        email: `myemail${i}@email.com`,
+        username: `2${i}pilots`,
+      });
+      userInstance = await services.user.createUser(user);
+      const favorite = factory.getFavorite({
+        postId: postInstance.reflect.id,
+        userId: userInstance.reflect.id,
+      });
+      await services.favorite.toggleFavoritePost(favorite);
+    }
+    expect(
+      await services.favorite.getAllFavoritesByPostId(postInstance.reflect.id)
+    ).toHaveLength(6);
+  });
+
+  it("must be able to get the amount of favorite posts by a user", async () => {
+    for (let i = 0; i < 6; i++) {
+      const user = factory.getUser({
+        email: `myemail${i}@email.com`,
+        username: `2${i}pilots`,
+      });
+      userInstance = await services.user.createUser(user);
+      const favorite = factory.getFavorite({
+        postId: postInstance.reflect.id,
+        userId: userInstance.reflect.id,
+      });
+      await services.favorite.toggleFavoritePost(favorite);
+    }
+    expect(
+      await services.favorite.getAllFavoritesByUserId(userInstance.reflect.id)
+    ).toHaveLength(1);
+  });
+
+  it("must be able delete all favorites by postId", async () => {
+    for (let i = 0; i < 6; i++) {
+      const user = factory.getUser({
+        email: `myemail${i}@email.com`,
+        username: `2${i}pilots`,
+      });
+      userInstance = await services.user.createUser(user);
+      const favorite = factory.getFavorite({
+        postId: postInstance.reflect.id,
+        userId: userInstance.reflect.id,
+      });
+      await services.favorite.toggleFavoritePost(favorite);
+    }
+    await services.favorite.deleteAllFavoritesByPostId(postInstance.reflect.id);
+    expect(
+      await services.favorite.getAllFavoritesByPostId(postInstance.reflect.id)
+    ).toHaveLength(0);
+  });
+
+  it("must be able delete all favorites by userId", async () => {
+    for (let i = 0; i < 6; i++) {
+      const user = factory.getUser()
+      const post = factory.getPost({
+        title: `title${i}`,
+        author: {
+          ...user,
+          id: userInstance.reflect.id,
+          userRole: "author",
+        } as AuthorMetadata,
+      });
+      postInstance = await services.post.createPost(post);
+      const favorite = factory.getFavorite({
+        postId: postInstance.reflect.id,
+        userId: userInstance.reflect.id,
+      });
+      await services.favorite.toggleFavoritePost(favorite);
+    }
+    expect(
+      await services.favorite.getAllFavoritesByUserId(userInstance.reflect.id)
+    ).toHaveLength(6);
+    await services.favorite.deleteAllFavoritesByUserId(userInstance.reflect.id);
+    expect(
+      await services.favorite.getAllFavoritesByUserId(userInstance.reflect.id)
+    ).toHaveLength(0);
+  });
 });
