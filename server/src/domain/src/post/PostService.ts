@@ -34,24 +34,25 @@ export class PostService implements IPostService {
   }
 
   public async deletePost(id: string): Promise<void> {
-    await this.postRepository.delete(id);
-    await this.#handler.publishDeletePost(id);
+    return this.postRepository
+      .delete(id)
+      .then(async () => await this.#handler.publishDeletePost(id));
   }
 
   public async getPostById(id: string): Promise<Post | undefined> {
-    return this.postRepository.findById(id).then((post) => post);
+    return await this.postRepository.findById(id);
   }
 
   public async getPostBySlug(slug: string): Promise<Post | undefined> {
-    return this.postRepository.findBySlug(slug).then((post) => post);
+    return await this.postRepository.findBySlug(slug);
   }
 
   public async getPostsByTitle(title: string): Promise<Post[]> {
-    return this.postRepository.findManyByTitle(title, 6).then((post) => post);
+    return await this.postRepository.findManyByTitle(title, 6);
   }
 
   public async getPosts(): Promise<Post[]> {
-    return this.postRepository.findAll().then((post) => post);
+    return await this.postRepository.findAll();
   }
 
   public async getPostsByPagination(request: {

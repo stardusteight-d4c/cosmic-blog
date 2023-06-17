@@ -36,9 +36,12 @@ export class FavoriteService implements IFavoriteService {
   public async toggleFavoritePost(
     favorite: IFavoriteReflectObject
   ): Promise<Favorite | undefined> {
-    await this.#handler.findPostIdOrThrowError(favorite.postId);
-    await this.#handler.findUserIdOrThrowError(favorite.userId);
-    return await this.toggle(favoriteBuilderFactory(favorite));
+    return this.#handler
+      .findPostIdOrThrowError(favorite.postId)
+      .then(async () => {
+        await this.#handler.findUserIdOrThrowError(favorite.userId);
+        return await this.toggle(favoriteBuilderFactory(favorite));
+      });
   }
 
   public async deleteAllFavoritesByPostId(postId: string): Promise<void> {

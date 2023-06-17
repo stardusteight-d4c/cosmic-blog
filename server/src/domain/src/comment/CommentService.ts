@@ -17,10 +17,14 @@ export class CommentService implements ICommentService {
   }
 
   public async createComment(comment: ICommentReflectObject): Promise<Comment> {
-    await this.#handler.findUserIdOrThrowError(comment.owner.id);
-    await this.#handler.findPostIdOrThrowError(comment.post.id);
-    const newComment = commentBuilderFactory(comment);
-    return await this.commentRepository.create(newComment);
+    return this.#handler
+      .findUserIdOrThrowError(comment.owner.id)
+      .then(async () => {
+        await this.#handler.findPostIdOrThrowError(comment.post.id);
+        return await this.commentRepository.create(
+          commentBuilderFactory(comment)
+        );
+      });
   }
 
   public async updateComment(

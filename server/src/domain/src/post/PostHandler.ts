@@ -5,9 +5,13 @@ import {
 } from "@domain/commands";
 import { userErrors } from "../user/helpers";
 import { postErrors } from "./helpers";
-import { UserSubscriber } from "../user";
+import { User, UserSubscriber } from "../user";
 import { Favorite, FavoriteSubscriber } from "../favorite";
 import { DeletePostCommand } from "./PostCommands";
+import { Post } from "./Post";
+
+type UserReponse = { uniqueResponse: User };
+type FavoriteArrayReponse = { uniqueResponse: Favorite[] };
 
 export class PostHandler {
   #postRepository: IPostRepository;
@@ -21,49 +25,52 @@ export class PostHandler {
     this.#publisher = implementations.publisher;
   }
 
-  async findSlugAndThrowError(slug: string) {
-    await this.#postRepository.findBySlug(slug).then((slugFound) => {
+  async findSlugAndThrowError(slug: string): Promise<void> {
+    return this.#postRepository.findBySlug(slug).then((slugFound) => {
       if (slugFound) {
         throw new Error(postErrors.slugAlreadyExists(slug));
       }
     });
   }
 
-  async findUserIdOrThrowError(id: string) {
-    const command = new FindByIdCommand(id);
-    const targetSubscriber = UserSubscriber.getInstance();
-    const { uniqueResponse: existingUser } = await this.#publisher.publish({
-      command,
-      targetSubscriber,
-    });
-    if (!existingUser) {
-      throw new Error(userErrors.userNotFoundWithId(id));
-    }
-    return existingUser;
-  }
-
-  async findPostIdOrThrowError(id: string) {
-    const existingPost = await this.#postRepository.findById(id);
-    if (!existingPost) {
-      throw new Error(postErrors.postNotFoundWithId(id));
-    }
-    return existingPost;
-  }
-
-  async getAllUserFavoritedPosts(userId: string) {
-    const command = new FindAllFavoritesByUserIdCommand(userId);
-    const targetSubscriber = FavoriteSubscriber.getInstance();
-    const { uniqueResponse: favorites }: { uniqueResponse: Favorite[] } =
-      await this.#publisher.publish({
-        command,
-        targetSubscriber,
+  async findUserIdOrThrowError(id: string): Promise<User> {
+    return this.#publisher
+      .publish({
+        command: new FindByIdCommand(id),
+        targetSubscriber: UserSubscriber.getInstance(),
+      })
+      .then(async ({ uniqueResponse: existingUser }: UserReponse) => {
+        if (!existingUser) {
+          throw new Error(userErrors.userNotFoundWithId(id));
+        }
+        return existingUser;
       });
-    const postIds = favorites.map((favorite) => favorite.reflect.postId);
-    return await this.#postRepository.findByIds(postIds);
   }
 
-  async publishDeletePost(postId: string) {
-    const deletePostCommand = new DeletePostCommand(postId);
-    await this.#publisher.publish({ command: deletePostCommand });
+  async findPostIdOrThrowError(id: string): Promise<Post> {
+    return this.#postRepository.findById(id).then(async (existingPost) => {
+      if (!existingPost) {
+        throw new Error(postErrors.postNotFoundWithId(id));
+      }
+      return existingPost;
+    });
+  }
+
+  async getAllUserFavoritedPosts(userId: string): Promise<Post[]> {
+    return this.#publisher
+      .publish({
+        command: new FindAllFavoritesByUserIdCommand(userId),
+        targetSubscriber: FavoriteSubscriber.getInstance(),
+      })
+      .then(async ({ uniqueResponse: favorites }: FavoriteArrayReponse) => {
+        const postIds = favorites.map((favorite) => favorite.reflect.postId);
+        return await this.#postRepository.findByIds(postIds);
+      });
+  }
+
+  async publishDeletePost(postId: string): Promise<void> {
+    await this.#publisher.publish({
+      command: new DeletePostCommand(postId),
+    });
   }
 }

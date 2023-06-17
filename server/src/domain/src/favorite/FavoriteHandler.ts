@@ -1,9 +1,13 @@
-import { IFavoriteRepository } from "@typings/favorite";
+import type { IFavoriteRepository } from "@typings/favorite";
 import { FindByIdCommand } from "@domain/commands";
-import { UserSubscriber } from "../user";
+import { User, UserSubscriber } from "../user";
 import { userErrors } from "../user/helpers";
-import { PostSubscriber } from "../post";
+import { Post, PostSubscriber } from "../post";
 import { postErrors } from "../post/helpers";
+import { Favorite } from "./Favorite";
+
+type UserResponse = { uniqueResponse: User };
+type PostResponse = { uniqueResponse: Post };
 
 export class FavoriteHandler {
   #favoriteRepository: IFavoriteRepository;
@@ -17,33 +21,35 @@ export class FavoriteHandler {
     this.#publisher = implementations.publisher;
   }
 
-  async findUserIdOrThrowError(id: string) {
-    const command = new FindByIdCommand(id);
-    const targetSubscriber = UserSubscriber.getInstance();
-    const { uniqueResponse: existingUser } = await this.#publisher.publish({
-      command,
-      targetSubscriber,
-    });
-    if (!existingUser) {
-      throw new Error(userErrors.userNotFoundWithId(id));
-    }
-    return existingUser;
+  async findUserIdOrThrowError(id: string): Promise<User> {
+    return this.#publisher
+      .publish({
+        command: new FindByIdCommand(id),
+        targetSubscriber: UserSubscriber.getInstance(),
+      })
+      .then(async ({ uniqueResponse: existingUser }: UserResponse) => {
+        if (!existingUser) {
+          throw new Error(userErrors.userNotFoundWithId(id));
+        }
+        return existingUser;
+      });
   }
 
-  async findPostIdOrThrowError(id: string) {
-    const command = new FindByIdCommand(id);
-    const targetSubscriber = PostSubscriber.getInstance();
-    const { uniqueResponse: existingPost } = await this.#publisher.publish({
-      command,
-      targetSubscriber,
-    });
-    if (!existingPost) {
-      throw new Error(postErrors.postNotFoundWithId(id));
-    }
-    return existingPost;
+  async findPostIdOrThrowError(id: string): Promise<Post> {
+    return this.#publisher
+      .publish({
+        command: new FindByIdCommand(id),
+        targetSubscriber: PostSubscriber.getInstance(),
+      })
+      .then(async ({ uniqueResponse: existingPost }: PostResponse) => {
+        if (!existingPost) {
+          throw new Error(postErrors.postNotFoundWithId(id));
+        }
+        return existingPost;
+      });
   }
 
-  async findFavoriteByKey(key: string) {
+  async findFavoriteByKey(key: string): Promise<Favorite> {
     return await this.#favoriteRepository.findFavoriteByKey(key);
   }
 }

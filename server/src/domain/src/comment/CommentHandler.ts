@@ -1,10 +1,14 @@
 import { FindByIdCommand } from "@domain/commands";
 import { ICommentRepository } from "@typings/comment";
-import { UserSubscriber } from "../user";
+import { User, UserSubscriber } from "../user";
 import { userErrors } from "../user/helpers";
-import { PostSubscriber } from "../post";
+import { Post, PostSubscriber } from "../post";
 import { postErrors } from "../post/helpers";
 import { commentErrors } from "./helpers";
+import { Comment } from "./Comment";
+
+type UserResponse = { uniqueResponse: User };
+type PostResponse = { uniqueResponse: Post };
 
 export class CommentHandler {
   #commentRepository: ICommentRepository;
@@ -18,15 +22,13 @@ export class CommentHandler {
     this.#publisher = implementations.publisher;
   }
 
-  async findUserIdOrThrowError(id: string) {
-    const command = new FindByIdCommand(id);
-    const targetSubscriber = UserSubscriber.getInstance();
+  async findUserIdOrThrowError(id: string): Promise<User> {
     return this.#publisher
       .publish({
-        command,
-        targetSubscriber,
+        command: new FindByIdCommand(id),
+        targetSubscriber: UserSubscriber.getInstance(),
       })
-      .then(async ({ uniqueResponse: existingUser }) => {
+      .then(async ({ uniqueResponse: existingUser }: UserResponse) => {
         if (!existingUser) {
           throw new Error(userErrors.userNotFoundWithId(id));
         }
@@ -34,15 +36,13 @@ export class CommentHandler {
       });
   }
 
-  async findPostIdOrThrowError(id: string) {
-    const command = new FindByIdCommand(id);
-    const targetSubscriber = PostSubscriber.getInstance();
+  async findPostIdOrThrowError(id: string): Promise<Post> {
     return this.#publisher
       .publish({
-        command,
-        targetSubscriber,
+        command: new FindByIdCommand(id),
+        targetSubscriber: PostSubscriber.getInstance(),
       })
-      .then(async ({ uniqueResponse: existingPost }) => {
+      .then(async ({ uniqueResponse: existingPost }: PostResponse) => {
         if (!existingPost) {
           throw new Error(postErrors.postNotFoundWithId(id));
         }
@@ -50,7 +50,7 @@ export class CommentHandler {
       });
   }
 
-  async findCommentIdOrThrowError(id: string) {
+  async findCommentIdOrThrowError(id: string): Promise<Comment> {
     return this.#commentRepository
       .findById(id)
       .then(async (existingComment) => {
