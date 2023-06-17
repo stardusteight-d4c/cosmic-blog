@@ -1,5 +1,6 @@
 import { Comment } from "@domain/src/comment";
 import { IUserReflectObject } from "./user";
+import { CommentHandler } from "@/domain/src/comment/CommentHandler";
 
 export interface ICommentReflectObject {
   id?: string;

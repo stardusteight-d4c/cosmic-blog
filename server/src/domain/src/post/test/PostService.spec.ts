@@ -67,11 +67,12 @@ describe("PostService", () => {
     const post = factory.getPost({
       author: {
         ...user,
+        id: "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
         userRole: "author",
       } as AuthorMetadata,
     });
     await expect(services.post.createPost(post)).rejects.toThrowError(
-      userErrors.userNotFoundWithId(undefined)
+      userErrors.userNotFoundWithId("57efe66a-ec3a-4043-9db9-bc40ce5a6a01")
     );
   });
 

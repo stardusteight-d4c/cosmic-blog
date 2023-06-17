@@ -7,8 +7,8 @@ export function userBuilderFactory(user: IUserReflectObject): User {
     .setEmail(user.email)
     .setUsername(user.username)
     .setPassword(user.password)
-    .setAvatar(user.avatar ?? undefined)
-    .setUserRole(user.userRole ?? "reader")
+    .setAvatar(user.avatar)
+    .setUserRole(user.userRole)
     .setSocialLinks(user.socialLinks)
     .build();
   return updatedUserInstance;

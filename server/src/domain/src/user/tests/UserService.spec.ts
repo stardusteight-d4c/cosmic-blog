@@ -1,27 +1,33 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { ISocialLinks, IUserRepository } from "@typings/user";
+import type { ISocialLinks, IUserService } from "@typings/user";
 import { objectFactory } from "@domain/helpers/objectFactory";
-import { UserInMemoryRepository } from "@app/in-memory-repositories";
-import { Publisher } from "@domain/Publisher";
-import { User, UserService } from "../index";
+import {
+  type IRepositories,
+  type IServices,
+  initializeInMemoryServices,
+} from "@domain/helpers/initializeServices";
+import { User } from "../index";
 import { userErrors } from "../helpers";
 
-let userService: UserService;
-let userInMemoryRepository: IUserRepository;
+let repositories: IRepositories;
+let userService: IUserService;
 const factory = objectFactory();
 
 describe("UserService", () => {
   beforeEach(async () => {
-    const publisher = Publisher.getInstance();
-    userInMemoryRepository = UserInMemoryRepository.getInstance();
-    userService = new UserService({
-      userRepository: userInMemoryRepository,
-      publisher,
-    });
+    const data: { services: IServices; repositories: IRepositories } =
+      initializeInMemoryServices();
+    userService = data.services.user;
+    repositories = data.repositories;
   });
 
   afterEach(async () => {
-    await userInMemoryRepository.deleteAll();
+    for (const repositoryKey in repositories) {
+      if (repositories.hasOwnProperty(repositoryKey)) {
+        const repository = repositories[repositoryKey];
+        await repository.deleteAll();
+      }
+    }
   });
 
   it("must be able create an instance of User", async () => {

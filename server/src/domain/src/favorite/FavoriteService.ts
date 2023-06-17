@@ -1,29 +1,44 @@
+import { Publisher } from "@domain/Publisher";
 import type {
   IFavoriteReflectObject,
   IFavoriteRepository,
   IFavoriteService,
 } from "@typings/favorite";
 import { Favorite } from ".";
-import { ServiceHandlers, favoriteBuilderFactory } from "./helpers";
+import { favoriteBuilderFactory } from "./helpers";
+import { FavoriteHandler } from "./FavoriteHandler";
 
 export class FavoriteService implements IFavoriteService {
-  constructor(readonly favoriteRepository: IFavoriteRepository) {}
+  #handler: FavoriteHandler;
+
+  constructor(readonly favoriteRepository: IFavoriteRepository) {
+    const publisher = Publisher.getInstance();
+    this.#handler = new FavoriteHandler({ favoriteRepository, publisher });
+  }
+
+  private getFavoriteKey(favorite: Favorite) {
+    return `${favorite.reflect.postId}+${favorite.reflect.userId}`;
+  }
+
+  private async toggle(favorite: Favorite) {
+    return this.#handler
+      .findFavoriteByKey(this.getFavoriteKey(favorite))
+      .then(async (existingFavorite) => {
+        if (existingFavorite) {
+          await this.favoriteRepository.delete(favorite);
+        } else {
+          await this.favoriteRepository.create(favorite);
+        }
+        return favorite;
+      });
+  }
 
   public async toggleFavoritePost(
     favorite: IFavoriteReflectObject
   ): Promise<Favorite | undefined> {
-    await ServiceHandlers.findPostIdOrThrowError(favorite.postId);
-    await ServiceHandlers.findUserIdOrThrowError(favorite.userId);
-    const newFavorite = favoriteBuilderFactory(favorite);
-    const favorites = await this.favoriteRepository.findFavoriteByKey(
-      `${newFavorite.reflect.postId}+${newFavorite.reflect.userId}`
-    );
-    if (favorites) {
-      await this.favoriteRepository.delete(newFavorite);
-    } else {
-      await this.favoriteRepository.create(newFavorite);
-    }
-    return newFavorite;
+    await this.#handler.findPostIdOrThrowError(favorite.postId);
+    await this.#handler.findUserIdOrThrowError(favorite.userId);
+    return await this.toggle(favoriteBuilderFactory(favorite));
   }
 
   public async deleteAllFavoritesByPostId(postId: string): Promise<void> {
@@ -51,7 +66,7 @@ export class FavoriteService implements IFavoriteService {
   }
 
   public async getFavorite(favorite: Favorite): Promise<Favorite> {
-    const favoriteKey = `${favorite.reflect.postId}+${favorite.reflect.userId}`;
-    return await this.favoriteRepository.findFavoriteByKey(favoriteKey);
+    const key = this.getFavoriteKey(favorite);
+    return await this.favoriteRepository.findFavoriteByKey(key);
   }
 }

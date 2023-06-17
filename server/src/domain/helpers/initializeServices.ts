@@ -38,18 +38,9 @@ export function initializeInMemoryServices(): {
   const userRepository = UserInMemoryRepository.getInstance();
   const favoriteRepository = FavoriteInMemoryRepository.getInstance();
   const commentRepository = CommentInMemoryRepository.getInstance();
-
-  const postService = new PostService({
-    postRepository,
-    publisher,
-  });
-  const userService = new UserService({
-    userRepository,
-    publisher,
-  });
-  const commentService = new CommentService({
-    commentRepository,
-  });
+  const postService = new PostService(postRepository);
+  const userService = new UserService(userRepository);
+  const commentService = new CommentService(commentRepository);
   const favoriteService = new FavoriteService(favoriteRepository);
   publisher.register(UserSubscriber.getInstance(userService));
   publisher.register(PostSubscriber.getInstance(postService));

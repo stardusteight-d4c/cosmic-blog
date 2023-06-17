@@ -3,70 +3,52 @@ import type {
   IUserRepository,
   IUserService,
 } from "@typings/user";
-import { User, userBuilderFactory } from ".";
+import { publisher } from "@domain/helpers/initializeServices";
+import { Publisher } from "@domain/Publisher";
+import { UserHandler } from "./UserHandler";
 import { DeleteUserCommand } from "./UserCommands";
-import { ServiceHandlers } from "./helpers";
+import { User, userBuilderFactory } from ".";
 
 export class UserService implements IUserService {
-  #userRepository: IUserRepository;
-  #publisher: IPublisher;
+  #handler: UserHandler;
 
-  constructor(implementations: {
-    userRepository: IUserRepository;
-    publisher: IPublisher;
-  }) {
-    this.#userRepository = implementations.userRepository;
-    this.#publisher = implementations.publisher;
+  constructor(readonly userRepository: IUserRepository) {
+    const publisher = Publisher.getInstance();
+    this.#handler = new UserHandler({ userRepository, publisher });
   }
 
   public async createUser(user: IUserReflectObject): Promise<User> {
-    const newUser = userBuilderFactory(user);
-    await ServiceHandlers.findEmailAndThrowError({
-      userRepository: this.#userRepository,
-      email: user.email,
-    });
-    await ServiceHandlers.findUsernameAndThrowError({
-      userRepository: this.#userRepository,
-      username: user.username,
-    });
-    return this.#userRepository.create(newUser).then((user) => user);
+    await this.#handler.findEmailAndThrowError(user.email);
+    await this.#handler.findUsernameAndThrowError(user.username);
+    return await this.userRepository.create(userBuilderFactory(user));
   }
 
   public async updateUser(updatedUser: IUserReflectObject): Promise<User> {
-    const existingUser = await ServiceHandlers.findIdOrThrowError({
-      userRepository: this.#userRepository,
-      id: updatedUser.id,
-    });
-    return this.#userRepository
-      .update(new User(updatedUser), existingUser)
-      .then((user) => user);
+    const existingUser = await this.#handler.findIdOrThrowError(updatedUser.id);
+    const updatedUserInstance = new User(updatedUser);
+    return await this.userRepository.update(updatedUserInstance, existingUser);
   }
 
   public async deleteUser(id: string): Promise<void> {
-    ServiceHandlers.findIdOrThrowError({
-      userRepository: this.#userRepository,
-      id,
-    });
-    await this.#userRepository.delete(id);
+    await this.#handler.findIdOrThrowError(id);
+    await this.userRepository.delete(id);
     const deleteUserCommand = new DeleteUserCommand(id);
-    await this.#publisher.publish({ command: deleteUserCommand });
+    await publisher.publish({ command: deleteUserCommand });
   }
 
   public async getUserById(id: string): Promise<User | undefined> {
-    return this.#userRepository.findById(id).then((user) => user);
+    return this.userRepository.findById(id).then((user) => user);
   }
 
   public async getUserByEmail(email: string): Promise<User | undefined> {
-    return this.#userRepository.findByEmail(email).then((user) => user);
+    return this.userRepository.findByEmail(email).then((user) => user);
   }
 
   public async getUserByUsername(username: string): Promise<User> {
-    return this.#userRepository.findByUsername(username).then((user) => user);
+    return this.userRepository.findByUsername(username).then((user) => user);
   }
 
   public async getUsersByUsername(username: string): Promise<User[]> {
-    return this.#userRepository
-      .findManyByUsername(username, 6)
-      .then((user) => user);
+    return await this.userRepository.findManyByUsername(username, 6);
   }
 }

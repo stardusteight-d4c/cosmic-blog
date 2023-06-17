@@ -1,11 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { AuthorMetadata } from "@typings/post";
+import {
+  type IRepositories,
+  type IServices,
+  initializeInMemoryServices,
+} from "@domain/helpers/initializeServices";
 import { objectFactory } from "@domain/helpers/objectFactory";
-import { initializeInMemoryServices } from "@domain/helpers";
-import { IRepositories, IServices } from "@domain/helpers/initializeServices";
 import { Post } from "@domain/src/post";
 import { User } from "../../user";
-import { favoriteErrors } from "../helpers";
 import { postErrors } from "../../post/helpers";
 import { userErrors } from "../../user/helpers";
 
@@ -32,6 +34,7 @@ describe("FavoriteService", () => {
     });
     postInstance = await services.post.createPost(post);
   });
+
   afterEach(async () => {
     for (const repositoryKey in repositories) {
       if (repositories.hasOwnProperty(repositoryKey)) {
@@ -145,7 +148,7 @@ describe("FavoriteService", () => {
 
   it("must be able delete all favorites by userId", async () => {
     for (let i = 0; i < 6; i++) {
-      const user = factory.getUser()
+      const user = factory.getUser();
       const post = factory.getPost({
         title: `title${i}`,
         author: {
