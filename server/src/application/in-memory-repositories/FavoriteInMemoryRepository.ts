@@ -78,13 +78,12 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
     return favorites;
   }
 
-  public async delete(favorite: Favorite): Promise<Favorite> {
+  public async delete(favorite: Favorite): Promise<void> {
     const key = this.generateKey(favorite);
     if (!this.#favorites.has(key)) {
       throw new Error("Favorite not exists");
     }
     this.#favorites.delete(key);
-    return favorite;
   }
 
   public async deleteAll(): Promise<void> {

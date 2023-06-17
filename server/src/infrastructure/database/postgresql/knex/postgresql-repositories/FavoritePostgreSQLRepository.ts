@@ -15,12 +15,6 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
     const key = this.generateKey(updatedFavorite);
     try {
       const [postId, userId] = key.split("+");
-      const existingFavorite = await knex("favorites")
-        .where({ postId, userId })
-        .first();
-      if (!existingFavorite) {
-        throw new Error(`No favorite found with key: ${key}`);
-      }
       await knex("favorites")
         .where({ postId, userId })
         .update(updatedFavorite.reflect);
@@ -39,15 +33,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
   }
 
   public async create(favorite: Favorite): Promise<Favorite> {
-    const key = this.generateKey(favorite);
     try {
-      const [postId, userId] = key.split("+");
-      const existingFavorite = await knex("favorites")
-        .where({ postId, userId })
-        .first();
-      if (existingFavorite) {
-        throw new Error("Favorite already exists");
-      }
       await knex("favorites").insert({ ...favorite.reflect });
       return favorite;
     } catch (error) {
@@ -95,18 +81,17 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
   public async findAllByUserId(userId: string): Promise<Favorite[]> {
     try {
       const favorites = await knex("favorites").where({ userId }).select("*");
-      return favorites.map((favorite) => new Favorite(favorite));
+      if (favorites) {
+        return favorites.map((favorite) => new Favorite(favorite));
+      } else {
+        return []
+      }
     } catch (error) {
       throw new Error(`Error finding favorites by user ID: ${error}`);
     }
   }
 
-  public async delete(favorite: Favorite): Promise<Favorite> {
-    const key = this.generateKey(favorite);
-    const existingFavorite = await this.findFavoriteByKey(key);
-    if (!existingFavorite) {
-      throw new Error("Favorite not found");
-    }
+  public async delete(favorite: Favorite): Promise<void> {
     try {
       await knex("favorites")
         .where({
@@ -114,7 +99,6 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
           userId: favorite.reflect.userId,
         })
         .del();
-      return existingFavorite;
     } catch (error) {
       throw new Error(`Error deleting favorite: ${error}`);
     }

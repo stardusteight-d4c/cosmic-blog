@@ -13,7 +13,7 @@ import {
 } from "@nestjs/common";
 import type { IPostReflectObject } from "@typings/post";
 import { PostUseCases } from "@app/use-cases/PostUseCases";
-import { appPostgreSQL } from "@infra/index";
+import { app } from "@infra/index";
 import { errorHandler } from "@infra/http/helpers/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
@@ -33,7 +33,7 @@ export class PostController {
     @Inject(CommentController)
     commentController: CommentController
   ) {
-    this.#postUseCases = appPostgreSQL.getPostUsesCases();
+    this.#postUseCases = app.getPostUsesCases();
     this.#favoriteController = favoriteController;
     this.#commentController = commentController;
   }

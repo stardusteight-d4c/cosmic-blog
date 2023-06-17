@@ -43,7 +43,6 @@ export class FavoriteSubscriber implements ISubscriber {
 
     if (command.operation === "find_all_favorites_by_user_id") {
       const { userId } = command as FindAllFavoritesByUserIdCommand;
-      console.log("find_all_favorites_by_user_id", userId);
       return await this.favoriteService.getAllFavoritesByUserId(userId);
     }
   }

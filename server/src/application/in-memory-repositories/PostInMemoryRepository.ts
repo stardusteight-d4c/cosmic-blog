@@ -140,8 +140,6 @@ export class PostInMemoryRepository implements IPostRepository {
     const post = this.#posts.get(id);
     if (post) {
       return post.reflect.title;
-    } else {
-      throw new Error(`Post not found for ID: ${id}`);
     }
   }
 

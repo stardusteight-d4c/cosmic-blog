@@ -12,7 +12,7 @@ import {
 import type { ICommentReflectObject } from "@typings/comment";
 import { CommentUseCases } from "@app/use-cases/CommentUseCases";
 import { JWTSessionTokenAdapter } from "@infra/adapters";
-import { appPostgreSQL } from "@infra/index";
+import { app } from "@infra/index";
 import { errorHandler } from "../../helpers/errorHandler";
 import Validators from "../../helpers/validators";
 
@@ -21,7 +21,7 @@ export class CommentController {
   #commentUseCases: CommentUseCases;
 
   constructor() {
-    this.#commentUseCases = appPostgreSQL.getCommentUsesCases();
+    this.#commentUseCases = app.getCommentUsesCases();
   }
 
   @Post("")

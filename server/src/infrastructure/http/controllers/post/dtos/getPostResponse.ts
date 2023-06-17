@@ -32,5 +32,5 @@ export async function getPostResponse(request: {
     isAuthor,
     isGuest,
     isFavorited,
-  };
+  } as IGetPostResponse;
 }

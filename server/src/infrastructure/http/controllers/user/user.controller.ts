@@ -16,7 +16,7 @@ import {
   BcryptEncryptPasswordAdapter,
 } from "@infra/adapters";
 import type { IUserReflectObject } from "@typings/user";
-import { appPostgreSQL } from "@infra/index";
+import { app } from "@infra/index";
 import { UserUseCases } from "@app/use-cases/UserUseCases";
 import { errorHandler } from "../../helpers/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
@@ -38,7 +38,7 @@ export class UserController {
     @Inject(CommentController)
     commentController: CommentController
   ) {
-    this.#userUseCases = appPostgreSQL.getUserUsesCases();
+    this.#userUseCases = app.getUserUsesCases();
     this.#favoriteController = favoriteController;
     this.#commentController = commentController;
   }

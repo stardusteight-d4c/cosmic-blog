@@ -1,19 +1,20 @@
 ### POST
 POST http://localhost:3000/post
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOWM5Mzc4ODItYjg3MC00ZGU4LTg2NjYtYzgzYTdmODkyYzhhIiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODY3NTE3NDMsImV4cCI6MTY4NzM1NjU0M30.gsKJedzI0Ry8P98cRHQx3tBTVEfD8sAfqpdN0b42dL0
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTBjNTYzNWMtZDVkZC00NDExLWE4YmQtYjYyNjA3NWVjNGI0IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODcwMTIyNDUsImV4cCI6MTY4NzYxNzA0NX0.2yj1A7duQ2y3_VPJVOvtZ57aSzwTLM749KtItjtTDT0
 
 {
- "title": "Post massa",
+ "title": "Post masssssa",
  "body": "Taaaaaaa",
  "tags": ["typescript", "typescript", "typescript", "web"],
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedAt": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "9c937882-b870-4de8-8666-c83a7f892c8a",
+    "id": "fe9df352-5c98-4efa-af62-10a1396af1ec",
     "email": "email@email.com",
     "username": "link",
-    "avatar": "Favatar02"
+    "avatar": "Favatar02",
+    "userRole": "author"
   }
 }
 ###
@@ -34,16 +35,16 @@ Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNlZWVjZjctOTMwNi00Mjg0LTljZTEtYzdiNDYwZDg5NDM2IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODY2MDk4MTEsImV4cCI6MTY4NzIxNDYxMX0.-6kHYogc1BKyERi0R5H5u97hZtjYiR8Xgt0U2xc4ogY
 
 {
- "id": "ad9abe1e-1e95-477b-bea2-4d3d1db82165",
+ "id": "5ac72c89-7aaa-4e70-8f16-50598d687119",
  "title": "NestJS",
  "body": "Post atualizado",
  "tags": ["typescript", "nestjs", "nodejs", "web"],
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedAt": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "57efe66a-ec3a-4043-9db9-bc40ce5a6a01",
-    "email": "johndoe@email.com",
-    "username": "johndoe",
+    "id": "e0c5635c-d5dd-4411-a8bd-b626075ec4b4",
+    "email": "email@email.com",
+    "username": "link",
     "avatar": "AVATAR01"
   }
 }

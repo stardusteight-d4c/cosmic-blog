@@ -34,7 +34,7 @@ export class PostHandler {
   }
 
   async findUserIdOrThrowError(id: string): Promise<User> {
-    return this.#publisher
+    return  this.#publisher
       .publish({
         command: new FindByIdCommand(id),
         targetSubscriber: UserSubscriber.getInstance(),

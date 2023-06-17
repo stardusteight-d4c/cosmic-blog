@@ -14,7 +14,6 @@ export class UserPostgreSQLRepository implements IUserRepository {
       "email",
       "avatar",
       "userRole",
-      "socialLinks",
     ];
     for (const field of fieldsToDelete) {
       if (copyUpdate[field] === undefined) {
@@ -30,7 +29,8 @@ export class UserPostgreSQLRepository implements IUserRepository {
     const newUser = new User({ ...updatedUserObj });
     await knex("users")
       .where("id", updatedUser.reflect.id)
-      .update(newUser.reflect);
+      .update(newUser.reflect)
+      .catch((err) => console.error(err));
     return updatedUser;
   }
 
@@ -42,99 +42,87 @@ export class UserPostgreSQLRepository implements IUserRepository {
   }
 
   public async create(user: User): Promise<User> {
-    try {
-      const [createdUser] = await knex("users")
-        .insert(user.reflect)
-        .returning("*");
-      return new User(createdUser);
-    } catch (error) {
-      throw new Error(`Error creating user: ${error}`);
-    }
+    return knex("users")
+      .insert(user.reflect)
+      .returning("*")
+      .then(([createdUser]) => new User(createdUser))
+      .catch((err) => {
+        throw new Error(`error creating user: ${err}`);
+      });
   }
 
   public async update(updatedUser: User, existingUser: User): Promise<User> {
-    try {
-      const user = await this.replace(updatedUser, existingUser);
-      return user;
-    } catch (error) {
-      throw new Error(`Error updating user : ${error}`);
-    }
+    return this.replace(updatedUser, existingUser)
+      .then((user) => user)
+      .catch((err) => {
+        throw new Error(`error updating user: ${err}`);
+      });
   }
 
   public async delete(userId: string): Promise<void> {
-    try {
-      await knex.transaction(async (trx) => {
+    return knex
+      .transaction(async (trx) => {
         await trx("users").where("id", userId).del().returning("*");
+      })
+      .catch((err) => {
+        throw new Error(`error deleting user: ${err}`);
       });
-    } catch (error) {
-      throw new Error(`Error deleting user by id: ${error}`);
-    }
   }
 
   public async deleteAll(): Promise<void> {
-    try {
-      return knex.transaction(async (trx) => {
+    return knex
+      .transaction(async (trx) => {
         await trx("users").del();
+      })
+      .catch((err) => {
+        throw new Error(`error deleting all users: ${err}`);
       });
-    } catch (error) {
-      throw new Error(`Error deleting all users: ${error}`);
-    }
   }
 
   public async findById(userId: string): Promise<User | undefined> {
-    try {
-      const user = await knex("users").select("*").where("id", userId).first();
-      if (user) {
-        return new User(user);
-      }
-      return undefined;
-    } catch (error) {
-      throw new Error(`Error searching for user by id: ${error}`);
-    }
+    return knex("users")
+      .select("*")
+      .where("id", userId)
+      .first()
+      .then((user) => (user ? new User(user) : undefined))
+      .catch((err) => {
+        throw new Error(`error searching for user by id: ${err}`);
+      });
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
-    try {
-      const user = await knex("users")
-        .select("*")
-        .where("email", email)
-        .first();
-      if (user) {
-        return new User(user);
-      }
-      return undefined;
-    } catch (error) {
-      throw new Error(`Error finding for user by email: ${error}`);
-    }
+    return knex("users")
+      .select("*")
+      .where("email", email)
+      .first()
+      .then((user) => (user ? new User(user) : undefined))
+      .catch((err) => {
+        throw new Error(`error finding for user by email: ${err}`);
+      });
   }
 
   public async findByUsername(username: string): Promise<User | undefined> {
-    try {
-      const user = await knex("users")
-        .select("*")
-        .where("username", username)
-        .first();
-      if (user) {
-        return new User(user);
-      }
-      return undefined;
-    } catch (error) {
-      throw new Error(`Error finding for user by username: ${error}`);
-    }
+    return knex("users")
+      .select("*")
+      .where("username", username)
+      .first()
+      .then((user) => (user ? new User(user) : undefined))
+      .catch((err) => {
+        throw new Error(`error finding for user by username: ${err}`);
+      });
   }
 
   public async findManyByUsername(
     username: string,
     limit: number
   ): Promise<User[]> {
-    try {
-      const users = await knex("users")
-        .select("*")
-        .where("username", username)
-        .limit(limit);
-      return users.map((user) => new User(user));
-    } catch (error) {
-      throw new Error(`Error finding for multiple users by username: ${error}`);
-    }
+    return knex("users")
+      .select("*")
+      .where("username", username)
+      .limit(limit)
+      .then((users) => users.map((user) => new User(user)))
+      .catch((err) => {
+        throw new Error(`error finding for multiple users by username: ${err}`);
+      });
   }
 }

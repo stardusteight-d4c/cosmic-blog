@@ -8,10 +8,6 @@ export class CommentPostgreSQLRepository implements ICommentRepository {
   private constructor() {}
 
   private async replace(updatedComment: Comment): Promise<Comment> {
-    const existingComment = await this.findById(updatedComment.reflect.id!);
-    if (!existingComment) {
-      throw new Error(`No comment found with id: ${updatedComment.reflect.id}`);
-    }
     try {
       await knex("comments")
         .where("id", updatedComment.reflect.id)
@@ -95,9 +91,6 @@ export class CommentPostgreSQLRepository implements ICommentRepository {
   public async findById(commentId: string): Promise<Comment> {
     try {
       const comment = await knex("comments").where({ id: commentId }).first();
-      if (!comment) {
-        throw new Error(`No comment found with id: ${commentId}`);
-      }
       return new Comment(comment);
     } catch (error) {
       throw new Error(`Error finding comment by id: ${error}`);

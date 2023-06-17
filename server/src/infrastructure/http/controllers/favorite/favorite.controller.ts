@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Put, Query } from "@nestjs/common";
 import { Favorite } from "@domain/src/favorite";
 import { FavoriteUseCases } from "@app/use-cases/FavoriteUseCases";
-import { appPostgreSQL } from "@infra/index";
+import { app } from "@infra/index";
 import { errorHandler } from "../../helpers/errorHandler";
 
 @Controller("favorite")
@@ -9,7 +9,7 @@ export class FavoriteController {
   #favoriteUseCases: FavoriteUseCases;
 
   constructor() {
-    this.#favoriteUseCases = appPostgreSQL.getFavoriteUsesCases();
+    this.#favoriteUseCases = app.getFavoriteUsesCases();
   }
 
   @Get("amount")

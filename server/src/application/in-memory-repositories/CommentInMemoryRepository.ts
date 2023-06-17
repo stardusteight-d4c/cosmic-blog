@@ -102,9 +102,6 @@ export class CommentInMemoryRepository implements ICommentRepository {
 
   public async findById(commentId: string): Promise<Comment | undefined> {
     const comment = this.#comments.get(commentId);
-    if (!comment) {
-      throw new Error(`No comment found with id: ${commentId}`);
-    }
     return comment;
   }
 

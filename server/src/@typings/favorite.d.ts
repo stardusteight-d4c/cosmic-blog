@@ -25,7 +25,7 @@ export interface IFavoriteRepository {
   findFavoriteByKey(favoriteKey: string): Promise<Favorite | undefined>;
   findAllByPostId(postId: string): Promise<Favorite[]>;
   findAllByUserId(userId: string): Promise<Favorite[]>;
-  delete(favorite: Favorite): Promise<Favorite>;
+  delete(favorite: Favorite): Promise<void>;
   deleteAll(): Promise<void>;
   deleteAllByPostId(postId: string): Promise<void>;
   deleteAllByUserId(userId: string): Promise<void>;
