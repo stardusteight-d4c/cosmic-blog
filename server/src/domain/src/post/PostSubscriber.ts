@@ -1,5 +1,5 @@
 import type { IPostService } from "@typings/post";
-import { FindByIdCommand } from "@domain/globalsCommands";
+import { FindByIdCommand } from "@domain/commands";
 
 export class PostSubscriber implements ISubscriber {
   signing: string[] = ["find_by_id"];

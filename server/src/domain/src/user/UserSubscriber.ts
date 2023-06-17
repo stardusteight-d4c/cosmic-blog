@@ -1,5 +1,5 @@
 import type { IUserService } from "@typings/user";
-import { FindByIdCommand } from "@domain/globalsCommands";
+import { FindByIdCommand } from "@domain/commands";
 
 export class UserSubscriber implements ISubscriber {
   signing: string[] = ["find_by_id"];

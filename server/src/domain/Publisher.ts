@@ -32,8 +32,8 @@ export class Publisher implements IPublisher {
         uniqueResponse = response;
       }
     } else {
-      for (const observer of this.subscriberServices) {
-        const response = await observer.notifyService(command);
+      for (const subscriber of this.subscriberServices) {
+        const response = await subscriber.notifyService(command);
         responses.push(response);
       }
     }

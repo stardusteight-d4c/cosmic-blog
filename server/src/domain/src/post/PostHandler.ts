@@ -2,7 +2,7 @@ import type { IPostRepository } from "@typings/post";
 import {
   FindAllFavoritesByUserIdCommand,
   FindByIdCommand,
-} from "@/domain/globalsCommands";
+} from "@domain/commands";
 import { userErrors } from "../user/helpers";
 import { postErrors } from "./helpers";
 import { UserSubscriber } from "../user";

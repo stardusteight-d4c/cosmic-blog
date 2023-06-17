@@ -1,5 +1,5 @@
 import type { IFavoriteService } from "@/@typings/favorite";
-import { FindAllFavoritesByUserIdCommand } from "@domain/globalsCommands";
+import { FindAllFavoritesByUserIdCommand } from "@domain/commands";
 import { DeletePostCommand } from "../post/PostCommands";
 import { DeleteUserCommand } from "../user/UserCommands";
 

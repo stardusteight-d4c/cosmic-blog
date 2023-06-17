@@ -1,5 +1,5 @@
 import { IFavoriteRepository } from "@typings/favorite";
-import { FindByIdCommand } from "@domain/globalsCommands";
+import { FindByIdCommand } from "@domain/commands";
 import { UserSubscriber } from "../user";
 import { userErrors } from "../user/helpers";
 import { PostSubscriber } from "../post";

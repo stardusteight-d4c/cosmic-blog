@@ -1,5 +1,5 @@
 import type { ICommentService } from "@typings/comment";
-import { FindByIdCommand } from "@domain/globalsCommands";
+import { FindByIdCommand } from "@domain/commands";
 import { DeletePostCommand } from "../post/PostCommands";
 import { DeleteUserCommand } from "../user/UserCommands";
 

@@ -8,7 +8,7 @@ import {
   FavoriteInMemoryRepository,
   PostInMemoryRepository,
   UserInMemoryRepository,
-} from "@/application/in-memory-repositories";
+} from "@app/in-memory-repositories";
 import { CommentService, CommentSubscriber } from "../src/comment";
 import { FavoriteService, FavoriteSubscriber } from "../src/favorite";
 import { UserService, UserSubscriber } from "../src/user";

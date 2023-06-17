@@ -1,5 +1,6 @@
 import type { IUserRepository } from "@typings/user";
 import { userErrors } from "./helpers";
+import { DeleteUserCommand } from "./UserCommands";
 
 export class UserHandler {
   #userRepository: IUserRepository;
@@ -14,26 +15,37 @@ export class UserHandler {
   }
 
   async findEmailAndThrowError(email: string) {
-    const emailAlreadyExists = await this.#userRepository.findByEmail(email);
-    if (emailAlreadyExists) {
-      throw new Error(userErrors.emailAlreadyExists);
-    }
+    return this.#userRepository
+      .findByEmail(email)
+      .then((emailAlreadyExists) => {
+        if (emailAlreadyExists) {
+          throw new Error(userErrors.emailAlreadyExists);
+        }
+      });
   }
 
   async findUsernameAndThrowError(username: string) {
-    const usernameAlreadyExists = await this.#userRepository.findByUsername(
-      username
-    );
-    if (usernameAlreadyExists) {
-      throw new Error(userErrors.usernameAlreadyExists);
-    }
+    return this.#userRepository
+      .findByUsername(username)
+      .then((usernameAlreadyExists) => {
+        if (usernameAlreadyExists) {
+          throw new Error(userErrors.usernameAlreadyExists);
+        }
+      });
   }
 
   async findIdOrThrowError(id: string) {
-    const existingUser = await this.#userRepository.findById(id);
-    if (!existingUser) {
-      throw new Error(userErrors.userNotFoundWithId(id));
-    }
-    return existingUser;
+    return this.#userRepository.findById(id).then((existingUser) => {
+      if (!existingUser) {
+        throw new Error(userErrors.userNotFoundWithId(id));
+      }
+      return existingUser;
+    });
+  }
+
+  async publishDeleteUser(id: string) {
+    return this.#userRepository.delete(id).then(async () => {
+      await this.#publisher.publish({ command: new DeleteUserCommand(id) });
+    });
   }
 }

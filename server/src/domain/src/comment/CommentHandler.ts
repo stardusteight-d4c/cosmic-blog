@@ -1,4 +1,4 @@
-import { FindByIdCommand } from "@/domain/globalsCommands";
+import { FindByIdCommand } from "@domain/commands";
 import { ICommentRepository } from "@typings/comment";
 import { UserSubscriber } from "../user";
 import { userErrors } from "../user/helpers";
