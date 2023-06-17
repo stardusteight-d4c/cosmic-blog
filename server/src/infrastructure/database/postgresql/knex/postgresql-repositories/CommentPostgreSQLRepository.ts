@@ -1,4 +1,4 @@
-import type { ICommentRepository } from "@/@typings/comment";
+import type { ICommentRepository } from "@typings/comment";
 import { Comment } from "@domain/src/comment";
 import { knex } from "../config";
 
@@ -50,11 +50,10 @@ export class CommentPostgreSQLRepository implements ICommentRepository {
     }
   }
 
-  public async delete(commentId: string): Promise<Comment> {
+  public async delete(commentId: string): Promise<void> {
     try {
-      const comment = await this.findById(commentId);
+      await this.findById(commentId);
       await knex("comments").where({ id: commentId }).delete();
-      return comment;
     } catch (error) {
       throw new Error(`Error deleting comment: ${error}`);
     }

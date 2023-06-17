@@ -9,12 +9,12 @@ import {
   Headers,
   Query,
 } from "@nestjs/common";
+import type { ICommentReflectObject } from "@typings/comment";
 import { CommentUseCases } from "@app/use-cases/CommentUseCases";
+import { JWTSessionTokenAdapter } from "@infra/adapters";
 import { appPostgreSQL } from "@infra/index";
 import { errorHandler } from "../../helpers/errorHandler";
-import type { ICommentReflectObject } from "@/@typings/comment";
 import Validators from "../../helpers/validators";
-import { JWTSessionTokenAdapter } from "@/infrastructure/adapters";
 
 @Controller("comment")
 export class CommentController {

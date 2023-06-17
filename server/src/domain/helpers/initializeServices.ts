@@ -28,12 +28,11 @@ export interface IServices {
   favorite: IFavoriteService;
 }
 
-export const publisher = Publisher.getInstance();
-
 export function initializeInMemoryServices(): {
   services: IServices;
   repositories: IRepositories;
 } {
+  const publisher = Publisher.getInstance();
   const postRepository = PostInMemoryRepository.getInstance();
   const userRepository = UserInMemoryRepository.getInstance();
   const favoriteRepository = FavoriteInMemoryRepository.getInstance();

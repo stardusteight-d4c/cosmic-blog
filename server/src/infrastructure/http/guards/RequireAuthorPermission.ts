@@ -1,4 +1,3 @@
-import { JWTSessionTokenAdapter } from "@/infrastructure/adapters";
 import {
   Injectable,
   CanActivate,
@@ -6,6 +5,7 @@ import {
   UnauthorizedException,
   ForbiddenException,
 } from "@nestjs/common";
+import { JWTSessionTokenAdapter } from "@infra/adapters";
 
 @Injectable()
 export class RequireAuthorPermission implements CanActivate {

@@ -38,14 +38,24 @@ export class UserInMemoryRepository implements IUserRepository {
     return limitedUsers;
   }
 
-  private async replace(updatedUser: User, existingUser: User): Promise<User> {
-    const copyUpdate = updatedUser.reflect;
+  private createUpdatedUserObject(
+    updatedUser: IUserReflectObject,
+    existingUser: IUserReflectObject
+  ): IUserReflectObject {
+    const copyUpdate = { ...updatedUser };
     this.deleteUndefinedFields(copyUpdate);
-    const updatedUserObj = { ...existingUser.reflect, ...copyUpdate };
-    const newUser = new User({ ...updatedUserObj });
-    this.#users.delete(existingUser.reflect.id);
-    this.#users.set(newUser.reflect.id, newUser);
-    return newUser;
+    return { ...existingUser, ...copyUpdate };
+  }
+
+  private updateUserInMap(userId: string, updatedUser: User): void {
+    this.#users.delete(userId);
+    this.#users.set(updatedUser.reflect.id, updatedUser);
+  }
+
+  private async replace(updatedUser: User, existingUser: User): Promise<User> {
+    const updatedUserObj = this.createUpdatedUserObject(updatedUser.reflect, existingUser.reflect);
+    this.updateUserInMap(existingUser.reflect.id, new User(updatedUserObj));
+    return new User(updatedUserObj);
   }
 
   public static getInstance(): UserInMemoryRepository {

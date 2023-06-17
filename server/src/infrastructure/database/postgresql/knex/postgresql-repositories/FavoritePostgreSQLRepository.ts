@@ -1,4 +1,4 @@
-import type { IFavoriteRepository } from "@/@typings/favorite";
+import type { IFavoriteRepository } from "@typings/favorite";
 import { Favorite } from "@domain/src/favorite";
 import { knex } from "../config";
 
@@ -109,7 +109,10 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
     }
     try {
       await knex("favorites")
-        .where({ postId: favorite.postId, userId: favorite.userId })
+        .where({
+          postId: favorite.reflect.postId,
+          userId: favorite.reflect.userId,
+        })
         .del();
       return existingFavorite;
     } catch (error) {

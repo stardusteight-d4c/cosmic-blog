@@ -1,4 +1,4 @@
-import type { IPostRepository } from "@/@typings/post";
+import type { IPostRepository } from "@typings/post";
 import { Post } from "@domain/src/post";
 import { knex } from "../config";
 

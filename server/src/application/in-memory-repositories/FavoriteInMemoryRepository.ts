@@ -11,14 +11,26 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
     return `${favorite.reflect.postId}+${favorite.reflect.userId}`;
   }
 
-  private async replace(updatedFavorite: Favorite): Promise<Favorite> {
+  private async findExistingFavorite(
+    updatedFavorite: Favorite
+  ): Promise<Favorite> {
     const key = this.generateKey(updatedFavorite);
     const existingFavorite = await this.findFavoriteByKey(key);
     if (!existingFavorite) {
       throw new Error(`No favorite found`);
     }
+    return existingFavorite;
+  }
+
+  private updateFavoriteInMap(key: string, updatedFavorite: Favorite): void {
     this.#favorites.delete(key);
     this.#favorites.set(key, updatedFavorite);
+  }
+
+  private async replace(updatedFavorite: Favorite): Promise<Favorite> {
+    const key = this.generateKey(updatedFavorite);
+    await this.findExistingFavorite(updatedFavorite);
+    this.updateFavoriteInMap(key, updatedFavorite);
     return updatedFavorite;
   }
 

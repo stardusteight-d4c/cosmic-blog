@@ -49,14 +49,27 @@ export class PostInMemoryRepository implements IPostRepository {
     return dateB - dateA;
   }
 
-  private async replace(updatedPost: Post, existingPost: Post): Promise<Post> {
-    const copyUpdate = updatedPost.reflect;
+  private createUpdatedPostObject(
+    updatedPost: IPostReflectObject,
+    existingPost: IPostReflectObject
+  ): IPostReflectObject {
+    const copyUpdate = { ...updatedPost };
     this.deleteUndefinedFields(copyUpdate);
-    const updatedPostObj = { ...existingPost.reflect, ...copyUpdate };
-    const newPost = new Post({ ...updatedPostObj });
-    this.#posts.delete(existingPost.reflect.id);
-    this.#posts.set(newPost.reflect.id, newPost);
-    return newPost;
+    return { ...existingPost, ...copyUpdate };
+  }
+
+  private updatePostInMap(postId: string, updatedPost: Post): void {
+    this.#posts.delete(postId);
+    this.#posts.set(updatedPost.reflect.id, updatedPost);
+  }
+
+  private async replace(updatedPost: Post, existingPost: Post): Promise<Post> {
+    const updatedPostObj = this.createUpdatedPostObject(
+      updatedPost.reflect,
+      existingPost.reflect
+    );
+    this.updatePostInMap(existingPost.reflect.id, new Post(updatedPostObj));
+    return new Post(updatedPostObj);
   }
 
   public static getInstance(): PostInMemoryRepository {

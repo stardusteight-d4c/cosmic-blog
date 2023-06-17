@@ -19,16 +19,37 @@ export class CommentInMemoryRepository implements ICommentRepository {
     }
   }
 
+  private mergeCommentObjects(
+    updatedComment: Comment,
+    existingComment: Comment
+  ): ICommentReflectObject {
+    const copyUpdate = updatedComment.reflect;
+    this.deleteUndefinedFields(copyUpdate);
+    return { ...existingComment.reflect, ...copyUpdate };
+  }
+
+  private createCommentInstance(commentObject: ICommentReflectObject): Comment {
+    return new Comment({ ...commentObject });
+  }
+
+  private updateCommentInMap(
+    existingCommentId: string,
+    newComment: Comment
+  ): void {
+    this.#comments.delete(existingCommentId);
+    this.#comments.set(newComment.reflect.id!, newComment);
+  }
+
   private async replace(
     updatedComment: Comment,
     existingComment: Comment
   ): Promise<Comment> {
-    const copyUpdate = updatedComment.reflect;
-    this.deleteUndefinedFields(copyUpdate);
-    const updateCommentObj = { ...existingComment.reflect, ...copyUpdate };
-    const newComment = new Comment({ ...updateCommentObj });
-    this.#comments.delete(existingComment.reflect.id);
-    this.#comments.set(newComment.reflect.id!, newComment);
+    const updatedCommentObj = this.mergeCommentObjects(
+      updatedComment,
+      existingComment
+    );
+    const newComment = this.createCommentInstance(updatedCommentObj);
+    this.updateCommentInMap(existingComment.reflect.id!, newComment);
     return newComment;
   }
 

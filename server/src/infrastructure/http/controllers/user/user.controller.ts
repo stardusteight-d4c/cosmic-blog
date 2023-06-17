@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import {
   Body,
   Controller,
@@ -14,17 +15,16 @@ import {
   JWTSessionTokenAdapter,
   BcryptEncryptPasswordAdapter,
 } from "@infra/adapters";
+import type { IUserReflectObject } from "@typings/user";
 import { appPostgreSQL } from "@infra/index";
 import { UserUseCases } from "@app/use-cases/UserUseCases";
 import { errorHandler } from "../../helpers/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
-import { IGetUserResponse, IRegisterResponse } from "./@dtos";
+import { IGetUserResponse, IRegisterResponse } from "./dtos";
 import Validators from "../../helpers/validators";
-import { getUserResponse } from "./@dtos/builders/getResponse";
-import { registerResponse } from "./@dtos/builders/registerResponse";
-import type { IUserReflectObject } from "@/@typings/user";
-import bcrypt from "bcrypt";
+import { getUserResponse } from "./dtos/builders/getResponse";
+import { registerResponse } from "./dtos/builders/registerResponse";
 
 @Controller("user")
 export class UserController {

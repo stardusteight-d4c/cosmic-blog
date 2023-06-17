@@ -1,4 +1,4 @@
-import { IEncryptPasswordAdapter } from "@/application/adapters";
+import { IEncryptPasswordAdapter } from "@app/adapters";
 import bcrypt from "bcrypt";
 
 export class BcryptEncryptPasswordAdapter implements IEncryptPasswordAdapter {

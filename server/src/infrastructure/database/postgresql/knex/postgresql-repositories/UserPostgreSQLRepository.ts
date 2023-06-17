@@ -1,4 +1,4 @@
-import type { IUserRepository } from "@/@typings/user";
+import type { IUserRepository } from "@typings/user";
 import { User } from "@domain/src/user";
 import { knex } from "../config";
 
