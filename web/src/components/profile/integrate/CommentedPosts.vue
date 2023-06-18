@@ -6,7 +6,7 @@ import { useAppStore } from "@/store";
 import { computed, onMounted, ref } from "vue";
 import { profileMethods } from "@/store/modules/profile";
 
-const props = defineProps({
+defineProps({
   commentAmount: {
     type: Number,
   },

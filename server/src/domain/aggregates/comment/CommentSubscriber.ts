@@ -1,10 +1,18 @@
 import type { ICommentService } from "@typings/comment";
 import { FindByIdCommand } from "@domain/commands";
-import { DeletePostCommand } from "../post/PostCommands";
+import {
+  DeletePostCommand,
+  GetPostCommentAmountCommand,
+} from "../post/PostCommands";
 import { DeleteUserCommand } from "../user/UserCommands";
 
 export class CommentSubscriber implements ISubscriber {
-  signing: string[] = ["delete_post", "delete_user", "find_by_id"];
+  signing: string[] = [
+    "delete_post",
+    "delete_user",
+    "find_by_id",
+    "get_post_comment_amount",
+  ];
   private static instance: CommentSubscriber;
   private readonly commentService: ICommentService;
 
@@ -40,6 +48,11 @@ export class CommentSubscriber implements ISubscriber {
     if (command.operation === "find_by_id") {
       const { id } = command as FindByIdCommand;
       await this.commentService.getCommentById(id);
+    }
+
+    if (command.operation === "find_by_id") {
+      const { postId } = command as GetPostCommentAmountCommand;
+      return await this.commentService.getPostCommentAmount(postId);
     }
   }
 }

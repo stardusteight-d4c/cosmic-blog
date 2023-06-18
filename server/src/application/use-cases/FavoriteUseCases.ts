@@ -2,7 +2,7 @@ import type { IFavoriteService } from "@typings/favorite";
 import { Favorite } from "@domain/aggregates/favorite";
 
 export class FavoriteUseCases {
-  constructor(private favoriteService: IFavoriteService) {}
+  constructor(readonly favoriteService: IFavoriteService) {}
 
   private async getUserAmount(userId: string) {
     return await this.favoriteService.getUserFavoriteAmount(userId);
@@ -12,10 +12,9 @@ export class FavoriteUseCases {
     return await this.favoriteService.getPostFavoriteAmount(postId);
   }
 
-  public async getAmount(request: IGetFavoriteAmountRequest) {
-    const call =
-      request.of === "post" ? this.getPostAmount : this.getUserAmount;
-    return await call(request.id);
+  public async getAmount(request: { of: "post" | "user"; id: string }) {
+    const call = request.of === "post" ? "getPostAmount" : "getUserAmount";
+    return await this[call](request.id);
   }
 
   public async toggle(request: { postId: string; userId: string }) {

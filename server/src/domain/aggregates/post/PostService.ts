@@ -6,6 +6,7 @@ import type {
 import { Publisher } from "@domain/Publisher";
 import { Post, postBuilderFactory } from ".";
 import { PostHandler } from "./PostHandler";
+import { Favorite } from "../favorite";
 
 export class PostService implements IPostService {
   #handler: PostHandler;
@@ -33,14 +34,14 @@ export class PostService implements IPostService {
       });
   }
 
-  public async deletePost(id: string): Promise<void> {
+  public async deletePost(postId: string): Promise<void> {
     return this.postRepository
-      .delete(id)
-      .then(async () => await this.#handler.publishDeletePost(id));
+      .delete(postId)
+      .then(async () => await this.#handler.publishDeletePost(postId));
   }
 
-  public async getPostById(id: string): Promise<Post | undefined> {
-    return await this.postRepository.findById(id);
+  public async getPostById(postId: string): Promise<Post | undefined> {
+    return await this.postRepository.findById(postId);
   }
 
   public async getPostBySlug(slug: string): Promise<Post | undefined> {
@@ -73,5 +74,22 @@ export class PostService implements IPostService {
       .then(async (favoritedPosts) =>
         favoritedPosts.slice(Number(skip), Number(skip) + Number(pageSize))
       );
+  }
+
+  public async getPostFavoriteAmount(postId: string) {
+    return await this.#handler.getFavoriteAmount(postId);
+  }
+
+  public async getPostCommentAmount(postId: string) {
+    return await this.#handler.getCommentAmount(postId);
+  }
+
+  public async isPostFavoritedByUser(request: {
+    postId: string;
+    userId: string;
+  }): Promise<boolean> {
+    return await this.#handler
+      .findPostFavorite(new Favorite(request))
+      .then((favorite) => (favorite ? true : false));
   }
 }

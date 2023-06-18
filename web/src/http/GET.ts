@@ -78,6 +78,8 @@ export class GET {
       })
       .then((res) => res.data)
       .catch((error) => console.log(error));
+      console.log(post);
+      
     return post;
   }
 

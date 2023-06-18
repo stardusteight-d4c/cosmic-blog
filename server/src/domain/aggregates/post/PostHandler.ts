@@ -2,16 +2,24 @@ import type { IPostRepository } from "@typings/post";
 import {
   FindAllFavoritesByUserIdCommand,
   FindByIdCommand,
+  FindFavoriteCommand,
 } from "@domain/commands";
 import { userErrors } from "../user/helpers";
 import { postErrors } from "./helpers";
 import { User, UserSubscriber } from "../user";
 import { Favorite, FavoriteSubscriber } from "../favorite";
-import { DeletePostCommand } from "./PostCommands";
+import {
+  DeletePostCommand,
+  GetPostCommentAmountCommand,
+  GetPostFavoriteAmountCommand,
+} from "./PostCommands";
 import { Post } from "./Post";
+import { CommentSubscriber } from "../comment";
 
 type UserReponse = { uniqueResponse: User };
-type FavoriteArrayReponse = { uniqueResponse: Favorite[] };
+type FavoriteArrayResponse = { uniqueResponse: Favorite[] };
+type AmountResponse = { uniqueResponse: number };
+type FindFavoriteResponse = { uniqueResponse: Favorite };
 
 export class PostHandler {
   #postRepository: IPostRepository;
@@ -34,7 +42,7 @@ export class PostHandler {
   }
 
   async findUserIdOrThrowError(id: string): Promise<User> {
-    return  this.#publisher
+    return this.#publisher
       .publish({
         command: new FindByIdCommand(id),
         targetSubscriber: UserSubscriber.getInstance(),
@@ -62,10 +70,37 @@ export class PostHandler {
         command: new FindAllFavoritesByUserIdCommand(userId),
         targetSubscriber: FavoriteSubscriber.getInstance(),
       })
-      .then(async ({ uniqueResponse: favorites }: FavoriteArrayReponse) => {
+      .then(async ({ uniqueResponse: favorites }: FavoriteArrayResponse) => {
         const postIds = favorites.map((favorite) => favorite.reflect.postId);
         return await this.#postRepository.findByIds(postIds);
       });
+  }
+
+  async getFavoriteAmount(postId: string): Promise<number> {
+    return this.#publisher
+      .publish({
+        command: new GetPostFavoriteAmountCommand(postId),
+        targetSubscriber: FavoriteSubscriber.getInstance(),
+      })
+      .then(({ uniqueResponse: amount }: AmountResponse) => amount);
+  }
+
+  async getCommentAmount(postId: string): Promise<number> {
+    return this.#publisher
+      .publish({
+        command: new GetPostCommentAmountCommand(postId),
+        targetSubscriber: CommentSubscriber.getInstance(),
+      })
+      .then(({ uniqueResponse: amount }: AmountResponse) => amount);
+  }
+
+  async findPostFavorite(favorite: Favorite): Promise<Favorite> {
+    return this.#publisher
+      .publish({
+        command: new FindFavoriteCommand(favorite),
+        targetSubscriber: FavoriteSubscriber.getInstance(),
+      })
+      .then(({ uniqueResponse: favorite }: FindFavoriteResponse) => favorite);
   }
 
   async publishDeletePost(postId: string): Promise<void> {

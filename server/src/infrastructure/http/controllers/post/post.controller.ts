@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Headers,
-  Inject,
   Param,
   Post,
   Put,
@@ -15,26 +14,15 @@ import type { IPostReflectObject } from "@typings/post";
 import { PostUseCases } from "@app/use-cases/PostUseCases";
 import { app } from "@infra/index";
 import { errorHandler } from "@infra/http/helpers/errorHandler";
-import { FavoriteController } from "../favorite/favorite.controller";
-import { CommentController } from "../comment/comment.controller";
 import { RequireAuthorPermission } from "../../guards/RequireAuthorPermission";
-import { getPostResponse } from "../@dtos/post/getPostResponse";
+import { JWTSessionTokenAdapter } from "@/infrastructure/adapters";
 
 @Controller("post")
 export class PostController {
   #postUseCases: PostUseCases;
-  #favoriteController: FavoriteController;
-  #commentController: CommentController;
 
-  constructor(
-    @Inject(FavoriteController)
-    favoriteController: FavoriteController,
-    @Inject(CommentController)
-    commentController: CommentController
-  ) {
+  constructor() {
     this.#postUseCases = app.getPostUsesCases();
-    this.#favoriteController = favoriteController;
-    this.#commentController = commentController;
   }
 
   @Post("")
@@ -68,14 +56,11 @@ export class PostController {
     @Headers("authorization") authorization: string
   ): Promise<IGetPostResponse> {
     return this.#postUseCases
-      .getById(id)
-      .then(async (post) => {
-        return await getPostResponse({
-          controller: this,
-          post: post.reflect,
-          authToken: authorization,
-        });
+      .getById(id, {
+        sessionTokenAdapter: new JWTSessionTokenAdapter(),
+        authToken: authorization,
       })
+      .then((post) => post)
       .catch((err) => {
         errorHandler(err);
         return null;
@@ -88,14 +73,11 @@ export class PostController {
     @Headers("authorization") authorization: string
   ): Promise<IGetPostResponse> {
     return this.#postUseCases
-      .getBySlug(slug)
-      .then(async (post) => {
-        return await getPostResponse({
-          controller: this,
-          post: post.reflect,
-          authToken: authorization,
-        });
+      .getBySlug(slug, {
+        sessionTokenAdapter: new JWTSessionTokenAdapter(),
+        authToken: authorization,
       })
+      .then((post) => post)
       .catch((err) => {
         errorHandler(err);
         return null;
@@ -164,18 +146,18 @@ export class PostController {
     });
   }
 
-  public async getFavoriteAmount(postId: string): Promise<number> {
-    return await this.#favoriteController.getAmount({ of: "post", id: postId });
-  }
+  // public async getFavoriteAmount(postId: string): Promise<number> {
+  //   return await this.#favoriteController.getAmount({ of: "post", id: postId });
+  // }
 
-  public async getCommentAmount(postId: string): Promise<number> {
-    return await this.#commentController.getAmount({ of: "post", id: postId });
-  }
+  // public async getCommentAmount(postId: string): Promise<number> {
+  //   return await this.#commentController.getAmount({ of: "post", id: postId });
+  // }
 
-  public async isFavoritedByUser(request: {
-    userId: string;
-    postId: string;
-  }): Promise<boolean> {
-    return await this.#favoriteController.isFavorited(request);
-  }
+  // public async isFavoritedByUser(request: {
+  //   userId: string;
+  //   postId: string;
+  // }): Promise<boolean> {
+  //   return await this.#favoriteController.isFavorited(request);
+  // }
 }

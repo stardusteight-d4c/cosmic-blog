@@ -30,6 +30,12 @@ export interface IPostService {
     skip: number;
     pageSize: number;
   }): Promise<Post[]>;
+  getPostFavoriteAmount(id: string): Primise<number>;
+  getPostCommentAmount(id: string): Primise<number>;
+  isPostFavoritedByUser(request: {
+    postId: string;
+    userId: string;
+  }): Promise<boolean>;
 }
 
 export interface IPostRepository {
@@ -56,4 +62,3 @@ export type AuthorMetadata = {
   avatar: string;
   userRole: TUserRole;
 };
-

@@ -41,7 +41,7 @@ export class CommentController {
       });
   }
 
-  @Get("amout")
+  @Get("amount")
   async getAmount(
     @Query() query: { of: "post" | "user"; id: string }
   ): Promise<number> {

@@ -10,7 +10,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTBjNTYzNWMt
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedAt": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "cca97660-007d-46fa-8cb3-fdf17e1ed703",
+    "id": "79464f3c-40e9-416a-878d-7ca01dd95be8",
     "email": "email@email.com",
     "username": "link",
     "avatar": "Favatar02",
@@ -91,14 +91,14 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjNlZWVjZjct
 
 
 ### FAVORITE
-GET http://localhost:3000/favorite/amount?post=c9a02a65-7822-4435-be27-77c3eead2275
+GET http://localhost:3000/favorite/amount?of=post&id=5d933a3f-2630-4079-a70b-f18f8f2db2ac
 ###
 PUT http://localhost:3000/favorite/toggle
 Content-Type: application/json
 
 { 
-  "postId": "c9a02a65-7822-4435-be27-77c3eead2275",
-  "userId": "57efe66a-ec3a-4043-9db9-bc40ce5a6a01" 
+  "postId": "5d933a3f-2630-4079-a70b-f18f8f2db2ac",
+  "userId": "83843402-b4ff-462b-9727-89126fa5b32e" 
 }
 
 

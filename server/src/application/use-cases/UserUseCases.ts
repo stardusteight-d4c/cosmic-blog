@@ -10,7 +10,7 @@ import Validators from "../helpers/Validators";
 type RegisterUserResult = { user: User; sessionToken: string };
 
 export class UserUseCases {
-  constructor(private userService: IUserService) {}
+  constructor(readonly userService: IUserService) {}
 
   async register(request: {
     user: IUserReflectObject;

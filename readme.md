@@ -4,9 +4,7 @@
 solicitando para métodos de outros serviços 
 -----> Remover FavoriteController e CommentController como dependências de PostController
 
-
-
-
+Aggregados dependem um do outro, mas nunca devem fazer parte um do outro, fazer entidades de aggregados para outros é como dois corpos existissem no mesmo lugar ao mesmo tempo, ou seja, quando você injeta uma dependência à uma entidade de um agregado "extra-terrestre", você está mesclando características/atributos/propriedades daquele agregado externo, isto quebra o encapsulamento.
 
 Platão, um filósofo grego antigo, desenvolveu a teoria das "Ideias" ou "Formas" como parte de sua filosofia metafísica. Segundo Platão, o mundo material que percebemos através dos sentidos é apenas uma cópia imperfeita e transitória de um mundo perfeito e eterno, conhecido como o "Mundo das Ideias" ou "Mundo das Formas".
 

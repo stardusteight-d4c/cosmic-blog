@@ -1,6 +1,12 @@
 import type { IFavoriteService } from "@/@typings/favorite";
-import { FindAllFavoritesByUserIdCommand } from "@domain/commands";
-import { DeletePostCommand } from "../post/PostCommands";
+import {
+  FindAllFavoritesByUserIdCommand,
+  FindFavoriteCommand,
+} from "@domain/commands";
+import {
+  DeletePostCommand,
+  GetPostFavoriteAmountCommand,
+} from "../post/PostCommands";
 import { DeleteUserCommand } from "../user/UserCommands";
 
 export class FavoriteSubscriber implements ISubscriber {
@@ -8,6 +14,8 @@ export class FavoriteSubscriber implements ISubscriber {
     "delete_post",
     "delete_user",
     "find_all_favorites_by_user_id",
+    "get_post_favorite_amount",
+    "find_favorite",
   ];
   private static instance: FavoriteSubscriber;
   private readonly favoriteService: IFavoriteService;
@@ -44,6 +52,16 @@ export class FavoriteSubscriber implements ISubscriber {
     if (command.operation === "find_all_favorites_by_user_id") {
       const { userId } = command as FindAllFavoritesByUserIdCommand;
       return await this.favoriteService.getAllFavoritesByUserId(userId);
+    }
+
+    if (command.operation === "get_post_favorite_amount") {
+      const { postId } = command as GetPostFavoriteAmountCommand;
+      return await this.favoriteService.getPostFavoriteAmount(postId);
+    }
+
+    if (command.operation === "get_post_favorite_amount") {
+      const { favorite } = command as FindFavoriteCommand;
+      return await this.favoriteService.getFavorite(favorite);
     }
   }
 }

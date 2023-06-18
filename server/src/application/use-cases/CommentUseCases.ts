@@ -4,9 +4,13 @@ import Validators from "../helpers/Validators";
 import { ISessionTokenAdapter } from "../adapters";
 
 export class CommentUseCases {
-  constructor(private commentService: ICommentService) {}
+  constructor(readonly commentService: ICommentService) {}
 
-  private async paginationByUserId(request: ICommentPaginationByParams) {
+  private async paginationByUserId(request: {
+    value: string;
+    skip: number;
+    pageSize: number;
+  }) {
     return await this.commentService.getCommentsByUserIdWithPagination({
       userId: request.value,
       skip: request.skip,
@@ -14,7 +18,11 @@ export class CommentUseCases {
     });
   }
 
-  private async paginationByPostId(request: ICommentPaginationByParams) {
+  private async paginationByPostId(request: {
+    value: string;
+    skip: number;
+    pageSize: number;
+  }) {
     return await this.commentService.getCommentsByPostIdWithPagination({
       postId: request.value,
       skip: request.skip,
@@ -66,18 +74,20 @@ export class CommentUseCases {
     return await this.commentService.updateComment(updatedComment);
   }
 
-  public async getAmount(request: IGetCommentAmountRequest) {
-    const call =
-      request.of === "post" ? this.getPostAmount : this.getUserAmount;
-    return await call(request.id);
+  public async getAmount(request: { of: "post" | "user"; id: string }) {
+    const call = request.of === "post" ? "getPostAmount" : "getUserAmount";
+    return await this[call](request.id);
   }
 
-  public async getWithPagination(request: IGetCommentWithPaginationRequest) {
+  public async getWithPagination(request: {
+    by: "userId" | "postId";
+    value: string;
+    skip: number;
+    pageSize: number;
+  }) {
     const call =
-      request.by === "postId"
-        ? this.paginationByPostId
-        : this.paginationByUserId;
-    return (await call({
+      request.by === "postId" ? "paginationByPostId" : "paginationByUserId";
+    return (await this[call]({
       value: request.value,
       skip: request.skip,
       pageSize: request.pageSize,
