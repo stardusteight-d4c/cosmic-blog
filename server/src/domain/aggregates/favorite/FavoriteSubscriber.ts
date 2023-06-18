@@ -1,4 +1,4 @@
-import type { IFavoriteService } from "@/@typings/favorite";
+import type { IFavoriteService } from "@typings/favorite";
 import {
   FindAllFavoritesByUserIdCommand,
   FindFavoriteCommand,
@@ -59,7 +59,7 @@ export class FavoriteSubscriber implements ISubscriber {
       return await this.favoriteService.getPostFavoriteAmount(postId);
     }
 
-    if (command.operation === "get_post_favorite_amount") {
+    if (command.operation === "find_favorite") {
       const { favorite } = command as FindFavoriteCommand;
       return await this.favoriteService.getFavorite(favorite);
     }

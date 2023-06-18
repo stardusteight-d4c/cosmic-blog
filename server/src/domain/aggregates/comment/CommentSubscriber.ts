@@ -50,7 +50,7 @@ export class CommentSubscriber implements ISubscriber {
       await this.commentService.getCommentById(id);
     }
 
-    if (command.operation === "find_by_id") {
+    if (command.operation === "get_post_comment_amount") {
       const { postId } = command as GetPostCommentAmountCommand;
       return await this.commentService.getPostCommentAmount(postId);
     }
