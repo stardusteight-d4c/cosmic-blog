@@ -1,5 +1,5 @@
 import type { IUserReflectObject, IUserService } from "@typings/user";
-import { User } from "@domain/src/user";
+import { User } from "@domain/aggregates/user";
 import Validators from "@infra/http/helpers/validators";
 import {
   ISessionTokenAdapter,

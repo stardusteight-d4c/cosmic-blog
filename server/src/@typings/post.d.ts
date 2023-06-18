@@ -1,4 +1,4 @@
-import { Post } from "@domain/src/post";
+import { Post } from "@domain/aggregates/post";
 import { IUserReflectObject } from "./user";
 
 export interface IPostReflectObject {

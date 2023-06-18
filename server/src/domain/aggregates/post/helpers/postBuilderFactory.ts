@@ -1,5 +1,5 @@
 import type { IPostReflectObject } from "@typings/post";
-import { Post, PostBuilder } from "../";
+import { Post, PostBuilder } from "..";
 
 export function postBuilderFactory(post: IPostReflectObject): Post {
   const updatedPostInstance = new PostBuilder()

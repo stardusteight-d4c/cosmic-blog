@@ -1,5 +1,5 @@
 import type { IUserReflectObject } from "@typings/user";
-import { User, UserBuilder } from "@domain/src/user";
+import { User, UserBuilder } from "@domain/aggregates/user";
 
 export function userBuilderFactory(user: IUserReflectObject): User {
   const updatedUserInstance = new UserBuilder()

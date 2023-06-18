@@ -6,7 +6,7 @@ import {
   initializeInMemoryServices,
 } from "@domain/helpers/initializeServices";
 import { objectFactory } from "@domain/helpers/objectFactory";
-import { Post } from "@domain/src/post";
+import { Post } from "@domain/aggregates/post";
 import { User } from "../../user";
 import { postErrors } from "../../post/helpers";
 import { userErrors } from "../../user/helpers";

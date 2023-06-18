@@ -1,5 +1,5 @@
 import type { IPostReflectObject, IPostRepository } from "@typings/post";
-import { Post } from "@domain/src/post";
+import { Post } from "@domain/aggregates/post";
 
 export class PostInMemoryRepository implements IPostRepository {
   private static instance: PostInMemoryRepository;

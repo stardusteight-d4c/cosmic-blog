@@ -6,7 +6,7 @@ import type {
 import { Comment } from "./Comment";
 import { commentBuilderFactory } from "./helpers";
 import { CommentHandler } from "./CommentHandler";
-import { Publisher } from "@/domain/Publisher";
+import { Publisher } from "@domain/Publisher";
 
 export class CommentService implements ICommentService {
   #handler: CommentHandler;

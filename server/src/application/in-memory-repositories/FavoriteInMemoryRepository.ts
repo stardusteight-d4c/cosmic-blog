@@ -1,5 +1,5 @@
 import type { IFavoriteRepository } from "@typings/favorite";
-import { Favorite } from "@domain/src/favorite";
+import { Favorite } from "@domain/aggregates/favorite";
 
 export class FavoriteInMemoryRepository implements IFavoriteRepository {
   private static instance: FavoriteInMemoryRepository;
@@ -62,10 +62,10 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
   }
 
   public async findFavoriteByUserId(userId: string): Promise<Favorite> {
-    const favoritesArray = Array.from(this.#favorites.values());
-    return favoritesArray.find(
+    const favoritesArray = Array.from(this.#favorites.values()).find(
       (favorite) => favorite.reflect.userId === userId
-    );
+    );;
+    return favoritesArray
   }
 
   public async update(updatedFavorite: Favorite): Promise<Favorite> {
@@ -79,7 +79,7 @@ export class FavoriteInMemoryRepository implements IFavoriteRepository {
   }
 
   public async delete(favorite: Favorite): Promise<void> {
-    const key = this.generateKey(favorite);
+    const key = this.generateKey(favorite)
     if (!this.#favorites.has(key)) {
       throw new Error("Favorite not exists");
     }

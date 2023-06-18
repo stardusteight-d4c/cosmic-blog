@@ -1,4 +1,4 @@
-import { Favorite } from "@domain/src/favorite";
+import { Favorite } from "@domain/aggregates/favorite";
 
 export interface IFavoriteReflectObject {
   postId: string;

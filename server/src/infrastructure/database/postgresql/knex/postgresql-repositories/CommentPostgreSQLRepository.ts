@@ -1,5 +1,5 @@
 import type { ICommentRepository } from "@typings/comment";
-import { Comment } from "@domain/src/comment";
+import { Comment } from "@domain/aggregates/comment";
 import { knex } from "../config";
 
 export class CommentPostgreSQLRepository implements ICommentRepository {

@@ -1,5 +1,5 @@
 import type { IUserRepository } from "@typings/user";
-import { User } from "@domain/src/user";
+import { User } from "@domain/aggregates/user";
 import { knex } from "../config";
 
 export class UserPostgreSQLRepository implements IUserRepository {

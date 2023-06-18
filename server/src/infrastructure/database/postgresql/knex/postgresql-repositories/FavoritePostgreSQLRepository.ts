@@ -1,5 +1,5 @@
 import type { IFavoriteRepository } from "@typings/favorite";
-import { Favorite } from "@domain/src/favorite";
+import { Favorite } from "@domain/aggregates/favorite";
 import { knex } from "../config";
 
 export class FavoritePostgreSQLRepository implements IFavoriteRepository {

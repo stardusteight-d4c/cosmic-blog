@@ -2,7 +2,7 @@ import type {
   ICommentReflectObject,
   ICommentRepository,
 } from "@typings/comment";
-import { Comment } from "@domain/src/comment";
+import { Comment } from "@domain/aggregates/comment";
 
 export class CommentInMemoryRepository implements ICommentRepository {
   private static instance: CommentInMemoryRepository;

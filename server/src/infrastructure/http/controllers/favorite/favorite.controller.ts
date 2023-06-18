@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Put, Query } from "@nestjs/common";
-import { Favorite } from "@domain/src/favorite";
+import { Favorite } from "@domain/aggregates/favorite";
 import { FavoriteUseCases } from "@app/use-cases/FavoriteUseCases";
 import { app } from "@infra/index";
 import { errorHandler } from "../../helpers/errorHandler";

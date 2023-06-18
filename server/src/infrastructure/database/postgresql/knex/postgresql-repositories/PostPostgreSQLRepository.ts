@@ -1,5 +1,5 @@
 import type { AuthorMetadata, IPostRepository } from "@typings/post";
-import { Post } from "@domain/src/post";
+import { Post } from "@domain/aggregates/post";
 import { knex } from "../config";
 
 export class PostPostgreSQLRepository implements IPostRepository {

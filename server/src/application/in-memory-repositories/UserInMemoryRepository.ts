@@ -1,5 +1,5 @@
 import type { IUserReflectObject, IUserRepository } from "@typings/user";
-import { User } from "@domain/src/user";
+import { User } from "@domain/aggregates/user";
 
 export class UserInMemoryRepository implements IUserRepository {
   private static instance: UserInMemoryRepository;

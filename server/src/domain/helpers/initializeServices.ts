@@ -9,10 +9,10 @@ import {
   PostInMemoryRepository,
   UserInMemoryRepository,
 } from "@app/in-memory-repositories";
-import { CommentService, CommentSubscriber } from "../src/comment";
-import { FavoriteService, FavoriteSubscriber } from "../src/favorite";
-import { UserService, UserSubscriber } from "../src/user";
-import { PostService, PostSubscriber } from "../src/post";
+import { CommentService, CommentSubscriber } from "../aggregates/comment";
+import { FavoriteService, FavoriteSubscriber } from "../aggregates/favorite";
+import { UserService, UserSubscriber } from "../aggregates/user";
+import { PostService, PostSubscriber } from "../aggregates/post";
 
 export interface IRepositories {
   post: IPostRepository;

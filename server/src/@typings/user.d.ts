@@ -1,4 +1,4 @@
-import { User } from "@domain/src/user";
+import { User } from "@domain/aggregates/user";
 
 export interface IUserReflectObject {
   id?: string;
