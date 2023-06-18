@@ -18,6 +18,8 @@ export interface IUserService {
   getUserByEmail(email: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   getUsersByUsername(username: string): Promise<User[]>;
+  getUserFavoriteAmount(id: string): Promise<number>;
+  getUserCommentAmount(id: string): Promise<number>;
 }
 
 export interface IUserRepository {

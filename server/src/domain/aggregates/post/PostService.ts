@@ -76,11 +76,11 @@ export class PostService implements IPostService {
       );
   }
 
-  public async getPostFavoriteAmount(postId: string) {
+  public async getPostFavoriteAmount(postId: string): Promise<number> {
     return await this.#handler.getFavoriteAmount(postId);
   }
 
-  public async getPostCommentAmount(postId: string) {
+  public async getPostCommentAmount(postId: string): Promise<number> {
     return await this.#handler.getCommentAmount(postId);
   }
 

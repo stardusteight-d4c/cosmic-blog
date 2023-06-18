@@ -56,4 +56,12 @@ export class UserService implements IUserService {
   public async getUsersByUsername(username: string): Promise<User[]> {
     return await this.userRepository.findManyByUsername(username, 6);
   }
+
+  public async getUserFavoriteAmount(userId: string) {
+    return await this.#handler.getFavoriteAmount(userId);
+  }
+
+  public async getUserCommentAmount(userId: string) {
+    return await this.#handler.getCommentAmount(userId);
+  }
 }

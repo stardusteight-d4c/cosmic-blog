@@ -4,7 +4,6 @@ import {
   Controller,
   Get,
   Headers,
-  Inject,
   Param,
   Post,
   Put,
@@ -19,44 +18,31 @@ import type { IUserReflectObject } from "@typings/user";
 import { app } from "@infra/index";
 import { UserUseCases } from "@app/use-cases/UserUseCases";
 import { errorHandler } from "../../helpers/errorHandler";
-import { FavoriteController } from "../favorite/favorite.controller";
-import { CommentController } from "../comment/comment.controller";
 import Validators from "../../../../application/helpers/Validators";
-import { registerResponse } from "../@dtos/user/registerResponse";
-import { getUserResponse } from "../@dtos/user/getResponse";
 
 @Controller("user")
 export class UserController {
   #userUseCases: UserUseCases;
-  #favoriteController: FavoriteController;
-  #commentController: CommentController;
 
-  constructor(
-    @Inject(FavoriteController)
-    favoriteController: FavoriteController,
-    @Inject(CommentController)
-    commentController: CommentController
-  ) {
+  constructor() {
     this.#userUseCases = app.getUserUsesCases();
-    this.#favoriteController = favoriteController;
-    this.#commentController = commentController;
   }
 
   @Post("register")
   public async register(
     @Body() user: IUserReflectObject
   ): Promise<IRegisterResponse> {
-    try {
-      const sessionTokenAdapter = new JWTSessionTokenAdapter();
-      const encryptPasswordAdapter = new BcryptEncryptPasswordAdapter();
-      return this.#userUseCases
-        .register({ user, sessionTokenAdapter, encryptPasswordAdapter })
-        .then(({ user, sessionToken }) => {
-          return this.buildRegisterResponse(user.reflect, sessionToken);
-        });
-    } catch (error) {
-      errorHandler(error);
-    }
+    return this.#userUseCases
+      .register({
+        user,
+        sessionTokenAdapter: new JWTSessionTokenAdapter(),
+        encryptPasswordAdapter: new BcryptEncryptPasswordAdapter(),
+      })
+      .then((user) => user)
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      });
   }
 
   @Post("verifyEmail/:email")
@@ -78,8 +64,8 @@ export class UserController {
     @Param("id") id: string
   ): Promise<{ user: IGetUserResponse }> {
     try {
-      return this.#userUseCases.getById(id).then(async (user) => {
-        return await this.buildGetUserResponse(user.reflect);
+      return this.#userUseCases.getById(id).then((user) => {
+        return user ? { user } : { user: {} as IGetUserResponse };
       });
     } catch (error) {
       errorHandler(error);
@@ -92,9 +78,7 @@ export class UserController {
   ): Promise<{ user: IGetUserResponse }> {
     try {
       return this.#userUseCases.getByUsername(username).then((user) => {
-        return user?.reflect
-          ? this.buildGetUserResponse(user.reflect)
-          : { user: {} as IGetUserResponse };
+        return user ? { user } : { user: {} as IGetUserResponse };
       });
     } catch (error) {
       errorHandler(error);
@@ -165,26 +149,5 @@ export class UserController {
     } catch (error) {
       errorHandler(error);
     }
-  }
-
-  public async getFavoriteAmount(userId: string): Promise<number> {
-    return this.#favoriteController.getAmount({ of: "user", id: userId });
-  }
-
-  public async getCommentAmount(userId: string): Promise<number> {
-    return this.#commentController.getAmount({ of: "user", id: userId });
-  }
-
-  private buildRegisterResponse(
-    user: IUserReflectObject,
-    sessionToken: string
-  ): IRegisterResponse {
-    return registerResponse({ user, sessionToken });
-  }
-
-  private async buildGetUserResponse(
-    user: IUserReflectObject
-  ): Promise<{ user: IGetUserResponse }> {
-    return await getUserResponse({ controller: this, user });
   }
 }

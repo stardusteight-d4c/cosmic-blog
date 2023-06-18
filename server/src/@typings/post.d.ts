@@ -30,8 +30,8 @@ export interface IPostService {
     skip: number;
     pageSize: number;
   }): Promise<Post[]>;
-  getPostFavoriteAmount(id: string): Primise<number>;
-  getPostCommentAmount(id: string): Primise<number>;
+  getPostFavoriteAmount(id: string): Promise<number>;
+  getPostCommentAmount(id: string): Promise<number>;
   isPostFavoritedByUser(request: {
     postId: string;
     userId: string;

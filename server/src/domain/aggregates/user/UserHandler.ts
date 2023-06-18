@@ -1,7 +1,15 @@
 import type { IUserRepository } from "@typings/user";
 import { userErrors } from "./helpers";
-import { DeleteUserCommand } from "./UserCommands";
+import {
+  DeleteUserCommand,
+  GetUserCommentAmountCommand,
+  GetUserFavoriteAmountCommand,
+} from "./UserCommands";
 import { User } from "./User";
+import { FavoriteSubscriber } from "../favorite";
+import { CommentSubscriber } from "../comment";
+
+type AmountResponse = { uniqueResponse: number };
 
 export class UserHandler {
   #userRepository: IUserRepository;
@@ -48,5 +56,23 @@ export class UserHandler {
     return this.#userRepository.delete(id).then(async () => {
       await this.#publisher.publish({ command: new DeleteUserCommand(id) });
     });
+  }
+
+  async getFavoriteAmount(userId: string): Promise<number> {
+    return this.#publisher
+      .publish({
+        command: new GetUserFavoriteAmountCommand(userId),
+        targetSubscriber: FavoriteSubscriber.getInstance(),
+      })
+      .then(({ uniqueResponse: amount }: AmountResponse) => amount);
+  }
+
+  async getCommentAmount(userId: string): Promise<number> {
+    return this.#publisher
+      .publish({
+        command: new GetUserCommentAmountCommand(userId),
+        targetSubscriber: CommentSubscriber.getInstance(),
+      })
+      .then(({ uniqueResponse: amount }: AmountResponse) => amount);
   }
 }

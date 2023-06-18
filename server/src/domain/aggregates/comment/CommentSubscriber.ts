@@ -4,7 +4,10 @@ import {
   DeletePostCommand,
   GetPostCommentAmountCommand,
 } from "../post/PostCommands";
-import { DeleteUserCommand } from "../user/UserCommands";
+import {
+  DeleteUserCommand,
+  GetUserCommentAmountCommand,
+} from "../user/UserCommands";
 
 export class CommentSubscriber implements ISubscriber {
   signing: string[] = [
@@ -12,6 +15,7 @@ export class CommentSubscriber implements ISubscriber {
     "delete_user",
     "find_by_id",
     "get_post_comment_amount",
+    "get_user_comment_amount",
   ];
   private static instance: CommentSubscriber;
   private readonly commentService: ICommentService;
@@ -53,6 +57,11 @@ export class CommentSubscriber implements ISubscriber {
     if (command.operation === "get_post_comment_amount") {
       const { postId } = command as GetPostCommentAmountCommand;
       return await this.commentService.getPostCommentAmount(postId);
+    }
+
+    if (command.operation === "get_user_comment_amount") {
+      const { userId } = command as GetUserCommentAmountCommand;
+      return await this.commentService.getUserCommentAmount(userId);
     }
   }
 }

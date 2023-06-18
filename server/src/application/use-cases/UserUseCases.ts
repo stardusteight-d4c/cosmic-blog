@@ -16,7 +16,7 @@ export class UserUseCases {
     user: IUserReflectObject;
     sessionTokenAdapter: ISessionTokenAdapter;
     encryptPasswordAdapter: IEncryptPasswordAdapter;
-  }): Promise<RegisterUserResult> {
+  }): Promise<IRegisterResponse> {
     const { user, sessionTokenAdapter, encryptPasswordAdapter } = request;
     const encryptedPassword = await encryptPasswordAdapter.encrypt(
       user.password
@@ -25,6 +25,8 @@ export class UserUseCases {
       ...user,
       password: encryptedPassword,
     });
+    const copyInstance = userInstance.reflect;
+    delete copyInstance.password;
     const sessionToken = sessionTokenAdapter.createSessionToken({
       user_id: userInstance.reflect.id!,
       email: userInstance.reflect.email,
@@ -32,7 +34,8 @@ export class UserUseCases {
       username: userInstance.reflect.username,
       avatarId: userInstance.reflect.avatar,
     });
-    return { user: userInstance, sessionToken };
+    delete user.password;
+    return { user: copyInstance as IGetUserResponse, sessionToken };
   }
 
   async verifyEmail(request: {
@@ -45,12 +48,32 @@ export class UserUseCases {
     return randomSixDigitCode;
   }
 
-  async getById(id: string): Promise<User | undefined> {
-    return await this.userService.getUserById(id);
+  async getById(id: string): Promise<IGetUserResponse> {
+    return this.userService.getUserById(id).then(async (user) => {
+      return {
+        ...(user.reflect as IGetUserResponse),
+        favoriteAmount: await this.userService.getUserFavoriteAmount(
+          user.reflect.id
+        ),
+        commentAmount: await this.userService.getUserCommentAmount(
+          user.reflect.id
+        ),
+      };
+    });
   }
 
-  async getByUsername(username: string): Promise<User | undefined> {
-    return await this.userService.getUserByUsername(username);
+  async getByUsername(username: string): Promise<IGetUserResponse> {
+    return this.userService.getUserByUsername(username).then(async (user) => {
+      return {
+        ...(user.reflect as IGetUserResponse),
+        favoriteAmount: await this.userService.getUserFavoriteAmount(
+          user.reflect.id
+        ),
+        commentAmount: await this.userService.getUserCommentAmount(
+          user.reflect.id
+        ),
+      };
+    });
   }
 
   async getByEmail(email: string): Promise<User | undefined> {

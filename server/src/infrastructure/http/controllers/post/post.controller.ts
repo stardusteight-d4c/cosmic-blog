@@ -11,11 +11,11 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import type { IPostReflectObject } from "@typings/post";
+import { JWTSessionTokenAdapter } from "@infra/adapters";
 import { PostUseCases } from "@app/use-cases/PostUseCases";
 import { app } from "@infra/index";
 import { errorHandler } from "@infra/http/helpers/errorHandler";
 import { RequireAuthorPermission } from "../../guards/RequireAuthorPermission";
-import { JWTSessionTokenAdapter } from "@/infrastructure/adapters";
 
 @Controller("post")
 export class PostController {
@@ -145,19 +145,4 @@ export class PostController {
       return null;
     });
   }
-
-  // public async getFavoriteAmount(postId: string): Promise<number> {
-  //   return await this.#favoriteController.getAmount({ of: "post", id: postId });
-  // }
-
-  // public async getCommentAmount(postId: string): Promise<number> {
-  //   return await this.#commentController.getAmount({ of: "post", id: postId });
-  // }
-
-  // public async isFavoritedByUser(request: {
-  //   userId: string;
-  //   postId: string;
-  // }): Promise<boolean> {
-  //   return await this.#favoriteController.isFavorited(request);
-  // }
 }

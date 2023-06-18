@@ -7,7 +7,7 @@ import {
   DeletePostCommand,
   GetPostFavoriteAmountCommand,
 } from "../post/PostCommands";
-import { DeleteUserCommand } from "../user/UserCommands";
+import { DeleteUserCommand, GetUserFavoriteAmountCommand } from "../user/UserCommands";
 
 export class FavoriteSubscriber implements ISubscriber {
   signing: string[] = [
@@ -16,6 +16,7 @@ export class FavoriteSubscriber implements ISubscriber {
     "find_all_favorites_by_user_id",
     "get_post_favorite_amount",
     "find_favorite",
+    "get_user_favorite_amount",
   ];
   private static instance: FavoriteSubscriber;
   private readonly favoriteService: IFavoriteService;
@@ -62,6 +63,11 @@ export class FavoriteSubscriber implements ISubscriber {
     if (command.operation === "find_favorite") {
       const { favorite } = command as FindFavoriteCommand;
       return await this.favoriteService.getFavorite(favorite);
+    }
+
+    if (command.operation ===  "get_user_favorite_amount") {
+      const { userId } = command as GetUserFavoriteAmountCommand;
+      return await this.favoriteService.getUserFavoriteAmount(userId);
     }
   }
 }
