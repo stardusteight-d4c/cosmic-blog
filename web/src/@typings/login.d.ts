@@ -1,4 +1,4 @@
-export interface ISignUpData {
+interface ISignUpData {
   username: string;
   email: string;
   password: string;
@@ -6,9 +6,9 @@ export interface ISignUpData {
   selectedAvatar: string;
 }
 
-export type TUserRole = "reader" | "author" | undefined;
+type TUserRole = "reader" | "author" | undefined;
 
-export interface IRegisterUserData {
+interface IRegisterUserData {
   email: string;
   username: string;
   password: string;

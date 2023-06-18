@@ -1,8 +1,6 @@
 import type { Module } from "vuex";
 import { AppState } from "@/store";
-import { IComment } from "@/@interfaces/comment";
 import { updateCommentInArray } from "@/utils/updateCommentInArray";
-import { IPostResponse } from "@/@interfaces/post";
 import { GET, POST, PUT, DELETE } from "@/http";
 
 export interface IPostState {

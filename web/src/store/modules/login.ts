@@ -1,6 +1,5 @@
 import type { Module } from "vuex";
 import type { AppState } from "@/store";
-import { IRegisterUserData, ISignUpData } from "@/@interfaces/login";
 import { GET, POST } from "@/http";
 
 export interface ILoginState {

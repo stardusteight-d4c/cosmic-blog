@@ -17,6 +17,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "create-post",
     component: CreatePost,
   },
+  // {
+  //   path: "/tag", tag?equals=typescript
+  //   name: "tag",
+  //   component: Profile,
+  // },
   {
     path: "/post/:slug",
     name: "post",

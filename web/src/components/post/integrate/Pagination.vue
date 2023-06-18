@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Arrow } from '@/components/@globals/atoms/icons'
 import { paginationStyles as css } from './styles'
-import { IComment } from '@/@interfaces/comment'
 
 interface IProps {
   comments: IComment[]

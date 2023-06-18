@@ -1,4 +1,4 @@
-export interface IArticleData {
+interface IArticleData {
   postId?: string;
   tags: Array<string>;
   coverImage: string;
@@ -7,7 +7,7 @@ export interface IArticleData {
   body: string;
 }
 
-export interface IHeadArticleData {
+interface IHeadArticleData {
   tags: Array<string>;
   coverImage: string;
   title: string;

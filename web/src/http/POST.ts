@@ -1,6 +1,3 @@
-import { IComment } from "@/@interfaces/comment";
-import { IRegisterUserData } from "@/@interfaces/login";
-import { IPostResponse } from "@/@interfaces/post";
 import api from "@/lib/axios";
 import { setCookie, getSessionCookie } from "@/utils";
 
@@ -24,7 +21,7 @@ export class POST {
     return data;
   }
 
-  static async publishPost(post: IPostResponse) {
+  static async publishPost(post: IPublishPostRequest) {
     const authorization = getSessionCookie();
     await api
       .post("/post", post, {

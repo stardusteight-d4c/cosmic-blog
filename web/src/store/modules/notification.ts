@@ -1,6 +1,5 @@
 import type { Module } from "vuex";
 import { AppState } from "@/store";
-import { INotification } from "@/@interfaces/notification";
 import { handleNotify } from "@/utils/handleNotify";
 
 export interface INotificationState {

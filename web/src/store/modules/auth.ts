@@ -1,6 +1,5 @@
 import type { Module } from "vuex";
 import type { AppState } from "@/store";
-import { ISession } from "@/@interfaces/auth";
 import { handleSection } from "@/utils/handleSection";
 
 export interface IAuthState {

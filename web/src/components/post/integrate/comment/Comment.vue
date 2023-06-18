@@ -5,7 +5,7 @@ import Btn from "@globals/Btn.vue";
 import { commentStyles as css } from "../styles";
 import dayjs from "dayjs";
 import { useAppStore } from "@/store";
-import { IComment } from "@/@interfaces/comment";
+import { IComment } from "@/@typings/comment";
 import { DeleteCommentPopUp } from "@/components/pop-ups";
 import { CommentFunctions } from "@/functions/CommentFunctions";
 

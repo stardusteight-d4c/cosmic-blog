@@ -1,6 +1,4 @@
-import { TUserRole } from "./login";
-
-export interface ICommentResponse {
+interface ICommentResponse {
   id: string;
   post: {
     id: string;
@@ -18,7 +16,7 @@ export interface ICommentResponse {
   postedAt: Date;
 }
 
-export interface IComment {
+interface IComment {
   id?: string;
   post: {
     id: string;

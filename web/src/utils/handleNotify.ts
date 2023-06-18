@@ -1,4 +1,3 @@
-import { INotification } from "@/@interfaces/notification";
 import { INotificationState } from "@/store/modules/notification";
 
 export function handleNotify(request: {

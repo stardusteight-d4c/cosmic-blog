@@ -1,4 +1,3 @@
-import type { NotificationType } from "@interfaces/notification";
 import { store } from "@/store";
 import { notificationMethods } from "@/store/modules/notification";
 

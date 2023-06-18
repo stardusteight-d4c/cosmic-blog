@@ -1,6 +1,4 @@
-import { TUserRole } from "./login";
-
-export type decodedToken = {
+type decodedToken = {
   user_id: string;
   username: string;
   avatarId: string;
@@ -8,7 +6,7 @@ export type decodedToken = {
   type: TUserRole;
 };
 
-export interface ISession {
+interface ISession {
   activeSession: boolean;
   token: string | undefined;
   decodedToken: decodedToken | undefined;

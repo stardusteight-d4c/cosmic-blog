@@ -1,5 +1,3 @@
-import { IPostResponse } from "@/@interfaces/post";
-
 export const headerStyles = {
   searchWrapper: `px-2 md:px-0`,
   searchInput: `inner-shadow-input mb-4 text-[#f2f2f2] bg-[#252525] outline-none w-full md:max-w-[250px] py-1 px-[10px] rounded-sm border border-transparent focus:border-blue-500 transition-all`,

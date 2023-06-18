@@ -1,5 +1,3 @@
-import { IRegisterUserData, ISignUpData } from "@/@interfaces/login";
-import { NotificationType } from "@/@interfaces/notification";
 import { store } from "@/store";
 import { loginMethods } from "@/store/modules/login";
 import { notificationMethods } from "@/store/modules/notification";

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Arrow } from "@/components/@globals/atoms/icons";
 import { paginationStyles as css } from "./styles";
-import { IPostResponse } from "@/@interfaces/post";
 
 interface IProps {
   posts: IPostResponse[];

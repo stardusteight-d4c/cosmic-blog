@@ -1,4 +1,3 @@
-import { decodedToken } from "@/@interfaces/auth";
 import { getSessionCookie } from "./getSessionCookie";
 import jwt_decode from "jwt-decode";
 import { IAuthState } from "@/store/modules/auth";

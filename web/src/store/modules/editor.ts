@@ -1,7 +1,5 @@
 import type { Module } from "vuex";
 import type { AppState } from "@/store";
-import { IArticleData } from "@/@interfaces/article";
-import { IPostResponse } from "@/@interfaces/post";
 import { POST, PUT } from "@/http";
 import { DELETE } from "@/http/DELETE";
 
@@ -54,7 +52,7 @@ export const editor: Module<IEditorState, AppState> = {
     },
   },
   actions: {
-    async [actions.publishPost](_, post: IPostResponse) {
+    async [actions.publishPost](_, post: IPublishPostRequest) {
       await POST.publishPost(post);
     },
 

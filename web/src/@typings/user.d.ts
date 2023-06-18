@@ -1,6 +1,4 @@
-import { TUserRole } from "./login";
-
-export interface ISocialLinks {
+interface ISocialLinks {
   [key: string]: string | undefined;
   github?: string;
   linkedin?: string;
@@ -10,7 +8,7 @@ export interface ISocialLinks {
   email?: string;
 }
 
-export interface IUser {
+interface IUser {
   id: string;
   email: string;
   username: string;
@@ -21,7 +19,7 @@ export interface IUser {
   commentAmount?: number;
 }
 
-export interface IUserObject {
+interface IUserObject {
   id?: string;
   email: string;
   username: string;

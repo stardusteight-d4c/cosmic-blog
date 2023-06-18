@@ -16,7 +16,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@globals/*": ["src/components/@globals/*"],
-      "@interfaces/*": ["src/@interfaces/*"],
+      "@interfaces/*": ["src/@typings/*"],
       "@store/*": ["src/store/*"],
     }
   },

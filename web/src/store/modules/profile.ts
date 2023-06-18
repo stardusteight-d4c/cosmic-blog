@@ -1,8 +1,5 @@
 import type { Module } from "vuex";
 import { AppState } from "@/store";
-import { ISocialLinks, IUser } from "@/@interfaces/user";
-import { IPostResponse } from "@/@interfaces/post";
-import { ICommentResponse } from "@/@interfaces/comment";
 import { updateSocialLinks } from "@/utils/updateSocialLinks";
 import { GET, PUT } from "@/http";
 

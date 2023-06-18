@@ -1,7 +1,3 @@
-import { IArticleData } from "@/@interfaces/article";
-import { ISession } from "@/@interfaces/auth";
-import { NotificationType } from "@/@interfaces/notification";
-import { IPostResponse } from "@/@interfaces/post";
 import { store } from "@/store";
 import { editorMethods } from "@/store/modules/editor";
 import { notificationMethods } from "@/store/modules/notification";
@@ -152,6 +148,7 @@ export class RichTextEditorFunctions {
   }
 
   async submitPost() {
+    const currentUser = this.#session.decodedToken!;
     this.notify("WARNING", "Sending post...");
     const uid = new ShortUniqueId({ length: 10 });
     const fileName = uid();
@@ -159,15 +156,18 @@ export class RichTextEditorFunctions {
       this.#editorData.value.coverImage,
       fileName
     );
-    const post = {
+    const post: IPublishPostRequest = {
       title: this.#editorData.value.title,
       body: this.#editorData.value.body,
       tags: this.#editorData.value.tags,
       postedAt: new Date(),
       coverImage: publicImageURL,
       author: {
-        id: this.#session.decodedToken!.user_id,
-        email: this.#session.decodedToken!.email,
+        id: currentUser.user_id,
+        email: currentUser.email,
+        avatar: currentUser.avatarId,
+        username: currentUser.username,
+        userRole: currentUser.type,
       },
     };
     await store.dispatch(editorMethods.actions.publishPost, post);

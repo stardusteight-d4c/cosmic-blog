@@ -1,6 +1,3 @@
-import { IComment } from "@/@interfaces/comment";
-import { IPostResponse } from "@/@interfaces/post";
-import { IUser } from "@/@interfaces/user";
 import api from "@/lib/axios";
 import { getSessionCookie } from "@/utils/getSessionCookie";
 

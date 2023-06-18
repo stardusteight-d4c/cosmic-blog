@@ -2,7 +2,6 @@
 import { ref, computed } from "vue";
 import { useAppStore } from "@store/index";
 import { headerStyles as css } from "./styles";
-import { IPostResponse } from "@/@interfaces/post";
 import { HeaderFunctions } from "@/functions/EditorFunctions";
 
 const store = useAppStore();

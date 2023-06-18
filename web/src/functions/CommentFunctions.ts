@@ -1,6 +1,3 @@
-import { ISession } from "@/@interfaces/auth";
-import { IComment } from "@/@interfaces/comment";
-import { NotificationType } from "@/@interfaces/notification";
 import { store } from "@/store";
 import { notificationMethods } from "@/store/modules/notification";
 import { postMethods } from "@/store/modules/post";

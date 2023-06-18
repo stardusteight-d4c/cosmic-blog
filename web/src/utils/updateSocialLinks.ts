@@ -1,4 +1,3 @@
-import { ISocialLinks, IUser } from "@/@interfaces/user";
 import { AppState } from "@/store";
 import { Store } from "vuex";
 import { getSinglePropertyValue } from "./getSinglePropertyValue";

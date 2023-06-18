@@ -16,12 +16,14 @@ export class PostPostgreSQLRepository implements IPostRepository {
   }
 
   private async replace(updatedPost: Post): Promise<Post> {
+    const copyUpdate = updatedPost.reflect
+    delete copyUpdate.author
+    delete copyUpdate.postedAt
     await knex("posts")
       .where("id", updatedPost.reflect.id)
       .update({
-        ...updatedPost.reflect,
-        tags: JSON.stringify(updatedPost.reflect.tags) as any,
-        author: JSON.stringify(updatedPost.reflect.author) as any,
+        ...copyUpdate,
+        tags: JSON.stringify(copyUpdate.tags) as any,
       })
       .catch((err) => console.error(err));
     return updatedPost;
@@ -49,21 +51,6 @@ export class PostPostgreSQLRepository implements IPostRepository {
           throw new Error(`error creating post: ${err}`);
         });
     });
-    // try {
-    //   return await knex.transaction(async (trx) => {
-    //     const createdPost = await trx("posts")
-    //       .insert({
-    //         ...post.reflect,
-    //         tags: JSON.stringify(post.reflect.tags) as any,
-    //         author: JSON.stringify(author) as any,
-    //       })
-    //       .returning("*")
-    //       .then((result) => result[0]);
-    //     return new Post(createdPost);
-    //   });
-    // } catch (error) {
-    //   throw new Error(`error creating post: ${error}`);
-    // }
   }
 
   public async update(updatedPost: Post): Promise<Post> {
