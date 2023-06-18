@@ -84,7 +84,15 @@ export class UserUseCases {
     return await this.userService.getUsersByUsername(username);
   }
 
-  async update(updatedUser: IUserReflectObject): Promise<User | undefined> {
+  async update(
+    updatedUser: IUserReflectObject,
+    validation: {
+      sessionTokenAdapter: ISessionTokenAdapter;
+      authToken: string;
+      userId: string;
+    }
+  ): Promise<User | undefined> {
+    Validators.isSameUser(validation);
     return await this.userService.updateUser(updatedUser);
   }
 
