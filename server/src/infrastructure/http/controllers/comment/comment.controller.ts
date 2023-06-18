@@ -14,7 +14,6 @@ import { CommentUseCases } from "@app/use-cases/CommentUseCases";
 import { JWTSessionTokenAdapter } from "@infra/adapters";
 import { app } from "@infra/index";
 import { errorHandler } from "../../helpers/errorHandler";
-import Validators from "../../helpers/validators";
 
 @Controller("comment")
 export class CommentController {
@@ -25,38 +24,34 @@ export class CommentController {
   }
 
   @Post("")
-  async comment(
+  async create(
     @Body() comment: ICommentReflectObject,
     @Headers("authorization") authorization: string
   ): Promise<ICommentReflectObject> {
-    try {
-      Validators.isSameUser({
+    return this.#commentUseCases
+      .create(comment, {
         sessionTokenAdapter: new JWTSessionTokenAdapter(),
         authToken: authorization,
         userId: comment.owner.id,
+      })
+      .then((comment) => comment.reflect)
+      .catch((err) => {
+        errorHandler(err);
+        return null;
       });
-      return await this.#commentUseCases
-        .create(comment)
-        .then((comment) => comment.reflect);
-    } catch (error) {
-      errorHandler(error);
-    }
   }
 
   @Get("amout")
-  async amount(
+  async getAmount(
     @Query() query: { of: "post" | "user"; id: string }
   ): Promise<number> {
-    try {
-      const { of, id } = query;
-      if (of == "post") {
-        return await this.#commentUseCases.getPostAmount(id);
-      } else if (of === "user") {
-        return await this.#commentUseCases.getUserAmount(id);
-      }
-    } catch (error) {
-      errorHandler(error);
-    }
+    return this.#commentUseCases
+      .getAmount(query)
+      .then((amount) => amount)
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      });
   }
 
   @Get("pagination")
@@ -69,13 +64,13 @@ export class CommentController {
       pageSize: number;
     }
   ): Promise<ICommentReflectObject[]> {
-    try {
-      return await this.#commentUseCases
-        .getWithPagination(query)
-        .then((comments) => comments?.map((comment) => comment?.reflect));
-    } catch (error) {
-      errorHandler(error);
-    }
+    return this.#commentUseCases
+      .getWithPagination(query)
+      .then((comments) => comments?.map((comment) => comment?.reflect))
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      });
   }
 
   @Put("")
@@ -83,18 +78,17 @@ export class CommentController {
     @Body() updatedComment: ICommentReflectObject,
     @Headers("authorization") authorization: string
   ): Promise<ICommentReflectObject> {
-    Validators.isSameUser({
-      sessionTokenAdapter: new JWTSessionTokenAdapter(),
-      authToken: authorization,
-      userId: updatedComment.owner.id,
-    });
-    try {
-      return await this.#commentUseCases
-        .edit(updatedComment)
-        .then((comment) => comment.reflect);
-    } catch (error) {
-      errorHandler(error);
-    }
+    return this.#commentUseCases
+      .edit(updatedComment, {
+        sessionTokenAdapter: new JWTSessionTokenAdapter(),
+        authToken: authorization,
+        userId: updatedComment.owner.id,
+      })
+      .then((comment) => comment.reflect)
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      });
   }
 
   @Delete(":commentId")
@@ -103,15 +97,15 @@ export class CommentController {
     @Query("ownerId") ownerId: string,
     @Headers("authorization") authorization: string
   ): Promise<void> {
-    try {
-      Validators.isSameUser({
+    return this.#commentUseCases
+      .delete(commentId, {
         sessionTokenAdapter: new JWTSessionTokenAdapter(),
         authToken: authorization,
         userId: ownerId,
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return null;
       });
-      await this.#commentUseCases.delete(commentId);
-    } catch (error) {
-      errorHandler(error);
-    }
   }
 }

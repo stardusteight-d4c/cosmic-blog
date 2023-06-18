@@ -21,10 +21,9 @@ import { UserUseCases } from "@app/use-cases/UserUseCases";
 import { errorHandler } from "../../helpers/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
-import { IGetUserResponse, IRegisterResponse } from "./dtos";
-import Validators from "../../helpers/validators";
-import { getUserResponse } from "./dtos/builders/getResponse";
-import { registerResponse } from "./dtos/builders/registerResponse";
+import Validators from "../../../../application/helpers/Validators";
+import { registerResponse } from "../@dtos/user/registerResponse";
+import { getUserResponse } from "../@dtos/user/getResponse";
 
 @Controller("user")
 export class UserController {
@@ -169,11 +168,11 @@ export class UserController {
   }
 
   public async getFavoriteAmount(userId: string): Promise<number> {
-    return this.#favoriteController.amount({ of: "user", id: userId });
+    return this.#favoriteController.getAmount({ of: "user", id: userId });
   }
 
   public async getCommentAmount(userId: string): Promise<number> {
-    return this.#commentController.amount({ of: "user", id: userId });
+    return this.#commentController.getAmount({ of: "user", id: userId });
   }
 
   private buildRegisterResponse(

@@ -10,7 +10,7 @@ namespace Validators {
     const decoded = sessionTokenAdapter.verifySessionToken(authToken);
     if (decoded && decoded.user_id != userId) {
       throw new Error(
-        `Authentication does not match this user!`
+        `authentication token does not match this user`
       );
     }
   }

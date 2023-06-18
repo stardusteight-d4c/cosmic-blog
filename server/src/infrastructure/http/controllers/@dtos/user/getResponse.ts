@@ -1,6 +1,5 @@
-import { IUserReflectObject } from "@/@typings/user";
-import { IGetUserResponse } from "..";
-import { UserController } from "../../user.controller";
+import { IUserReflectObject } from "@typings/user";
+import { UserController } from "../../user/user.controller";
 
 export async function getUserResponse(request: {
   controller: UserController;

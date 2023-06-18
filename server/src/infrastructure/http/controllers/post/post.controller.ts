@@ -18,8 +18,7 @@ import { errorHandler } from "@infra/http/helpers/errorHandler";
 import { FavoriteController } from "../favorite/favorite.controller";
 import { CommentController } from "../comment/comment.controller";
 import { RequireAuthorPermission } from "../../guards/RequireAuthorPermission";
-import { IGetPostResponse } from "./dtos";
-import { getPostResponse } from "./dtos/getPostResponse";
+import { getPostResponse } from "../@dtos/post/getPostResponse";
 
 @Controller("post")
 export class PostController {
@@ -40,25 +39,27 @@ export class PostController {
 
   @Post("")
   @UseGuards(RequireAuthorPermission)
-  public async publishPost(
+  public async create(
     @Body() post: IPostReflectObject
   ): Promise<IPostReflectObject> {
-    try {
-      return this.#postUseCases.create(post).then((post) => post?.reflect);
-    } catch (error) {
-      errorHandler(error);
-    }
+    return this.#postUseCases
+      .create(post)
+      .then((post) => post?.reflect)
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      });
   }
 
   @Get("")
-  public async all(): Promise<IPostReflectObject[]> {
-    try {
-      return this.#postUseCases
-        .getAll()
-        .then((posts) => posts?.map((post) => post?.reflect));
-    } catch (error) {
-      errorHandler(error);
-    }
+  public async getAll(): Promise<IPostReflectObject[]> {
+    return this.#postUseCases
+      .getAll()
+      .then((posts) => posts?.map((post) => post?.reflect))
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      });
   }
 
   @Get(":id")
@@ -66,16 +67,19 @@ export class PostController {
     @Param("id") id: string,
     @Headers("authorization") authorization: string
   ): Promise<IGetPostResponse> {
-    try {
-      return this.#postUseCases.getById(id).then(async (post) => {
-        return await this.buildGetPostResponse({
+    return this.#postUseCases
+      .getById(id)
+      .then(async (post) => {
+        return await getPostResponse({
+          controller: this,
           post: post.reflect,
           authToken: authorization,
         });
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return null;
       });
-    } catch (error) {
-      errorHandler(error);
-    }
   }
 
   @Get("slug/:slug")
@@ -83,101 +87,95 @@ export class PostController {
     @Param("slug") slug: string,
     @Headers("authorization") authorization: string
   ): Promise<IGetPostResponse> {
-    try {
-      return this.#postUseCases.getBySlug(slug).then(async (post) => {
-        return await this.buildGetPostResponse({
+    return this.#postUseCases
+      .getBySlug(slug)
+      .then(async (post) => {
+        return await getPostResponse({
+          controller: this,
           post: post.reflect,
           authToken: authorization,
         });
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return null;
       });
-    } catch (error) {
-      errorHandler(error);
-    }
   }
 
   @Get("title")
   public async getManyByTitle(
     @Query("equals") equals: string
   ): Promise<IPostReflectObject[]> {
-    try {
-      return await this.#postUseCases
-        .getManyByTitle(equals)
-        .then((posts) => posts?.map((post) => post?.reflect));
-    } catch (error) {
-      errorHandler(error);
-    }
+    return this.#postUseCases
+      .getManyByTitle(equals)
+      .then((posts) => posts?.map((post) => post?.reflect))
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      });
   }
 
   @Get("pagination")
   public async getWithPagination(
     @Query() query: { skip: number; pageSize: number }
   ): Promise<IPostReflectObject[]> {
-    try {
-      return this.#postUseCases
-        .getWithPagination(query)
-        .then((posts) => posts?.map((post) => post?.reflect));
-    } catch (error) {
-      errorHandler(error);
-    }
+    return this.#postUseCases
+      .getWithPagination(query)
+      .then((posts) => posts?.map((post) => post?.reflect))
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      });
   }
 
   @Get("pagination/userFavorites")
   public async getWithPaginationByUserFavorites(
     @Query() query: { userId: string; skip: number; pageSize: number }
   ): Promise<IPostReflectObject[]> {
-    try {
-      return this.#postUseCases
-        .getUserFavoritePostsWithPagination(query)
-        .then((posts) => posts?.map((post) => post?.reflect));
-    } catch (error) {
-      errorHandler(error);
-    }
+    return this.#postUseCases
+      .getUserFavoritePostsWithPagination(query)
+      .then((posts) => posts?.map((post) => post?.reflect))
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      });
   }
 
   @Put("")
   @UseGuards(RequireAuthorPermission)
-  public async edit(
+  public async update(
     @Body() updatedPost: IPostReflectObject
   ): Promise<IPostReflectObject> {
-    try {
-      return this.#postUseCases
-        .update(updatedPost)
-        .then((post) => post?.reflect);
-    } catch (error) {
-      errorHandler(error);
-    }
+    return this.#postUseCases
+      .update(updatedPost)
+      .then((post) => post?.reflect)
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      });
   }
 
   @Delete(":postId")
   @UseGuards(RequireAuthorPermission)
   public async delete(@Param("postId") postId: string): Promise<void> {
-    try {
-      this.#postUseCases.delete(postId);
-    } catch (error) {
-      errorHandler(error);
-    }
+    return this.#postUseCases.delete(postId).catch((err) => {
+      errorHandler(err);
+      return null;
+    });
   }
 
   public async getFavoriteAmount(postId: string): Promise<number> {
-    return this.#favoriteController.amount({ of: "post", id: postId });
+    return await this.#favoriteController.getAmount({ of: "post", id: postId });
   }
 
   public async getCommentAmount(postId: string): Promise<number> {
-    return this.#commentController.amount({ of: "post", id: postId });
+    return await this.#commentController.getAmount({ of: "post", id: postId });
   }
 
   public async isFavoritedByUser(request: {
     userId: string;
     postId: string;
   }): Promise<boolean> {
-    return this.#favoriteController.isFavorited(request);
-  }
-
-  private async buildGetPostResponse(request: {
-    post: IPostReflectObject;
-    authToken: string;
-  }): Promise<IGetPostResponse> {
-    const { post, authToken } = request;
-    return await getPostResponse({ controller: this, authToken, post });
+    return await this.#favoriteController.isFavorited(request);
   }
 }

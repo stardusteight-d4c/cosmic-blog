@@ -1,11 +1,11 @@
 import type { IUserReflectObject, IUserService } from "@typings/user";
 import { User } from "@domain/aggregates/user";
-import Validators from "@infra/http/helpers/validators";
 import {
   ISessionTokenAdapter,
   ISendMailAdapter,
   IEncryptPasswordAdapter,
 } from "../adapters";
+import Validators from "../helpers/Validators";
 
 type RegisterUserResult = { user: User; sessionToken: string };
 

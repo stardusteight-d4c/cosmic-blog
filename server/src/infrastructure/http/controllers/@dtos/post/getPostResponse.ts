@@ -1,7 +1,6 @@
-import { PostController } from "../post.controller";
-import { IPostReflectObject } from "@/@typings/post";
-import { JWTSessionTokenAdapter } from "@/infrastructure/adapters";
-import { IGetPostResponse } from ".";
+import { IPostReflectObject } from "@typings/post";
+import { JWTSessionTokenAdapter } from "@infra/adapters";
+import { PostController } from "../../post/post.controller";
 
 export async function getPostResponse(request: {
   controller: PostController;
