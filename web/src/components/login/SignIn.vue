@@ -23,7 +23,7 @@ const formData = {
 async function signIn() {
   try {
     const data = await store.dispatch(loginMethods.actions.sign, {
-      identifier: formData.usernameOrEmail.toLowerCase(),
+      identifier: formData.usernameOrEmail.toLowerCase().trim(),
       password: formData.password,
     });
     if (data) {

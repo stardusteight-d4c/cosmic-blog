@@ -16,9 +16,9 @@ export class PostPostgreSQLRepository implements IPostRepository {
   }
 
   private async replace(updatedPost: Post): Promise<Post> {
-    const copyUpdate = updatedPost.reflect
-    delete copyUpdate.author
-    delete copyUpdate.postedAt
+    const copyUpdate = updatedPost.reflect;
+    delete copyUpdate.author;
+    delete copyUpdate.postedAt;
     await knex("posts")
       .where("id", updatedPost.reflect.id)
       .update({
@@ -37,9 +37,9 @@ export class PostPostgreSQLRepository implements IPostRepository {
   }
 
   public async create(post: Post): Promise<Post> {
-    const author = this.deletingAuthorUndefinedFields(post.reflect.author);
     return knex.transaction(async (trx) => {
-      return await trx("posts")
+      const author = this.deletingAuthorUndefinedFields(post.reflect.author);
+      return trx("posts")
         .insert({
           ...post.reflect,
           tags: JSON.stringify(post.reflect.tags) as unknown as string[],
@@ -54,112 +54,99 @@ export class PostPostgreSQLRepository implements IPostRepository {
   }
 
   public async update(updatedPost: Post): Promise<Post> {
-    return await this.replace(updatedPost)
+    return this.replace(updatedPost)
       .then((post) => post)
       .catch((err) => {
         throw new Error(`error updating post: ${err}`);
       });
   }
 
-  public async delete(postId: string): Promise<Post> {
-    try {
-      const post = await this.findById(postId);
-      await knex("posts").where({ id: postId }).delete();
-      return post;
-    } catch (error) {
-      throw new Error(`error deleting post: ${error}`);
-    }
+  public async delete(postId: string): Promise<void> {
+    await knex("posts")
+      .where({ id: postId })
+      .delete()
+      .catch((err) => {
+        throw new Error(`error deleting post: ${err}`);
+      });
   }
 
   public async deleteAll(): Promise<void> {
-    try {
-      await knex("posts").del();
-    } catch (error) {
-      throw new Error(`error deleting all posts: ${error}`);
-    }
+    await knex("posts")
+      .del()
+      .catch((err) => {
+        throw new Error(`error deleting all posts: ${err}`);
+      });
   }
 
   public async findById(postId: string): Promise<Post | undefined> {
-    try {
-      const post = await knex("posts").where({ id: postId }).first();
-      if (post) {
-        return new Post(post);
-      }
-      return undefined;
-    } catch (error) {
-      throw new Error(`error finding post by id: ${error}`);
-    }
+    return knex("posts")
+      .where({ id: postId })
+      .first()
+      .then((post) => new Post(post))
+      .catch((err) => {
+        throw new Error(`error finding post by id: ${err}`);
+      });
   }
 
   public async findBySlug(slug: string): Promise<Post | undefined> {
-    try {
-      const post = await knex("posts").where({ slug }).first();
-      if (post) {
-        return new Post(post);
-      }
-      return undefined;
-    } catch (error) {
-      throw new Error(`error finding post by slug: ${error}`);
-    }
+    return knex("posts")
+      .where({ slug })
+      .first()
+      .then((post) => (post ? new Post(post) : undefined))
+      .catch((err) => {
+        throw new Error(`error finding post by slug: ${err}`);
+      });
   }
 
   public async findManyByTitle(postTitle: string): Promise<Post[]> {
-    try {
-      const normalizedPostTitle = postTitle.toLowerCase();
-      const posts = await knex("posts")
-        .whereRaw("LOWER(title) LIKE ?", `%${normalizedPostTitle}%`)
-        .limit(6);
-      return posts.map((post) => new Post(post));
-    } catch (error) {
-      throw new Error(`error finding posts by title: ${error}`);
-    }
+    return knex("posts")
+      .whereRaw("LOWER(title) LIKE ?", `%${postTitle.toLowerCase()}%`)
+      .limit(6)
+      .then((posts) => posts.map((post) => new Post(post)))
+      .catch((err) => {
+        throw new Error(`error finding posts by title: ${err}`);
+      });
   }
 
   public async findAll(): Promise<Post[]> {
-    try {
-      const posts = await knex("posts");
-      return posts.map((post) => new Post(post));
-    } catch (error) {
-      throw new Error(`error finding all posts: ${error}`);
-    }
+    return knex("posts")
+      .then((posts) => posts.map((post) => new Post(post)))
+      .catch((err) => {
+        throw new Error(`error finding all posts: ${err}`);
+      });
   }
 
   public async findWithPagination(request: {
     skip: number;
     pageSize: number;
   }): Promise<Post[]> {
-    try {
-      const { skip, pageSize } = request;
-      const posts = await knex("posts")
-        .orderBy("postedAt", "desc")
-        .limit(pageSize)
-        .offset(skip);
-      return posts.map((post) => new Post(post));
-    } catch (error) {
-      throw new Error(`error finding posts with pagination: ${error}`);
-    }
+    return knex("posts")
+      .orderBy("postedAt", "desc")
+      .limit(request.pageSize)
+      .offset(request.skip)
+      .then((posts) => posts.map((post) => new Post(post)))
+      .catch((err) => {
+        throw new Error(`error finding posts with pagination: ${err}`);
+      });
   }
 
   public async findByIds(postIds: string[]): Promise<Post[]> {
-    try {
-      const posts = await knex("posts").whereIn("id", postIds);
-      return posts.map((post) => new Post(post));
-    } catch (error) {
-      throw new Error(`error finding posts by ids: ${error}`);
-    }
+    return knex("posts")
+      .whereIn("id", postIds)
+      .then((posts) => posts.map((post) => new Post(post)))
+      .catch((err) => {
+        throw new Error(`error finding posts by ids: ${err}`);
+      });
   }
 
   public async findPostTitleById(postId: string): Promise<string> {
-    try {
-      const post = await knex("posts")
-        .select("title")
-        .where({ id: postId })
-        .first();
-      if (post) {
-        return post.title;
-      }
-    } catch (error) {
-      throw new Error(`error finding post title by id: ${error}`);
-    }
+    return knex("posts")
+      .select("title")
+      .where({ id: postId })
+      .first()
+      .then((post) => (post ? post.title : undefined))
+      .catch((err) => {
+        throw new Error(`error finding post title by id: ${err}`);
+      });
   }
 }

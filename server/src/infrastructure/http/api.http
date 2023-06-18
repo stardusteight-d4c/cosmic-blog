@@ -10,7 +10,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTBjNTYzNWMt
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedAt": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "fe9df352-5c98-4efa-af62-10a1396af1ec",
+    "id": "cca97660-007d-46fa-8cb3-fdf17e1ed703",
     "email": "email@email.com",
     "username": "link",
     "avatar": "Favatar02",

@@ -12,16 +12,14 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
   }
 
   private async replace(updatedFavorite: Favorite): Promise<Favorite> {
-    const key = this.generateKey(updatedFavorite);
-    try {
-      const [postId, userId] = key.split("+");
-      await knex("favorites")
-        .where({ postId, userId })
-        .update(updatedFavorite.reflect);
-      return updatedFavorite;
-    } catch (error) {
-      throw new Error(`Error replacing favorite: ${error}`);
-    }
+    const [postId, userId] = this.generateKey(updatedFavorite).split("+");
+    return knex("favorites")
+      .where({ postId, userId })
+      .update(updatedFavorite.reflect)
+      .then(() => updatedFavorite)
+      .catch((err) => {
+        throw new Error(`error replacing favorite: ${err}`);
+      });
   }
 
   public static getInstance(): FavoritePostgreSQLRepository {
@@ -33,98 +31,103 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
   }
 
   public async create(favorite: Favorite): Promise<Favorite> {
-    try {
-      await knex("favorites").insert({ ...favorite.reflect });
-      return favorite;
-    } catch (error) {
-      throw new Error(`Error creating favorite: ${error}`);
-    }
+    return knex("favorites")
+      .insert({ ...favorite.reflect })
+      .returning("*")
+      .then(([favorite]) => new Favorite(favorite))
+      .catch((err) => {
+        throw new Error(`error creating favorite: ${err}`);
+      });
   }
 
   public async update(updatedFavorite: Favorite): Promise<Favorite> {
-    const favorite = await this.replace(updatedFavorite);
-    return favorite;
+    return this.replace(updatedFavorite)
+      .then((favorite) => favorite)
+      .catch((err) => {
+        throw new Error(`error updating favorite: ${err}`);
+      });
   }
 
   public async findAll(): Promise<Favorite[]> {
-    try {
-      const favorites = await knex("favorites").select("*");
-      return favorites.map((favorite) => new Favorite(favorite));
-    } catch (error) {
-      throw new Error(`Error finding favorites: ${error}`);
-    }
+    return knex("favorites")
+      .select("*")
+      .then((favorites) => favorites.map((favorite) => new Favorite(favorite)))
+      .catch((err) => {
+        throw new Error(`error finding favorites: ${err}`);
+      });
   }
 
   public async findFavoriteByKey(
     favoriteKey: string
   ): Promise<Favorite | undefined> {
-    try {
-      const [postId, userId] = favoriteKey.split("+");
-      const favorite = await knex("favorites")
-        .where({ postId, userId })
-        .first();
-      return favorite ? new Favorite(favorite) : undefined;
-    } catch (error) {
-      throw new Error(`Error finding favorite by key: ${error}`);
-    }
+    const [postId, userId] = favoriteKey.split("+");
+    return knex("favorites")
+      .where({ postId, userId })
+      .first()
+      .then((favorite) => (favorite ? new Favorite(favorite) : undefined))
+      .catch((err) => {
+        throw new Error(`error finding favorite by key: ${err}`);
+      });
   }
 
   public async findAllByPostId(postId: string): Promise<Favorite[]> {
-    try {
-      const favorites = await knex("favorites").where({ postId }).select("*");
-      return favorites.map((favorite) => new Favorite(favorite));
-    } catch (error) {
-      throw new Error(`Error finding favorites by post ID: ${error}`);
-    }
+    return knex("favorites")
+      .where({ postId })
+      .select("*")
+      .then((favorites) => favorites.map((favorite) => new Favorite(favorite)))
+      .catch((err) => {
+        throw new Error(`error finding favorites by post id: ${err}`);
+      });
   }
 
   public async findAllByUserId(userId: string): Promise<Favorite[]> {
-    try {
-      const favorites = await knex("favorites").where({ userId }).select("*");
-      if (favorites) {
-        return favorites.map((favorite) => new Favorite(favorite));
-      } else {
-        return []
-      }
-    } catch (error) {
-      throw new Error(`Error finding favorites by user ID: ${error}`);
-    }
+    return knex("favorites")
+      .where({ userId })
+      .select("*")
+      .then((favorites) =>
+        favorites ? favorites.map((favorite) => new Favorite(favorite)) : []
+      )
+      .catch((err) => {
+        throw new Error(`error finding favorites by user id: ${err}`);
+      });
   }
 
   public async delete(favorite: Favorite): Promise<void> {
-    try {
-      await knex("favorites")
-        .where({
-          postId: favorite.reflect.postId,
-          userId: favorite.reflect.userId,
-        })
-        .del();
-    } catch (error) {
-      throw new Error(`Error deleting favorite: ${error}`);
-    }
+    const [postId, userId] = this.generateKey(favorite).split("+");
+    await knex("favorites")
+      .where({
+        postId,
+        userId,
+      })
+      .del()
+      .catch((err) => {
+        throw new Error(`error deleting favorite: ${err}`);
+      });
   }
 
   public async deleteAll(): Promise<void> {
-    try {
-      await knex("favorites").del();
-    } catch (error) {
-      throw new Error(`Error deleting all favorites: ${error}`);
-    }
+    await knex("favorites")
+      .del()
+      .catch((err) => {
+        throw new Error(`error deleting all favorites: ${err}`);
+      });
   }
 
   public async deleteAllByPostId(postId: string): Promise<void> {
-    try {
-      await knex("favorites").where({ postId }).del();
-    } catch (error) {
-      throw new Error(`Error deleting favorites by post ID: ${error}`);
-    }
+    await knex("favorites")
+      .where({ postId })
+      .del()
+      .catch((err) => {
+        throw new Error(`error deleting favorites by post id: ${err}`);
+      });
   }
 
   public async deleteAllByUserId(userId: string): Promise<void> {
-    try {
-      await knex("favorites").where({ userId }).del();
-    } catch (error) {
-      throw new Error(`Error deleting favorites by user ID: ${error}`);
-    }
+    await knex("favorites")
+      .where({ userId })
+      .del()
+      .catch((err) => {
+        throw new Error(`error deleting favorites by user id: ${err}`);
+      });
   }
 }

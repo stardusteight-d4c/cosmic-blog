@@ -88,9 +88,8 @@ export class PostInMemoryRepository implements IPostRepository {
     return await this.replace(updatedPost, existingPost);
   }
 
-  public async delete(id: string): Promise<Post> {
+  public async delete(id: string): Promise<void> {
     this.#posts.delete(id);
-    return await this.findById(id);
   }
 
   public async deleteAll(): Promise<void> {
