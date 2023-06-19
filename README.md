@@ -42,14 +42,17 @@ Such Platonic thought of more than two thousand years ago, reflects a lot the id
 * NestJS
 * Fastify
 * Knex
+* Vitest
 * PostgreSQL
 * Json Web Token
 * Nodemailer
 * Design Patterns
 * Solid
-* Event-driven
-* Domain-driven design
+* Domain-driven Design
 * Clean Architecture
+* Event-driven Architecture
+* Hexagonal/Ports and Adapters Architecture
+* Unitary Tests
 
 
 ## :mailbox_with_mail: Utilities
