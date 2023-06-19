@@ -100,7 +100,9 @@ Additionally, unit tests should be automated, integrated into the development wo
 
 ## :speech_balloon: Explanations
 
-### useEffect & Axios: Handling Requests and Reacting to Data Changes with Side Effects 
+![architecture](/architecture.jpg)
+
+### Overview
 
 <p align="center">Project made with :blue_heart: by <a href="https://github.com/stardusteight-d4c">Gabriel Sena</a></p>
 
