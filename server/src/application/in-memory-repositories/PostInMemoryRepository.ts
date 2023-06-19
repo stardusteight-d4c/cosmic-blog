@@ -142,6 +142,25 @@ export class PostInMemoryRepository implements IPostRepository {
     }
   }
 
+  public async findPostsByTag(request: {
+    tag: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[]> {
+    const posts = Array.from(this.#posts.values());
+    const filteredPosts = posts.filter((post) =>
+      post.reflect.tags.includes(request.tag)
+    );
+    const sortedPosts = filteredPosts.sort(
+      (a, b) => b.reflect.postedAt.getTime() - a.reflect.postedAt.getTime()
+    );
+    const paginatedPosts = sortedPosts.slice(
+      Number(request.skip),
+      Number(request.skip) + Number(request.pageSize)
+    );
+    return paginatedPosts;
+  }
+
   public get posts() {
     throw new Error("Cannot access posts property directly.");
   }

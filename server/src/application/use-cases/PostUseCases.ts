@@ -84,4 +84,12 @@ export class PostUseCases {
   }): Promise<Post[]> {
     return await this.postService.getUserFavoritePostsByPagination(request);
   }
+
+  public async getPostsByTag(request: {
+    tag: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[]> {
+    return await this.postService.getFilteringPostsByTag(request);
+  }
 }

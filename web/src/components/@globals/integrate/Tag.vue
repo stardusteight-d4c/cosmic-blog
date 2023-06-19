@@ -10,6 +10,7 @@ defineProps({
 </script>
 
 <template>
-  <!-- localhost:5173/post/search?tag=typescript -->
-  <span :class="css.tag">#{{ tag }}</span>
+  <router-link :to="`/tag?equals=${tag}`">
+    <span :class="css.tag">#{{ tag }}</span>
+  </router-link>
 </template>

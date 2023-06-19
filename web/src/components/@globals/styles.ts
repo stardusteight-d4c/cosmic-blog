@@ -5,5 +5,5 @@ export const postCardStyles = {
   title: `leading-5  line-clamp-2 font-medium`,
   calendarContainer: `text-xs my-2 font-medium text-[#F2F2F2]/60 flex items-center gap-x-1`,
   previewText: `line-clamp-3 text-sm text-[#F2F2F2]/60`,
-  tagsContainer: `mt-2 flex flex-wrap items-center gap-2 text-sm`,
+  tagsContainer: `mt-2 flex pointer-events-none flex-wrap items-center gap-2 text-sm`,
 }

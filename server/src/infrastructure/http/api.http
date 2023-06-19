@@ -4,13 +4,13 @@ Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTBjNTYzNWMtZDVkZC00NDExLWE4YmQtYjYyNjA3NWVjNGI0IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODcwMTIyNDUsImV4cCI6MTY4NzYxNzA0NX0.2yj1A7duQ2y3_VPJVOvtZ57aSzwTLM749KtItjtTDT0
 
 {
- "title": "Post masssssa",
+ "title": "Post 8",
  "body": "Taaaaaaa",
  "tags": ["typescript", "typescript", "typescript", "web"],
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedAt": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "97c439f7-9542-4521-81d6-467ff6cd5197",
+    "id": "8c96ecb9-cb30-45ef-a134-3b10f0e3221c",
     "email": "email@email.com",
     "username": "link",
     "avatar": "Favatar02",
@@ -29,6 +29,8 @@ GET http://localhost:3000/post/pagination?skip=6&pageSize=6
 GET http://localhost:3000/post/pagination/userFavorites?userId=57efe66a-ec3a-4043-9db9-bc40ce5a6a01&skip=0&pageSize=3
 ###
 GET http://localhost:3000/post/title?equals=nestjs
+###
+GET http://localhost:3000/post/pagination/filteringTags?tag=aaaa&skip=0&pageSize=8
 ###
 PUT http://localhost:3000/post
 Content-Type: application/json

@@ -36,6 +36,11 @@ export interface IPostService {
     postId: string;
     userId: string;
   }): Promise<boolean>;
+  getFilteringPostsByTag(request: {
+    tag: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[] | undefined>;
 }
 
 export interface IPostRepository {
@@ -53,6 +58,11 @@ export interface IPostRepository {
   }): Promise<Post[]>;
   findByIds(ids: string[]): Promise<Post[]>;
   findPostTitleById(id: string): Promise<string>;
+  findPostsByTag(request: {
+    tag: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[] | undefined>;
 }
 
 export type AuthorMetadata = {

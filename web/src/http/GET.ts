@@ -28,6 +28,20 @@ export class GET {
     return user;
   }
 
+  static async postsByTagWithPagination(request: {
+    tag: string;
+    skip: number;
+  }) {
+    const { tag, skip } = request;
+    const posts = await api
+      .get<{ user: IUser }>(
+        `post/pagination/filteringTags?tag=${tag}&skip=${skip}&pageSize=6`
+      )
+      .then((res) => res.data)
+      .catch((error) => console.log(error));
+    return posts;
+  }
+
   static async favoritedPosts(request: { userId: string; skip: number }) {
     const { userId, skip } = request;
     const favoritedPosts = await api

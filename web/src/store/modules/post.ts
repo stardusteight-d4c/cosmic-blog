@@ -7,6 +7,7 @@ export interface IPostState {
   home: IPostResponse[];
   post: IPostResponse | undefined;
   comments: IComment[];
+  filteringPosts: IPostResponse[];
 }
 
 export const postMethods = {
@@ -15,6 +16,7 @@ export const postMethods = {
     setPost: "SET_POST_DATA",
     setIsFavorited: "SET_IS_FAVORITED",
     setComments: "SET_COMMENTS",
+    setFilteringPosts: "SET_FILTERING_POSTS",
     setFavoriteAmount: "SET_FAVORITE_AMOUNT",
     setCommentAmount: "SET_COMMENT_AMOUNT",
   },
@@ -23,6 +25,7 @@ export const postMethods = {
     getPost: "GET_POST_DATA",
     getPostBySlug: "GET_POST_DATA_BY_SLUG",
     getComments: "GET_COMMENTS",
+    getFilteringPosts: "GET_FILTERING_POSTS",
     searchByTitle: "SEARCH_BY_TITLE",
     toggleFavorite: "TOGGLE_FAVORITE",
     leaveComment: "LEAVE_A_COMMENT",
@@ -39,6 +42,7 @@ export const post: Module<IPostState, AppState> = {
     home: [],
     post: undefined,
     comments: [],
+    filteringPosts: [],
   },
   mutations: {
     [mutations.setHomePosts](state, posts: IPostResponse[]) {
@@ -55,6 +59,10 @@ export const post: Module<IPostState, AppState> = {
 
     [mutations.setComments](state, comments: IComment[]) {
       state.comments = comments;
+    },
+
+    [mutations.setFilteringPosts](state, posts: IPostResponse[]) {
+      state.filteringPosts = [...state.filteringPosts, ...posts];
     },
 
     [mutations.setFavoriteAmount](state, isFavorited: boolean) {
@@ -90,6 +98,15 @@ export const post: Module<IPostState, AppState> = {
       const post = await GET.postBySlug(payload.slug);
       commit(mutations.setPost, post);
       return post;
+    },
+
+    async [actions.getFilteringPosts](
+      { commit },
+      payload: { tag: string; skip: number}
+    ) {
+      const posts = await GET.postsByTagWithPagination(payload);
+      commit(mutations.setFilteringPosts, posts);
+      return posts;
     },
 
     async [actions.searchByTitle](_, payload: { title: string }) {

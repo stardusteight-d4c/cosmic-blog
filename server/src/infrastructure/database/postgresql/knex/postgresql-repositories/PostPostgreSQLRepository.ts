@@ -11,7 +11,7 @@ export class PostPostgreSQLRepository implements IPostRepository {
     author: AuthorMetadata
   ): AuthorMetadata {
     return Object.fromEntries(
-      Object.entries(author).filter(([key, value]) => value !== undefined)
+      Object.entries(author).filter(([_, value]) => value !== undefined)
     ) as AuthorMetadata;
   }
 
@@ -147,6 +147,26 @@ export class PostPostgreSQLRepository implements IPostRepository {
       .then((post) => (post ? post.title : undefined))
       .catch((err) => {
         throw new Error(`error finding post title by id: ${err}`);
+      });
+  }
+
+  public async findPostsByTag(request: {
+    tag: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[]> {
+    return knex("posts")
+      .distinct("posts.*")
+      .innerJoin(
+        knex.raw("jsonb_array_elements_text(posts.tags) AS tag"),
+        knex.raw("lower(tag) like lower(?)", `%${request.tag}%`)
+      )
+      .orderBy("postedAt", "desc")
+      .offset(request.skip)
+      .limit(request.pageSize)
+      .then((posts) => posts.map((post) => new Post(post)))
+      .catch((err) => {
+        throw new Error(`error finding posts by tag: ${err}`);
       });
   }
 }

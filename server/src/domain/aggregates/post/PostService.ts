@@ -92,4 +92,12 @@ export class PostService implements IPostService {
       .findPostFavorite(new Favorite(request))
       .then((favorite) => (favorite ? true : false));
   }
+
+  public async getFilteringPostsByTag(request: {
+    tag: string;
+    skip: number;
+    pageSize: number;
+  }): Promise<Post[]> {
+    return await this.postRepository.findPostsByTag(request);
+  }
 }

@@ -83,7 +83,6 @@ export class ConfirmEmailFunctions {
       loading.value = false;
       if (data) {
         router.push(`/profile/${data.user.username}`);
-        window.location.reload();
       }
     } else {
       loading.value = false;

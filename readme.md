@@ -1,8 +1,7 @@
 
------> Passar reponsabilidade de construção da resposta para use-cases
------> Serviços oferecem métodos para acessar informações de outros repositórios, 
-solicitando para métodos de outros serviços 
------> Remover FavoriteController e CommentController como dependências de PostController
+---> Fazer rota de filtering by tag em ordem dos mais recentes primeiro (cronológica descendente)
+---> Verificar se está dando para criar um usuário com espaço no nome
+---> estabelecer um limite de caracteres para o nome do usuário
 
 Aggregados dependem um do outro, mas nunca devem fazer parte um do outro, fazer entidades de aggregados para outros é como dois corpos existissem no mesmo lugar ao mesmo tempo, ou seja, quando você injeta uma dependência à uma entidade de um agregado "extra-terrestre", você está mesclando características/atributos/propriedades daquele agregado externo, isto quebra o encapsulamento.
 

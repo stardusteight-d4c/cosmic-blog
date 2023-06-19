@@ -123,6 +123,19 @@ export class PostController {
       });
   }
 
+  @Get("pagination/filteringTags")
+  public async getWithPaginationFilteringTags(
+    @Query() query: { tag: string; skip: number; pageSize: number }
+  ): Promise<IPostReflectObject[]> {
+    return this.#postUseCases
+      .getPostsByTag(query)
+      .then((posts) => posts?.map((post) => post?.reflect))
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      });
+  }
+
   @Put("")
   @UseGuards(RequireAuthorPermission)
   public async update(
