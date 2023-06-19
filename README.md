@@ -46,6 +46,7 @@ Such Platonic thought of more than two thousand years ago, reflects a lot the id
 * PostgreSQL
 * Json Web Token
 * Nodemailer
+* Docker/Docker Compose
 * Design Patterns
 * Solid
 * Domain-driven Design
@@ -57,30 +58,45 @@ Such Platonic thought of more than two thousand years ago, reflects a lot the id
 
 ## :mailbox_with_mail: Utilities
  
-### Model-View-Controller (MVC)
+### NestJS
  
-Is a widely used software architecture pattern for separating an application's concerns into three main components: the model, the view, and the controller. The goal is to separate the business logic from the user interface, allowing each component to be developed and tested independently.
+NestJS is a framework for developing back-end applications in Node.js. It combines elements of TypeScript, JavaScript and the layered software architecture concept to create scalable and modularized APIs.
 
-The model is responsible for business logic and data manipulation. It represents the state of the system and the business rules that govern how data is stored, manipulated, and validated.
+NestJS is designed to provide a robust and structured framework for developing applications in Node.js. It uses the MVC (Model-View-Controller) design pattern to separate application responsibilities into different layers. The MVC model promotes modularity, allowing developers to break their applications into self-contained modules that can be reused and tested easily.
 
-The view is responsible for displaying data and user interaction. It is the user interface of the system and displays the information contained in the model. It is responsible for presenting and manipulating the data in a form that the user can understand.
+One of the main features of NestJS is its native integration with TypeScript. TypeScript is a programming language that adds static typing capabilities to JavaScript, helping to avoid common mistakes during development. With NestJS, developers can leverage advanced TypeScript features such as type, interface, and class inference to build more secure and robust applications.
 
-The controller is the intermediary between the model and the view. It acts as an entry point for user requests and coordinates interactions between the view and the model. It also controls the flow of the application, making the appropriate calls to the necessary components.
+Another advantage of NestJS is its dependency injection system. It provides an elegant way to manage dependencies between different application components. The dependency injection system facilitates code reuse, testability and application maintenance.
 
-By separating business logic, user interface, and flow control into discrete components, the MVC pattern allows you to build more scalable, flexible, and maintainable applications. Furthermore, it allows developers to work more collaboratively and independently, as each component can be developed and tested separately.
+Additionally, NestJS supports many popular features and libraries from the Node.js ecosystem, such as Express.js, Fastify, TypeORM, and GraphQL. This allows developers to choose the tools best suited to their needs and take advantage of existing resources.
 
-### API RESTful (Representational State Transfer) 
+In summary, NestJS is a powerful framework for developing back-end applications in Node.js. It combines the power of TypeScript with a well-structured architecture and advanced features, allowing developers to build high-quality, modular, and scalable APIs.
 
-Is an architectural style for hypertext-based distributed systems. It is a design approach that establishes a series of constraints and guidelines for creating web services that are scalable, reliable, interoperable, and easy to maintain.
+### Knex (Query Builder)
 
-RESTful services are based on the HTTP protocol, using GET, POST, PUT, DELETE methods for reading, creating, updating and deleting resources, respectively. Additionally, resources are identified using URIs (Uniform Resource Identifiers) and return data in formats such as JSON, XML, or other customer-defined formats.
+Knex is an SQL query builder for Node.js that lets you interact with relational databases easily and efficiently. It provides an intuitive and consistent interface to create, query, modify and delete data in databases such as MySQL, PostgreSQL, SQLite and others.
 
-The term RESTful was coined by Roy Fielding in his doctoral thesis in 2000 and is based on the principle that representational state transfer is performed between the client and the server. In other words, the API is designed to be stateless, which means that each request made by the client must contain all the information needed to perform the requested action.
+Knex simplifies interacting with databases by abstracting the complexity of SQL queries and providing fluent query construction methods. With Knex, developers can build complex queries using readable and expressive syntax, avoiding the need to manually write SQL queries.
 
-The concept of REST is often associated with the MVC (Model-View-Controller) architectural model, as the RESTful API separates the representation of data from the server, which is the model, from the client, which is the view. The controller in this case is the API itself, which handles client requests and sends appropriate responses.
+One of the key features of Knex is database migration. It provides a set of tools for creating and applying migrations, which are files that describe database schema changes over time. Migrations allow developers to efficiently manage database schema evolution while ensuring consistency and data integrity.
 
-Overall, using a RESTful API allows developers to build highly scalable, interoperable, and maintainable applications by following a clear set of guidelines and constraints that make web service development more consistent and efficient.
+Knex also supports transactions, which allows you to group multiple database operations into a single transaction, ensuring that all changes are successfully applied or rolled back if they fail. This is especially useful in situations where you need to maintain data consistency and ensure that operations occur atomically.
 
+Additionally, Knex has a modular and extensible architecture, allowing integration with other popular libraries and frameworks in the Node.js ecosystem. It can be combined with web frameworks such as Express.js or NestJS to create powerful and scalable APIs.
+
+### Unitary Tests
+
+Unit testing is a software development practice that aims to test small isolated pieces of code, known as units, to ensure that they work correctly according to specifications. Units usually correspond to individually testable functions, methods, or blocks of code.
+
+The goal of unit testing is to identify bugs or flaws in units of code as early as possible, allowing developers to fix them before they propagate to other parts of the system. This helps improve code quality, making it more reliable, robust, and maintainable.
+
+Unit tests are written using specific test frameworks or libraries, which provide a framework for defining test cases, executing code units, and verifying expected results. These test cases are usually designed to cover different scenarios and execution flows, including success cases and failure cases, to ensure that all possible branches of the code are tested.
+
+A common practice in unit testing is to use assertions to verify that the result of executing a unit of code equals the expected result. Assertions help determine whether the drive is behaving correctly and meeting expectations.
+
+Unit tests must be independent and isolated, which means that each test must be able to run independently, without relying on the state of other tests or external resources such as databases or web services. This allows tests to be run quickly and repeatedly, making it easier to spot problems.
+
+Additionally, unit tests should be automated, integrated into the development workflow, and run regularly. They are typically run during the continuous integration process or before new code is merged into the main repository. That way, developers can be confident that the changes they've made haven't introduced regressions or issues into existing code.
 
 <p align="center">Project made with :blue_heart: by <a href="https://github.com/stardusteight-d4c">Gabriel Sena</a></p>
 
