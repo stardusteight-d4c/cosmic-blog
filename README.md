@@ -98,6 +98,10 @@ Unit tests must be independent and isolated, which means that each test must be 
 
 Additionally, unit tests should be automated, integrated into the development workflow, and run regularly. They are typically run during the continuous integration process or before new code is merged into the main repository. That way, developers can be confident that the changes they've made haven't introduced regressions or issues into existing code.
 
+## :speech_balloon: Explanations
+
+### useEffect & Axios: Handling Requests and Reacting to Data Changes with Side Effects 
+
 <p align="center">Project made with :blue_heart: by <a href="https://github.com/stardusteight-d4c">Gabriel Sena</a></p>
 
 
