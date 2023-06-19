@@ -1,5 +1,5 @@
-import { Comment } from "@domain/aggregates/comment";
 import type { ICommentReflectObject, ICommentService } from "@typings/comment";
+import { Comment } from "@domain/aggregates/comment";
 import Validators from "../helpers/Validators";
 import { ISessionTokenAdapter } from "../adapters";
 

@@ -1,6 +1,6 @@
 import type { IUserReflectObject, IUserService } from "@typings/user";
 import { User } from "@domain/aggregates/user";
-import {
+import type {
   ISessionTokenAdapter,
   ISendMailAdapter,
   IEncryptPasswordAdapter,
@@ -12,79 +12,65 @@ type RegisterUserResult = { user: User; sessionToken: string };
 export class UserUseCases {
   constructor(readonly userService: IUserService) {}
 
-  async register(request: {
+  private generateRandomSixDigitCode() {
+    return Math.floor(100000 + Math.random() * 900000);
+  }
+
+  public async register(request: {
     user: IUserReflectObject;
     sessionTokenAdapter: ISessionTokenAdapter;
     encryptPasswordAdapter: IEncryptPasswordAdapter;
   }): Promise<IRegisterResponse> {
-    const { user, sessionTokenAdapter, encryptPasswordAdapter } = request;
-    const encryptedPassword = await encryptPasswordAdapter.encrypt(
-      user.password
-    );
-    const userInstance = await this.userService.createUser({
-      ...user,
-      password: encryptedPassword,
-    });
-    const copyInstance = userInstance.reflect;
-    delete copyInstance.password;
-    const sessionToken = sessionTokenAdapter.createSessionToken({
-      user_id: userInstance.reflect.id!,
-      email: userInstance.reflect.email,
-      type: userInstance.reflect.userRole,
-      username: userInstance.reflect.username,
-      avatarId: userInstance.reflect.avatar,
-    });
-    delete user.password;
-    return { user: copyInstance as IGetUserResponse, sessionToken };
+    return this.userService
+      .createUser({
+        ...request.user,
+        password: await request.encryptPasswordAdapter.encrypt(
+          request.user.password
+        ),
+      })
+      .then((user) =>
+        Validators.getSessionData(user, request.sessionTokenAdapter)
+      );
   }
 
-  async verifyEmail(request: {
+  public async verifyEmail(request: {
     email: string;
     sendMailAdapter: ISendMailAdapter;
   }): Promise<number> {
-    const { email, sendMailAdapter } = request;
-    const randomSixDigitCode = Math.floor(100000 + Math.random() * 900000);
-    await sendMailAdapter.verifyEmail({ email, randomSixDigitCode });
-    return randomSixDigitCode;
+    const randomSixDigitCode = this.generateRandomSixDigitCode();
+    return request.sendMailAdapter
+      .verifyEmail({
+        email: request.email,
+        randomSixDigitCode,
+      })
+      .then(() => randomSixDigitCode);
   }
 
-  async getById(id: string): Promise<IGetUserResponse> {
-    return this.userService.getUserById(id).then(async (user) => {
-      return {
-        ...(user.reflect as IGetUserResponse),
-        favoriteAmount: await this.userService.getUserFavoriteAmount(
-          user.reflect.id
-        ),
-        commentAmount: await this.userService.getUserCommentAmount(
-          user.reflect.id
-        ),
-      };
-    });
+  public async getById(id: string): Promise<IGetUserResponse> {
+    return this.userService
+      .getUserById(id)
+      .then(async (user) =>
+        Validators.buildGetUserResponse(user, this.userService)
+      );
   }
 
-  async getByUsername(username: string): Promise<IGetUserResponse> {
-    return this.userService.getUserByUsername(username).then(async (user) => {
-      return {
-        ...(user.reflect as IGetUserResponse),
-        favoriteAmount: await this.userService.getUserFavoriteAmount(
-          user.reflect.id
-        ),
-        commentAmount: await this.userService.getUserCommentAmount(
-          user.reflect.id
-        ),
-      };
-    });
+  public async getByUsername(username: string): Promise<IGetUserResponse> {
+    return this.userService
+      .getUserByUsername(username)
+      .then(async (user) =>
+        Validators.buildGetUserResponse(user, this.userService)
+      );
   }
 
-  async getByEmail(email: string): Promise<User | undefined> {
+  public async getByEmail(email: string): Promise<User | undefined> {
     return await this.userService.getUserByEmail(email);
   }
 
-  async getManyByUsername(username: string): Promise<User[]> {
+  public async getManyByUsername(username: string): Promise<User[]> {
     return await this.userService.getUsersByUsername(username);
   }
 
-  async update(
+  public async update(
     updatedUser: IUserReflectObject,
     validation: {
       sessionTokenAdapter: ISessionTokenAdapter;
@@ -96,47 +82,15 @@ export class UserUseCases {
     return await this.userService.updateUser(updatedUser);
   }
 
-  async signin(request: {
+  public async signin(request: {
     identifier: string;
     password: string;
     sessionTokenAdapter: ISessionTokenAdapter;
     encryptPasswordAdapter: IEncryptPasswordAdapter;
   }): Promise<RegisterUserResult> {
-    const {
-      identifier,
-      password,
-      sessionTokenAdapter,
-      encryptPasswordAdapter,
-    } = request;
-    let user: User;
-    if (Validators.isEmail(identifier)) {
-      user = await this.userService.getUserByEmail(identifier);
-      if (!user) {
-        throw new Error("Email does not exist");
-      }
-    } else {
-      user = await this.userService.getUserByUsername(identifier);
-      if (!user) {
-        throw new Error("Username does not exist");
-      }
-    }
-    const isValidPassword = await encryptPasswordAdapter.compare({
-      plainPassword: password,
-      hashedPassword: user.reflect.password,
-    });
-    if (!isValidPassword) {
-      throw new Error("Invalid password");
-    }
-    const sessionToken = sessionTokenAdapter.createSessionToken({
-      user_id: user.reflect.id!,
-      email: user.reflect.email,
-      username: user.reflect.username,
-      avatarId: user.reflect.avatar,
-      type: user.reflect.userRole,
-    });
-    return {
-      user: user,
-      sessionToken,
-    };
+    return Validators.buildSigninResponse({
+      ...request,
+      service: this.userService,
+    }).then((response) => response);
   }
 }
