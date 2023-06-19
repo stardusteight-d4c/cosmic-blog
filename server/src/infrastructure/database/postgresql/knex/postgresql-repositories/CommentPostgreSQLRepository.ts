@@ -123,7 +123,7 @@ export class CommentPostgreSQLRepository implements ICommentRepository {
   }): Promise<Comment[]> {
     return knex("comments")
       .whereRaw("post->>'id' = ?", [request.postId])
-      .orderBy("postedAt", "desc")
+      .orderBy("created_at", "desc")
       .offset(request.skip)
       .limit(request.pageSize)
       .select("*")
@@ -142,7 +142,7 @@ export class CommentPostgreSQLRepository implements ICommentRepository {
   }): Promise<Comment[]> {
     return knex("comments")
       .whereRaw("owner->>'id' = ?", [request.userId])
-      .orderBy("postedAt", "desc")
+      .orderBy("created_at", "desc")
       .offset(request.skip)
       .limit(request.pageSize)
       .select("*")

@@ -17,13 +17,10 @@ onMounted(async () => {
       tag,
       skip: 0,
     };
-    await store.dispatch(
-      postMethods.actions.getFilteringPosts,
-      payload
-    );
+    await store.dispatch(postMethods.actions.getFilteringPosts, payload);
     loading.value = false;
   } catch (error) {
-    console.error("Error loading user data:", error);
+    console.error("Error loading filtered posts data:", error);
     loading.value = false;
   }
 });
@@ -36,5 +33,3 @@ onMounted(async () => {
     </template>
   </BaseLayoutSlot>
 </template>
-
-<style scoped></style>

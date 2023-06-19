@@ -42,6 +42,7 @@ export class PostPostgreSQLRepository implements IPostRepository {
       return trx("posts")
         .insert({
           ...post.reflect,
+          postedAt: new Date(post.reflect.postedAt),
           tags: JSON.stringify(post.reflect.tags) as unknown as string[],
           author: JSON.stringify(author) as unknown as AuthorMetadata,
         })
@@ -121,9 +122,9 @@ export class PostPostgreSQLRepository implements IPostRepository {
     pageSize: number;
   }): Promise<Post[]> {
     return knex("posts")
-      .orderBy("postedAt", "desc")
       .limit(request.pageSize)
       .offset(request.skip)
+      .orderBy("created_at", "desc")
       .then((posts) => posts.map((post) => new Post(post)))
       .catch((err) => {
         throw new Error(`error finding posts with pagination: ${err}`);
@@ -133,6 +134,7 @@ export class PostPostgreSQLRepository implements IPostRepository {
   public async findByIds(postIds: string[]): Promise<Post[]> {
     return knex("posts")
       .whereIn("id", postIds)
+      .orderByRaw(`position(id::text in '${postIds.join(",")}')`)
       .then((posts) => posts.map((post) => new Post(post)))
       .catch((err) => {
         throw new Error(`error finding posts by ids: ${err}`);
@@ -161,7 +163,7 @@ export class PostPostgreSQLRepository implements IPostRepository {
         knex.raw("jsonb_array_elements_text(posts.tags) AS tag"),
         knex.raw("lower(tag) like lower(?)", `%${request.tag}%`)
       )
-      .orderBy("postedAt", "desc")
+      .orderBy("created_at", "desc")
       .offset(request.skip)
       .limit(request.pageSize)
       .then((posts) => posts.map((post) => new Post(post)))

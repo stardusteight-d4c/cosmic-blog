@@ -102,7 +102,7 @@ export const post: Module<IPostState, AppState> = {
 
     async [actions.getFilteringPosts](
       { commit },
-      payload: { tag: string; skip: number}
+      payload: { tag: string; skip: number }
     ) {
       const posts = await GET.postsByTagWithPagination(payload);
       commit(mutations.setFilteringPosts, posts);

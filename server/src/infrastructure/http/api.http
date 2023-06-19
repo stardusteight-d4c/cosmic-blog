@@ -4,13 +4,13 @@ Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTBjNTYzNWMtZDVkZC00NDExLWE4YmQtYjYyNjA3NWVjNGI0IiwiZW1haWwiOiJlbWFpbEBlbWFpbC5jb20iLCJ0eXBlIjoiYXV0aG9yIiwidXNlcm5hbWUiOiJsaW5rIiwiYXZhdGFySWQiOiJGYXZhdGFyMDIiLCJpYXQiOjE2ODcwMTIyNDUsImV4cCI6MTY4NzYxNzA0NX0.2yj1A7duQ2y3_VPJVOvtZ57aSzwTLM749KtItjtTDT0
 
 {
- "title": "Post 8",
+ "title": "Post 10",
  "body": "Taaaaaaa",
  "tags": ["typescript", "typescript", "typescript", "web"],
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedAt": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "8c96ecb9-cb30-45ef-a134-3b10f0e3221c",
+    "id": "947808ff-78f8-43a8-a586-08f3857f52af",
     "email": "email@email.com",
     "username": "link",
     "avatar": "Favatar02",
@@ -63,7 +63,7 @@ Content-Type: application/json
 
 {
   "email": "emaissl@email.com",
-  "username": "lisnks",
+  "username": "link",
   "password": "password07",
   "avatar": "Favatar02",
   "userRole": "author"

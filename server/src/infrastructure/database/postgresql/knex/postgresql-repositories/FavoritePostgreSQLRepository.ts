@@ -76,7 +76,7 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
       .select("*")
       .then((favorites) => favorites.map((favorite) => new Favorite(favorite)))
       .catch((err) => {
-        throw new Error(`error finding favorites by post id: ${err}`);
+        throw new Error(`error finding all favorites by post id: ${err}`);
       });
   }
 
@@ -84,11 +84,12 @@ export class FavoritePostgreSQLRepository implements IFavoriteRepository {
     return knex("favorites")
       .where({ userId })
       .select("*")
+      .orderBy("created_at", "desc")
       .then((favorites) =>
         favorites ? favorites.map((favorite) => new Favorite(favorite)) : []
       )
       .catch((err) => {
-        throw new Error(`error finding favorites by user id: ${err}`);
+        throw new Error(`error finding all favorites by user id: ${err}`);
       });
   }
 
