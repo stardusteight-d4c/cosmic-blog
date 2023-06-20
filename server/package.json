@@ -10,7 +10,6 @@
     "start:prod": "node dist/main",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "example": "nodemon --watch '**/*.ts' --exec 'ts-node' src/application/example.ts",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
   },
