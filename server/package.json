@@ -8,6 +8,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
+    "migrate": "npx knex migrate:latest",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "build": "nest build",
