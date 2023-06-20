@@ -31,6 +31,7 @@ Such Platonic thought of more than two thousand years ago, reflects a lot the id
 * Firebase
 * TailwindCSS
 * Rich Text Editor
+* Vercel (deployment)
 
 
 ### Backend
@@ -53,7 +54,7 @@ Such Platonic thought of more than two thousand years ago, reflects a lot the id
 * Event-driven (Observer Pattern)
 * Hexagonal/Ports and Adapters Architecture
 * Unitary Tests
-
+* Render (deployment)
 
 ## :mailbox_with_mail: Utilities
  
@@ -163,6 +164,46 @@ When we adopt a domain-oriented design, we aim to concentrate all the complexity
 Publisher is a high-level entity responsible for <strong>communication between aggregates</strong>, so we can make entities react to events from other entities, or even services from entities can request services from other entities. That is, every entity must depend only on itself, but it can communicate with other entities, and many times for a behavior to be successfully executed, it is influenced by the response of other entities.
 
 > When I refer to dependency, it's about an entity not knowing about other entities, a Publisher or an event-driven architecture is exactly for that, a service publishes/imit a command and is not interested in the implementations of other entities, just for a response or even warn about an action that was performed and not be interested in how other entities react to it.
+
+### Server Deployment in Render
+
+```ts
+await app.listen(3000); // by default the address is localhost '127.0.0.1'
+```
+ If you bind to localhost, then Render can’t find the service. 0.0.0.0 is the host your application should use.
+
+```ts
+await app.listen(3000, '0.0.0.0');
+```
+
+#### Build & Deploy Configs
+
+```
+Root Directory: server
+Build Command: npm install && npm run build && npm run migrate
+Start Command: npm run start:prod
+```
+*<i>Before deploying, you must have already uploaded a database and configured the environment variables to access it, in this case, the Neon Database service was used.</i>
+
+#### Node.js version specification
+
+Add a file called `.node-version` at the root of your repo containing a single line specifying the version.
+
+```
+20.0.0
+```
+
+#### CORS (Cross-Origin Resource Sharing)
+
+CORS allows servers to specify which origins are allowed to access their resources. When a browser makes a request for a resource in an origin other than the page being displayed, the server can send special headers (such as Access-Control-Allow-Origin) to indicate whether the request should be allowed or blocked.
+
+```ts
+export const corsOptions: CorsOptions = {
+  origin: domain,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+```
 
 <p align="center">Project made with :blue_heart: by <a href="https://github.com/stardusteight-d4c">Gabriel Sena</a></p>
 
