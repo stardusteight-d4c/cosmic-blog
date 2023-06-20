@@ -100,32 +100,32 @@ Additionally, unit tests should be automated, integrated into the development wo
 
 ![architecture](/architecture.jpg)
 
-### Philosophy vs. Object Oriented Programming
+## Philosophy vs. Object Oriented Programming
 
 There are conceptual parallels between Platonic ideas and the principles of object-oriented programming. Both seek to model and understand the world through abstractions, hierarchies, relationships and shared characteristics. Object-oriented programming offers a practical framework for developing software, while Platonic ideas explore the nature of reality and existence.
 
-## Abstraction
+### Abstraction
 
 Both concepts are related to the idea of ​​simplification and focus on the essential and fundamental aspects of things. In both OOP abstraction and Plato's Forms, we seek to extract and represent only the essential elements, ignoring irrelevant or transitory details. While abstraction in OOP aims to create a simplified representation of real world objects, Plato's Forms represent the abstract and perfect essence behind the concrete manifestations.
 
-## Encapsulation
+### Encapsulation
 
 Both encapsulation in OOP and encapsulation in Plato's ideas involve the idea of ​​hiding internal details and providing a controlled interface. In OOP, encapsulation seeks to protect the implementation details of an object, while in Plato's ideas, encapsulation refers to the fact that the Forms are beyond the reach of the senses and ordinary perception. In both cases, encapsulation promotes protection, security, and control over access to the underlying entities.
 
-## Heritage
+### Heritage
 
 In the context of Plato's ideas, inheritance can be related to the view that higher Forms engender and influence lower Forms. Plato argued that the things of the sensible world are mere imperfect copies of ideal Forms. The higher Forms are considered the source or cause of the lower Forms and have a direct influence on them. This hierarchical inheritance of the Forms establishes an order and a relationship between them.
 
 Ambos os conceitos envolvem a ideia de uma relação hierárquica e de influência entre entidades. Na POO, a herança estabelece uma relação hierárquica entre classes, permitindo que as classes filhas herdem características das classes pai. Isso promove a reutilização de código e a organização hierárquica do sistema. Nas ideias de Platão, a herança se refere à influência e à relação de causa e efeito entre as Formas superiores e as Formas inferiores. As Formas superiores exercem uma influência direta sobre as Formas inferiores, estabelecendo uma ordem e uma hierarquia entre elas.
 
-## Polymorphism
+### Polymorphism
 
 In the context of Plato's ideas, polymorphism can be related to the notion that a higher Form can be manifested or reflected in different lower forms. The higher Forms are the true essence and represent a model or pattern, which can be reflected in multiple manifestations in the sensible world. This ability of Shapes to manifest in various ways is a form of polymorphism.
 
 Parallel between polymorphism in OOP and the concept of polymorphism in Plato's ideas:
 Both concepts involve the idea of ​​multiple forms or manifestations. In OOP, polymorphism allows different objects to be treated in a polyvalent way, as objects of the same parent class, through the use of inheritance and polymorphic methods. This promotes code flexibility and extensibility. In Plato's ideas, polymorphism is related to the ability of superior Forms to manifest themselves in various inferior forms, reflected in different manifestations in the sensible world.
 
-### Metaphysics vs. Object Oriented Programming
+## Metaphysics vs. Object Oriented Programming
 
 - <strong>Modeling</strong>: In both metaphysics and OOP, the idea of ​​modeling is central. In metaphysics, modeling is an attempt to understand and describe the fundamental structure of reality. In OOP, modeling involves creating models of real-world objects to solve software problems, representing relevant characteristics, relationships and behaviors.
 
