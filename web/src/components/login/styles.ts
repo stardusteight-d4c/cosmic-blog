@@ -11,7 +11,7 @@ export const signInStyles = {
   signUpSpan: `text-blue-500 hover:underline cursor-pointer`,
   flexCenterGapX4: `flex flex-col sm:flex-row items-center gap-x-4`,
   formControl: `form-control`,
-  submitBtn: `form-login-button w-fit text-xl mx-auto mt-8 font-semibold`,
+  submitBtn: `form-login-button disabled:brightness-75 disabled:cursor-not-allowed w-fit text-xl mx-auto mt-8 font-semibold`,
 };
 
 export const signUpStyles = {
@@ -22,7 +22,7 @@ export const signUpStyles = {
   signInSpan: `text-blue-500 hover:underline cursor-pointer`,
   flexCenterGapX4: `flex flex-col sm:flex-row items-center gap-x-4`,
   formControl: `form-control`,
-  nextBtn: `form-login-button w-fit text-xl mx-auto mt-8 font-semibold`,
+  nextBtn: `form-login-button disabled:brightness-75 disabled:cursor-not-allowed w-fit text-xl mx-auto mt-8 font-semibold`,
 };
 
 export const confirmEmailStyles = {

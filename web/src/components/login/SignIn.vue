@@ -6,25 +6,26 @@ import { useAppStore } from "@/store";
 import { loginMethods } from "@/store/modules/login";
 import useNotificator from "@/hooks/Notificator";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 
 const emit = defineEmits(["changeToSignUp"]);
 
 const store = useAppStore();
-const router = useRouter()
+const router = useRouter();
 const { notify } = useNotificator();
 const usernameOrEmailSpan = "Username or Email".split("");
 const passwordSpan = "Password".split("");
 
-const formData = {
+const formData = ref({
   usernameOrEmail: "",
   password: "",
-};
+});
 
 async function signIn() {
   try {
     const data = await store.dispatch(loginMethods.actions.sign, {
-      identifier: formData.usernameOrEmail.toLowerCase().trim(),
-      password: formData.password,
+      identifier: formData.value.usernameOrEmail.toLowerCase().trim(),
+      password: formData.value.password,
     });
     if (data) {
       router.push(`/profile/${data.user.username}`);
@@ -73,7 +74,14 @@ function handleSignUp(): void {
           </label>
         </div>
       </div>
-      <button @click="signIn" type="button" :class="css.submitBtn">
+      <button
+        :disabled="
+          formData.usernameOrEmail.length <= 0 || formData.password.length <= 0
+        "
+        @click="signIn"
+        type="button"
+        :class="css.submitBtn"
+      >
         Sign In
       </button>
     </form>
