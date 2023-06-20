@@ -14,7 +14,7 @@ export const config: Knex.Config = {
     ssl: process.env.SSLCONNECTION === "true",
   },
   migrations: {
-    directory: "./db/migrations",
+    directory: "src/infrastructure/database/postgresql/knex/migrations",
   },
 };
 

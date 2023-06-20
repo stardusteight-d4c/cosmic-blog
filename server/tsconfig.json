@@ -20,7 +20,7 @@
     "skipLibCheck": true,
     "strictPropertyInitialization": false,
     "outDir": "./dist",
-    "rootDir": "src",
+    "rootDir": "./",
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
@@ -34,6 +34,6 @@
     "transpileOnly": true,
     "require": ["tsconfig-paths/register"]
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "knexfile.ts"],
   "exclude": ["node_modules"]
 }
