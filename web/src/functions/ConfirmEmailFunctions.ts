@@ -74,7 +74,7 @@ export class ConfirmEmailFunctions {
         avatar: this.#signUpData.value.selectedAvatar!,
         username: this.#signUpData.value.username,
         password: this.#signUpData.value.password,
-        userRole: "author",
+        userRole: "reader",
       };
       const data = await store.dispatch(
         loginMethods.actions.registerUser,
