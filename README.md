@@ -141,6 +141,28 @@ Both concepts involve the idea of ​​multiple forms or manifestations. In OOP
 
 - <strong>Reuse</strong>: The concept of "apeiron" as a prime substance and source of origin can be related to code reuse in OOP. Reuse allows code snippets to be reused in different parts of the system, avoiding duplication and promoting a more efficient implementation. This ability to reuse code reflects the idea of ​​a primordial source from which various manifestations originate.
 
+### About Domain-driven Design
+
+When we adopt a domain-oriented design, we aim to concentrate all the complexity of the software in a single layer, it must be a layer where all the business rules are well defined, modeled and tested, it must not depend on any other layer or external system. So the domain is a self-sufficient layer containing the software specifications and behaviors, but totally in an abstracted way, without concrete implementations of how the application should work, but it defines the behaviors and properties of the software entities and how they should relate. The domain, being a self-sufficient layer, should describe how our system should behave, it describes all the system's functionalities, so it should be possible to run with scripts that will send inputs and mocked implementations.
+
+#### Entities
+
+<strong>Entities describe a context</strong>, entities are units of an aggregate, a problem being approached, the root entities of a domain is the simplest representation of a problem, where it only defines the properties, the characteristics of a problem. Root entity behaviors must be described in your services.
+
+#### Services
+
+<strong>Services describe behaviors</strong> such as how the domain handles a root entity, they are also considered as entities as everything in the domain is an extension of the root entity. Services should contain all the logic for how an entity should be created, updated, how to acquire specific data from an entity, and so on. But for that the services depend on a storage.
+
+#### Repositories
+
+<strong>Repositories describes existence</strong>, describe the storage of a root entity, it is where we store multiple instances of root entities in a persistent layer, as if they were collections of root entities. It should only be responsible for the interaction logic with this persistent medium, it should not validate whether an input is valid or not, the service should guarantee the integrity of this data and thus only request data from these persistent layers or the same validator to insert data into these collections.
+
+#### Publisher
+
+Publisher is a high-level entity responsible for <strong>communication between aggregates</strong>, so we can make entities react to events from other entities, or even services from entities can request services from other entities. That is, every entity must depend only on itself, but it can communicate with other entities, and many times for a behavior to be successfully executed, it is influenced by the response of other entities.
+
+> When I refer to dependency, it's about an entity not knowing about other entities, a Publisher or an event-driven architecture is exactly for that, a service publishes/imit a command and is not interested in the implementations of other entities, just for a response or even warn about an action that was performed and not be interested in how other entities react to it.
+
 <p align="center">Project made with :blue_heart: by <a href="https://github.com/stardusteight-d4c">Gabriel Sena</a></p>
 
 
