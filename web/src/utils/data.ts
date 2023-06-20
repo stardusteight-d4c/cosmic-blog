@@ -24,29 +24,29 @@ import mongoose from "@/assets/tech-icons/databases/mongoose.svg";
 import prisma from "@/assets/tech-icons/databases/prisma.svg";
 import supabase from "@/assets/tech-icons/databases/supabase.svg";
 
-import Mavatar0101 from "@/assets/avatars/m-avatar-01-1.png";
-import Mavatar0102 from "@/assets/avatars/m-avatar-01-2.png";
-import Mavatar0103 from "@/assets/avatars/m-avatar-01-3.png";
+import Mavatar0101 from "../../public/avatars/m-avatar-01-1.png";
+import Mavatar0102 from "../../public/avatars/m-avatar-01-2.png";
+import Mavatar0103 from "../../public/avatars/m-avatar-01-3.png";
 
-import Favatar0101 from "@/assets/avatars/f-avatar-01-1.png";
-import Favatar0102 from "@/assets/avatars/f-avatar-01-2.png";
-import Favatar0103 from "@/assets/avatars/f-avatar-01-3.png";
+import Favatar0101 from "../../public/avatars/f-avatar-01-1.png";
+import Favatar0102 from "../../public/avatars/f-avatar-01-2.png";
+import Favatar0103 from "../../public/avatars/f-avatar-01-3.png";
 
-import Mavatar0201 from "@/assets/avatars/m-avatar-02-1.png";
-import Mavatar0202 from "@/assets/avatars/m-avatar-02-2.png";
-import Mavatar0203 from "@/assets/avatars/m-avatar-02-3.png";
+import Mavatar0201 from "../../public/avatars/m-avatar-02-1.png";
+import Mavatar0202 from "../../public/avatars/m-avatar-02-2.png";
+import Mavatar0203 from "../../public/avatars/m-avatar-02-3.png";
 
-import Favatar0201 from "@/assets/avatars/f-avatar-02-1.png";
-import Favatar0202 from "@/assets/avatars/f-avatar-02-2.png";
-import Favatar0203 from "@/assets/avatars/f-avatar-02-3.png";
+import Favatar0201 from "../../public/avatars/f-avatar-02-1.png";
+import Favatar0202 from "../../public/avatars/f-avatar-02-2.png";
+import Favatar0203 from "../../public/avatars/f-avatar-02-3.png";
 
-import Mavatar0301 from "@/assets/avatars/m-avatar-03-1.png";
-import Mavatar0302 from "@/assets/avatars/m-avatar-03-2.png";
-import Mavatar0303 from "@/assets/avatars/m-avatar-03-3.png";
+import Mavatar0301 from "../../public/avatars/m-avatar-03-1.png";
+import Mavatar0302 from "../../public/avatars/m-avatar-03-2.png";
+import Mavatar0303 from "../../public/avatars/m-avatar-03-3.png";
 
-import Favatar0301 from "@/assets/avatars/f-avatar-03-1.png";
-import Favatar0302 from "@/assets/avatars/f-avatar-03-2.png";
-import Favatar0303 from "@/assets/avatars/f-avatar-03-3.png";
+import Favatar0301 from "../../public/avatars/f-avatar-03-1.png";
+import Favatar0302 from "../../public/avatars/f-avatar-03-2.png";
+import Favatar0303 from "../../public/avatars/f-avatar-03-3.png";
 
 import github from "@/assets/social/github.svg";
 import linkedin from "@/assets/social/linkedin.svg";
