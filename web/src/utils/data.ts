@@ -24,29 +24,29 @@ import mongoose from "@/assets/tech-icons/databases/mongoose.svg";
 import prisma from "@/assets/tech-icons/databases/prisma.svg";
 import supabase from "@/assets/tech-icons/databases/supabase.svg";
 
-import Mavatar0101 from "../../public/avatars/m-avatar-01-1.png";
-import Mavatar0102 from "../../public/avatars/m-avatar-01-2.png";
-import Mavatar0103 from "../../public/avatars/m-avatar-01-3.png";
+import Mavatar0101 from "@/assets/avatars/m-avatar-01-1.png";
+import Mavatar0102 from "@/assets/avatars/m-avatar-01-2.png";
+import Mavatar0103 from "@/assets/avatars/m-avatar-01-3.png";
 
-import Favatar0101 from "../../public/avatars/f-avatar-01-1.png";
-import Favatar0102 from "../../public/avatars/f-avatar-01-2.png";
-import Favatar0103 from "../../public/avatars/f-avatar-01-3.png";
+import Favatar0101 from "@/assets/avatars/f-avatar-01-1.png";
+import Favatar0102 from "@/assets/avatars/f-avatar-01-2.png";
+import Favatar0103 from "@/assets/avatars/f-avatar-01-3.png";
 
-import Mavatar0201 from "../../public/avatars/m-avatar-02-1.png";
-import Mavatar0202 from "../../public/avatars/m-avatar-02-2.png";
-import Mavatar0203 from "../../public/avatars/m-avatar-02-3.png";
+import Mavatar0201 from "@/assets/avatars/m-avatar-02-1.png";
+import Mavatar0202 from "@/assets/avatars/m-avatar-02-2.png";
+import Mavatar0203 from "@/assets/avatars/m-avatar-02-3.png";
 
-import Favatar0201 from "../../public/avatars/f-avatar-02-1.png";
-import Favatar0202 from "../../public/avatars/f-avatar-02-2.png";
-import Favatar0203 from "../../public/avatars/f-avatar-02-3.png";
+import Favatar0201 from "@/assets/avatars/f-avatar-02-1.png";
+import Favatar0202 from "@/assets/avatars/f-avatar-02-2.png";
+import Favatar0203 from "@/assets/avatars/f-avatar-02-3.png";
 
-import Mavatar0301 from "../../public/avatars/m-avatar-03-1.png";
-import Mavatar0302 from "../../public/avatars/m-avatar-03-2.png";
-import Mavatar0303 from "../../public/avatars/m-avatar-03-3.png";
+import Mavatar0301 from "@/assets/avatars/m-avatar-03-1.png";
+import Mavatar0302 from "@/assets/avatars/m-avatar-03-2.png";
+import Mavatar0303 from "@/assets/avatars/m-avatar-03-3.png";
 
-import Favatar0301 from "../../public/avatars/f-avatar-03-1.png";
-import Favatar0302 from "../../public/avatars/f-avatar-03-2.png";
-import Favatar0303 from "../../public/avatars/f-avatar-03-3.png";
+import Favatar0301 from "@/assets/avatars/f-avatar-03-1.png";
+import Favatar0302 from "@/assets/avatars/f-avatar-03-2.png";
+import Favatar0303 from "@/assets/avatars/f-avatar-03-3.png";
 
 import github from "@/assets/social/github.svg";
 import linkedin from "@/assets/social/linkedin.svg";
@@ -89,6 +89,15 @@ export const chooseAvatars: Array<IAvatars> = [
   { url: Mavatar0301, id: "Mavatar03" },
   { url: Favatar0301, id: "Favatar03" },
 ];
+
+export const avatars: string[][][] = [
+  [[Mavatar0101, 'Mavatar0101'], [Mavatar0102, 'Mavatar0102'], [Mavatar0103, 'Mavatar0103']],
+  [[Favatar0101, 'Favatar0101'], [Favatar0102, 'Favatar0102'], [Favatar0103, 'Favatar0103']],
+  [[Mavatar0201, 'Mavatar0201'], [Mavatar0202, 'Mavatar0202'], [Mavatar0203, 'Mavatar0203']],
+  [[Favatar0201, 'Favatar0201'], [Favatar0202, 'Favatar0202'], [Favatar0203, 'Favatar0203']],
+  [[Mavatar0301, 'Mavatar0301'], [Mavatar0302, 'Mavatar0302'], [Mavatar0303, 'Mavatar0303']],
+  [[Favatar0301, 'Favatar0301'], [Favatar0302, 'Favatar0302'], [Favatar0303, 'Favatar0303']],
+]
 
 export const techs: Techs = {
   backend: [node, fastify, nest, docker, stripe],

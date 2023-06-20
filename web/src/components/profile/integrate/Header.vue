@@ -5,8 +5,10 @@ import { PencilLine } from "@/components/@globals/atoms/icons";
 import { headerStyles as css } from "./styles";
 import { useAppStore } from "@/store";
 import { authMethods } from "@/store/modules/auth";
+import { avatars } from "@/utils/data";
+import { getAvatarUrls } from "@/utils";
 
-defineProps({
+const props = defineProps({
   avatarUrl: {
     type: String,
     required: true,
@@ -17,6 +19,7 @@ defineProps({
   },
 });
 
+const urls = ref(getAvatarUrls(props.avatarUrl))
 const editSocialLinks = ref(false);
 let currentMemoji = ref(1);
 
@@ -47,7 +50,7 @@ function handleMemoji(): void {
       <div class="pendulum relative z-[50]">
         <img
           @click="handleMemoji"
-          :src="`${avatarUrl}${currentMemoji}.png`"
+          :src="`${urls[`url${currentMemoji}`]}`"
           v-bind:key="currentMemoji"
           :class="css.avatarImage"
         />

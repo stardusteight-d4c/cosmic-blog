@@ -2,15 +2,13 @@
 import { useAppStore } from "@/store";
 import { Header, SocialLinks } from "./integrate";
 import { computed } from "vue";
-import { getAvatarUrlById } from "@/utils";
 
 const store = useAppStore();
 const userData = computed(() => store.state.profile.user);
-const userAvatar = getAvatarUrlById(userData.value.avatar);
-const handledAvatarString = userAvatar?.replace(/-\d+\.png$/, "-")!;
+const userAvatar = userData.value.avatar
 </script>
 
 <template>
-  <Header  :avatarUrl="handledAvatarString" :username="userData.username" />
+  <Header  :avatarUrl="userAvatar" :username="userData.username" />
   <SocialLinks :socialLinks="userData.socialLinks" />
 </template>
