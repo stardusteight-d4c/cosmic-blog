@@ -42,6 +42,7 @@ Such Platonic thought of more than two thousand years ago, reflects a lot the id
 * Knex
 * Vitest
 * PostgreSQL
+* Neon Console (Neon Database)
 * Json Web Token
 * Nodemailer
 * Docker/Docker Compose
