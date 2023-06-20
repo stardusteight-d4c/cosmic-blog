@@ -9,13 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.10.0",
     "@tailwindcss/line-clamp": "^0.4.2",
     "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.8",
     "firebase": "^9.22.1",
-    "i": "^0.3.7",
     "jwt-decode": "^3.1.2",
     "marked": "^4.2.12",
     "npm": "^9.6.7",

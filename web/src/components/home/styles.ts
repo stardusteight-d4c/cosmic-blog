@@ -9,7 +9,7 @@ export const headerStyles = {
   contentWrapper: `max-w-[725px] mx-auto absolute inset-0 px-2 lg:py-4 lg:px-0`,
   techsContainer: `absolute right-1/2 translate-x-1/2 md:-translate-x-0 md:right-0 top-[60px] md:top-1/2 md:-translate-y-1/2 flex items-center gap-x-3`,
 }
-// class='mt16'
+
 export const bioStyles = {
   authorName: `font-bold text-center md:text-start mt-[70px] md:mt-0 text-[32px] md:text-[40px]`,
   wrapper: `flex items-center justify-center md:justify-start md:items-start gap-x-2 mt-4 w-full pb-[45px]`,
