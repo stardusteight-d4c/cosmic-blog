@@ -9,9 +9,9 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
     "migrate": "npx knex migrate:latest",
+    "build": "nest build",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
   },
   "keywords": [],
