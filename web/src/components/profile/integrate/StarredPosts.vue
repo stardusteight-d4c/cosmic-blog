@@ -12,10 +12,10 @@ interface IProps {
   userId: string;
 }
 
-const props = defineProps<IProps>();
+defineProps<IProps>();
 const store = useAppStore();
 const favoritedPosts = computed(() => store.state.profile.favoritedPosts);
-const user = computed(() => store.state.profile.user)
+const user = computed(() => store.state.profile.user);
 const loading = ref(false);
 const currentPage = ref(0);
 

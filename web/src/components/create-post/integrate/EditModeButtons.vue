@@ -25,7 +25,7 @@ const functions = new EditModeButtonsFunctions({
 <template>
   <DeletePostPopUp
     v-if="proceedToDelete"
-    :postId="editorData.postId"
+    :postId="editorData.postId!"
     @closedDeletePopUp="onClosedDeletePopUp"
   />
   <div v-if="editMode" :class="css.wrapper">

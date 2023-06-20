@@ -13,7 +13,7 @@ const userId = route.params.id as string;
 
 <template>
   <div :class="css.wrapper">
-    <StarredPosts :userId="userId" :favoriteAmount="userData.favoriteAmount" />
+    <StarredPosts :userId="userId" :favoriteAmount="userData.favoriteAmount!" />
     <CommentedPosts :userId="userId" :commentAmount="userData.commentAmount" />
   </div>
 </template>
