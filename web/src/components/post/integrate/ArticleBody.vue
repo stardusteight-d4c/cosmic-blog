@@ -58,35 +58,30 @@ defineProps({
   font-size: 1.875rem /* 30px */ !important;
   line-height: 2.25rem /* 36px */ !important;
   color: #f2f2f2 !important;
-  margin-bottom: 12px;
   font-weight: 700;
 }
 .articleBody h3 {
   font-size: 1.5rem /* 24px */ !important;
   line-height: 2rem /* 32px */ !important;
   color: #f2f2f2 !important;
-  margin-bottom: 12px;
   font-weight: 700;
 }
 .articleBody h4 {
   font-size: 1.25rem /* 20px */ !important;
   line-height: 1.75rem /* 28px */ !important;
   color: #f2f2f2 !important;
-  margin-bottom: 12px;
   font-weight: 700;
 }
 .articleBody h5 {
   font-size: 1.125rem /* 18px */ !important;
   line-height: 1.75rem /* 28px */ !important;
   color: #f2f2f2 !important;
-  margin-bottom: 12px;
   font-weight: 700;
 }
 .articleBody h6 {
   font-size: 1rem /* 16px */ !important;
   line-height: 1.5rem /* 24px */ !important;
   color: #f2f2f2 !important;
-  margin-bottom: 12px;
   font-weight: 700;
 }
 
