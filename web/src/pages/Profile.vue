@@ -22,7 +22,6 @@ onMounted(async () => {
       username,
     });
     console.log(user);
-    
     if (!user?.id) {
       notFound.value = true;
     }
@@ -30,6 +29,7 @@ onMounted(async () => {
   } catch (error) {
     console.error("Error loading user data:", error);
     loading.value = false;
+    notFound.value = true;
   }
 });
 </script>
