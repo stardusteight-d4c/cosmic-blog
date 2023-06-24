@@ -3,7 +3,7 @@ import { computed, ref, watch } from "vue";
 import Btn from "@globals/Btn.vue";
 import Send from "@globals/atoms/icons/Send.vue";
 import { useAppStore } from "@/store";
-import { getAvatarUrlById } from "@/utils";
+import { getAvatarUrlById, getAvatarUrls } from "@/utils";
 import { SubmitCommentFunctions } from "@/functions/CommentFunctions";
 import { submitCommentStyles as css } from "../styles";
 
@@ -19,6 +19,7 @@ watch(comment, (newValue) => {
 const isGuest = computed(() => store.state.post.post?.isGuest ?? true);
 const store = useAppStore();
 const session = computed(() => store.state.auth.session);
+const urls = ref(getAvatarUrls(session.value.decodedToken?.avatarId ?? ""))
 const userAvatar = getAvatarUrlById(session.value.decodedToken?.avatarId ?? "");
 const handledAvatarString = userAvatar?.replace(/-\d+\.png$/, "-")!;
 const postId = computed(() => store.state.post.post!.id!);
@@ -51,7 +52,7 @@ const refs = {
     <img
       @click="handleMemoji"
       v-bind:key="currentMemoji"
-      :src="`${handledAvatarString}${currentMemoji}.png`"
+      :src="`${urls[`url${currentMemoji}`]}`"
       :class="css.memoji"
     />
     <div :class="css.contentContainer">

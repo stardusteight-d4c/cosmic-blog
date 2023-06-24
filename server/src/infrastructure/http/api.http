@@ -10,7 +10,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTBjNTYzNWMt
  "coverImage": "https://res.cloudinary.com/dm7h7e8xj/image/upload/v1504810464/hello-world-vue_ibatoy.jpg",
  "postedAt": "2023-05-30T14:31:44.545Z",
  "author": {
-    "id": "dfd96042-e892-4e8c-9a83-3e77e4b78b19",
+    "id": "01ee4d61-310b-434c-a4b7-b6d3385b8039",
     "email": "email@email.com",
     "username": "link",
     "avatar": "Favatar02",
@@ -62,9 +62,9 @@ POST http://localhost:3000/user/register
 Content-Type: application/json
 
 {
-  "email": "emaissl@email.com",
-  "username": "link",
-  "password": "password07",
+  "email": "emaaissl@email.com",
+  "username": "linak",
+  "password": "passwaord07",
   "avatar": "Favatar02",
   "userRole": "author"
 }

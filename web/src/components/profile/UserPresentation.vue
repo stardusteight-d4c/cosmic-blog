@@ -9,6 +9,6 @@ const userAvatar = userData.value.avatar
 </script>
 
 <template>
-  <Header  :avatarUrl="userAvatar" :username="userData.username" />
+  <Header :avatarUrl="userAvatar" :username="userData.username" />
   <SocialLinks :socialLinks="userData.socialLinks" />
 </template>

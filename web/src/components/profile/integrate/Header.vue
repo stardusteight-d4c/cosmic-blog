@@ -5,7 +5,6 @@ import { PencilLine } from "@/components/@globals/atoms/icons";
 import { headerStyles as css } from "./styles";
 import { useAppStore } from "@/store";
 import { authMethods } from "@/store/modules/auth";
-import { avatars } from "@/utils/data";
 import { getAvatarUrls } from "@/utils";
 
 const props = defineProps({
