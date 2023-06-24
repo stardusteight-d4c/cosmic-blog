@@ -39,7 +39,7 @@ defineProps({
         id="htmlBody"
         v-html="marked.marked(body!)"
         :class="css.articleContent"
-        style="white-space: break-spaces;"
+        style="white-space: break-spaces"
       />
     </div>
     <ArticleFooter v-if="showFooter" />
@@ -83,6 +83,22 @@ defineProps({
   line-height: 1.5rem /* 24px */ !important;
   color: #f2f2f2 !important;
   font-weight: 700;
+}
+
+.articleBody ul {
+  margin-block: -25px;
+  height: fit-content;
+}
+
+.articleBody li {
+  margin-bottom: -20px;
+  height: fit-content;
+}
+
+
+.articleBody li > p::before {
+  content: "•";
+  margin-right: 4px;
 }
 
 /* CODE BLOCK */
@@ -145,6 +161,7 @@ defineProps({
 
 /* STRONG */
 .articleBody strong {
+  color: #FFFFFF99;
   font-weight: 700;
 }
 </style>
