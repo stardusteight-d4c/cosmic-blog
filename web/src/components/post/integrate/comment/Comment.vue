@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import { useAppStore } from "@/store";
 import { DeleteCommentPopUp } from "@/components/pop-ups";
 import { CommentFunctions } from "@/functions/CommentFunctions";
+import { getAvatarUrls } from "@/utils";
 
 interface IProps {
   comment: IComment;
@@ -21,6 +22,8 @@ const commentEditableElement = ref<HTMLTextAreaElement | null>(null);
 const commentElement = ref<HTMLDivElement | null>(null);
 const textareaHeight = ref("");
 const selectedEditComment = ref(false);
+const urls =getAvatarUrls(props.comment.owner.avatar.id)
+
 const proceedToDelete = ref(false);
 const currentSession = computed(() => store.state.auth.session.decodedToken);
 
@@ -69,7 +72,10 @@ function closedDeletePopUp(): void {
             :to="`/profile/${comment.owner.username}`"
             :class="css.profileLinkContainer"
           >
-            <img :src="comment.owner.avatar" :class="css.authorImage" />
+            <img
+              :src="`${urls[comment.owner.avatar.url]}`"
+              :class="css.authorImage"
+            />
             <h3 :class="css.authorName">#{{ comment.owner.username }}</h3>
           </RouterLink>
           <span :class="css.commentDate"

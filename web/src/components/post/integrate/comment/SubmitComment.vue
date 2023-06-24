@@ -3,7 +3,7 @@ import { computed, ref, watch } from "vue";
 import Btn from "@globals/Btn.vue";
 import Send from "@globals/atoms/icons/Send.vue";
 import { useAppStore } from "@/store";
-import { getAvatarUrlById, getAvatarUrls } from "@/utils";
+import { getAvatarUrls } from "@/utils";
 import { SubmitCommentFunctions } from "@/functions/CommentFunctions";
 import { submitCommentStyles as css } from "../styles";
 
@@ -16,16 +16,14 @@ watch(comment, (newValue) => {
   countCharacters.value = newValue.length;
 });
 
+let currentMemoji = ref(1);
 const isGuest = computed(() => store.state.post.post?.isGuest ?? true);
 const store = useAppStore();
 const session = computed(() => store.state.auth.session);
-const urls = ref(getAvatarUrls(session.value.decodedToken?.avatarId ?? ""))
-const userAvatar = getAvatarUrlById(session.value.decodedToken?.avatarId ?? "");
-const handledAvatarString = userAvatar?.replace(/-\d+\.png$/, "-")!;
+const urls = ref(getAvatarUrls(session.value.decodedToken?.avatarId ?? ""));
 const postId = computed(() => store.state.post.post!.id!);
 const postTitle = computed(() => store.state.post.post!.title!);
 const postSlug = computed(() => store.state.post.post!.slug!);
-let currentMemoji = ref(1);
 
 function handleMemoji(): void {
   if (currentMemoji.value < 3) {
@@ -42,8 +40,6 @@ const refs = {
   postId,
   postTitle,
   postSlug,
-  handledAvatarString,
-  currentMemoji,
 };
 </script>
 
@@ -68,7 +64,15 @@ const refs = {
           >{{ countCharacters }}/500</span
         >
         <Btn
-          @click="functions.submitComment(refs)"
+          @click="
+            functions.submitComment({
+              ...refs,
+              handledAvatarString: {
+                url: `url${currentMemoji}`,
+                id: session.decodedToken?.avatarId,
+              },
+            })
+          "
           title="Submit"
           :disabled="countCharacters > 500"
         >

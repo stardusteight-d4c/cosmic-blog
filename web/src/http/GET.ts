@@ -34,9 +34,7 @@ export class GET {
   }) {
     const { tag, skip } = request;
     const posts = await api
-      .get<{ user: IUser }>(
-        `post/pagination/filteringTags?tag=${tag}&skip=${skip}&pageSize=6`
-      )
+      .get(`post/pagination/filteringTags?tag=${tag}&skip=${skip}&pageSize=6`)
       .then((res) => res.data)
       .catch((error) => console.log(error));
     return posts;

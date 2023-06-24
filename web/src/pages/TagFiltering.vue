@@ -17,6 +17,7 @@ onMounted(async () => {
       tag,
       skip: 0,
     };
+    store.commit(postMethods.mutations.setFilteringPosts, []);
     await store.dispatch(postMethods.actions.getFilteringPosts, payload);
     loading.value = false;
   } catch (error) {

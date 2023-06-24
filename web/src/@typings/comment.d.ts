@@ -26,7 +26,7 @@ interface IComment {
   owner: {
     id: string;
     username: string;
-    avatar: string;
+    avatar: any;
   };
   content: string;
   postedAt: Date;

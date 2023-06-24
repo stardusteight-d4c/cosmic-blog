@@ -29,8 +29,7 @@ export class SubmitCommentFunctions {
     postId: ComputedRef<string | undefined>;
     postTitle: ComputedRef<string>;
     postSlug: ComputedRef<string>;
-    handledAvatarString: string;
-    currentMemoji: Ref<number>;
+    handledAvatarString:  any;
   }) {
     const {
       emit,
@@ -39,7 +38,6 @@ export class SubmitCommentFunctions {
       postTitle,
       postSlug,
       handledAvatarString,
-      currentMemoji,
     } = request;
     if (comment.value.length > 500) {
       this.notify("ERROR", "The comment exceeds the 500 character limit!");
@@ -57,12 +55,14 @@ export class SubmitCommentFunctions {
       },
       owner: {
         id: session.user_id,
-        avatar: `${handledAvatarString}${currentMemoji.value}.png`,
+        avatar: handledAvatarString,
         username: session.username,
       },
     };
-    await store.dispatch(postMethods.actions.leaveComment, payload);
+    console.log(payload.owner);
+    
     comment.value = "";
+    await store.dispatch(postMethods.actions.leaveComment, payload);
   }
 }
 

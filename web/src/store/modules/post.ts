@@ -62,7 +62,7 @@ export const post: Module<IPostState, AppState> = {
     },
 
     [mutations.setFilteringPosts](state, posts: IPostResponse[]) {
-      state.filteringPosts = [...state.filteringPosts, ...posts];
+      state.filteringPosts = [...posts];
     },
 
     [mutations.setFavoriteAmount](state, isFavorited: boolean) {
@@ -105,7 +105,11 @@ export const post: Module<IPostState, AppState> = {
       payload: { tag: string; skip: number }
     ) {
       const posts = await GET.postsByTagWithPagination(payload);
-      commit(mutations.setFilteringPosts, posts);
+      if (this.state.post.filteringPosts.length !== 0) {
+        commit(mutations.setFilteringPosts, [...this.state.post.filteringPosts, ...posts]);
+      } else {
+        commit(mutations.setFilteringPosts, [...posts]);
+      }
       return posts;
     },
 
@@ -129,7 +133,8 @@ export const post: Module<IPostState, AppState> = {
       commit(mutations.setComments, comments);
     },
 
-    async [actions.leaveComment]({ dispatch }, payload: IComment) {
+    async [actions.leaveComment]({ commit, dispatch }, payload: IComment) {
+      commit(mutations.setComments, [payload, ...this.state.post.comments]);
       await POST.leaveComment(payload);
       await dispatch(actions.getComments, { postId: payload.post.id, skip: 0 });
     },
