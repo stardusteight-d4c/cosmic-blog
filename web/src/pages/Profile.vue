@@ -21,7 +21,9 @@ onMounted(async () => {
     const user = await store.dispatch(profileMethods.actions.getUserData, {
       username,
     });
-    if (!user.id) {
+    console.log(user);
+    
+    if (!user?.id) {
       notFound.value = true;
     }
     loading.value = false;
