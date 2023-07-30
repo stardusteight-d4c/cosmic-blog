@@ -205,7 +205,7 @@ export const corsOptions: CorsOptions = {
 };
 ```
 
-![screen](/screens/screen-home-desktop.png)
+![screen](./screenshots/screen-home-desktop.png)
 
 
 
