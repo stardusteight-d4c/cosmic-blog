@@ -100,7 +100,7 @@ Additionally, unit tests should be automated, integrated into the development wo
 
 ## :speech_balloon: Explanations
 
-![architecture](/architecture.jpg)
+![architecture](./architecture.jpg)
 
 ### Philosophy vs. Object Oriented Programming
 
